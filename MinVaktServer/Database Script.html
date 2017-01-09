@@ -1,0 +1,23 @@
+DROP TABLE IF EXISTS 'Users';
+DROP TABLE IF EXISTS 'Shifts';
+
+CREATE TABLE IF NOT EXISTS 'Users' (
+    user_id INT NOT NULL,
+    first_name VARCHAR(30) NOT NULL,
+    last_name VARCHAR(30) NOT NULL,
+    phone INT NOT NULL,
+    email VARCHAR(50) NOT NULL,
+    type INT NOT NULL,
+    salt VARCHAR(100) NOT NULL,
+    hash VARCHAR(100 NOT NULL,
+    PRIMARY KEY (user_id)
+    )
+
+CREATE TABLE IF NOT EXISTS 'Shifts' (
+    shift_id INT NOT NULL,
+    from_time DATETIME NOT NULL,
+    to_time DATETIME NOT NULL,
+    user_id INT NOT NULL,
+    PRIMARY KEY (shift_id),
+    FOREIGN KEY (user_id) REFERENCES Users(user_id)
+    )
