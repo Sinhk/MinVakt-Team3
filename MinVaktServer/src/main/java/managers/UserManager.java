@@ -1,7 +1,7 @@
-package main.java.managers;
+package managers;
 
 
-import main.java.datamodel.User;
+import datamodel.User;
 
 import java.util.ArrayList;
 import java.util.List;

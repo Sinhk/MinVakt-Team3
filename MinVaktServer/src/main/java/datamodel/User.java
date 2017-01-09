@@ -1,7 +1,7 @@
-package main.java.datamodel;
+package datamodel;
 
 
-import main.java.security.PBKDF2;
+import security.PBKDF2;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
