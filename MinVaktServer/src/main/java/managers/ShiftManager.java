@@ -14,12 +14,27 @@ public class ShiftManager {
     public static ShiftManager getInstance() {
         return ourInstance;
     }
-
+    //Singelton, do not modify
     private ShiftManager() {
     }
 
     private Map<User, List<Shift>> userShiftMap = new HashMap<>();
 
+    private void addEmptyUser(User user){
+        userShiftMap.put(user, new ArrayList<>());
+    }
+    private boolean isEmptyUser(User user){
+        return userShiftMap.get(user).isEmpty();
+    }
+    private boolean containsUser(User user){
+        return userShiftMap.containsKey(user);
+    }
+    private boolean containsNonEmptyUser(User user){
+        return containsUser(user) && !isEmptyUser(user);
+    }
+    private boolean userHasShift(User user, Shift shift){
+        return containsNonEmptyUser(user) && userShiftMap.get(user).contains(shift);
+    }
 
     public ReturnCode addShiftToUser(User user, Shift shift){
         Objects.requireNonNull(user); Objects.requireNonNull(shift);
@@ -28,8 +43,8 @@ public class ShiftManager {
 
         if (!userManager.getUserList().contains(user)) return ReturnCode.USER_NOT_FOUND;
 
-        if (userManager.getUserList().contains(user) && !userShiftMap.containsKey(user)){
-            userShiftMap.put(user, new ArrayList<>());
+        if (userManager.getUserList().contains(user) && !containsUser(user)){
+            addEmptyUser(user);
         }
 
         List<Shift> shifts = userShiftMap.get(user);
@@ -37,6 +52,8 @@ public class ShiftManager {
 
         return ReturnCode.OK;
     }
+
+    // TODO: 09-Jan-17 test
     public ReturnCode changeShiftFromUserToUser(Shift fromShift, User fromUser, User toUser){
         Objects.requireNonNull(fromShift); Objects.requireNonNull(toUser); Objects.requireNonNull(fromUser);
 
@@ -44,15 +61,14 @@ public class ShiftManager {
         // forgive me
         if (!(manager.getUserList().contains(fromUser) && manager.getUserList().contains(toUser))) return ReturnCode.USER_NOT_FOUND; // both users are not added
 
-
-        if (!userShiftMap.containsKey(fromUser)){ // manager.getUserList().contains(fromUser) &&
-            userShiftMap.put(fromUser, new ArrayList<>()); // adds the user to the map, has no shifts from before
+        if (!containsUser(fromUser)){ // manager.getUserList().contains(fromUser) &&
+            addEmptyUser(fromUser);// adds the user to the map, has no shifts from before
             return ReturnCode.HAS_NO_SHIFTS;
         }
-        if (!userShiftMap.get(fromUser).contains(fromShift)) return ReturnCode.SHIFT_NOT_FOUND;
+        if (!userHasShift(fromUser, fromShift)) return ReturnCode.SHIFT_NOT_FOUND;
 
         // toUser has no shifts from before, makes them and adds the fromUser shift it if exists
-        if (!userShiftMap.containsKey(toUser)){ // manager.getUserList().contains(toUser) &&
+        if (!containsUser(toUser)){ // manager.getUserList().contains(toUser) &&
             List<Shift> shifts = new ArrayList<>();
 
             // gets the shift from the argument from the fromUser if it exists
@@ -73,6 +89,15 @@ public class ShiftManager {
         userShiftMap.get(toUser).add(fromShift);
 
         return ReturnCode.OK;
+    }
+
+    public ReturnCode removeShiftFromUser(User user, Shift shift){
+
+        if (!userShiftMap.get(user).contains(shift)) return ReturnCode.SHIFT_NOT_FOUND;
+
+        userShiftMap.get(user).remove(shift);
+        return ReturnCode.OK;
+
     }
 
 }
