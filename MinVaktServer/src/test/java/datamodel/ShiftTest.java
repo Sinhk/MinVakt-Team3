@@ -41,7 +41,7 @@ public class ShiftTest {
     }
 
     @Test
-    public void toString() throws Exception {
+    public void testToString() throws Exception {
 
     }
 }
