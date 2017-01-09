@@ -17,11 +17,12 @@ public class User {
     private long tlf;
 
     private EmployeeType employeeType;
+    private int positionPercentage;
 
     private byte[] salt;
     private byte[] encryptedPassword;
 
-    public User(String email, long tlf, String password) {
+    public User(String email, long tlf, String password, int positionPercentage) {
 
         Objects.requireNonNull(email);
         Objects.requireNonNull(password);
@@ -41,6 +42,7 @@ public class User {
 
         this.email = email;
         this.tlf = tlf;
+        this.positionPercentage = positionPercentage;
     }
 
     public boolean authenticatePassword(String password) {
