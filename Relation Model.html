@@ -1,3 +1,8 @@
-User(<u>user_id</u>, first_name, last_name, phone, email, type, salt, hash)
+<h1>Relation Model</h1>
 
-Shift(<u>shift_id</u>, user_id*, from_time, to_time)
+Users(<u>user_id</u>, first_name, last_name, phone, email, type_id*, salt, hash)
+<br><br>
+Type(<u>type_id</u>, name)
+<br><br>
+Shifts(<u>shift_id</u>, user_id*, from_time, to_time, responsible)
+
