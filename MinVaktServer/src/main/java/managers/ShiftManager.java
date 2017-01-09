@@ -99,5 +99,10 @@ public class ShiftManager {
         return ReturnCode.OK;
 
     }
+    public List<Shift> getShiftsForUser(User user){
+
+        return userShiftMap.get(user);
+
+    }
 
 }

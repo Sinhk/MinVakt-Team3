@@ -1,5 +1,6 @@
 package datamodel;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -18,5 +19,36 @@ public class Shift {
         this.date = date;
         this.start = start;
         this.end = end;
+
+    }
+    public Shift(){
+
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public LocalTime getStart() {
+        return start;
+    }
+
+    public LocalTime getEnd() {
+        return end;
+    }
+
+    public boolean isResponsible() {
+        return responsible;
+    }
+
+
+    public String toString() {
+        return date.toString()+": "+start.toString()+" -> "+end.toString();
+    }
+
+    public static void main(String[] args) {
+
+        System.out.println(DayOfWeek.from(LocalDate.now()));
+
     }
 }

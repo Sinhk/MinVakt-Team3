@@ -6,4 +6,6 @@ package datamodel;
 public class AvailibleShift extends Shift {
 
 
+
+
 }

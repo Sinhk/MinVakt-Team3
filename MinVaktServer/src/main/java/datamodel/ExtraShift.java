@@ -5,4 +5,6 @@ package datamodel;
  */
 public class ExtraShift extends  Shift{
 
+
+
 }

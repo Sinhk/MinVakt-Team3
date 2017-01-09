@@ -26,7 +26,7 @@ public class User {
 
         Objects.requireNonNull(email);
         Objects.requireNonNull(password);
-        if (checkPasswordRequirements(password)) throw new IllegalArgumentException("Invalid Password");
+        if (!checkPasswordRequirements(password)) throw new IllegalArgumentException("Invalid Password");
 
         PBKDF2 crypt = new PBKDF2();
 
@@ -58,6 +58,8 @@ public class User {
     }
 
     public boolean changePassword(String oldPassword, String newPassword) {
+
+        if (!checkPasswordRequirements(newPassword)) throw new IllegalArgumentException("Invalid password");
 
         PBKDF2 crypt = new PBKDF2();
 
@@ -98,6 +100,11 @@ public class User {
 
     public EmployeeType getEmployeeType() {
         return employeeType;
+    }
+
+    @Override
+    public String toString() {
+        return email.split("@")[0];
     }
 
     public static void main(String[] args) {

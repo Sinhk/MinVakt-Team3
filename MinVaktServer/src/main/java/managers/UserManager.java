@@ -16,7 +16,7 @@ public class UserManager {
     public static UserManager getInstance() {
         return ourInstance;
     }
-
+    //Singelton, do not modify
     private UserManager() {
     }
 
@@ -46,7 +46,7 @@ public class UserManager {
 
     public boolean changePasswordForUser(User user, String oldPass, String newPass){
 
-        Objects.requireNonNull(user);
+        Objects.requireNonNull(user); Objects.requireNonNull(oldPass); Objects.requireNonNull(newPass);
 
         return user.changePassword(oldPass, newPass);
     }
