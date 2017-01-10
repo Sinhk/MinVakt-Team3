@@ -21,7 +21,6 @@ CREATE TABLE IF NOT EXISTS Shifts (
     from_time DATETIME NOT NULL,
     to_time DATETIME NOT NULL,
     user_id INT NOT NULL,
-    responsible INT NOT NULL,
     CONSTRAINT shift_pk PRIMARY KEY (shift_id)
     );
 
