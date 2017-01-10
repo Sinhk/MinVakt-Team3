@@ -1,6 +1,6 @@
 package minvakt.datamodel;
 
-import managers.UserManager;
+import minvakt.managers.UserManager;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
