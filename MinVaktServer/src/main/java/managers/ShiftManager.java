@@ -53,7 +53,6 @@ public class ShiftManager {
         return ReturnCode.OK;
     }
 
-    // TODO: 09-Jan-17 test
     public ReturnCode changeShiftFromUserToUser(Shift fromShift, User fromUser, User toUser){
         Objects.requireNonNull(fromShift); Objects.requireNonNull(toUser); Objects.requireNonNull(fromUser);
 
@@ -102,6 +101,14 @@ public class ShiftManager {
     public List<Shift> getShiftsForUser(User user){
 
         return userShiftMap.get(user);
+
+    }
+
+    public static void main(String[] args) {
+
+        ShiftManager instance = ShiftManager.getInstance();
+
+
 
     }
 

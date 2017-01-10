@@ -1,4 +1,4 @@
-package datamodel;
+package datamodel.enums;
 
 /**
  * Created by OlavH on 09-Jan-17.

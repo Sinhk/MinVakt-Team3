@@ -1,5 +1,7 @@
 package datamodel;
 
+import datamodel.enums.ShiftType;
+
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -15,32 +17,31 @@ public class Shift {
 
     private boolean responsible;
 
+    private ShiftType shiftType;
+
     public Shift(LocalDate date, LocalTime start, LocalTime end) {
         this.date = date;
         this.start = start;
         this.end = end;
 
     }
-    public Shift(){
-
-    }
 
     public LocalDate getDate() {
         return date;
     }
-
     public LocalTime getStart() {
         return start;
     }
-
     public LocalTime getEnd() {
         return end;
     }
-
     public boolean isResponsible() {
         return responsible;
     }
+    public ShiftType getShiftType() { return shiftType; }
 
+    public void setResponsible(boolean responsible) { this.responsible = responsible; }
+    public void setShiftType(ShiftType shiftType) { this.shiftType = shiftType; }
 
     public String toString() {
         return date.toString()+": "+start.toString()+" -> "+end.toString();

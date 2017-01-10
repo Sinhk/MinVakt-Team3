@@ -1,6 +1,7 @@
 package datamodel;
 
 
+import datamodel.enums.EmployeeType;
 import security.PBKDF2;
 
 import java.security.NoSuchAlgorithmException;

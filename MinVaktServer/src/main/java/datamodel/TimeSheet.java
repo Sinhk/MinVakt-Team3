@@ -1,13 +1,15 @@
 package datamodel;
 
-import Util.TimeUtil;
+import util.TimeUtil;
 import managers.ShiftManager;
 import managers.UserManager;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by OlavH on 09-Jan-17.
@@ -16,72 +18,75 @@ public class TimeSheet {
 
     private List<DayOfWeek> dayOfWeekList = Arrays.asList(DayOfWeek.values());
 
-    public List<List<Shift>> getTimeSheetForUser(User user) {
-        Objects.requireNonNull(user);
+    public List<List<Shift>> getTimeSheetForAllUsers(){
 
-        ShiftManager shiftManager = ShiftManager.getInstance();
-
-        int daysInThisMonth = LocalDate.now().getMonth().length(LocalDate.now().isLeapYear());
+        List<User> userList = UserManager.getInstance().getUserList();
 
         List<List<Shift>> timeSheet = new ArrayList<>();
 
-        List<Shift> shiftsForUser = shiftManager.getShiftsForUser(user);
+        for (User user : userList) {
 
-        for (int i = 0; i < daysInThisMonth; i++) {
+            timeSheet.add(getShiftsForUser(user));
 
-            timeSheet.add(new ArrayList<>());
-            List<Shift> thisWeek = timeSheet.get(i);
+        }
+        return timeSheet;
+    }
 
-            for (int j = 0; j < dayOfWeekList.size(); j++) {
-                thisWeek = new ArrayList<>(7);
-                for (Shift shift : shiftsForUser) {
+    public List<Shift> getShiftsForUser(User user){
 
-                    DayOfWeek day = TimeUtil.of(shift.getDate());
+        List<Shift> list = new ArrayList<>(7); // 1 week
 
-                    if (day.ordinal() == j && shift.getDate().getDayOfMonth() > i && shift.getDate().getDayOfMonth() < i + dayOfWeekList.size()) {
-                        thisWeek.add(shift);
-                    }
-                    else {
-                        thisWeek.add(null);
-                    }
+        List<Shift> shiftsForUser = ShiftManager.getInstance().getShiftsForUser(user);
 
+        LocalDate now = LocalDate.now();
 
+        boolean added = false;
+        for (int i = 1; i < 8; i++) {
+
+            for (Shift shift : shiftsForUser) {
+
+                if (TimeUtil.dayOfWeekOf(shift.getDate()) == DayOfWeek.of(i) && shift.getDate().getDayOfMonth()==now.getDayOfMonth()+(i-1)){
+
+                    list.add(shift);
+                    added = true;
                 }
 
 
             }
+            if (!added) list.add(null);
+            added = false;
+
 
         }
 
-        return timeSheet;
+        return list;
+
     }
 
     public static void main(String[] args) {
 
         List<User> users = new ArrayList<>();
+        User user = new User("olavh96@gmail.com", 78912978, "ostostO--", 100);
+        UserManager.getInstance().addUser(user);
+        users.add(user);
+        ShiftManager shiftManager = ShiftManager.getInstance();
 
-        for (int i = 0; i < 100; i++) {
-            users.add(new User(i+"Olavh96@gmail.com", 912391291, i+"Ostoshot--", 100) );
-        }
-        users.forEach(UserManager.getInstance()::addUser);
-
-        users.forEach(user -> ShiftManager.getInstance()
-                .addShiftToUser(user, new Shift(LocalDate.now().plusDays(new Random().nextInt(10)), LocalTime.of(new Random().nextInt(24), 0), LocalTime.of(new Random().nextInt(24), 0))));
-
-
-        System.out.println(users);
+        shiftManager.addShiftToUser(users.get(0), new Shift(LocalDate.of(2017,1,10), LocalTime.of(6,0), LocalTime.of(7,0)));
+        shiftManager.addShiftToUser(users.get(0), new Shift(LocalDate.of(2017,1,11), LocalTime.of(6,0), LocalTime.of(7,0)));
+        shiftManager.addShiftToUser(users.get(0), new Shift(LocalDate.of(2017,1,12), LocalTime.of(6,0), LocalTime.of(7,0)));
+        shiftManager.addShiftToUser(users.get(0), new Shift(LocalDate.of(2017,1,13), LocalTime.of(6,0), LocalTime.of(7,0)));
 
         TimeSheet timeSheet = new TimeSheet();
 
-        List<List<Shift>> timeSheetForUser = timeSheet.getTimeSheetForUser(users.get(0));
+        System.out.println(shiftManager.getShiftsForUser(users.get(0)));
 
-        for (List<Shift> list : timeSheetForUser) {
+        List<Shift> timeSheetForUser = timeSheet.getShiftsForUser(users.get(0));
 
-            System.out.println(list);
+        for (Shift shifts : timeSheetForUser) {
 
+            System.out.println(shifts);
 
         }
+
     }
-
-
 }

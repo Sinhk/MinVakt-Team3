@@ -1,4 +1,4 @@
-package Util;
+package util;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -8,6 +8,6 @@ import java.time.LocalDate;
  */
 public class TimeUtil {
 
-    public static DayOfWeek of(LocalDate date){return DayOfWeek.from(date);}
+    public static DayOfWeek dayOfWeekOf(LocalDate date){return DayOfWeek.from(date);}
 
 }

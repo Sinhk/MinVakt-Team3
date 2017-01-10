@@ -17,8 +17,8 @@ public class UserManager {
         return ourInstance;
     }
     //Singelton, do not modify
-    private UserManager() {
-    }
+    private UserManager(){}
+
 
     private List<User> userList = new ArrayList<>();
 
@@ -40,16 +40,21 @@ public class UserManager {
 
     public Optional<User> findUser(String email){
 
-        return userList.stream().filter(user -> user.getEmail().equals(email)).findFirst();
+        return userList.stream().filter(user -> user.getEmail().equalsIgnoreCase(email)).findFirst();
 
     }
 
-    public boolean changePasswordForUser(User user, String oldPass, String newPass){
+    public static void main(String[] args) {
 
-        Objects.requireNonNull(user); Objects.requireNonNull(oldPass); Objects.requireNonNull(newPass);
+        UserManager manager = UserManager.getInstance();
 
-        return user.changePassword(oldPass, newPass);
+        manager.addUser(new User("olavh96@gmail.com",93240605,"Ostostost--",100));
+
+        Optional<User> user = manager.findUser("olavH96@gmail.com");
+        System.out.println(user);
+        user.ifPresent(user1 -> user1.changePassword("Ostostost--","Matmatmat--"));
+
+        user.ifPresent(user1 -> System.out.println(user1.authenticatePassword("Matmatmat--")));
+
     }
-
-
 }

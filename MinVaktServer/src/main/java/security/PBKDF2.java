@@ -48,7 +48,7 @@ public class PBKDF2 {
     }
 
     public byte[] generateSalt() throws NoSuchAlgorithmException {
-        // VERY important to use SecureRandom instead of just Random
+        // VERY important to use SecureRandom instead dayOfWeekOf just Random
         SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
 
         // Generate a 8 byte (64 bit) salt as recommended by RSA PKCS5
