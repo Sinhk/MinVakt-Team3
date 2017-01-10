@@ -1,5 +1,6 @@
 package datamodel;
 
+import datamodel.enums.PredeterminedIntervals;
 import datamodel.enums.ShiftType;
 import util.TimeInterval;
 
@@ -17,6 +18,8 @@ public class Shift {
     private LocalTime start;
     private LocalTime end;
 
+    private  PredeterminedIntervals interval;
+
     private boolean responsible;
 
     private ShiftType shiftType = ShiftType.AVAILABLE;
@@ -30,6 +33,12 @@ public class Shift {
         this.start = start;
         this.end = end;
     }
+    public Shift(LocalDate date, PredeterminedIntervals interval){
+        Objects.requireNonNull(date); Objects.requireNonNull(interval);
+
+        this.date = date;
+        this.interval = interval;
+    }
 
     public LocalDate getDate() {
         return date;
@@ -40,6 +49,7 @@ public class Shift {
     public LocalTime getEnd() {
         return end;
     }
+    public PredeterminedIntervals getPredeterminedInterval() {return interval;}
     public boolean isResponsible() {
         return responsible;
     }

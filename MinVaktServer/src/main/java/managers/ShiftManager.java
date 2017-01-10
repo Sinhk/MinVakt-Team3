@@ -163,6 +163,12 @@ public class ShiftManager {
 
     }
 
+    /**
+     * @param userToReplace The user that is to be replaced
+     * @param userReplacement The potential user to replace the user
+     * @param shift This shift in question
+     * @return true if the user can replace the other user. Type must be the same, the user must have an availible shift
+     */
     public boolean isValidForShift(User userToReplace, User userReplacement, Shift shift){
 
         if (userToReplace.getEmployeeType() != userReplacement.getEmployeeType()) return false;
@@ -174,7 +180,9 @@ public class ShiftManager {
 
         for (Shift shift1 : shiftsForUser) {
 
-            if (shift1.getDate().isEqual(shift.getDate()) && shift1.getShiftType() == ShiftType.AVAILABLE) return true;
+            if (shift1.getDate().isEqual(shift.getDate())
+                    && shift1.getShiftType() == ShiftType.AVAILABLE
+                    && shift.getPredeterminedInterval() == shift1.getPredeterminedInterval()) return true;
 
         }
 

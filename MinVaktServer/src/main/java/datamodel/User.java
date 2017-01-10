@@ -26,7 +26,7 @@ public class User {
 
     private PBKDF2 crypt = new PBKDF2();
 
-
+    @Deprecated
     public User(String email, long tlf, String password, int positionPercentage) {
         Objects.requireNonNull(email); Objects.requireNonNull(password);
 
@@ -45,6 +45,10 @@ public class User {
         this.email = email;
         this.tlf = tlf;
         this.positionPercentage = positionPercentage;
+    }
+    public User(String email, long tlf, String password, int positionPercentage, EmployeeType type){
+        this(email,tlf,password,positionPercentage);
+        this.employeeType = type;
     }
 
     public int getTotalMinutes() {
