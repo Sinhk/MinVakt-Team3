@@ -27,9 +27,7 @@ public class ShiftManager {
 
     private Map<User, List<Shift>> userShiftMap = new HashMap<>();
 
-    private void addEmptyUser(User user){
-        userShiftMap.put(user, new ArrayList<>());
-    }
+    private void addEmptyUser(User user){userShiftMap.put(user, new ArrayList<>());}
     private boolean isEmptyUser(User user){
         return userShiftMap.get(user).isEmpty();
     }
@@ -114,6 +112,7 @@ public class ShiftManager {
     }
 
     public ReturnCode removeShiftFromUser(User user, Shift shift){
+        Objects.requireNonNull(user); Objects.requireNonNull(shift);
 
         if (!userShiftMap.get(user).contains(shift)) return ReturnCode.SHIFT_NOT_FOUND;
 
@@ -123,6 +122,7 @@ public class ShiftManager {
 
     }
     public List<Shift> getShiftsForUser(User user){
+        Objects.requireNonNull(user);
 
         return userShiftMap.get(user);
 
@@ -157,7 +157,7 @@ public class ShiftManager {
     public int getMinutesForWeek(User user, LocalDate dateInThatWeek){
         Objects.requireNonNull(user); Objects.requireNonNull(dateInThatWeek);
 
-        WeekDateInterval thatWeek = WeekDateInterval.of(dateInThatWeek);
+        WeekDateInterval thatWeek = WeekDateInterval.of(dateInThatWeek); // that week
 
         return getMinutesForUsersInInterval(user, thatWeek.getStart(), thatWeek.getEnd());
 

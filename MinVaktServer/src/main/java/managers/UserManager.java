@@ -39,6 +39,7 @@ public class UserManager {
     }
 
     public Optional<User> findUser(String email){
+        Objects.requireNonNull(email);
 
         return userList.stream().filter(user -> user.getEmail().equalsIgnoreCase(email)).findFirst();
 

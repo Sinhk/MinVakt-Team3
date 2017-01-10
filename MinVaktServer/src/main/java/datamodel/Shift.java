@@ -18,7 +18,7 @@ public class Shift {
     private LocalTime start;
     private LocalTime end;
 
-    private  PredeterminedIntervals interval;
+    private PredeterminedIntervals interval;
 
     private boolean responsible;
 

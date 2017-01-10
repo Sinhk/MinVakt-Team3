@@ -11,6 +11,7 @@ import java.util.*;
 /**
  * Created by OlavH on 09-Jan-17.
  */
+@Deprecated // Do with UI, use ShiftManager
 public class TimeSheet {
 
     private List<DayOfWeek> dayOfWeekList = Arrays.asList(DayOfWeek.values());
@@ -52,7 +53,6 @@ public class TimeSheet {
             }
             if (!added) list.add(null);
             added = false;
-
 
         }
 
