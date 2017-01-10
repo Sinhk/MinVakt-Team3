@@ -54,9 +54,6 @@ CREATE TABLE IF NOT EXISTS Shift_Department (
 ALTER TABLE Users
     ADD CONSTRAINT user_fk FOREIGN KEY (type_id) REFERENCES Type(type_id);
 
-ALTER TABLE Shifts
-    ADD CONSTRAINT shift_fk FOREIGN KEY (user_id) REFERENCES Users(user_id);
-
 ALTER TABLE Users_Shifts
     ADD CONSTRAINT user_shift_fk1 FOREIGN KEY (user_id) REFERENCES Users(user_id);
 
