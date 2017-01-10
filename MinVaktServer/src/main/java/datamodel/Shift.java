@@ -19,7 +19,7 @@ public class Shift {
 
     private boolean responsible;
 
-    private ShiftType shiftType;
+    private ShiftType shiftType = ShiftType.AVAILABLE;
 
     private String comment;
 

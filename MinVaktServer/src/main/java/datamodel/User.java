@@ -19,7 +19,7 @@ public class User {
 
     private EmployeeType employeeType;
     private int positionPercentage;
-    private int totalMinutes = 0; // max før overtid = 2250min = 37.5 timer
+    private int totalMinutes = 0; // max før overtid = 2400min = 40 timer
 
     private byte[] salt;
     private byte[] encryptedPassword;

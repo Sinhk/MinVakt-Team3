@@ -2,14 +2,20 @@ package managers;
 
 import datamodel.Shift;
 import datamodel.User;
+import datamodel.enums.ShiftType;
 import util.TimeUtil;
+import util.WeekDateInterval;
 
+import java.time.LocalDate;
 import java.util.*;
 
 /**
  * Created by OlavH on 09-Jan-17.
  */
 public class ShiftManager {
+
+    private static final int MAX_MINUTES = 2400; // 60*8*5
+
     private static ShiftManager ourInstance = new ShiftManager();
 
     public static ShiftManager getInstance() {
@@ -119,6 +125,67 @@ public class ShiftManager {
     public List<Shift> getShiftsForUser(User user){
 
         return userShiftMap.get(user);
+
+    }
+
+    /**
+     *
+     * @param user
+     * @param from Inclusive
+     * @param to Ecxlusive
+     * @return
+     */
+    public int getMinutesForUsersInInterval(User user, LocalDate from, LocalDate to){
+        Objects.requireNonNull(user); Objects.requireNonNull(from); Objects.requireNonNull(to);
+
+        if (!containsNonEmptyUser(user)) return 0;
+
+        int total = 0;
+        List<Shift> shiftsForUser = getShiftsForUser(user);
+
+        for (Shift shift : shiftsForUser) {
+
+            if (isInDateInterval(from, to, shift.getDate()) && shift.getShiftType() != ShiftType.ERROR){
+
+                total += shift.getTimeInterval().getMinutes();
+
+            }
+        }
+
+        return total;
+    }
+    public int getMinutesForWeek(User user, LocalDate dateInThatWeek){
+        Objects.requireNonNull(user); Objects.requireNonNull(dateInThatWeek);
+
+        WeekDateInterval thatWeek = WeekDateInterval.of(dateInThatWeek);
+
+        return getMinutesForUsersInInterval(user, thatWeek.getStart(), thatWeek.getEnd());
+
+    }
+
+    public boolean isValidForShift(User userToReplace, User userReplacement, Shift shift){
+
+        if (userToReplace.getEmployeeType() != userReplacement.getEmployeeType()) return false;
+
+        if (getMinutesForWeek(userReplacement, shift.getDate())+shift.getTimeInterval().getMinutes() > MAX_MINUTES)
+            return false;
+
+        List<Shift> shiftsForUser = getShiftsForUser(userReplacement);
+
+        for (Shift shift1 : shiftsForUser) {
+
+            if (shift1.getDate().isEqual(shift.getDate()) && shift1.getShiftType() == ShiftType.AVAILABLE) return true;
+
+        }
+
+        return false;
+    }
+
+
+
+    private boolean isInDateInterval(LocalDate fromInc, LocalDate toEx, LocalDate toCheck){
+
+        return toCheck.isAfter(fromInc) || toCheck.isEqual(fromInc) && toCheck.isBefore(toEx);
 
     }
 
