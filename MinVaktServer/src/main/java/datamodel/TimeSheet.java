@@ -1,15 +1,12 @@
 package datamodel;
 
-import util.TimeUtil;
 import managers.ShiftManager;
 import managers.UserManager;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by OlavH on 09-Jan-17.
@@ -18,18 +15,18 @@ public class TimeSheet {
 
     private List<DayOfWeek> dayOfWeekList = Arrays.asList(DayOfWeek.values());
 
-    public List<List<Shift>> getTimeSheetForAllUsers(){
+    public Map<User,List<Shift>> getTimeSheetForAllUsers(){
 
         List<User> userList = UserManager.getInstance().getUserList();
 
-        List<List<Shift>> timeSheet = new ArrayList<>();
+        Map<User, List<Shift>> userListMap = new HashMap<>();
 
         for (User user : userList) {
 
-            timeSheet.add(getShiftsForUser(user));
+            userListMap.put(user, getShiftsForUser(user));
 
         }
-        return timeSheet;
+        return userListMap;
     }
 
     public List<Shift> getShiftsForUser(User user){
@@ -45,7 +42,7 @@ public class TimeSheet {
 
             for (Shift shift : shiftsForUser) {
 
-                if (TimeUtil.dayOfWeekOf(shift.getDate()) == DayOfWeek.of(i) && shift.getDate().getDayOfMonth()==now.getDayOfMonth()+(i-1)){
+                if (/*TimeUtil.dayOfWeekOf(shift.getDate()) == DayOfWeek.of(i) && */shift.getDate().getDayOfMonth()==now.getDayOfMonth()+(i-1)){
 
                     list.add(shift);
                     added = true;
@@ -67,26 +64,37 @@ public class TimeSheet {
 
         List<User> users = new ArrayList<>();
         User user = new User("olavh96@gmail.com", 78912978, "ostostO--", 100);
+        User user1 = new User("stinesoien@hotmail.com", 971238712, "ostostO--", 100);
+        
         UserManager.getInstance().addUser(user);
-        users.add(user);
+        UserManager.getInstance().addUser(user1);
+        
+        users.addAll(Arrays.asList(user, user1));
+        
         ShiftManager shiftManager = ShiftManager.getInstance();
 
-        shiftManager.addShiftToUser(users.get(0), new Shift(LocalDate.of(2017,1,10), LocalTime.of(6,0), LocalTime.of(7,0)));
-        shiftManager.addShiftToUser(users.get(0), new Shift(LocalDate.of(2017,1,11), LocalTime.of(6,0), LocalTime.of(7,0)));
-        shiftManager.addShiftToUser(users.get(0), new Shift(LocalDate.of(2017,1,12), LocalTime.of(6,0), LocalTime.of(7,0)));
-        shiftManager.addShiftToUser(users.get(0), new Shift(LocalDate.of(2017,1,13), LocalTime.of(6,0), LocalTime.of(7,0)));
+        shiftManager.addShiftToUser(user, new Shift(LocalDate.of(2017,1,10), LocalTime.of(6,0), LocalTime.of(14,0)));
+        shiftManager.addShiftToUser(user, new Shift(LocalDate.of(2017,1,11), LocalTime.of(6,0), LocalTime.of(14,0)));
+        shiftManager.addShiftToUser(user, new Shift(LocalDate.of(2017,1,12), LocalTime.of(6,0), LocalTime.of(14,0)));
+        shiftManager.addShiftToUser(user, new Shift(LocalDate.of(2017,1,13), LocalTime.of(6,0), LocalTime.of(14,0)));
+
+        shiftManager.addShiftToUser(user1, new Shift(LocalDate.of(2017,1,10), LocalTime.of(10,0), LocalTime.of(18,0)));
+        shiftManager.addShiftToUser(user1, new Shift(LocalDate.of(2017,1,11), LocalTime.of(10,0), LocalTime.of(18,0)));
+        shiftManager.addShiftToUser(user1, new Shift(LocalDate.of(2017,1,12), LocalTime.of(10,0), LocalTime.of(18,0)));
+        shiftManager.addShiftToUser(user1, new Shift(LocalDate.of(2017,1,13), LocalTime.of(10,0), LocalTime.of(18,0)));
 
         TimeSheet timeSheet = new TimeSheet();
 
-        System.out.println(shiftManager.getShiftsForUser(users.get(0)));
+        System.out.println("Shifts for user: "+shiftManager.getShiftsForUser(user));
+        System.out.println("Shifts for user1: "+shiftManager.getShiftsForUser(user1));
 
-        List<Shift> timeSheetForUser = timeSheet.getShiftsForUser(users.get(0));
+        List<Shift> timeSheetForUser = timeSheet.getShiftsForUser(user);
 
-        for (Shift shifts : timeSheetForUser) {
+        timeSheetForUser.forEach(System.out::println);
 
-            System.out.println(shifts);
+        Map<User, List<Shift>> timeSheetForAllUsers = timeSheet.getTimeSheetForAllUsers();
 
-        }
+        timeSheetForAllUsers.forEach((user2, shifts) -> System.out.println(user2+" - "+shifts));
 
     }
 }

@@ -48,8 +48,10 @@ public class ShiftManager {
         }
 
         List<Shift> shifts = userShiftMap.get(user);
-        shifts.add(shift);
 
+        if (shifts.contains(shift)) return ReturnCode.SHIFT_ALREADY_IN_LIST;
+
+        shifts.add(shift);
         return ReturnCode.OK;
     }
 

@@ -9,6 +9,6 @@ public enum ReturnCode {
     USER_NOT_FOUND,
     USER_IS_EMPTY,
     HAS_NO_SHIFTS,
-    SHIFT_NOT_FOUND
-
+    SHIFT_NOT_FOUND,
+    SHIFT_ALREADY_IN_LIST
 }
