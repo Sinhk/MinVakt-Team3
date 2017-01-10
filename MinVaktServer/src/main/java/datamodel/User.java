@@ -19,6 +19,7 @@ public class User {
 
     private EmployeeType employeeType;
     private int positionPercentage;
+    private int totalMinutes = 0; // max før overtid = 2250min = 37.5 timer
 
     private byte[] salt;
     private byte[] encryptedPassword;
@@ -45,6 +46,18 @@ public class User {
         this.tlf = tlf;
         this.positionPercentage = positionPercentage;
     }
+
+    public int getTotalMinutes() {
+        return totalMinutes;
+    }
+
+    /**
+     * @param totalMinutes Minutes to add to the total, can be both + and -
+     */
+    public void changeTotalMinutes(int totalMinutes) {
+        this.totalMinutes += totalMinutes;
+    }
+
 
     /**
      * @param password The password to attempt

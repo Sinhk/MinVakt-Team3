@@ -2,6 +2,7 @@ package managers;
 
 import datamodel.Shift;
 import datamodel.User;
+import util.TimeUtil;
 
 import java.util.*;
 
@@ -48,6 +49,10 @@ public class ShiftManager {
         }
 
         List<Shift> shifts = userShiftMap.get(user);
+
+        if (TimeUtil.shiftsOverlap(shifts, shift)) {
+            return ReturnCode.SHIFT_OVERLAPS;
+        }
 
         if (shifts.contains(shift)) return ReturnCode.SHIFT_ALREADY_IN_LIST;
 

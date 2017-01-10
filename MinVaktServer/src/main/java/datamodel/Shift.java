@@ -5,6 +5,7 @@ import datamodel.enums.ShiftType;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Objects;
 
 /**
  * Created by OlavH on 09-Jan-17.
@@ -22,6 +23,8 @@ public class Shift {
     private String comment;
 
     public Shift(LocalDate date, LocalTime start, LocalTime end) {
+        Objects.requireNonNull(date); Objects.requireNonNull(start); Objects.requireNonNull(end);
+
         this.date = date;
         this.start = start;
         this.end = end;
