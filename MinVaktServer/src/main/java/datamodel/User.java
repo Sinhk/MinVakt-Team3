@@ -23,13 +23,13 @@ public class User {
     private byte[] salt;
     private byte[] encryptedPassword;
 
+    private PBKDF2 crypt = new PBKDF2();
+
+
     public User(String email, long tlf, String password, int positionPercentage) {
+        Objects.requireNonNull(email); Objects.requireNonNull(password);
 
-        Objects.requireNonNull(email);
-        Objects.requireNonNull(password);
         if (!checkPasswordRequirements(password)) throw new IllegalArgumentException("Invalid Password");
-
-        PBKDF2 crypt = new PBKDF2();
 
         try {
             salt = crypt.generateSalt();
@@ -46,9 +46,11 @@ public class User {
         this.positionPercentage = positionPercentage;
     }
 
+    /**
+     * @param password The password to attempt
+     * @return Whether the password is correct with the stored password or not
+     */
     public boolean authenticatePassword(String password) {
-
-        PBKDF2 crypt = new PBKDF2();
 
         try {
             return crypt.authenticate(password, encryptedPassword, salt);
@@ -58,11 +60,14 @@ public class User {
         }
     }
 
+    /**
+     * @param oldPassword The password to be changed
+     * @param newPassword The password to replace the old password
+     * @return
+     */
     public boolean changePassword(String oldPassword, String newPassword) {
 
         if (!checkPasswordRequirements(newPassword)) throw new IllegalArgumentException("Invalid password");
-
-        PBKDF2 crypt = new PBKDF2();
 
         if (!authenticatePassword(oldPassword)) return false;
 
@@ -75,6 +80,10 @@ public class User {
         return true;
     }
 
+    /**
+     * @param attempt The password to check
+     * @return if the password is a valid password or not.
+     */
     private static boolean checkPasswordRequirements(String attempt) {
 
         Pattern uppercase = Pattern.compile(".*\\p{Upper}+.*");
@@ -85,6 +94,10 @@ public class User {
         return uppercase.matcher(attempt).matches() && lower.matcher(attempt).matches() && nonWord.matcher(attempt).matches() && length >= 8;
     }
 
+    /**
+     * @param attempt The email adress to check
+     * @return If the adress has a valid format or not
+     */
     private static boolean checkEmailRequirements(String attempt) {
 
         return attempt.matches(".+@.+\\..+");
@@ -103,7 +116,6 @@ public class User {
         return employeeType;
     }
 
-    @Override
     public String toString() {
         return email.split("@")[0];
     }

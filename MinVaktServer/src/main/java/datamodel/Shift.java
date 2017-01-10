@@ -19,11 +19,12 @@ public class Shift {
 
     private ShiftType shiftType;
 
+    private String comment;
+
     public Shift(LocalDate date, LocalTime start, LocalTime end) {
         this.date = date;
         this.start = start;
         this.end = end;
-
     }
 
     public LocalDate getDate() {
@@ -42,6 +43,9 @@ public class Shift {
 
     public void setResponsible(boolean responsible) { this.responsible = responsible; }
     public void setShiftType(ShiftType shiftType) { this.shiftType = shiftType; }
+
+    public String getComment() { return comment; }
+    public void setComment(String comment) { this.comment = comment; }
 
     public String toString() {
         return date.toString()+": "+start.toString()+" -> "+end.toString();
