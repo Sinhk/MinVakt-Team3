@@ -25,6 +25,12 @@ CREATE TABLE IF NOT EXISTS Shifts (
     CONSTRAINT shift_pk PRIMARY KEY (shift_id)
     );
 
+CREATE TABLE IF NOT EXISTS Users_Shifts (
+    user_id INT NOT NULL,
+    shift_id INT NOT NULL,
+    CONSTRAINT user_shift_pk PRIMARY KEY (user_id, shift_id)
+    );
+
 CREATE TABLE IF NOT EXISTS Type (
     type_id INT NOT NULL AUTO_INCREMENT,
     name VARCHAR(30) NOT NULL,
@@ -46,10 +52,16 @@ CREATE TABLE IF NOT EXISTS Shift_Department (
 
 -- Foreign keys
 ALTER TABLE Users
-  ADD CONSTRAINT user_fk FOREIGN KEY (type_id) REFERENCES Type(type_id);
+    ADD CONSTRAINT user_fk FOREIGN KEY (type_id) REFERENCES Type(type_id);
 
 ALTER TABLE Shifts
-  ADD CONSTRAINT shift_fk FOREIGN KEY (user_id) REFERENCES Users(user_id);
+    ADD CONSTRAINT shift_fk FOREIGN KEY (user_id) REFERENCES Users(user_id);
+
+ALTER TABLE Users_Shifts
+    ADD CONSTRAINT user_shift_fk1 FOREIGN KEY (user_id) REFERENCES Users(user_id);
+
+ALTER TABLE Users_Shifts
+    ADD CONSTRAINT user_shift_fk2 FOREIGN KEY (shift_id) REFERENCES Shifts(shift_id);
 
 ALTER TABLE Shift_Department
     ADD CONSTRAINT shift_department_fk1 FOREIGN KEY(department_id) REFERENCES Department(department_id);
