@@ -28,6 +28,7 @@ CREATE TABLE IF NOT EXISTS Shifts (
 CREATE TABLE IF NOT EXISTS Users_Shifts (
     user_id INT NOT NULL,
     shift_id INT NOT NULL,
+    responsible BOOL NOT NULL,
     CONSTRAINT user_shift_pk PRIMARY KEY (user_id, shift_id)
     );
 
@@ -67,4 +68,4 @@ ALTER TABLE Shift_Department
     ADD CONSTRAINT shift_department_fk1 FOREIGN KEY(department_id) REFERENCES Department(department_id);
 
 ALTER TABLE Shift_Department
-    ADD CONSTRAINT shift_department_fk2 FOREIGN KEY(shift_id) REFERENCES Shift(shift_id);
+    ADD CONSTRAINT shift_department_fk2 FOREIGN KEY(shift_id) REFERENCES Shifts(shift_id);
