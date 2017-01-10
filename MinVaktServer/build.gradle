@@ -36,7 +36,7 @@ compileJava {
     }
 }
 springBoot {
-    mainClass = "Application"
+    mainClass = "minvakt.Application"
 }
 dependencies {
 
