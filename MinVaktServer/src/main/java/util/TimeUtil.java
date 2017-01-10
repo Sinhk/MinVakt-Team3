@@ -11,6 +11,10 @@ import java.util.List;
  */
 public class TimeUtil {
 
+    /**
+     * @param date
+     * @return DayOfWeek of the date
+     */
     public static DayOfWeek dayOfWeekOf(LocalDate date){return DayOfWeek.from(date);}
 
     public static boolean shiftsOverlap(List<Shift> shiftList, Shift shift){

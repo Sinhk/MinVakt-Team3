@@ -57,6 +57,7 @@ public class ShiftManager {
         if (shifts.contains(shift)) return ReturnCode.SHIFT_ALREADY_IN_LIST;
 
         shifts.add(shift);
+        user.changeTotalMinutes((int) shift.getTimeInterval().getMinutes());
         return ReturnCode.OK;
     }
 
@@ -64,6 +65,9 @@ public class ShiftManager {
         Objects.requireNonNull(fromShift); Objects.requireNonNull(toUser); Objects.requireNonNull(fromUser);
 
         UserManager manager = UserManager.getInstance();
+
+        long minutes = fromShift.getTimeInterval().getMinutes();
+
         // forgive me
         if (!(manager.getUserList().contains(fromUser) && manager.getUserList().contains(toUser))) return ReturnCode.USER_NOT_FOUND; // both users are not added
 
@@ -86,6 +90,9 @@ public class ShiftManager {
 
                 userShiftMap.put(toUser, shifts);
 
+                fromUser.changeTotalMinutes((int) -minutes);
+                toUser.changeTotalMinutes((int) minutes);
+
                 return ReturnCode.OK;
             }
             return ReturnCode.SHIFT_NOT_FOUND;
@@ -93,6 +100,9 @@ public class ShiftManager {
 
         userShiftMap.get(fromUser).remove(fromShift);
         userShiftMap.get(toUser).add(fromShift);
+
+        fromUser.changeTotalMinutes((int) -minutes);
+        toUser.changeTotalMinutes((int) minutes);
 
         return ReturnCode.OK;
     }
@@ -102,6 +112,7 @@ public class ShiftManager {
         if (!userShiftMap.get(user).contains(shift)) return ReturnCode.SHIFT_NOT_FOUND;
 
         userShiftMap.get(user).remove(shift);
+        user.changeTotalMinutes((int) shift.getTimeInterval().getMinutes());
         return ReturnCode.OK;
 
     }

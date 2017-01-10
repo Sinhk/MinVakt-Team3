@@ -1,6 +1,7 @@
 package datamodel;
 
 import datamodel.enums.ShiftType;
+import util.TimeInterval;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -43,6 +44,7 @@ public class Shift {
         return responsible;
     }
     public ShiftType getShiftType() { return shiftType; }
+    public TimeInterval getTimeInterval(){return new TimeInterval(start, end);}
 
     public void setResponsible(boolean responsible) { this.responsible = responsible; }
     public void setShiftType(ShiftType shiftType) { this.shiftType = shiftType; }
