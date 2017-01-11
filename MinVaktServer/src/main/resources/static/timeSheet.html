@@ -23,41 +23,42 @@
     <li><a href="#">»</a></li>
 </ul>
 
-<table class="hoverTable">
+<table>
     <thead>
     <tr>
-        <th data-field="id">Navn</th>
-        <th data-field="day">Mandag</th>
-        <th data-field="day2">Tirsdag</th>
-        <th data-field="day3">Onsdag</th>
-        <th data-field="day4">Torsdag</th>
-        <th data-field="day5">Fredag</th>
-        <th data-field="day6">Lørdag</th>
-        <th data-field="day7">Søndag</th>
+        <th class="col">Ansatt</th>
+        <th class="col">Mandag</th>
+        <th class="col">Tirsdag</th>
+        <th class="col">Onsdag</th>
+        <th class="col">Torsdag</th>
+        <th class="col">Fredag</th>
+        <th class="col">Lørdag</th>
+        <th class="col">Søndag</th>
     </tr>
     </thead>
 
     <tbody>
-    <tr id="kristin">
-        <td>Kristin</td>
-        <td>06.00-14.00<br>Avdeling 1<br>Ansvarsvakt</td>
+    <tr>
+        <th class="row">Kristin</th>
+        <td>06.00-14.00<br>Avdeling 1<br><p id="ansvar">Ansvarsvakt</p></td>
         <td></td>
-        <td>14.00-22.00</td>
+        <td>14.00-22.00<br>Avdeling 2</td>
         <td></td>
         <td></td>
         <td></td>
         <td></td>
     </tr>
-    <tr id="stine">
-        <td>Stine</td>
-        <td>22.00-06.00</td>
+
+    <tr>
+        <th class="row">Stine</th>
+        <td>06.00-14.00<br>Avdeling 1<br><p id="ansvar">Ansvarsvakt</p></td>
+        <td></td>
+        <td>14.00-22.00<br>Avdeling 2</td>
         <td></td>
         <td></td>
-        <td>14.00-22.00</td>
         <td></td>
         <td></td>
-        <td></td>
-        </tr>
+    </tr>
     </tbody>
 </table>
 
