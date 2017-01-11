@@ -116,8 +116,17 @@ public class User implements Serializable {
         this.positionPercentage = positionPercentage;
     }
 
+    @Override
     public String toString() {
-        return email.split("@")[0];
+        return "User{" +
+                "userId=" + userId +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", phone=" + phone +
+                ", password='" + password + '\'' +
+                ", employeeType=" + employeeType +
+                ", positionPercentage=" + positionPercentage +
+                '}';
     }
-
 }
