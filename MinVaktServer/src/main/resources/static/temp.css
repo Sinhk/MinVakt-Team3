@@ -1,0 +1,9 @@
+*{
+    font-family: Consolas, serif;
+}
+
+body{
+    background-color: #3f9b9b;
+    display: flex;
+    justify-content: center;
+}
