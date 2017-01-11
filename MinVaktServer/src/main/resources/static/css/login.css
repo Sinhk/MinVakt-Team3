@@ -1,9 +1,16 @@
 * { box-sizing:border-box; }
 
+html{
+    height: 100%;
+}
 body {
     font-family: Helvetica;
     background: #eee;
     -webkit-font-smoothing: antialiased;
+
+    background-image: url("http://wandering.tv/wp-content/uploads/2014/10/shutterstock_46332052-1.jpg");
+    background-size:100% 100%;
+    background-repeat: no-repeat;
 }
 
 h1 {
