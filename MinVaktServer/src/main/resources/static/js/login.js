@@ -7,11 +7,15 @@ $("#logInButton").click(function () {
     var email = $("#emailInput").val();
     var password = $("#passwordInput").val();
 
-    console.log("Pressed log on button");
+    console.log("Pressed log on button - "+email+" - "+password);
+    console.log(JSON.stringify({
+        "email": email,
+        "password": password
+    }));
 
     $.ajax({
         url: "users/login",
-        type: "GET",
+        type: "POST",
         contentType: "application/json",
         data: JSON.stringify({
             "email": email,
@@ -22,7 +26,7 @@ $("#logInButton").click(function () {
          },*/
 
         success: function (data) {
-            console.log(data + " - Logged inn succesfully!");
+            console.log("Password: "+data);
         },
         error: function (data) {
             alert("Failed! " + data);

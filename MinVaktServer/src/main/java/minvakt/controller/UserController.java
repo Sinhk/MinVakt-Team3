@@ -2,6 +2,7 @@ package minvakt.controller;
 
 import minvakt.controller.data.LoginInfo;
 import minvakt.datamodel.User;
+import minvakt.datamodel.enums.EmployeeType;
 import minvakt.managers.UserManager;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +16,7 @@ public class UserController {
     private static UserManager manager = UserManager.getInstance();
 
     static {
-        manager.addUser(new User("olavh96@gmail.com", 93240605, "Ostostost--", 100));
+        manager.addUser(new User("olavh96@gmail.com", 93240605, "Ostostost--", 100, EmployeeType.ADMIN));
     }
 
     @GetMapping
@@ -28,13 +29,11 @@ public class UserController {
     @PostMapping
     public boolean addUser(@RequestBody User user) {
 
-        System.out.println("Adding user: "+user);
-
         return manager.addUser(user);
 
     }
 
-    @GetMapping
+    @PostMapping
     @RequestMapping("/login")
     public boolean logInUserWithEmail(@RequestBody LoginInfo info){
 
