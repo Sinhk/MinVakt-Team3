@@ -1,12 +1,12 @@
 package minvakt.repos;
 
-import minvakt.datamodel.UserEntity;
+import minvakt.datamodel.User;
 import org.springframework.data.repository.CrudRepository;
 
-public interface UserRepository extends CrudRepository<UserEntity, Integer> {
+public interface UserRepository extends CrudRepository<User, Integer> {
 
     //Page<UserEntity> findAll(Pageable pageable);
 
-    UserEntity findByFirstName(String name);
+    User findByFirstName(String name);
 
 }

@@ -1,6 +1,6 @@
 package minvakt.controller;
 
-import minvakt.datamodel.UserEntity;
+import minvakt.datamodel.User;
 import minvakt.repos.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,9 +29,9 @@ public class UserController {
     }
 
     @GetMapping
-    public Iterable<UserEntity> getUsers() {//@RequestParam(value="name", defaultValue="World") String name) {
-        Iterable<UserEntity> users = userRepo.findAll();
-        users.forEach(userEntity -> log.info(userEntity.toString()));
+    public Iterable<User> getUsers() {//@RequestParam(value="name", defaultValue="World") String name) {
+        Iterable<User> users = userRepo.findAll();
+        //users.forEach(user -> log.info(user.toString()));
         return users;
     }
 
