@@ -61,7 +61,6 @@ public class ShiftManager {
         if (shifts.contains(shift)) return ReturnCode.SHIFT_ALREADY_IN_LIST;
 
         shifts.add(shift);
-        user.changeTotalMinutes((int) shift.getTimeInterval().getMinutes());
         return ReturnCode.OK;
     }
 
@@ -94,9 +93,6 @@ public class ShiftManager {
 
                 userShiftMap.put(toUser, shifts);
 
-                fromUser.changeTotalMinutes((int) -minutes);
-                toUser.changeTotalMinutes((int) minutes);
-
                 return ReturnCode.OK;
             }
             return ReturnCode.SHIFT_NOT_FOUND;
@@ -104,9 +100,6 @@ public class ShiftManager {
 
         userShiftMap.get(fromUser).remove(fromShift);
         userShiftMap.get(toUser).add(fromShift);
-
-        fromUser.changeTotalMinutes((int) -minutes);
-        toUser.changeTotalMinutes((int) minutes);
 
         return ReturnCode.OK;
     }
@@ -117,7 +110,6 @@ public class ShiftManager {
         if (!userShiftMap.get(user).contains(shift)) return ReturnCode.SHIFT_NOT_FOUND;
 
         userShiftMap.get(user).remove(shift);
-        user.changeTotalMinutes((int) shift.getTimeInterval().getMinutes());
         return ReturnCode.OK;
 
     }
@@ -145,7 +137,7 @@ public class ShiftManager {
 
         for (Shift shift : shiftsForUser) {
 
-            if (isInDateInterval(from, to, shift.getDate()) && shift.getShiftType() != ShiftType.ERROR){
+            if (isInDateInterval(from, to, shift.getStartDateTime().toLocalDate()) && shift.getShiftType() != ShiftType.ERROR){
 
                 total += shift.getTimeInterval().getMinutes();
 
@@ -173,14 +165,15 @@ public class ShiftManager {
 
         if (userToReplace.getEmployeeType() != userReplacement.getEmployeeType()) return false;
 
-        if (getMinutesForWeek(userReplacement, shift.getDate())+shift.getTimeInterval().getMinutes() > MAX_MINUTES)
+        if (getMinutesForWeek(userReplacement, shift.getStartDateTime().toLocalDate())+shift.getTimeInterval().getMinutes() > MAX_MINUTES)
             return false;
 
         List<Shift> shiftsForUser = getShiftsForUser(userReplacement);
 
         for (Shift shift1 : shiftsForUser) {
 
-            if (shift1.getDate().isEqual(shift.getDate())
+            if (shift1.getStartDateTime().isEqual(shift.getStartDateTime())
+            if (shift1.getStartDateTime().toLocalDate().isEqual(shift.getStartDateTime().toLocalDate())
                     && shift1.getShiftType() == ShiftType.AVAILABLE
                     && shift.getPredeterminedInterval() == shift1.getPredeterminedInterval()) return true;
 

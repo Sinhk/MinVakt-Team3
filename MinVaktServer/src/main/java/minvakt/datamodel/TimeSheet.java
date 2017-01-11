@@ -43,7 +43,7 @@ public class TimeSheet {
 
             for (Shift shift : shiftsForUser) {
 
-                if (/*TimeUtil.dayOfWeekOf(shift.getDate()) == DayOfWeek.of(i) && */shift.getDate().getDayOfMonth()==now.getDayOfMonth()+(i-1)){
+                if (/*TimeUtil.dayOfWeekOf(shift.getStartDateTime()) == DayOfWeek.of(i) && */shift.getStartDateTime().getDayOfMonth()==now.getDayOfMonth()+(i-1)){
 
                     list.add(shift);
                     added = true;
@@ -72,17 +72,17 @@ public class TimeSheet {
         users.addAll(Arrays.asList(user, user1));
         
         ShiftManager shiftManager = ShiftManager.getInstance();
+        /*
+        shiftManager.addShiftToUser(user, new Shift(LocalDate.of(2017,1,10), LocalTime.of(6,0)));
+        shiftManager.addShiftToUser(user, new Shift(LocalDate.of(2017,1,11), LocalTime.of(6,0)));
+        shiftManager.addShiftToUser(user, new Shift(LocalDate.of(2017,1,12), LocalTime.of(6,0)));
+        shiftManager.addShiftToUser(user, new Shift(LocalDate.of(2017,1,13), LocalTime.of(6,0)));
 
-        shiftManager.addShiftToUser(user, new Shift(LocalDate.of(2017,1,10), LocalTime.of(6,0), LocalTime.of(14,0)));
-        shiftManager.addShiftToUser(user, new Shift(LocalDate.of(2017,1,11), LocalTime.of(6,0), LocalTime.of(14,0)));
-        shiftManager.addShiftToUser(user, new Shift(LocalDate.of(2017,1,12), LocalTime.of(6,0), LocalTime.of(14,0)));
-        shiftManager.addShiftToUser(user, new Shift(LocalDate.of(2017,1,13), LocalTime.of(6,0), LocalTime.of(14,0)));
-
-        shiftManager.addShiftToUser(user1, new Shift(LocalDate.of(2017,1,10), LocalTime.of(10,0), LocalTime.of(18,0)));
-        shiftManager.addShiftToUser(user1, new Shift(LocalDate.of(2017,1,11), LocalTime.of(10,0), LocalTime.of(18,0)));
-        shiftManager.addShiftToUser(user1, new Shift(LocalDate.of(2017,1,12), LocalTime.of(10,0), LocalTime.of(18,0)));
-        shiftManager.addShiftToUser(user1, new Shift(LocalDate.of(2017,1,13), LocalTime.of(10,0), LocalTime.of(18,0)));
-
+        shiftManager.addShiftToUser(user1, new Shift(LocalDate.of(2017,1,10), LocalTime.of(10,0)));
+        shiftManager.addShiftToUser(user1, new Shift(LocalDate.of(2017,1,11), LocalTime.of(10,0)));
+        shiftManager.addShiftToUser(user1, new Shift(LocalDate.of(2017,1,12), LocalTime.of(10,0)));
+        shiftManager.addShiftToUser(user1, new Shift(LocalDate.of(2017,1,13), LocalTime.of(10,0)));
+        */
         TimeSheet timeSheet = new TimeSheet();
 
         System.out.println("Shifts for user: "+shiftManager.getShiftsForUser(user));

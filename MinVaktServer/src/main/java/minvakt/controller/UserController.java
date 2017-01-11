@@ -1,8 +1,15 @@
 package minvakt.controller;
 
-import minvakt.controller.data.LoginInfo;
 import minvakt.datamodel.User;
-import minvakt.datamodel.enums.EmployeeType;
+import minvakt.repos.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import minvakt.datamodel.User;
 import minvakt.managers.UserManager;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,40 +19,45 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/users")
 public class UserController {
+    private static final Logger log = LoggerFactory.getLogger(UserController.class);
 
-    private static UserManager manager = UserManager.getInstance();
+    private UserRepository userRepo;
 
-    static {
-        manager.addUser(new User("olavh96@gmail.com", 93240605, "Ostostost--", 100, EmployeeType.ADMIN));
+    @Autowired
+    public UserController(UserRepository userRepo) {
+        this.userRepo = userRepo;
     }
 
     @GetMapping
-    public List<User> getUsers() { //@RequestParam(value="name", defaultValue="World") String name) {
-
-        return manager.getUserList();
-
+    public Iterable<User> getUsers() {//@RequestParam(value="name", defaultValue="World") String name) {
+        Iterable<User> users = userRepo.findAll();
+        //users.forEach(user -> log.info(user.toString()));
+        return users;
     }
 
     @PostMapping
     public boolean addUser(@RequestBody User user) {
 
-        return manager.addUser(user);
+        System.out.println("Adding user: "+user);
+
+        userRepo.save(user);
+        return true;
 
     }
 
-    @PostMapping
-    @RequestMapping("/login")
-    public boolean logInUserWithEmail(@RequestBody LoginInfo info){
+    @DeleteMapping
+    public boolean removeUser(@RequestBody User user) {
 
-        Optional<User> user = manager.findUser(info.getEmail());
+        System.out.println("Removing user: " + user);
 
-        if (user.isPresent()){
-
-            return user.get().authenticatePassword(info.getPassword());
-
-        }
-        return false;
-
+        return manager.removeUser(user);
     }
 
+    @GetMapping
+    public Optional<User> findUser(@RequestBody String email) {
+
+        System.out.println("Finding user on email: "+ email);
+
+        return manager.findUser(email);
+    }
 }
