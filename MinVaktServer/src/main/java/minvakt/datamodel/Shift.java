@@ -49,7 +49,7 @@ public class Shift {
         this.startDateTime = startDateTime;
         this.interval = interval;
     }
-    public Shift(LocalDate date, PredeterminedIntervals interval, ShiftType type){
+    public Shift(LocalDateTime date, PredeterminedIntervals interval, ShiftType type){
         this(date, interval);
         this.shiftType = type;
     }
