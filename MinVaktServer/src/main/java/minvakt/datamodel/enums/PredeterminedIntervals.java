@@ -12,8 +12,8 @@ import java.time.LocalTime;
 public enum PredeterminedIntervals {
 
     MORNING(new TimeInterval(LocalTime.of(6,0),LocalTime.of(14,0))), // 6-14
-    DAYTIME(new TimeInterval(LocalTime.of(6,0),LocalTime.of(14,0))), // 14-22
-    NIGHT(new TimeInterval(LocalTime.of(6,0),LocalTime.of(14,0)));     // 22-6
+    DAYTIME(new TimeInterval(LocalTime.of(14,0),LocalTime.of(22,0))), // 14-22
+    NIGHT(new TimeInterval(LocalTime.of(22,0),LocalTime.of(6,0)));     // 22-6
 
 
     private TimeInterval interval;

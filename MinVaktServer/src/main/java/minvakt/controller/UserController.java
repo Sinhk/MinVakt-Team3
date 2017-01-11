@@ -20,7 +20,7 @@ public class UserController {
     }
 
     @GetMapping
-    public List<User> getUsers() {//@RequestParam(value="name", defaultValue="World") String name) {
+    public List<User> getUsers() { //@RequestParam(value="name", defaultValue="World") String name) {
 
         return manager.getUserList();
 
