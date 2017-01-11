@@ -1,0 +1,25 @@
+*{
+    font-family: Consolas, serif;
+}
+body, html{
+    width: 99%;
+    height: 99%;
+    background-color: #3f9b9b;
+}
+
+.view{
+
+    position: relative;
+    width: 99%;
+    height: 99%;
+    border: 2px solid black;
+}
+#square{
+    position: relative;
+    float: left;
+    width: 100px;
+    height: 100px;
+    background-color: #489b34;
+
+    border: 1px solid black;
+}
