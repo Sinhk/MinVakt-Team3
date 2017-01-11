@@ -169,6 +169,15 @@ public class User implements Serializable{
         this.encryptedPassword = encryptedPassword;
     }
 
+    public void setPassword(String password){
+
+        try {
+            salt = crypt.generateSalt();
+            encryptedPassword = crypt.getEncryptedPassword(password, salt);
+        }catch (Exception e){}
+
+    }
+
     public static void main(String[] args) {
 
         PBKDF2 security = new PBKDF2();

@@ -1,22 +1,38 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Login</title>
-    <link href="temp.css" type="text/css" rel="stylesheet">
+    <!--Import Google Icon Font-->
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <link rel="stylesheet" type="text/css" href="css/login.css">
 </head>
+
 <body>
 
-    <div id="login">
-        <p>Username</p>
-        <input type="text" name="username">
+<h1>Trondheim kommune</h1>
 
-        <p>Password</p>
-        <input type="password" name="password">
-
-        <br>
-        <button>Submit</button>
+<form>
+    <div class="group">
+        <input type="text" id="emailInput"><span class="highlight"></span><span class="bar"></span><label>E-Post</label>
     </div>
+    <div class="group">
+        <input type="password" id="passwordInput"><span class="highlight"></span>
+<span class="bar"></span>
+    <label>Passord</label>
+    </div>
+    <button type="button" class="button buttonBlue" id="logInButton">Logg inn
+    <div class="ripplesCircle"><span class="ripplesCircle"></span></div>
+    </button>
+</form>
+
+<!--Import jQuery before materialize.js-->
+<script src="https://code.jquery.com/jquery-3.1.0.js" integrity="sha256-slogkvB1K3VOkzAI8QITxV3VzpOnkeNVsKvtkYLMjfk="
+        crossorigin="anonymous"></script>
+<script src="js/login.js" language="JavaScript"></script>
 
 </body>
 </html>
