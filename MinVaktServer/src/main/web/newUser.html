@@ -18,41 +18,51 @@
     <form class="col s12">
         <div class="row">
             <div class="input-field col s6">
-                <input placeholder="Placeholder" id="first_name" type="text" class="validate">
-                <label for="first_name">First Name</label>
+                <input id="first_name" type="text" class="validate">
+                <label for="first_name">Fornavn</label>
             </div>
             <div class="input-field col s6">
                 <input id="last_name" type="text" class="validate">
-                <label for="last_name">Last Name</label>
+                <label for="last_name">Etternavn</label>
             </div>
         </div>
         <div class="row">
             <div class="input-field col s12">
-                <input disabled value="I am not editable" id="disabled" type="text" class="validate">
-                <label for="disabled">Disabled</label>
+                <input id ="email" type="text" class="validate">
+                <label for="email">E-postadresse</label>
             </div>
         </div>
         <div class="row">
             <div class="input-field col s12">
                 <input id="password" type="password" class="validate">
-                <label for="password">Password</label>
+                <label for="password">Passord</label>
             </div>
         </div>
         <div class="row">
             <div class="input-field col s12">
-                <input id="email" type="email" class="validate">
-                <label for="email">Email</label>
+                <input id="phone" type="phone" class="validate">
+                <label for="phone">Telefon</label>
             </div>
         </div>
         <div class="row">
-            <div class="col s12">
-                This is an inline input field:
-                <div class="input-field inline">
-                    <input id="email" type="email" class="validate">
-                    <label for="email" data-error="wrong" data-success="right">Email</label>
+            <div class="input-field col s12">
+                    <input id="positionPercentage" type="positionPercentage" class="validate">
+                    <label for="positionPercentage">Stillingsprosent</label>
                 </div>
             </div>
         </div>
+        <div class="input-field col s12">
+            <select>
+                <option value="" disabled selected>Velg stillingen</option>
+                <option value="1">Sykepleier</option>
+                <option value="2">Helsefagarbeider</option>
+                <option value="3">Assistent</option>
+            </select>
+            <label>Stilling</label>
+        </div>
+
+        <button type="button" onclick="alert('Laget en ny bruker!')">Opprett bruker</button>
+
     </form>
 </div>
 
