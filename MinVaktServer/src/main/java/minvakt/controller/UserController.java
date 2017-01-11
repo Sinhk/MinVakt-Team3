@@ -35,6 +35,7 @@ public class UserController {
         if (user.isPresent()) return user.get();
 
         return null;
+
     }
 
     @PostMapping
