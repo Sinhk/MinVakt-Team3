@@ -5,6 +5,14 @@ $("#addUser").click(function () {
     var tlf = $("#tlf").val();
     var prcnt = $("#percentage").val();
 
+    console.log(email+" - "+psw+" - "+tlf+" - "+prcnt);
+    console.log(JSON.stringify({
+        "email": email,
+        "password": psw,
+        "tlf":tlf,
+        "positionPercentage":prcnt
+    }));
+
     $.ajax({
         url: "users",
         type: "POST",
@@ -19,8 +27,8 @@ $("#addUser").click(function () {
          x.setRequestHeader('Authorization', 'Bearer ' );
          },*/
 
-        success: function () {
-            console.log("You added a user");
+        success: function (data) {
+            console.log("You added a user - "+data);
         },
         error: function (data) {
             alert("Failed! " + data);

@@ -2,10 +2,7 @@ package minvakt.controller;
 
 import minvakt.datamodel.User;
 import minvakt.managers.UserManager;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,7 +24,9 @@ public class UserController {
     }
 
     @PostMapping
-    public boolean addUser(User user) {
+    public boolean addUser(@RequestBody User user) {
+
+        System.out.println("Adding user: "+user);
 
         return manager.addUser(user);
 
