@@ -1,5 +1,14 @@
 package minvakt.controller;
 
+import minvakt.datamodel.UserEntity;
+import minvakt.repos.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import minvakt.datamodel.User;
 import minvakt.managers.UserManager;
 import org.springframework.web.bind.annotation.*;
@@ -10,18 +19,20 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/users")
 public class UserController {
+    private static final Logger log = LoggerFactory.getLogger(UserController.class);
 
-    private static UserManager manager = UserManager.getInstance();
+    private UserRepository userRepo;
 
-    static {
-        manager.addUser(new User("olavh96@gmail.com", 93240605, "Ostostost--", 100));
+    @Autowired
+    public UserController(UserRepository userRepo) {
+        this.userRepo = userRepo;
     }
 
     @GetMapping
-    public List<User> getUsers() { //@RequestParam(value="name", defaultValue="World") String name) {
-
-        return manager.getUserList();
-
+    public Iterable<UserEntity> getUsers() {//@RequestParam(value="name", defaultValue="World") String name) {
+        Iterable<UserEntity> users = userRepo.findAll();
+        users.forEach(userEntity -> log.info(userEntity.toString()));
+        return users;
     }
 
     @PostMapping
@@ -29,7 +40,8 @@ public class UserController {
 
         System.out.println("Adding user: "+user);
 
-        return manager.addUser(user);
+        userRepo.save(user);
+        return true;
 
     }
 
