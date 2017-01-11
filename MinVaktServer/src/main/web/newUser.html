@@ -16,71 +16,60 @@
 
 <h1>Legg til bruker:</h1>
 
-<div class="row">
-    <form class="col s12">
-        <div class="row">
-            <div class="input-field col s6">
-                <input id="first_name" type="text" class="validate">
-                <label for="first_name">Fornavn</label>
-            </div>
-            <div class="input-field col s6">
-                <input id="last_name" type="text" class="validate">
-                <label for="last_name">Etternavn</label>
-            </div>
-        </div>
-        <div class="row">
-            <div class="input-field col s12">
-                <input id ="email" type="text" class="validate">
-                <label for="email">E-postadresse</label>
-            </div>
-        </div>
-        <div class="row">
-            <div class="input-field col s12">
-                <input id="password" type="password" class="validate">
-                <label for="password">Passord</label>
-            </div>
-        </div>
-        <div class="row">
-            <div class="input-field col s12">
-                <input id="phone" type="phone" class="validate">
-                <label for="phone">Telefon</label>
-            </div>
-        </div>
-        <div class="row">
-            <div class="input-field col s12">
-                    <input id="positionPercentage" type="positionPercentage" class="validate">
-                    <label for="positionPercentage">Stillingsprosent</label>
-                </div>
-            </div>
-        </div>
-        <div class="input-field col s12">
-            <select>
-                <option value="" disabled selected>Velg stillingen</option>
-                <option value="1">Sykepleier</option>
-                <option value="2">Helsefagarbeider</option>
-                <option value="3">Assistent</option>
-            </select>
-            <label>Stilling</label>
-        </div>
+<form>
+    <div class="group">
+        <input id="first_name" type="text"><span class="validate"></span><span class="highlight"></span>
+        <label for="first_name">Fornavn</label>
+    </div>
+    <div class="group">
+        <input id="last_name" type="text"><span class="validate"></span><span class = "highlight"></span>
+        <label for="last_name">Etternavn</label>
+    </div>
+    <div class="group">
+        <input id ="email" type="text"><span class="validate"></span><span class="highlight"></span>
+        <label for="email">E-postadresse</label>
+    </div>
+    <div class="group">
+        <input id="password" type="password"><span class="validate"></span><span class = "highlight"></span>
+        <label for="password">Passord</label>
+    </div>
+    <div class="group">
+        <input id="phone" type="phone" class="validate">
+        <label for="phone">Telefon</label>
+    </div>
+    <div class="group">
+        <input id="positionPercentage" type="positionPercentage" class="validate">
+        <label for="positionPercentage">Stillingsprosent</label>
+    </div>
 
-        <button type="button" onclick="alert('Laget en ny bruker!')">Opprett bruker</button>
-
-    </form>
+<div class="group">
+    <select>
+        <option value="" disabled selected>Velg stillingen</option>
+        <option value="1">Sykepleier</option>
+        <option value="2">Helsefagarbeider</option>
+        <option value="3">Assistent</option>
+    </select>
+    <label>Stilling</label>
 </div>
 
-<!--
-Fornavn: <input type="text" name="FirstName"><br>
-Etternavn: <input type="text" name="LastName"><br>
-E-mail: <input type="text" name="Mail"><br>
-Telefon: <input type="text" name="Phone"><br>
-Stillingsprosent: <input type="text" name="PositionPercentage"><br>
-Stilling: <input type="text" name="Position"><br>
+    <button type="button" class="button buttonBlue">Opprett bruker
+        <div class="ripplesCircle"><span class="ripplesCircle"></span></div>
+    </button>
 
-<button type="button" onclick="alert('Laget en ny bruker!')">Lagre!</button>
--->
+</form>
+
+
 
 <!--Import jQuery before materialize.js-->
 <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 <script type="text/javascript" src="js/materialize.min.js"></script>
 </body>
 </html>
+
+
+
+
+
+
+
+
