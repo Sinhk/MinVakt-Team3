@@ -5,6 +5,7 @@ import minvakt.managers.UserManager;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/users")
@@ -32,4 +33,19 @@ public class UserController {
 
     }
 
+    @DeleteMapping
+    public boolean removeUser(@RequestBody User user) {
+
+        System.out.println("Removing user: " + user);
+
+        return manager.removeUser(user);
+    }
+
+    @GetMapping
+    public Optional<User> findUser(@RequestBody String email) {
+
+        System.out.println("Finding user on email: "+ email);
+
+        return manager.findUser(email);
+    }
 }
