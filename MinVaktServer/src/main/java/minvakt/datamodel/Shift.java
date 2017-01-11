@@ -4,19 +4,30 @@ import minvakt.datamodel.enums.PredeterminedIntervals;
 import minvakt.datamodel.enums.ShiftType;
 import minvakt.util.TimeInterval;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 /**
  * Created by OlavH on 09-Jan-17.
  */
+@Entity
 public class Shift {
 
-    private LocalDate date;
-    private LocalTime start;
-    private LocalTime end;
+    @Id
+    @GeneratedValue
+    private int shiftId;
+
+    @Column(nullable = false)
+    private LocalDateTime startDateTime;
+
+    @Column(nullable = false)
+    private LocalDateTime endDateTime;
 
     private PredeterminedIntervals interval;
 
@@ -26,17 +37,16 @@ public class Shift {
 
     private String comment;
 
-    public Shift(LocalDate date, LocalTime start, LocalTime end) {
-        Objects.requireNonNull(date); Objects.requireNonNull(start); Objects.requireNonNull(end);
+    public Shift(LocalDateTime startDateTime, LocalDateTime endDateTime) {
+        Objects.requireNonNull(startDateTime); Objects.requireNonNull(endDateTime);
 
-        this.date = date;
-        this.start = start;
-        this.end = end;
+        this.startDateTime = startDateTime;
+        this.endDateTime = endDateTime;
     }
-    public Shift(LocalDate date, PredeterminedIntervals interval){
-        Objects.requireNonNull(date); Objects.requireNonNull(interval);
+    public Shift(LocalDateTime startDateTime, PredeterminedIntervals interval){
+        Objects.requireNonNull(startDateTime); Objects.requireNonNull(interval);
 
-        this.date = date;
+        this.startDateTime = startDateTime;
         this.interval = interval;
     }
     public Shift(LocalDate date, PredeterminedIntervals interval, ShiftType type){
@@ -44,21 +54,18 @@ public class Shift {
         this.shiftType = type;
     }
 
-    public LocalDate getDate() {
-        return date;
+    public LocalDateTime getStartDateTime() {
+        return startDateTime;
     }
-    public LocalTime getStart() {
-        return start;
-    }
-    public LocalTime getEnd() {
-        return end;
+    public LocalDateTime getEndDateTime() {
+        return endDateTime;
     }
     public PredeterminedIntervals getPredeterminedInterval() {return interval;}
     public boolean isResponsible() {
         return responsible;
     }
     public ShiftType getShiftType() { return shiftType; }
-    public TimeInterval getTimeInterval(){return new TimeInterval(start, end);}
+    public TimeInterval getTimeInterval(){return new TimeInterval(startDateTime, endDateTime);}
 
     public void setResponsible(boolean responsible) { this.responsible = responsible; }
     public void setShiftType(ShiftType shiftType) { this.shiftType = shiftType; }
@@ -67,7 +74,7 @@ public class Shift {
     public void setComment(String comment) { this.comment = comment; }
 
     public String toString() {
-        return date.toString()+": "+start.toString()+" -> "+end.toString();
+        return startDateTime.toString()+": "+ endDateTime.toString()+" -> "+endDateTime.toString();
     }
 
     public static void main(String[] args) {

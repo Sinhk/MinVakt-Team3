@@ -3,7 +3,7 @@ package minvakt.datamodel.enums;
 import minvakt.datamodel.Shift;
 import minvakt.util.TimeInterval;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 /**
@@ -24,9 +24,9 @@ public enum PredeterminedIntervals {
     public TimeInterval getInterval() {
         return interval;
     }
-    public static Shift shiftForDate(LocalDate date, PredeterminedIntervals shift){
+    public static Shift shiftForDate(LocalDateTime date, PredeterminedIntervals shift){
 
-        return new Shift(date, shift.getInterval().getStart(), shift.getInterval().getEnd());
+        return new Shift(date, shift.getInterval().getStart());
 
     }
 }

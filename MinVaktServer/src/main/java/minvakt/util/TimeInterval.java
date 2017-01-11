@@ -4,6 +4,7 @@ import minvakt.datamodel.Shift;
 
 import java.io.Serializable;
 import java.time.DayOfWeek;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
@@ -11,18 +12,27 @@ import java.util.Optional;
 
 public class TimeInterval implements Serializable{
 
-    private LocalTime start;
-    private LocalTime end;
+    private LocalDateTime start, end;
     private DayOfWeek[] days = new DayOfWeek[0];
 
-    public TimeInterval(LocalTime start, LocalTime end){
+    // Special case for PredeterminedIntervals.java enum
+    private LocalTime timeStart, timeEnd;
+
+    public TimeInterval(LocalDateTime start, LocalDateTime end){
 
         this.start = start;
         this.end = end;
     }
 
-    public LocalTime getStart() { return start; }
-    public LocalTime getEnd() { return end; }
+    // Special case for PredeterminedIntervals.java enum
+    public TimeInterval(LocalTime start, LocalTime end){
+
+        timeStart = start;
+        timeEnd = end;
+    }
+
+    public LocalDateTime getStart() { return start; }
+    public LocalDateTime getEnd() { return end; }
     public void setDays(DayOfWeek ... days){ this.days = days; }
     public long getMinutes(){ return ChronoUnit.MINUTES.between(start, end); }
     public Optional<DayOfWeek[]> getDays(){
@@ -38,8 +48,8 @@ public class TimeInterval implements Serializable{
 
     public boolean overlaps(TimeInterval interval){
 
-        LocalTime iStart = interval.getStart();
-        LocalTime iEnd = interval.getEnd();
+        LocalDateTime iStart = interval.getStart();
+        LocalDateTime iEnd = interval.getEnd();
 
         return !start.isAfter(iEnd) && !iStart.isAfter(end); // For not overlapWith at same min: return start.isBefore(iEnd) && iStart.isBefore(end);
 
@@ -63,10 +73,10 @@ public class TimeInterval implements Serializable{
 
         if(!this.overlaps(interval)) return Optional.empty();
 
-        LocalTime iStart = interval.getStart();
-        LocalTime iEnd = interval.getEnd();
+        LocalDateTime iStart = interval.getStart();
+        LocalDateTime iEnd = interval.getEnd();
 
-        LocalTime s;
+        LocalDateTime s;
 
         if(start.equals(iStart)){
             s = start;
@@ -75,7 +85,7 @@ public class TimeInterval implements Serializable{
             s = start.isBefore(iStart) ? iStart : start;
         }
 
-        LocalTime e;
+        LocalDateTime e;
 
         if(end.equals(iEnd)){
             e = end;
@@ -91,7 +101,7 @@ public class TimeInterval implements Serializable{
         return false;
     }
     public static TimeInterval of(Shift event){
-        return new TimeInterval(event.getStart(), event.getEnd());
+        return new TimeInterval(event.getEndDateTime(), event.getEndDateTime());
     }
 
     public String toString() {
@@ -100,8 +110,8 @@ public class TimeInterval implements Serializable{
 
     public static void main(String[] args) {
 
-        TimeInterval i0 = new TimeInterval(LocalTime.of(10,0), LocalTime.of(14,0));
-        TimeInterval i1 = new TimeInterval(LocalTime.of(6,0), LocalTime.of(18,0));
+        TimeInterval i0 = new TimeInterval(LocalDateTime.of(2017, 1, 10, 10,0), LocalDateTime.of(2017, 1, 10, 14, 0));
+        TimeInterval i1 = new TimeInterval(LocalDateTime.of(2017, 1, 10, 6, 0), LocalDateTime.of(2017, 1, 10, 18, 0));
 
         System.out.println(i0.overlaps(i1));
 
