@@ -12,16 +12,17 @@
     <!--<script src = "datojs.js"></script>-->
 
 </head>
-
-<h1>Vaktliste</h1>
-
 <body>
 
+<h1>Vaktliste uke</h1>
 <ul class="pagination">
-    <li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
-    <li class="active"><a href="#!">Uke 1</a></li>
-    <li class="waves-effect"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
+    <li><a href="#">«</a></li>
+    <li><a href="#">1</a></li>
+    <li><a class="active" href="#">2</a></li>
+    <li><a href="#">3</a></li>
+    <li><a href="#">»</a></li>
 </ul>
+
 <table class="hoverTable">
     <thead>
     <tr>
@@ -37,9 +38,9 @@
     </thead>
 
     <tbody>
-    <tr>
-        <td id="kristin" rowspan="4"><span>Kristin</span></td>
-        <td>06.00-14.00</td>
+    <tr id="kristin">
+        <td>Kristin</td>
+        <td>06.00-14.00<br>Avdeling 1<br>Ansvarsvakt</td>
         <td></td>
         <td>14.00-22.00</td>
         <td></td>
@@ -47,9 +48,8 @@
         <td></td>
         <td></td>
     </tr>
-
-    <tr>
-        <td id="stine" rowspan="4"><span>Stine</span></td>
+    <tr id="stine">
+        <td>Stine</td>
         <td>22.00-06.00</td>
         <td></td>
         <td></td>
@@ -57,7 +57,7 @@
         <td></td>
         <td></td>
         <td></td>
-    </tr>
+        </tr>
     </tbody>
 </table>
 
