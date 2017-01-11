@@ -26,6 +26,9 @@ public class User {
 
     private PBKDF2 crypt = new PBKDF2();
 
+    public User(){
+
+    }
     @Deprecated
     public User(String email, long tlf, String password, int positionPercentage) {
         Objects.requireNonNull(email); Objects.requireNonNull(password);
