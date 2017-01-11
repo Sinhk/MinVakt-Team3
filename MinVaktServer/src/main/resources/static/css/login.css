@@ -4,6 +4,11 @@ html {
     font-family: Helvetica Neue;
 }
 
+body {
+    background: url("http://wandering.tv/wp-content/uploads/2014/10/shutterstock_46332052-1.jpg") no-repeat;
+    background-size: cover;
+}
+
 /* label focus color */
 .input-field input[type=text]:focus + label {
     color: #64b5f6;
