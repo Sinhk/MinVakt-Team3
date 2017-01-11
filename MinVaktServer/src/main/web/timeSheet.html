@@ -13,7 +13,15 @@
 
 </head>
 
+<h1>Vaktliste</h1>
+
 <body>
+
+<ul class="pagination">
+    <li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
+    <li class="active"><a href="#!">Uke 1</a></li>
+    <li class="waves-effect"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
+</ul>
 <table class="hoverTable">
     <thead>
     <tr>
@@ -30,7 +38,7 @@
 
     <tbody>
     <tr>
-        <td>Kristin</td>
+        <td id="kristin" rowspan="4"><span>Kristin</span></td>
         <td>06.00-14.00</td>
         <td></td>
         <td>14.00-22.00</td>
@@ -39,8 +47,9 @@
         <td></td>
         <td></td>
     </tr>
+
     <tr>
-        <td>Stine</td>
+        <td id="stine" rowspan="4"><span>Stine</span></td>
         <td>22.00-06.00</td>
         <td></td>
         <td></td>
