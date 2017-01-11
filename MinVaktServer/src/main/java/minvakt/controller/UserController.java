@@ -27,6 +27,16 @@ public class UserController {
 
     }
 
+    @GetMapping
+    @RequestMapping("/user")
+    public User getUser(String email){
+        Optional<User> user = manager.findUser(email);
+
+        if (user.isPresent()) return user.get();
+
+        return null;
+    }
+
     @PostMapping
     @RequestMapping("/addUser")
     public boolean addUser(@RequestBody User user) {
