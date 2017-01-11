@@ -39,6 +39,10 @@ public class Shift {
         this.date = date;
         this.interval = interval;
     }
+    public Shift(LocalDate date, PredeterminedIntervals interval, ShiftType type){
+        this(date, interval);
+        this.shiftType = type;
+    }
 
     public LocalDate getDate() {
         return date;
