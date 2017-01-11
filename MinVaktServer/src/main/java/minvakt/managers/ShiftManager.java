@@ -172,7 +172,7 @@ public class ShiftManager {
 
         for (Shift shift1 : shiftsForUser) {
 
-            if (shift1.getStartDateTime().isEqual(shift.getStartDateTime())
+            if (shift1.getStartDateTime().isEqual(shift.getStartDateTime()))
             if (shift1.getStartDateTime().toLocalDate().isEqual(shift.getStartDateTime().toLocalDate())
                     && shift1.getShiftType() == ShiftType.AVAILABLE
                     && shift.getPredeterminedInterval() == shift1.getPredeterminedInterval()) return true;

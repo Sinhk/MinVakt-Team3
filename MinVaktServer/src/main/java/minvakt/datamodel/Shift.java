@@ -4,18 +4,10 @@ import minvakt.datamodel.enums.PredeterminedIntervals;
 import minvakt.datamodel.enums.ShiftType;
 import minvakt.util.TimeInterval;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import java.time.DayOfWeek;
-import java.time.LocalDate;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-/**
- * Created by OlavH on 09-Jan-17.
- */
 @Entity
 public class Shift {
 
@@ -29,13 +21,18 @@ public class Shift {
     @Column(nullable = false)
     private LocalDateTime endDateTime;
 
+    @Transient
     private PredeterminedIntervals interval;
 
+    @Transient
     private boolean responsible;
 
     private ShiftType shiftType = ShiftType.AVAILABLE;
 
     private String comment;
+
+    public Shift() {
+    }
 
     public Shift(LocalDateTime startDateTime, LocalDateTime endDateTime) {
         Objects.requireNonNull(startDateTime); Objects.requireNonNull(endDateTime);
@@ -49,8 +46,9 @@ public class Shift {
         this.startDateTime = startDateTime;
         this.interval = interval;
     }
-    public Shift(LocalDateTime date, PredeterminedIntervals interval, ShiftType type){
-        this(date, interval);
+
+    public Shift(LocalDateTime date, PredeterminedIntervals intervals, ShiftType type) {
+        this(date, intervals);
         this.shiftType = type;
     }
 
@@ -75,11 +73,5 @@ public class Shift {
 
     public String toString() {
         return startDateTime.toString()+": "+ endDateTime.toString()+" -> "+endDateTime.toString();
-    }
-
-    public static void main(String[] args) {
-
-        System.out.println(DayOfWeek.from(LocalDate.now()));
-
     }
 }

@@ -5,7 +5,6 @@ import minvakt.managers.UserManager;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.*;
 
 /**
@@ -60,7 +59,7 @@ public class TimeSheet {
 
     }
 
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
 
         List<User> users = new ArrayList<>();
         User user = new User("olavh96@gmail.com", 78912978, "ostostO--", 100);
@@ -72,7 +71,7 @@ public class TimeSheet {
         users.addAll(Arrays.asList(user, user1));
         
         ShiftManager shiftManager = ShiftManager.getInstance();
-        /*
+        *//*
         shiftManager.addShiftToUser(user, new Shift(LocalDate.of(2017,1,10), LocalTime.of(6,0)));
         shiftManager.addShiftToUser(user, new Shift(LocalDate.of(2017,1,11), LocalTime.of(6,0)));
         shiftManager.addShiftToUser(user, new Shift(LocalDate.of(2017,1,12), LocalTime.of(6,0)));
@@ -82,7 +81,7 @@ public class TimeSheet {
         shiftManager.addShiftToUser(user1, new Shift(LocalDate.of(2017,1,11), LocalTime.of(10,0)));
         shiftManager.addShiftToUser(user1, new Shift(LocalDate.of(2017,1,12), LocalTime.of(10,0)));
         shiftManager.addShiftToUser(user1, new Shift(LocalDate.of(2017,1,13), LocalTime.of(10,0)));
-        */
+        *//*
         TimeSheet timeSheet = new TimeSheet();
 
         System.out.println("Shifts for user: "+shiftManager.getShiftsForUser(user));
@@ -96,5 +95,5 @@ public class TimeSheet {
 
         timeSheetForAllUsers.forEach((user2, shifts) -> System.out.println(user2+" - "+shifts));
 
-    }
+    }*/
 }

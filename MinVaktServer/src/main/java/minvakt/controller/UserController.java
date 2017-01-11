@@ -46,12 +46,12 @@ public class UserController {
         return Response.ok().build();
     }
 
-    @GetMapping
+    /*@GetMapping
     public User findUser(@RequestBody String email) {
 
         System.out.println("Finding user on email: "+ email);
         return userRepo.findByEmail(email);
-    }
+    }*/
     // TODO: 11.01.2017 Figure out how to integrate with Spring Security
     /*@PostMapping
 
