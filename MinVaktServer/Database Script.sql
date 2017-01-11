@@ -20,7 +20,6 @@ CREATE TABLE IF NOT EXISTS Shifts (
     shift_id INT NOT NULL AUTO_INCREMENT,
     from_time DATETIME NOT NULL,
     to_time DATETIME NOT NULL,
-    user_id INT NOT NULL,
     CONSTRAINT shift_pk PRIMARY KEY (shift_id)
     );
 
