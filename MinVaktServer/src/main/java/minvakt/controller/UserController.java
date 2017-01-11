@@ -1,10 +1,12 @@
 package minvakt.controller;
 
+import minvakt.controller.data.LoginInfo;
 import minvakt.datamodel.User;
 import minvakt.managers.UserManager;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/users")
@@ -29,6 +31,21 @@ public class UserController {
         System.out.println("Adding user: "+user);
 
         return manager.addUser(user);
+
+    }
+
+    @GetMapping
+    @RequestMapping("/login")
+    public boolean logInUserWithEmail(@RequestBody LoginInfo info){
+
+        Optional<User> user = manager.findUser(info.getEmail());
+
+        if (user.isPresent()){
+
+            return user.get().authenticatePassword(info.getPassword());
+
+        }
+        return false;
 
     }
 
