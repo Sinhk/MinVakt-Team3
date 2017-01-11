@@ -4,6 +4,7 @@ package minvakt.datamodel;
 import minvakt.datamodel.enums.EmployeeType;
 import minvakt.security.PBKDF2;
 
+import java.io.Serializable;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Objects;
@@ -12,7 +13,7 @@ import java.util.regex.Pattern;
 /**
  * Created by OlavH on 09-Jan-17.
  */
-public class User {
+public class User implements Serializable{
 
     private String email;
     private long tlf;
@@ -138,6 +139,34 @@ public class User {
 
     public String toString() {
         return email.split("@")[0];
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setTlf(long tlf) {
+        this.tlf = tlf;
+    }
+
+    public void setEmployeeType(EmployeeType employeeType) {
+        this.employeeType = employeeType;
+    }
+
+    public void setPositionPercentage(int positionPercentage) {
+        this.positionPercentage = positionPercentage;
+    }
+
+    public void setTotalMinutes(int totalMinutes) {
+        this.totalMinutes = totalMinutes;
+    }
+
+    public void setSalt(byte[] salt) {
+        this.salt = salt;
+    }
+
+    public void setEncryptedPassword(byte[] encryptedPassword) {
+        this.encryptedPassword = encryptedPassword;
     }
 
     public static void main(String[] args) {
