@@ -35,10 +35,7 @@ public class User implements Serializable {
     @Column(nullable = false)
 
     @JsonIgnore
-    private byte[] salt;
-
-    @JsonIgnore
-    private byte[] encryptedPassword;
+    private String password; // Spring Security will hash and salt
 
     @Column(nullable = false)
     private EmployeeType employeeType;
@@ -49,13 +46,12 @@ public class User implements Serializable {
     User() {
     }
 
-    public User(String firstName, String lastName, String email, long phone, byte[] salt, byte[] encryptedPassword, EmployeeType employeeType, int positionPercentage) {
+    public User(String firstName, String lastName, String email, long phone, String password, EmployeeType employeeType, int positionPercentage) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phone = phone;
-        this.salt = salt;
-        this.encryptedPassword = encryptedPassword;
+        this.password = password;
         this.employeeType = employeeType;
         this.positionPercentage = positionPercentage;
     }
@@ -88,13 +84,6 @@ public class User implements Serializable {
         return employeeType;
     }
 
-    public byte[] getSalt() {
-        return salt;
-    }
-
-    public byte[] getEncryptedPassword() {
-        return encryptedPassword;
-    }
 
     public void setUserId(int userId) {
         this.userId = userId;
@@ -125,12 +114,8 @@ public class User implements Serializable {
         this.positionPercentage = positionPercentage;
     }
 
-    public void setSalt(byte[] salt) {
-        this.salt = salt;
-    }
-
-    public void setEncryptedPassword(byte[] encryptedPassword) {
-        this.encryptedPassword = encryptedPassword;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     @Override
@@ -141,8 +126,7 @@ public class User implements Serializable {
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", phone=" + phone +
-                ", salt='" + salt+ '\'' +
-                ", encryptedPassword='" + encryptedPassword+ '\'' +
+                ", password='" + password+ '\'' +
                 ", employeeType=" + employeeType +
                 ", positionPercentage=" + positionPercentage +
                 '}';
