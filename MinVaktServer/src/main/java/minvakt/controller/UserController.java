@@ -1,5 +1,6 @@
 package minvakt.controller;
 
+import minvakt.controller.data.ChangePasswordInfo;
 import minvakt.controller.data.LoginInfo;
 import minvakt.datamodel.User;
 import minvakt.datamodel.enums.EmployeeType;
@@ -27,14 +28,22 @@ public class UserController {
     }
 
     @PostMapping
+    @RequestMapping("/addUser")
     public boolean addUser(@RequestBody User user) {
 
         return manager.addUser(user);
 
     }
+    @PostMapping
+    @RequestMapping("/removeUser")
+    public void removeUser(@RequestBody String user){
+        System.out.println("Removing user: "+user);
+        manager.findUser(user).ifPresent(manager::removeUser);
+
+    }
 
     @PostMapping
-    @RequestMapping("/login")
+    @RequestMapping("/user/login")
     public boolean logInUserWithEmail(@RequestBody LoginInfo info){
 
         Optional<User> user = manager.findUser(info.getEmail());
@@ -48,5 +57,11 @@ public class UserController {
 
     }
 
+    @PostMapping
+    @RequestMapping("/user/changepassword")
+    public boolean changePasswordForUser(@RequestBody ChangePasswordInfo info){
+
+        return info.getUser().changePassword(info.getOldPassAttempt(), info.getNewPassAttempt());
+    }
 
 }

@@ -14,7 +14,7 @@ $("#addUser").click(function () {
     }));
 
     $.ajax({
-        url: "users",
+        url: "users/addUser",
         type: "POST",
         contentType: "application/json",
         data: JSON.stringify({

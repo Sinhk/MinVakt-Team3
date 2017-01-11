@@ -3,12 +3,14 @@ package minvakt.datamodel;
 
 import minvakt.datamodel.enums.EmployeeType;
 import minvakt.security.PBKDF2;
+import minvakt.util.InfoValidator;
 
 import java.io.Serializable;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Objects;
-import java.util.regex.Pattern;
+
+
 
 /**
  * Created by OlavH on 09-Jan-17.
@@ -34,7 +36,8 @@ public class User implements Serializable{
     public User(String email, long tlf, String password, int positionPercentage) {
         Objects.requireNonNull(email); Objects.requireNonNull(password);
 
-        if (!checkPasswordRequirements(password)) throw new IllegalArgumentException("Invalid Password");
+        if (!InfoValidator.checkEmailRequirements(email)) throw new IllegalArgumentException("Invalid Email");
+        if (!InfoValidator.checkPasswordRequirements(password)) throw new IllegalArgumentException("Invalid Password");
 
         try {
             salt = crypt.generateSalt();
@@ -88,7 +91,7 @@ public class User implements Serializable{
      */
     public boolean changePassword(String oldPassword, String newPassword) {
 
-        if (!checkPasswordRequirements(newPassword)) throw new IllegalArgumentException("Invalid password");
+        if (!InfoValidator.checkPasswordRequirements(newPassword)) throw new IllegalArgumentException("Invalid password");
 
         if (!authenticatePassword(oldPassword)) return false;
 
@@ -101,29 +104,6 @@ public class User implements Serializable{
         return true;
     }
 
-    /**
-     * @param attempt The password to check
-     * @return if the password is a valid password or not.
-     */
-    private static boolean checkPasswordRequirements(String attempt) {
-
-        Pattern uppercase = Pattern.compile(".*\\p{Upper}+.*");
-        Pattern lower = Pattern.compile(".*\\p{Lower}+.*");
-        int length = attempt.trim().length();
-        Pattern nonWord = Pattern.compile(".*\\W{2,}.*");
-
-        return uppercase.matcher(attempt).matches() && lower.matcher(attempt).matches() && nonWord.matcher(attempt).matches() && length >= 8;
-    }
-
-    /**
-     * @param attempt The email adress to check
-     * @return If the adress has a valid format or not
-     */
-    private static boolean checkEmailRequirements(String attempt) {
-
-        return attempt.matches(".+@.+\\..+");
-
-    }
 
     public String getEmail() {
         return email;
@@ -171,6 +151,8 @@ public class User implements Serializable{
 
     public void setPassword(String password){
 
+        if (!InfoValidator.checkPasswordRequirements(password)) throw new IllegalArgumentException("Invalid Password");
+
         try {
             salt = crypt.generateSalt();
             encryptedPassword = crypt.getEncryptedPassword(password, salt);
@@ -182,11 +164,5 @@ public class User implements Serializable{
 
         PBKDF2 security = new PBKDF2();
 
-        System.out.println(checkPasswordRequirements("olavhusby--"));
-        System.out.println(checkPasswordRequirements("Olavhusby--"));
-
-        System.out.println(checkEmailRequirements("ost"));
-        System.out.println(checkEmailRequirements("ost@ost.com"));
     }
-
 }

@@ -14,7 +14,7 @@ $("#logInButton").click(function () {
     }));
 
     $.ajax({
-        url: "users/login",
+        url: "users/user/login",
         type: "POST",
         contentType: "application/json",
         data: JSON.stringify({
@@ -26,10 +26,10 @@ $("#logInButton").click(function () {
          },*/
 
         success: function (data) {
-            console.log("Password: "+data);
+            console.log("Success: "+data);
         },
         error: function (data) {
-            alert("Failed! " + data);
+            console.log("Error: "+data)
         }
     });
 
