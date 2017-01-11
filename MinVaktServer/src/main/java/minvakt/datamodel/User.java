@@ -35,7 +35,10 @@ public class User implements Serializable {
     @Column(nullable = false)
 
     @JsonIgnore
-    private String password;
+    private byte[] salt;
+
+    @JsonIgnore
+    private byte[] encryptedPassword;
 
     @Column(nullable = false)
     private EmployeeType employeeType;
@@ -46,12 +49,13 @@ public class User implements Serializable {
     User() {
     }
 
-    public User(String firstName, String lastName, String email, long phone, String password, EmployeeType employeeType, int positionPercentage) {
+    public User(String firstName, String lastName, String email, long phone, byte[] salt, byte[] encryptedPassword, EmployeeType employeeType, int positionPercentage) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phone = phone;
-        this.password = password;
+        this.salt = salt;
+        this.encryptedPassword = encryptedPassword;
         this.employeeType = employeeType;
         this.positionPercentage = positionPercentage;
     }
@@ -84,6 +88,14 @@ public class User implements Serializable {
         return employeeType;
     }
 
+    public byte[] getSalt() {
+        return salt;
+    }
+
+    public byte[] getEncryptedPassword() {
+        return encryptedPassword;
+    }
+
     public void setUserId(int userId) {
         this.userId = userId;
     }
@@ -104,9 +116,6 @@ public class User implements Serializable {
         this.phone = phone;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     public void setEmployeeType(EmployeeType employeeType) {
         this.employeeType = employeeType;
@@ -114,6 +123,14 @@ public class User implements Serializable {
 
     public void setPositionPercentage(int positionPercentage) {
         this.positionPercentage = positionPercentage;
+    }
+
+    public void setSalt(byte[] salt) {
+        this.salt = salt;
+    }
+
+    public void setEncryptedPassword(byte[] encryptedPassword) {
+        this.encryptedPassword = encryptedPassword;
     }
 
     @Override
@@ -124,7 +141,8 @@ public class User implements Serializable {
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", phone=" + phone +
-                ", password='" + password + '\'' +
+                ", salt='" + salt+ '\'' +
+                ", encryptedPassword='" + encryptedPassword+ '\'' +
                 ", employeeType=" + employeeType +
                 ", positionPercentage=" + positionPercentage +
                 '}';
