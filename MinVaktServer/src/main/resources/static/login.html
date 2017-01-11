@@ -4,13 +4,11 @@
     <!--Import Google Icon Font-->
     <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!--Import materialize.css-->
-    <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
 
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-    <link rel="stylesheet" type="text/css" href="../css/login.css">
-
+    <link rel="stylesheet" type="text/css" href="css/login.css">
 </head>
 
 <body>
@@ -19,21 +17,23 @@
 
 <form>
     <div class="group">
-        <input type="text"><span class=highlight"></span><span class="bar"></span><label>Navn</label>
+        <input type="text"><span class=highlight" id="emailInput"></span><span class="bar"></span><label>E-Post</label>
     </div>
     <div class="group">
-        <input type="email"><span class="highlight"></span>
+        <input type="password" id="passwordInput"><span class="highlight"></span>
 <span class="bar"></span>
-    <label>E-post</label>
+    <label>Passord</label>
     </div>
-    <button type="button" class="button buttonBlue">Logg inn
+    <button type="button" class="button buttonBlue" id="logInButton">Logg inn
     <div class="ripplesCircle"><span class="ripplesCircle"></span></div>
     </button>
 </form>
 
 
 <!--Import jQuery before materialize.js-->
-<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-<script type="text/javascript" src="js/materialize.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.1.0.js" integrity="sha256-slogkvB1K3VOkzAI8QITxV3VzpOnkeNVsKvtkYLMjfk="
+        crossorigin="anonymous"></script>
+<script src="js/login.js" language="JavaScript"></script>
+
 </body>
 </html>

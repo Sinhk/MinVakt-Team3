@@ -1,5 +1,6 @@
 package minvakt.controller;
 
+import minvakt.controller.data.LoginInfo;
 import minvakt.datamodel.User;
 import minvakt.managers.UserManager;
 import org.springframework.web.bind.annotation.*;
@@ -34,13 +35,14 @@ public class UserController {
     }
 
     @GetMapping
-    public boolean logInUserWithEmail(String email, String psw){
+    @RequestMapping("/login")
+    public boolean logInUserWithEmail(@RequestBody LoginInfo info){
 
-        Optional<User> user = manager.findUser(email);
+        Optional<User> user = manager.findUser(info.getEmail());
 
         if (user.isPresent()){
 
-            return user.get().authenticatePassword(psw);
+            return user.get().authenticatePassword(info.getPassword());
 
         }
         return false;
