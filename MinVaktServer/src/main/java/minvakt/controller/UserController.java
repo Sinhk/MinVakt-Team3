@@ -1,7 +1,5 @@
 package minvakt.controller;
 
-import minvakt.controller.data.ChangePasswordInfo;
-import minvakt.controller.data.LoginInfo;
 import minvakt.datamodel.User;
 import minvakt.repos.UserRepository;
 import org.slf4j.Logger;
@@ -33,12 +31,8 @@ public class UserController {
     @GetMapping
     @RequestMapping("/user")
     public User getUser(String email){
-        Optional<User> user = manager.findUser(email);
-
-        if (user.isPresent()) return user.get();
-
-        return null;
-
+        User user = userRepo.findByEmail(email);
+        return user;
     }
 
     @PostMapping
@@ -82,11 +76,11 @@ public class UserController {
 
     }*/
 
-    @PostMapping
+ /*   @PostMapping
     @RequestMapping("/user/changepassword")
     public boolean changePasswordForUser(@RequestBody ChangePasswordInfo info){
 
         return info.getUser().changePassword(info.getOldPassAttempt(), info.getNewPassAttempt());
-    }
+    }*/
 
 }
