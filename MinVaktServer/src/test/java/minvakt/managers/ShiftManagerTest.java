@@ -1,7 +1,6 @@
 package minvakt.managers;
 
-import minvakt.datamodel.Shift;
-import minvakt.datamodel.User;
+import minvakt.datamodel.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,7 +9,10 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Iterator;
 
-import static minvakt.managers.ReturnCode.OK;
+import static minvakt.datamodel.enums.EmployeeType.*;
+import static minvakt.datamodel.enums.PredeterminedIntervals.*;
+import static minvakt.datamodel.enums.ShiftType.*;
+import static minvakt.managers.ReturnCode.*;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -19,7 +21,8 @@ import static org.mockito.Mockito.when;
  * Created by magnu on 09.01.2017.
  */
 public class ShiftManagerTest {
-    ShiftManager manager;
+    ShiftManager shiftManager;
+    UserManager userManager;
     User per;
     User ole;
     User sara;
@@ -27,25 +30,30 @@ public class ShiftManagerTest {
     Shift shift1;
     Shift shift2;
 
+    LocalDate date1;
+    LocalDate date2;
+
     @Before
     public void setUp() throws Exception {
+        userManager = UserManager.getInstance();
+        shiftManager = ShiftManager.getInstance();
 
-        per = new User("per@persen.no", 12345678, "asdASD,.-", 100);
-        ole = new User("ole@olsen.no", 12345678, "asdASD,.-", 100);
-        sara = new User("sara@sara.no", 12345678, "asdASD,.-", 100);
+        per = new User("per@persen.no", 12345678, "asdASD,.-", 100, ASSISTENT);
+        ole = new User("ole@olsen.no", 12345678, "asdASD,.-", 100,ASSISTENT );
+        sara = new User("sara@sara.no", 12345678, "asdASD,.-", 100, NURSE);
 
-        LocalDate date1 = LocalDate.parse("24.12.2014");
-        LocalTime time1from = LocalTime.parse("08:00");
-        LocalTime time1to = LocalTime.parse("16:00");
-        Shift shift1 = new Shift(date1,time1from,time1to);
+        userManager.addUser(per);
+        userManager.addUser(ole);
+        userManager.addUser(sara);
 
-        LocalDate date2 = LocalDate.parse("24.12.2014");
-        LocalTime time2from = LocalTime.parse("10:00");
-        LocalTime time2to = LocalTime.parse("16:00");
-        Shift shift2 = new Shift(date1,time1from,time1to);
+        date1 = LocalDate.parse("2014-10-10");
+        date2 =  LocalDate.parse("2014-11-10");
 
-        manager = ShiftManager.getInstance();
+        shift1 = new Shift(date1,MORNING,AVAILABLE);
+        shift2 = new Shift(date1,MORNING,SCHEDULED);
 
+
+        shiftManager.addShiftToUser(ole,shift2);
     }
 
     @After
@@ -55,37 +63,49 @@ public class ShiftManagerTest {
 
     @Test
     public void addShiftToUser() throws Exception {
-        assertEquals(OK, manager.addShiftToUser(per, shift1));
-        assertEquals(false, manager.addShiftToUser(per, shift1));
-        assertEquals(false, manager.addShiftToUser(ole, null));
-        assertEquals(OK, manager.addShiftToUser(sara, shift1));
 
-        //arrange
-        Iterator i=mock(Iterator.class);
-        when(i.next()).thenReturn("Hello").thenReturn("World");
-        //act
-        String result=i.next()+" "+i.next();
-        //assert
-        assertEquals("Hello World", OK);
+        assertEquals(OK, shiftManager.addShiftToUser(per, shift1));
+        assertEquals(SHIFT_ALREADY_IN_LIST, shiftManager.addShiftToUser(per, shift1));
+        assertEquals(OK, shiftManager.addShiftToUser(sara, shift1));
+
     }
 
     @Test
     public void changeShiftFromUserToUser() throws Exception {
-        assertEquals(OK, manager.changeShiftFromUserToUser(shift1,per,ole));
-        assertEquals(false, manager.changeShiftFromUserToUser(shift1,per,ole));
+        assertEquals(OK, shiftManager.changeShiftFromUserToUser(shift2,ole,per));
+        assertEquals(SHIFT_NOT_FOUND, shiftManager.changeShiftFromUserToUser(shift2,ole,per));
 
     }
 
     @Test
     public void removeShiftFromUser() throws Exception {
-        assertEquals(OK, manager.removeShiftFromUser(ole,shift1));
-        assertEquals(false, manager.removeShiftFromUser(ole,shift1));
+        assertEquals(OK, shiftManager.removeShiftFromUser(ole,shift2));
+        assertEquals(SHIFT_NOT_FOUND, shiftManager.removeShiftFromUser(ole,shift2));
     }
 
     @Test
-    public void getShiftsForUser() throws Exception {
-        assertEquals(per, manager.getShiftsForUser(per));
+    public void getShiftsForUser1() throws Exception {
 
+    }
+
+    @Test
+    public void getMinutesForUsersInInterval() throws Exception {
+        assertEquals(480, shiftManager.getMinutesForUsersInInterval(ole,date1,date2));
+        assertEquals(0, shiftManager.getMinutesForUsersInInterval(per,date1,date2));
+
+    }
+
+    @Test
+    public void getMinutesForWeek() throws Exception {
+        assertEquals(0, shiftManager.getMinutesForWeek(per,date2));
+
+    }
+
+    @Test
+    public void isValidForShift() throws Exception {
+        assertEquals(false, shiftManager.isValidForShift(ole,sara,shift2));
+        shiftManager.addShiftToUser(per,shift1);
+        assertEquals(true, shiftManager.isValidForShift(ole,per,shift2));
 
     }
 
