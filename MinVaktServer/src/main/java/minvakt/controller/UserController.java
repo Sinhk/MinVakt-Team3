@@ -5,16 +5,9 @@ import minvakt.repos.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import minvakt.datamodel.User;
-import minvakt.managers.UserManager;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
+import javax.ws.rs.core.Response;
 
 @RestController
 @RequestMapping("/users")
@@ -46,18 +39,34 @@ public class UserController {
     }
 
     @DeleteMapping
-    public boolean removeUser(@RequestBody User user) {
+    public Response removeUser(@RequestBody User user) {
 
         System.out.println("Removing user: " + user);
-
-        return manager.removeUser(user);
+        userRepo.delete(user);
+        return Response.ok().build();
     }
 
     @GetMapping
-    public Optional<User> findUser(@RequestBody String email) {
+    public User findUser(@RequestBody String email) {
 
         System.out.println("Finding user on email: "+ email);
-
-        return manager.findUser(email);
+        return userRepo.findByEmail(email);
     }
+    // TODO: 11.01.2017 Figure out how to integrate with Spring Security
+    /*@PostMapping
+
+    @RequestMapping("/login")
+    public boolean logInUserWithEmail(@RequestBody LoginInfo info){
+
+        Optional<User> user = manager.findUser(info.getEmail());
+
+        if (user.isPresent()){
+
+            return user.get().authenticatePassword(info.getPassword());
+
+        }
+        return false;
+
+    }*/
+
 }

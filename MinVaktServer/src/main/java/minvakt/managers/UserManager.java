@@ -45,7 +45,7 @@ public class UserManager {
 
     }
 
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
 
         UserManager manager = UserManager.getInstance();
 
@@ -57,5 +57,5 @@ public class UserManager {
 
         user.ifPresent(user1 -> System.out.println(user1.authenticatePassword("Matmatmat--")));
 
-    }
+    }*/
 }
