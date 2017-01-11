@@ -4,6 +4,7 @@ import minvakt.datamodel.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -33,8 +34,15 @@ public class ShiftManagerTest {
     LocalDate date1;
     LocalDate date2;
 
+
+
+
     @Before
     public void setUp() throws Exception {
+        shiftManager = mock(ShiftManager.class);
+
+
+
         userManager = UserManager.getInstance();
         shiftManager = ShiftManager.getInstance();
 
@@ -54,7 +62,7 @@ public class ShiftManagerTest {
 
 
 
-        shiftManager.addShiftToUser(ole,shift1);
+        when(shiftManager.addShiftToUser(ole,shift1)).thenReturn(OK);
     }
 
     @After
@@ -65,7 +73,7 @@ public class ShiftManagerTest {
     @Test
     public void addShiftToUser() throws Exception {
 
-        assertEquals(OK, shiftManager.addShiftToUser(per, shift1));
+        assertEquals(OK, shiftManager.addShiftToUser(ole, shift1));
         //assertEquals(SHIFT_ALREADY_IN_LIST, shiftManager.addShiftToUser(per, shift1));
       //  assertEquals(OK, shiftManager.addShiftToUser(sara, shift1));
 
