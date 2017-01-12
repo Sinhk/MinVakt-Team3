@@ -93,7 +93,7 @@ public class UserController {
     @RequestMapping("/{user_id}/shifts")
     @GetMapping
     public Collection<Shift> getShiftsForUser(@RequestParam(value="user_id") String userId){
-
+        System.out.println("test");
         User user = userRepo.findOne(Integer.valueOf(userId));
 
         return user.getShiftsForUser();
