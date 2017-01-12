@@ -22,22 +22,26 @@ public class UserManager {
 
     private List<User> userList = new ArrayList<>();
 
+    @Deprecated // UserController
     public List<User> getUserList() {
         return userList;
     }
 
+    @Deprecated // UserController
     public boolean addUser(User user){
         Objects.requireNonNull(user);
 
         return userList.add(user);
 
     }
+    @Deprecated // UserController
     public boolean removeUser(User user){
         Objects.requireNonNull(user);
 
         return userList.remove(user);
     }
 
+    @Deprecated // UserRepo
     public Optional<User> findUser(String email){
         Objects.requireNonNull(email);
 
