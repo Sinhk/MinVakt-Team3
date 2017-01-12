@@ -13,6 +13,10 @@ public class InfoValidator {
      */
     public static boolean checkPasswordRequirements(String attempt) {
 
+        if (attempt == null || attempt.equals(null) || attempt.equals("\0")) {
+            return false;
+        }
+
         Pattern uppercase = Pattern.compile(".*\\p{Upper}+.*");
         Pattern lower = Pattern.compile(".*\\p{Lower}+.*");
         int length = attempt.trim().length();
