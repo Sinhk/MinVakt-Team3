@@ -35,7 +35,7 @@ public class User implements Serializable {
     @JsonIgnore
     private String password;
 
-    @Column(nullable = false)
+    @Column(name = "user_type_id", nullable = false)
     private EmployeeType employeeType = EmployeeType.ASSISTENT;
 
     @Column(nullable = false)
