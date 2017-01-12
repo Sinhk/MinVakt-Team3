@@ -1,5 +1,6 @@
 DROP TABLE IF EXISTS Users;
 DROP TABLE IF EXISTS Shifts;
+DROP TABLE IF EXISTS Users_Shifts;
 DROP TABLE IF EXISTS Type;
 DROP TABLE IF EXISTS Department;
 DROP TABLE IF EXISTS Shift_Department;
@@ -10,7 +11,7 @@ CREATE TABLE IF NOT EXISTS Users (
     last_name VARCHAR(30) NOT NULL,
     phone INT NOT NULL,
     email VARCHAR(50) NOT NULL,
-    type_id INT NOT NULL,
+    user_type_id INT NOT NULL,
     salt VARCHAR(100) NOT NULL,
     hash VARCHAR(100) NOT NULL,
     CONSTRAINT user_pk PRIMARY KEY (user_id)
@@ -30,10 +31,10 @@ CREATE TABLE IF NOT EXISTS Users_Shifts (
     CONSTRAINT user_shift_pk PRIMARY KEY (user_id, shift_id)
     );
 
-CREATE TABLE IF NOT EXISTS Type (
-    type_id INT NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS User_type (
+    user_type_id INT NOT NULL AUTO_INCREMENT,
     name VARCHAR(30) NOT NULL,
-    CONSTRAINT type_pk PRIMARY KEY (type_id)
+    CONSTRAINT type_pk PRIMARY KEY (user_type_id)
     );
 
 CREATE TABLE IF NOT EXISTS Department (
@@ -51,7 +52,7 @@ CREATE TABLE IF NOT EXISTS Shift_Department (
 
 -- Foreign keys
 ALTER TABLE Users
-    ADD CONSTRAINT user_fk FOREIGN KEY (type_id) REFERENCES Type(type_id);
+    ADD CONSTRAINT user_fk FOREIGN KEY (user_type_id) REFERENCES User_type(user_type_id);
 
 ALTER TABLE Users_Shifts
     ADD CONSTRAINT user_shift_fk1 FOREIGN KEY (user_id) REFERENCES Users(user_id);
