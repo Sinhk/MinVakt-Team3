@@ -1,18 +1,19 @@
 table {
-    widt:100%;
-    border-collapse:collapse;
+    widt: 100%;
+    border-collapse: collapse;
 }
 
 table {
-    width:100%;
-    border-collapse:collapse;
+    width: 100%;
+    border-collapse: collapse;
 }
 
 table {
-    padding:7px; border:black 1px solid;
+    padding: 7px;
+    border: black 1px solid;
 }
 
-#ansvar{
+#ansvar {
     color: red;
 }
 
@@ -22,7 +23,9 @@ ul.pagination {
     margin: 0;
 }
 
-ul.pagination li {display: inline;}
+ul.pagination li {
+    display: inline;
+}
 
 ul.pagination li a {
     color: black;
@@ -42,7 +45,6 @@ ul.pagination li a:hover:not(.active) {
     background-color: #ddd;
 }
 
-
 body {
     text-align: center;
     font-family: Helvetica;
@@ -55,7 +57,7 @@ h1 {
     color: black;
 }
 
-#week{
+#week {
     font-weight: bold;
 }
 
@@ -67,7 +69,8 @@ td, th {
     padding: 10px;
     position: relative;
     outline: 0;
-    padding:7px; border:black 1px solid;
+    padding: 7px;
+    border: black 1px solid;
 }
 
 body:not(.nohover) tbody tr:hover {

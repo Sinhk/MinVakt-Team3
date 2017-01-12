@@ -21,7 +21,7 @@ public class UserManager {
     //Singelton, do not modify
     private UserManager(){}
 
-    private static SessionFactory factory ;
+    private static SessionFactory factory;
 
     private List<User> userList = new ArrayList<>();
 

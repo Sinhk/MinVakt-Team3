@@ -1,12 +1,13 @@
-* { box-sizing:border-box; }
+* {
+    box-sizing: border-box;
+}
 
 body {
     font-family: Helvetica;
     background: #eee;
     -webkit-font-smoothing: antialiased;
 
-
-    background-size:100% 100%;
+    background-size: 100% 100%;
     background-repeat: no-repeat;
 }
 
@@ -18,8 +19,8 @@ h1 {
     color: black;
 }
 
-img{
-    width:70px;
+img {
+    width: 70px;
     height: 70px;
     margin-left: 47%;
 }
@@ -30,14 +31,13 @@ form {
     padding: 3em 2em 2em 2em;
     background: #fafafa;
     border: 1px solid #ebebeb;
-    box-shadow: rgba(0,0,0,0.14902) 0px 1px 1px 0px, rgba(0,0,0,0.0984) 0px 1px 2px 0px;
+    box-shadow: rgba(0, 0, 0, 0.14902) 0px 1px 1px 0px, rgba(0, 0, 0, 0.0984) 0px 1px 2px 0px;
 }
 
 .group {
     position: relative;
     margin-bottom: 45px;
 }
-
 
 /* input-boxes */
 input {
@@ -52,7 +52,6 @@ input {
     border-radius: 0;
     border-bottom: 1px solid #757575;
 }
-
 
 textarea:focus, input:focus {
     outline: none;
@@ -73,7 +72,8 @@ label {
 /* label moves up when clicked */
 input:focus ~ label, input.used ~ label {
     top: -20px;
-    transform: scale(.75); left: -2px;
+    transform: scale(.75);
+    left: -2px;
     color: #4a89dc;
 }
 
@@ -94,13 +94,18 @@ input:focus ~ label, input.used ~ label {
     transition: all 0.2s ease;
 }
 
-.bar:before { left: 50%; }
+.bar:before {
+    left: 50%;
+}
 
-.bar:after { right: 50%; }
+.bar:after {
+    right: 50%;
+}
 
 /* active */
-input:focus ~ .bar:before, input:focus ~ .bar:after { width: 50%; }
-
+input:focus ~ .bar:before, input:focus ~ .bar:after {
+    width: 50%;
+}
 
 /* Highlight */
 .highlight {
@@ -117,8 +122,6 @@ input:focus ~ .bar:before, input:focus ~ .bar:after { width: 50%; }
 input:focus ~ .highlight {
     animation: inputHighlighter 0.3s ease;
 }
-
-
 
 /* Button */
 
@@ -141,8 +144,10 @@ input:focus ~ .highlight {
     cursor: pointer;
     transition: all 0.15s ease;
 }
-.button:focus { outline: 0; }
 
+.button:focus {
+    outline: 0;
+}
 
 /* Button modifiers */
 
@@ -153,12 +158,13 @@ input:focus ~ .highlight {
 }
 
 /* Button mouse-over color */
-.buttonBlue:hover { background: #357bd8; }
-
+.buttonBlue:hover {
+    background: #357bd8;
+}
 
 /* Select */
 
-select{
+select {
     -webkit-appearance: menulist-button;
     color: #999;
     font-size: 18px;
