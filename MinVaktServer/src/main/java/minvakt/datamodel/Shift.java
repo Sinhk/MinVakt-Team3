@@ -6,6 +6,8 @@ import minvakt.util.TimeInterval;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Objects;
 
 @Entity
@@ -74,6 +76,21 @@ public class Shift {
 
     public String toString() {
         return startDateTime.toString()+": "+ endDateTime.toString()+" -> "+endDateTime.toString();
+    }
+
+
+
+    @ManyToMany(mappedBy = "shiftCollection")
+    private Collection<User> userCollection = new ArrayList<>();
+
+    public Collection<User> getUsers(){
+        return userCollection;
+    }
+
+    public void changeShiftFromUserToUser(Shift shift, User from, User to){
+
+        userCollection.remove(from);
+        userCollection.add(to);
     }
 
 }

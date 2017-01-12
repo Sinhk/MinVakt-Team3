@@ -1,5 +1,6 @@
 package minvakt.controller;
 
+import minvakt.controller.data.TwoUsersData;
 import minvakt.datamodel.Shift;
 import minvakt.datamodel.User;
 import minvakt.managers.ReturnCode;
@@ -54,6 +55,23 @@ public class ShiftController {
 
         return manager.removeShiftFromUser(user, shift);
     }
+
+    @PutMapping
+    @RequestMapping("/{shift_id}")
+    public void changeShiftFromUserToUser(@RequestParam(value = "shift_id") String shift_id, @RequestBody TwoUsersData usersData){
+
+        User firstUser = userRepo.findOne(Integer.valueOf(usersData.getUserId1()));
+
+        User secondUser = userRepo.findOne(Integer.valueOf(usersData.getUserId2()));
+
+        Shift shift = shiftRepo.findOne(Integer.valueOf(shift_id));
+
+        ShiftManager.getInstance().changeShiftFromUserToUser(shift, firstUser, secondUser);
+    }
+
+
+
+
 
 
 }

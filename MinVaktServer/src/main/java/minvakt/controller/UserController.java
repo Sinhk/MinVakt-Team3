@@ -97,7 +97,19 @@ public class UserController {
         User user = userRepo.findOne(Integer.valueOf(userId));
 
         return user.getShiftsForUser();
+    }
+
+
+
+    @RequestMapping("/{user_id}/shifts/{shift_id}")
+    @PostMapping
+    public void addShiftToUser(@RequestParam(value = "user_id") String userId, @RequestParam(value = "shift_id") String shiftId){
+
+        User user = userRepo.findOne(Integer.valueOf(userId));
+
+
 
     }
 
-}
+
+    }

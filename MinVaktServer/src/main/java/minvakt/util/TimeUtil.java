@@ -32,6 +32,11 @@ public class TimeUtil {
 
     }
 
+    public static boolean isInDateInterval(LocalDate fromInc, LocalDate toEx, LocalDate toCheck){
+
+        return toCheck.isAfter(fromInc) || toCheck.isEqual(fromInc) && toCheck.isBefore(toEx);
+
+    }
 
 
 }

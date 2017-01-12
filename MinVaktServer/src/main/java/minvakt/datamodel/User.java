@@ -131,7 +131,6 @@ public class User implements Serializable {
                 '}';
     }
 
-    private Collection<Shift> shiftCollection = new ArrayList<>();
     @ManyToMany
     @JoinTable(name="Users_Shifts",
             joinColumns=
@@ -139,9 +138,22 @@ public class User implements Serializable {
             inverseJoinColumns=
             @JoinColumn(name="shift_id"/*, referencedColumnName="ID"*/)
     )
+    private Collection<Shift> shiftCollection = new ArrayList<>();
+
     public Collection<Shift> getShiftsForUser(){
 
         return shiftCollection;
 
     }
+
+    public void addShiftToUser(Shift shift){
+
+        shiftCollection.add(shift);
+
+    }
+    public void removeShift(Shift shift){
+
+        shiftCollection.remove(shift);
+    }
+
 }

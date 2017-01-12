@@ -113,6 +113,7 @@ public class ShiftManager {
         return ReturnCode.OK;
 
     }
+    // UserController
     public List<Shift> getShiftsForUser(User user){
         Objects.requireNonNull(user);
 
@@ -137,7 +138,7 @@ public class ShiftManager {
 
         for (Shift shift : shiftsForUser) {
 
-            if (isInDateInterval(from, to, shift.getStartDateTime().toLocalDate()) && shift.getShiftType() != ShiftType.ERROR){
+            if (TimeUtil.isInDateInterval(from, to, shift.getStartDateTime().toLocalDate()) && shift.getShiftType() != ShiftType.ERROR){
 
                 total += shift.getTimeInterval().getMinutes();
 
@@ -184,11 +185,7 @@ public class ShiftManager {
 
 
 
-    private boolean isInDateInterval(LocalDate fromInc, LocalDate toEx, LocalDate toCheck){
 
-        return toCheck.isAfter(fromInc) || toCheck.isEqual(fromInc) && toCheck.isBefore(toEx);
-
-    }
 
     public static void main(String[] args) {
 
