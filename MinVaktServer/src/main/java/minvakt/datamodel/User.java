@@ -34,7 +34,7 @@ public class User implements Serializable {
 
     @Column(nullable = false)
     @JsonIgnore
-    private String password;
+    private String password; // Spring Security will hash and salt
 
     @Column(name = "user_type_id", nullable = false)
     private EmployeeType employeeType = EmployeeType.ASSISTENT;
@@ -85,6 +85,7 @@ public class User implements Serializable {
         return employeeType;
     }
 
+
     public void setUserId(int userId) {
         this.userId = userId;
     }
@@ -105,9 +106,6 @@ public class User implements Serializable {
         this.phone = phone;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     public void setEmployeeType(EmployeeType employeeType) {
         this.employeeType = employeeType;
@@ -115,6 +113,10 @@ public class User implements Serializable {
 
     public void setPositionPercentage(int positionPercentage) {
         this.positionPercentage = positionPercentage;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     @Override
@@ -125,7 +127,7 @@ public class User implements Serializable {
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", phone=" + phone +
-                ", password='" + password + '\'' +
+                ", password='" + password+ '\'' +
                 ", employeeType=" + employeeType +
                 ", positionPercentage=" + positionPercentage +
                 '}';

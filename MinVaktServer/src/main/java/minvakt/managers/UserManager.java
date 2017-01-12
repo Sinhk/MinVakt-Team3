@@ -1,6 +1,7 @@
 package minvakt.managers;
 
 import minvakt.datamodel.User;
+import org.hibernate.SessionFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,11 +21,17 @@ public class UserManager {
     //Singelton, do not modify
     private UserManager(){}
 
+    private static SessionFactory factory ;
 
     private List<User> userList = new ArrayList<>();
 
     @Deprecated // UserController
     public List<User> getUserList() {
+
+        /*Session session = factory.openSession();
+
+        List<User> list = session.createQuery("from users").list();*/
+
         return userList;
     }
 
