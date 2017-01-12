@@ -31,6 +31,10 @@ public class InfoValidator {
      */
     public static boolean checkEmailRequirements(String attempt) {
 
+        if (attempt == null || attempt.equals(null) || attempt.equals("\0")) {
+            return false;
+        }
+
         return attempt.matches(".+@.+\\..+");
 
     }
