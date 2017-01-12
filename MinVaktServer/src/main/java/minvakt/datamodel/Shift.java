@@ -59,13 +59,9 @@ public class Shift {
         return endDateTime;
     }
     public PredeterminedIntervals getPredeterminedInterval() {return interval;}
-    public boolean isResponsible() {
-        return responsible;
-    }
     public ShiftType getShiftType() { return shiftType; }
     public TimeInterval getTimeInterval(){return new TimeInterval(startDateTime, endDateTime);}
 
-    public void setResponsible(boolean responsible) { this.responsible = responsible; }
     public void setShiftType(ShiftType shiftType) { this.shiftType = shiftType; }
 
     public String getComment() { return comment; }
