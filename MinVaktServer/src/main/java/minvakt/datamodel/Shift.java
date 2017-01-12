@@ -13,6 +13,7 @@ public class Shift {
 
     @Id
     @GeneratedValue
+    @Column(updatable = false, nullable = false)
     private int shiftId;
 
     @Column(nullable = false)
