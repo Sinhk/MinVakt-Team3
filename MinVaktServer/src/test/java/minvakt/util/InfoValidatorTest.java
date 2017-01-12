@@ -10,7 +10,13 @@ import static org.junit.Assert.*;
 public class InfoValidatorTest {
     @Test
     public void checkPasswordRequirements() throws Exception {
-
+        assertEquals(false, InfoValidator.checkPasswordRequirements("Hei"));
+        assertEquals(true, InfoValidator.checkPasswordRequirements("HHei1!!!"));
+        assertEquals(true, InfoValidator.checkPasswordRequirements("Hei123!!!!!! OST"));
+        assertEquals(false, InfoValidator.checkPasswordRequirements("?"));
+        assertEquals(false, InfoValidator.checkPasswordRequirements("\0"));
+        assertEquals(false, InfoValidator.checkPasswordRequirements(null));
+        assertEquals(false, InfoValidator.checkPasswordRequirements("!?!?!?!?"));
     }
 
     @Test
