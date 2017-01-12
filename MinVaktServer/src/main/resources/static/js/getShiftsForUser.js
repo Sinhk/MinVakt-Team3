@@ -6,20 +6,14 @@ $("#getShiftsForUser").click(function () {
 
     var user_id = $("#userId").val();
 
-
-
-
-
     $.ajax({
         url: "users/"+user_id+"/shifts",
         type: "GET",
-        contentType: "Application/JSON",
-
         success: function (data) {
-            console.log("Success: "+data);
+            console.log("Success: "+JSON.stringify(data));
         },
         error: function (data) {
-            console.log("Error: "+data)
+            console.log("Error: "+JSON.stringify(data))
         }
     })
 

@@ -2,6 +2,7 @@ package minvakt.controller;
 
 import minvakt.datamodel.Shift;
 import minvakt.datamodel.User;
+import minvakt.repos.ShiftRepository;
 import minvakt.repos.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,10 +18,12 @@ public class UserController {
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
 
     private UserRepository userRepo;
+    private ShiftRepository shiftRepo;
 
     @Autowired
-    public UserController(UserRepository userRepo) {
+    public UserController(UserRepository userRepo, ShiftRepository shiftRepo) {
         this.userRepo = userRepo;
+        this.shiftRepo = shiftRepo;
     }
 
     @GetMapping
@@ -92,7 +95,7 @@ public class UserController {
     }*/
     @RequestMapping("/{user_id}/shifts")
     @GetMapping
-    public Collection<Shift> getShiftsForUser(@RequestParam(value="user_id") String userId){
+    public Collection<Shift> getShiftsForUser(@PathVariable(value="user_id") String userId){
         System.out.println("test");
         User user = userRepo.findOne(Integer.valueOf(userId));
 
@@ -103,13 +106,22 @@ public class UserController {
 
     @RequestMapping("/{user_id}/shifts/{shift_id}")
     @PostMapping
-    public void addShiftToUser(@RequestParam(value = "user_id") String userId, @RequestParam(value = "shift_id") String shiftId){
+    public void addShiftToUser(@PathVariable(value = "user_id") String userId, @PathVariable(value = "shift_id") String shiftId){
 
         User user = userRepo.findOne(Integer.valueOf(userId));
 
+        Shift shift = shiftRepo.findOne(Integer.valueOf(shiftId));
 
-
+        user.getShiftsForUser().add(shift);
     }
+    /*@RequestMapping("/{user_id}/shifts/{shift_id}")
+    @DeleteMapping
+    public void removeShiftFromUser (@RequestParam(value = "user_id") String userId, @RequestParam(value = "shift_id") String shiftId) {
 
+        User user = userRepo.findOne(Integer.valueOf(userId));
 
-    }
+        Shift shift = shiftRepo.findOne(Integer.valueOf(shiftId));
+
+        user.removeShift(shift);
+    }*/
+}

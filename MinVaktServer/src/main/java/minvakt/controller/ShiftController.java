@@ -49,12 +49,7 @@ public class ShiftController {
         return manager.changeShiftFromUserToUser(shift,fromUser,toUser);
     }*/
 
-    @DeleteMapping
-    public ReturnCode removeShiftFromUser (@RequestBody User user, Shift shift) {
-        System.out.println("Removing shift from user: "+ user);
 
-        return manager.removeShiftFromUser(user, shift);
-    }
 
     @PutMapping
     @RequestMapping("/{shift_id}")
