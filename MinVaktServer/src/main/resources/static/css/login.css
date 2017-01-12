@@ -14,25 +14,35 @@ body {
 }
 
 h1 {
+    height: 80px;
+    width: 100%;
     text-align: center;
-    font-size: 40px;
-    margin-top: 4em;
+    font-size: 30px;
     font-weight: 600;
     color: black;
+    background: #4a89dc;
+    border-radius: 3px 3px 0 0;
+    box-shadow: 0 2px 5px 1px rgba(0, 0, 0, 0.2);
 }
 
 form {
     width: 390px;
-    margin: 2em auto;
-    padding: 3em 2em 2em 2em;
+    margin: 6em auto;
+    padding: 0em 2em 0em 2em;
     background: #fafafa;
     border: 1px solid #ebebeb;
     box-shadow: rgba(0,0,0,0.14902) 0px 1px 1px 0px, rgba(0,0,0,0.0984) 0px 1px 2px 0px;
 }
 
+form h1 {
+    box-sizing: border-box;
+    padding: 20px;
+}
+
+
 .group {
     position: relative;
-    margin-bottom: 45px;
+    margin-bottom: 40px;
 }
 
 
@@ -50,7 +60,6 @@ input {
     border-bottom: 1px solid #757575;
 }
 
-
 textarea:focus, input:focus {
     outline: none;
 }
@@ -60,7 +69,7 @@ label {
     color: #999;
     font-size: 18px;
     font-weight: normal;
-    position: absolute;
+    position: static;
     pointer-events: none;
     left: 5px;
     top: 10px;
@@ -139,9 +148,6 @@ input:focus ~ .highlight {
     transition: all 0.15s ease;
 }
 .button:focus { outline: 0; }
-
-
-/* Button modifiers */
 
 /* Button color */
 .buttonBlue {
