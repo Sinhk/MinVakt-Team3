@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS Users (
     phone INT NOT NULL,
     email VARCHAR(50) NOT NULL,
     user_type_id INT NOT NULL,
+    position_percentage INT NOT NULL,
     salt VARCHAR(100) NOT NULL,
     hash VARCHAR(100) NOT NULL,
     CONSTRAINT user_pk PRIMARY KEY (user_id)
