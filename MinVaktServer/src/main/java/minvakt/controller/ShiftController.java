@@ -1,15 +1,16 @@
 package minvakt.controller;
 
+import minvakt.controller.data.TwoUsersData;
 import minvakt.datamodel.Shift;
 import minvakt.datamodel.User;
 import minvakt.managers.ReturnCode;
 import minvakt.managers.ShiftManager;
-import org.springframework.aop.scope.ScopedProxyUtils;
+import minvakt.repos.ShiftRepository;
+import minvakt.repos.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by magnu on 11.01.2017.
@@ -19,12 +20,19 @@ import java.util.Map;
 @RequestMapping("/shifts")
 public class ShiftController {
 
-    private static ShiftManager manager = ShiftManager.getInstance();
+    private static final Logger log = LoggerFactory.getLogger(UserController.class);
 
-    @GetMapping
-    @ResponseBody
-    public List getShiftsForUser(User user) {
-        return manager.getShiftsForUser(user);
+    private ShiftRepository shiftRepo;
+    private UserRepository userRepo;
+
+
+    ShiftManager manager = ShiftManager.getInstance();
+
+    @Autowired
+    public ShiftController(ShiftRepository shiftRepo, UserRepository userRepo) {
+
+        this.shiftRepo = shiftRepo;
+        this.userRepo = userRepo;
     }
 
     @PostMapping
@@ -34,40 +42,37 @@ public class ShiftController {
         return manager.addShiftToUser(user,shift);
     }
 
-    @PostMapping
+    /*@PostMapping
     public ReturnCode changeShiftFromUserToUser(@RequestBody Shift shift, User fromUser, User toUser) {
         System.out.println("Giving "+ toUser +" Shift from "+ fromUser);
 
         return manager.changeShiftFromUserToUser(shift,fromUser,toUser);
-    }
+    }*/
 
     @DeleteMapping
-    public ReturnCode removeShiftFromUser (@RequestBody User user,Shift shift) {
+    public ReturnCode removeShiftFromUser (@RequestBody User user, Shift shift) {
         System.out.println("Removing shift from user: "+ user);
 
         return manager.removeShiftFromUser(user, shift);
     }
 
-    @GetMapping
-    public List<Shift> getShiftForUser(@RequestBody User user) {
-        System.out.println("Getting list with shifts for user: "+ user);
+    @PutMapping
+    @RequestMapping("/{shift_id}")
+    public void changeShiftFromUserToUser(@RequestParam(value = "shift_id") String shift_id, @RequestBody TwoUsersData usersData){
 
-        return manager.getShiftsForUser(user);
+        User firstUser = userRepo.findOne(Integer.valueOf(usersData.getUserId1()));
+
+        User secondUser = userRepo.findOne(Integer.valueOf(usersData.getUserId2()));
+
+        Shift shift = shiftRepo.findOne(Integer.valueOf(shift_id));
+
+        ShiftManager.getInstance().changeShiftFromUserToUser(shift, firstUser, secondUser);
     }
 
-    @GetMapping
-    public int getMinutesForUsersInInterval(@RequestBody User user, LocalDate from,LocalDate to) {
-        System.out.println("Getting minutes in the interval "+ from +"-"+ to +"for user: "+ user);
 
-        return manager.getMinutesForUsersInInterval(user,from,to);
-    }
 
-    @GetMapping
-    public int getMinutesForWeek(@RequestBody User user,LocalDate dateInWeek ) {
-        System.out.println("Get minutes for user: "+ user +" in the week with the date: "+ dateInWeek);
 
-        return manager.getMinutesForWeek(user,dateInWeek);
-    }
+
 
 }
 

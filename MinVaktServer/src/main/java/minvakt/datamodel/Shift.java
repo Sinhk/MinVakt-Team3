@@ -4,61 +4,69 @@ import minvakt.datamodel.enums.PredeterminedIntervals;
 import minvakt.datamodel.enums.ShiftType;
 import minvakt.util.TimeInterval;
 
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.LocalTime;
+import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Objects;
 
-/**
- * Created by OlavH on 09-Jan-17.
- */
+@Entity
 public class Shift {
 
-    private LocalDate date;
-    private LocalTime start;
-    private LocalTime end;
+    @Id
+    @GeneratedValue
+    @Column(updatable = false, nullable = false)
+    private int shiftId;
 
+    @Column(nullable = false)
+    private LocalDateTime startDateTime;
+
+    @Column(nullable = false)
+    private LocalDateTime endDateTime;
+
+    @Transient
     private PredeterminedIntervals interval;
 
+    @Transient
     private boolean responsible;
 
     private ShiftType shiftType = ShiftType.AVAILABLE;
 
     private String comment;
 
-    public Shift(LocalDate date, LocalTime start, LocalTime end) {
-        Objects.requireNonNull(date); Objects.requireNonNull(start); Objects.requireNonNull(end);
-
-        this.date = date;
-        this.start = start;
-        this.end = end;
+    public Shift() {
     }
-    public Shift(LocalDate date, PredeterminedIntervals interval){
-        Objects.requireNonNull(date); Objects.requireNonNull(interval);
 
-        this.date = date;
+    public Shift(LocalDateTime startDateTime, LocalDateTime endDateTime) {
+        Objects.requireNonNull(startDateTime); Objects.requireNonNull(endDateTime);
+
+        this.startDateTime = startDateTime;
+        this.endDateTime = endDateTime;
+    }
+    public Shift(LocalDateTime startDateTime, PredeterminedIntervals interval){
+        Objects.requireNonNull(startDateTime); Objects.requireNonNull(interval);
+
+        this.startDateTime = startDateTime;
         this.interval = interval;
     }
-    public Shift(LocalDate date, PredeterminedIntervals interval, ShiftType type){
-        this(date, interval);
+
+    public Shift(LocalDateTime date, PredeterminedIntervals intervals, ShiftType type) {
+        this(date, intervals);
         this.shiftType = type;
     }
 
-    public LocalDate getDate() {
-        return date;
+    public LocalDateTime getStartDateTime() {
+        return startDateTime;
     }
-    public LocalTime getStart() {
-        return start;
-    }
-    public LocalTime getEnd() {
-        return end;
+    public LocalDateTime getEndDateTime() {
+        return endDateTime;
     }
     public PredeterminedIntervals getPredeterminedInterval() {return interval;}
     public boolean isResponsible() {
         return responsible;
     }
     public ShiftType getShiftType() { return shiftType; }
-    public TimeInterval getTimeInterval(){return new TimeInterval(start, end);}
+    public TimeInterval getTimeInterval(){return new TimeInterval(startDateTime, endDateTime);}
 
     public void setResponsible(boolean responsible) { this.responsible = responsible; }
     public void setShiftType(ShiftType shiftType) { this.shiftType = shiftType; }
@@ -67,12 +75,22 @@ public class Shift {
     public void setComment(String comment) { this.comment = comment; }
 
     public String toString() {
-        return date.toString()+": "+start.toString()+" -> "+end.toString();
+        return startDateTime.toString()+": "+ endDateTime.toString()+" -> "+endDateTime.toString();
     }
 
-    public static void main(String[] args) {
 
-        System.out.println(DayOfWeek.from(LocalDate.now()));
 
+    @ManyToMany(mappedBy = "shiftCollection")
+    private Collection<User> userCollection = new ArrayList<>();
+
+    public Collection<User> getUsers(){
+        return userCollection;
     }
+
+    public void changeShiftFromUserToUser(Shift shift, User from, User to){
+
+        userCollection.remove(from);
+        userCollection.add(to);
+    }
+
 }
