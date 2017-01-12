@@ -17,6 +17,7 @@ public class User implements Serializable {
 
     @Id
     @GeneratedValue
+    @Column(updatable = false, nullable = false)
     private int userId;
 
     @Column(nullable = false)
