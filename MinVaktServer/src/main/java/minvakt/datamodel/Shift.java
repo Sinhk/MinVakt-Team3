@@ -79,7 +79,6 @@ public class Shift {
     }
 
 
-
     @ManyToMany(mappedBy = "shiftCollection")
     private Collection<User> userCollection = new ArrayList<>();
 

@@ -36,7 +36,18 @@ public class ShiftController {
     }
 
     @PostMapping
-    public ReturnCode addShiftToUser(@RequestBody User user, Shift shift) {
+    public void addShift(@RequestBody Shift shift){
+
+        shiftRepo.save(shift);
+
+    }
+    @GetMapping
+    public Iterable<Shift> getShifts(){
+        return shiftRepo.findAll();
+    }
+
+    @PostMapping
+    public ReturnCode addShiftToUser(@RequestBody User user, @RequestBody Shift shift) {
         System.out.println("Adding shift to user: "+ user);
 
         return manager.addShiftToUser(user,shift);

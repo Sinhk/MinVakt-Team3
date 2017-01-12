@@ -96,7 +96,7 @@ public class UserController {
     @RequestMapping("/{user_id}/shifts")
     @GetMapping
     public Collection<Shift> getShiftsForUser(@PathVariable(value="user_id") String userId){
-        System.out.println("test");
+
         User user = userRepo.findOne(Integer.valueOf(userId));
 
         return user.getShiftsForUser();
@@ -104,8 +104,8 @@ public class UserController {
 
 
 
-    @RequestMapping("/{user_id}/shifts/{shift_id}")
     @PostMapping
+    @RequestMapping(value = "/{user_id}/shifts/{shift_id}", method = RequestMethod.POST)
     public void addShiftToUser(@PathVariable(value = "user_id") String userId, @PathVariable(value = "shift_id") String shiftId){
 
         User user = userRepo.findOne(Integer.valueOf(userId));
@@ -114,14 +114,15 @@ public class UserController {
 
         user.getShiftsForUser().add(shift);
     }
-    /*@RequestMapping("/{user_id}/shifts/{shift_id}")
+
     @DeleteMapping
-    public void removeShiftFromUser (@RequestParam(value = "user_id") String userId, @RequestParam(value = "shift_id") String shiftId) {
+    @RequestMapping(value = "/{user_id}/shifts/{shift_id}", method = RequestMethod.DELETE)
+    public void removeShiftFromUser (@PathVariable(value = "user_id") String userId, @PathVariable(value = "shift_id") String shiftId) {
 
         User user = userRepo.findOne(Integer.valueOf(userId));
 
         Shift shift = shiftRepo.findOne(Integer.valueOf(shiftId));
 
         user.removeShift(shift);
-    }*/
+    }
 }
