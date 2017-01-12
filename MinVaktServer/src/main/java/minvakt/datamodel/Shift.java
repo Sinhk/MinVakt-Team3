@@ -30,6 +30,7 @@ public class Shift {
     @Transient
     private boolean responsible;
 
+
     private ShiftType shiftType = ShiftType.AVAILABLE;
 
     private String comment;
@@ -78,7 +79,6 @@ public class Shift {
         return startDateTime.toString()+": "+ endDateTime.toString()+" -> "+endDateTime.toString();
     }
 
-
     @ManyToMany(mappedBy = "shiftCollection")
     private Collection<User> userCollection = new ArrayList<>();
 
@@ -86,10 +86,16 @@ public class Shift {
         return userCollection;
     }
 
-    public void changeShiftFromUserToUser(Shift shift, User from, User to){
+    public void changeShiftFromUserToUser(User from, User to){
 
         userCollection.remove(from);
         userCollection.add(to);
     }
+
+    /*public User getResponsibleForShift(){
+
+        Collection<User> users = getUsers();
+
+    }*/
 
 }

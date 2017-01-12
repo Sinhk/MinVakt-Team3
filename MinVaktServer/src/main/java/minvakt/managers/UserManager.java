@@ -10,6 +10,7 @@ import java.util.Optional;
 /**
  * Created by OlavH on 09-Jan-17.
  */
+@Deprecated
 public class UserManager {
     private static UserManager ourInstance = new UserManager();
 

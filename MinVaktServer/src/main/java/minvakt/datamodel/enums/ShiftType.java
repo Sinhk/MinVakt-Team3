@@ -10,6 +10,6 @@ public enum ShiftType {
     AVAILABLE,
     SCHEDULED,
     COMPLETED,
-    ERROR
-
+    ERROR,
+    REQUESTCHANGE
 }

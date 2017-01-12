@@ -12,6 +12,7 @@ import java.util.*;
 /**
  * Created by OlavH on 09-Jan-17.
  */
+@Deprecated
 public class ShiftManager {
 
     private static final int MAX_MINUTES = 2400; // 60*8*5
