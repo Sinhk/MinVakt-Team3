@@ -4,9 +4,12 @@ import minvakt.datamodel.Shift;
 import minvakt.datamodel.User;
 import minvakt.managers.ReturnCode;
 import minvakt.managers.ShiftManager;
+import minvakt.repos.ShiftRepository;
+import minvakt.repos.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * Created by magnu on 11.01.2017.
@@ -16,12 +19,19 @@ import java.util.List;
 @RequestMapping("/shifts")
 public class ShiftController {
 
-    private static ShiftManager manager = ShiftManager.getInstance();
+    private static final Logger log = LoggerFactory.getLogger(UserController.class);
 
-    @GetMapping
-    @ResponseBody
-    public List getShiftsForUser(User user) {
-        return manager.getShiftsForUser(user);
+    private ShiftRepository shiftRepo;
+    private UserRepository userRepo;
+
+
+    ShiftManager manager = ShiftManager.getInstance();
+
+    @Autowired
+    public ShiftController(ShiftRepository shiftRepo, UserRepository userRepo) {
+
+        this.shiftRepo = shiftRepo;
+        this.userRepo = userRepo;
     }
 
     @PostMapping
@@ -39,7 +49,7 @@ public class ShiftController {
     }*/
 
     @DeleteMapping
-    public ReturnCode removeShiftFromUser (@RequestBody User user,Shift shift) {
+    public ReturnCode removeShiftFromUser (@RequestBody User user, Shift shift) {
         System.out.println("Removing shift from user: "+ user);
 
         return manager.removeShiftFromUser(user, shift);

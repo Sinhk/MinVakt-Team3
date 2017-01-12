@@ -22,11 +22,11 @@ public class Application {
     public CommandLineRunner demo(UserRepository repository) {
         return (args) -> {
             // save a couple of customers
-            repository.save(new User("Jack", "Bauer", "test@test.com", 98127331, "qwerty", EmployeeType.ASSISTENT, 12));
-            repository.save(new User("Chloe", "O'Brian", "test@test.com", 98127331, "qwerty", EmployeeType.ASSISTENT, 12));
-            repository.save(new User("Kim", "Bauer", "test@test.com", 98127331, "qwerty", EmployeeType.ASSISTENT, 12));
-            repository.save(new User("David", "Palmer", "test@test.com", 98127331, "qwerty", EmployeeType.ASSISTENT, 12));
-            repository.save(new User("Michelle", "Dessler", "test@test.com", 98127331, "qwerty", EmployeeType.ASSISTENT, 12));
+            repository.save(new User("Jack", "Bauer", "test1@test.com", 98127331, "qwerty", EmployeeType.ASSISTENT, 12));
+            repository.save(new User("Chloe", "O'Brian", "test2@test.com", 98127331, "qwerty", EmployeeType.ASSISTENT, 12));
+            repository.save(new User("Kim", "Bauer", "test3@test.com", 98127331, "qwerty", EmployeeType.ASSISTENT, 12));
+            repository.save(new User("David", "Palmer", "test4@test.com", 98127331, "qwerty", EmployeeType.ASSISTENT, 12));
+            repository.save(new User("Michelle", "Dessler", "test5@test.com", 98127331, "qwerty", EmployeeType.ASSISTENT, 12));
 
             // fetch all customers
             log.info("Customers found with findAll():");

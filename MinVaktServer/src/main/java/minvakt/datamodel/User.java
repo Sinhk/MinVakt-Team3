@@ -4,11 +4,10 @@ package minvakt.datamodel;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import minvakt.datamodel.enums.EmployeeType;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Created by OlavH on 09-Jan-17.
@@ -21,10 +20,10 @@ public class User implements Serializable {
     private int userId;
 
     @Column(nullable = false)
-    private String firstName;
+    private String firstName = "Ola";
 
     @Column(nullable = false)
-    private String lastName;
+    private String lastName = "Nordmann";
 
     @Column(nullable = false)
     private String email;
@@ -33,12 +32,11 @@ public class User implements Serializable {
     private long phone;
 
     @Column(nullable = false)
-
     @JsonIgnore
     private String password;
 
     @Column(nullable = false)
-    private EmployeeType employeeType;
+    private EmployeeType employeeType = EmployeeType.ASSISTENT;
 
     @Column(nullable = false)
     private int positionPercentage;
@@ -79,6 +77,8 @@ public class User implements Serializable {
     public long getPhone() {
         return phone;
     }
+
+
 
     public EmployeeType getEmployeeType() {
         return employeeType;
@@ -128,5 +128,19 @@ public class User implements Serializable {
                 ", employeeType=" + employeeType +
                 ", positionPercentage=" + positionPercentage +
                 '}';
+    }
+
+    private Collection<Shift> shiftCollection = new ArrayList<>();
+    @ManyToMany
+    @JoinTable(name="Users_Shifts",
+            joinColumns=
+            @JoinColumn(name="user_id"/*, referencedColumnName="ID"*/),
+            inverseJoinColumns=
+            @JoinColumn(name="shift_id"/*, referencedColumnName="ID"*/)
+    )
+    public Collection<Shift> getShiftsForUser(){
+
+        return shiftCollection;
+
     }
 }

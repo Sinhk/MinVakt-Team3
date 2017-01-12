@@ -1,5 +1,6 @@
 package minvakt.controller;
 
+import minvakt.datamodel.Shift;
 import minvakt.datamodel.User;
 import minvakt.repos.UserRepository;
 import org.slf4j.Logger;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.ws.rs.core.Response;
+import java.util.Collection;
 
 @RestController
 @RequestMapping("/users")
@@ -46,11 +48,17 @@ public class UserController {
     }
 
     @DeleteMapping
-    public Response removeUser(@RequestBody User user) {
+    public Response removeUser(@RequestBody String user) {
 
-        System.out.println("Removing user: " + user);
-        userRepo.delete(user);
-        return Response.ok().build();
+        User byEmail = userRepo.findByEmail(user);
+
+        if (byEmail != null){
+            System.out.println("Removing user: " + byEmail);
+            userRepo.delete(byEmail);
+            return Response.ok().build();
+        }
+
+        return Response.noContent().build();
     }
 
     /*@GetMapping
@@ -82,5 +90,14 @@ public class UserController {
 
         return info.getUser().changePassword(info.getOldPassAttempt(), info.getNewPassAttempt());
     }*/
+    @RequestMapping("/{user_id}/shifts")
+    @GetMapping
+    public Collection<Shift> getShiftsForUser(@RequestParam(value="user_id") String userId){
+
+        User user = userRepo.findOne(Integer.valueOf(userId));
+
+        return user.getShiftsForUser();
+
+    }
 
 }

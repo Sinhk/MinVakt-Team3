@@ -49,7 +49,6 @@ CREATE TABLE IF NOT EXISTS Shift_Department (
     CONSTRAINT shift_department_pk PRIMARY KEY (shift_id, department_id)
 );
 
-
 -- Foreign keys
 ALTER TABLE Users
     ADD CONSTRAINT user_fk FOREIGN KEY (user_type_id) REFERENCES User_type(user_type_id);

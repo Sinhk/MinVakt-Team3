@@ -74,4 +74,5 @@ public class Shift {
     public String toString() {
         return startDateTime.toString()+": "+ endDateTime.toString()+" -> "+endDateTime.toString();
     }
+
 }
