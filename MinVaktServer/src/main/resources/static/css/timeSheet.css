@@ -33,7 +33,7 @@ ul.pagination li a {
 }
 
 ul.pagination li a.active {
-    background-color: lightblue;
+    background-color: cornflowerblue;
     color: black;
     border-radius: 5px;
 }
@@ -71,7 +71,7 @@ td, th {
 }
 
 body:not(.nohover) tbody tr:hover {
-    background-color: lightblue;
+    background-color: lightgrey;
 }
 
 td:hover::after,
@@ -89,16 +89,16 @@ thead th:not(:empty):focus::after {
 
 td:hover::after,
 th:hover::after {
-    background-color: lightblue;
+    background-color: lightgrey;
 }
 
 td:focus::after,
 th:focus::after {
-    background-color: lightblue;
+    background-color: lightgrey;
 }
 
 tbody th:hover, tbody td:hover {
-    background-color: dodgerblue;
+    background-color: lightslategrey;
 }
 
 .col {
