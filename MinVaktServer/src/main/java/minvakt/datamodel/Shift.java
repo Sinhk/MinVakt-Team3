@@ -27,10 +27,6 @@ public class Shift {
     @Transient
     private PredeterminedIntervals interval;
 
-    @Transient
-    private boolean responsible;
-
-
     private ShiftType shiftType = ShiftType.AVAILABLE;
 
     private String comment;
@@ -79,7 +75,8 @@ public class Shift {
         return startDateTime.toString()+": "+ endDateTime.toString()+" -> "+endDateTime.toString();
     }
 
-    @ManyToMany(mappedBy = "shiftCollection")
+
+    @OneToMany(mappedBy = "shift")
     private Collection<User> userCollection = new ArrayList<>();
 
     public Collection<User> getUsers(){

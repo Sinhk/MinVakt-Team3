@@ -131,13 +131,7 @@ public class User implements Serializable {
                 '}';
     }
 
-    @ManyToMany
-    @JoinTable(name="Users_Shifts",
-            joinColumns=
-            @JoinColumn(name="user_id"/*, referencedColumnName="ID"*/),
-            inverseJoinColumns=
-            @JoinColumn(name="shift_id"/*, referencedColumnName="ID"*/)
-    )
+    @OneToMany(mappedBy = "user")
     private Collection<Shift> shiftCollection = new ArrayList<>();
 
     public Collection<Shift> getShiftsForUser(){
