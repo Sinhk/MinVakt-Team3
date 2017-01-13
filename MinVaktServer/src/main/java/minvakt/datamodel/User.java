@@ -137,7 +137,7 @@ public class User implements Serializable {
                 '}';
     }
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", targetEntity = UserShiftInfo.class)
     private Collection<Shift> shiftCollection = new ArrayList<>();
 
     public Collection<Shift> getShiftsForUser(){

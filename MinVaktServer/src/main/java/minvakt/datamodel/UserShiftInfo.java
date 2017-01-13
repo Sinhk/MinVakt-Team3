@@ -9,18 +9,21 @@ import javax.persistence.*;
  */
 
 @Entity
-@Table(name = "Users_Shifts")
+@Table(name = "users_shifts")
+@IdClass(UserShiftInfoId.class)
 public class UserShiftInfo {
 
+    @Id
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Id
     @ManyToOne
     @JoinColumn(name = "shift_id")
     private Shift shift;
 
-    @Column(name = "resopnsible", nullable = false)
+    @Column(name = "resopnsible")
     private boolean responsible;
 
     @Column

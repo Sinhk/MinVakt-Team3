@@ -72,7 +72,7 @@ public class Shift {
     }
 
 
-    @OneToMany(mappedBy = "shift")
+    @OneToMany(mappedBy = "shift", targetEntity = UserShiftInfo.class)
     private Collection<User> userCollection = new ArrayList<>();
 
     public Collection<User> getUsers(){
