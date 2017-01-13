@@ -76,6 +76,14 @@ public class Shift {
     private Collection<User> userCollection = new ArrayList<>();
 
     public Collection<User> getUsers(){
+
+        userInfoCollection.forEach(userShiftInfo -> {
+
+            if (!userCollection.contains(userShiftInfo.getUser())) {
+                userCollection.add(userShiftInfo.getUser());
+            }
+        });
+
         return userCollection;
     }
 

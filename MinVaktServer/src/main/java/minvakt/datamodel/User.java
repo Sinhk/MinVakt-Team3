@@ -142,6 +142,13 @@ public class User implements Serializable {
 
     public Collection<Shift> getShiftsForUser(){
 
+        userInfoCollection.forEach(userShiftInfo -> {
+            if (!shiftCollection.contains(userShiftInfo.getShift())){
+                shiftCollection.add(userShiftInfo.getShift());
+
+            }
+        });
+
         return shiftCollection;
 
     }
