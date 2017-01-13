@@ -1,9 +1,7 @@
 package minvakt.controller;
 
 import minvakt.controller.data.DateWrapper;
-import minvakt.controller.data.TwoUsersData;
 import minvakt.datamodel.Shift;
-import minvakt.datamodel.User;
 import minvakt.repos.ShiftRepository;
 import minvakt.repos.UserRepository;
 import org.slf4j.Logger;
@@ -56,7 +54,7 @@ public class ShiftController {
 
 
 
-    @PutMapping
+    /*@PutMapping
     @RequestMapping("/{shift_id}")
     public Response changeShiftFromUserToUser(@PathVariable String shift_id, @RequestBody TwoUsersData usersData){
 
@@ -71,6 +69,6 @@ public class ShiftController {
 
         return Response.noContent().build();
 
-    }
+    }*/
 }
 

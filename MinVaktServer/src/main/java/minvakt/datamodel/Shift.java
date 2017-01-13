@@ -1,15 +1,15 @@
 package minvakt.datamodel;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import minvakt.datamodel.enums.PredeterminedIntervals;
 import minvakt.datamodel.enums.ShiftType;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
 @Entity
 public class Shift {
@@ -76,21 +76,21 @@ public class Shift {
     }
 
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "shift", targetEntity = UserShiftInfo.class, fetch = FetchType.EAGER)
+   /* //@JsonIgnore
+    @OneToMany(mappedBy = "pk.shift", targetEntity = UserShiftInfo.class, fetch = FetchType.EAGER)
     private Set<User> users = new HashSet<>();
 
     public Set<User> getUsers() {
         return users;
-    }
+    }*/
 
-    public boolean changeShiftFromUserToUser(User from, User to){
+    /*public boolean changeShiftFromUserToUser(User from, User to){
 
         boolean remove = users.remove(from);
         boolean add = users.add(to);
 
         return remove && add;
-    }
+    }*/
 
     public int getShiftId() {
         return shiftId;

@@ -138,8 +138,8 @@ public class User implements Serializable {
                 '}';
     }
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "user", targetEntity = UserShiftInfo.class, fetch = FetchType.EAGER)
+    //@JsonIgnore
+    @OneToMany(mappedBy = "pk.user", targetEntity = UserShiftInfo.class, fetch = FetchType.EAGER)
     private Set<Shift> shifts = new HashSet<>();
 
     public Set<Shift> getShifts() {

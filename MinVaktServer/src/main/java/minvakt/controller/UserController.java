@@ -123,6 +123,9 @@ public class UserController {
 
         User user = userRepo.findOne(Integer.valueOf(userId));
 
+        System.out.println("Found: "+user);
+        System.out.println(user.getShifts());
+
         return (user != null) ? user.getShifts() : Collections.emptyList();
 
     }

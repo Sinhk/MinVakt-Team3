@@ -17,10 +17,10 @@
     <a href="/removeUserTest.html">Remove users</a><br>
     <a href="/getShiftsForUser.html">Get shifts for user</a><br>
 
-    <form name="logout_form" id="logout_form" method="post" th:action="@{/do_logout}">
+    <form name="logout_form" pk="logout_form" method="post" th:action="@{/do_logout}">
         <input type="hidden" name="perform_logout" value="1">
-        <input type="submit" value="Logout" id="perform_logout_button">
-        <a href="#" style="display:none;" id="logout_link">Logout</a>
+        <input type="submit" value="Logout" pk="perform_logout_button">
+        <a href="#" style="display:none;" pk="logout_link">Logout</a>
     </form>
 
     <script type="text/javascript">

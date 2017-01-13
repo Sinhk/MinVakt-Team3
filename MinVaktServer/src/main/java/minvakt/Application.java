@@ -42,17 +42,21 @@ public class Application {
             shiftRepo.save(new Shift(now, PredeterminedIntervals.MORNING, ShiftType.AVAILABLE));
             Shift shift = new Shift(now, PredeterminedIntervals.NIGHT, ShiftType.AVAILABLE);
             shiftRepo.save(shift);
-            shift.getUsers().add(user);
-
+            //log.info("Adding user to shift: "+shift.getUsers().add(user));
+            System.out.println(user.getShifts());
+            log.info("Adding shift to user: "+user.getShifts().add(shift));
+            System.out.println(user.getShifts());
 
             /*UserShiftInfo info = new UserShiftInfo(user, shift);
             usRepo.save(info);*/
 
 
+           /* System.out.println(user.getShifts());
+
             Shift one = shiftRepo.findOne(shift.getShiftId());
             one.getUsers().add(userRepo.findOne(1));
 
-            user.addShiftToUser(shift);
+            log.info("Adding shift to user"+user.addShiftToUser(shift));
             log.info("Shift {},Users {}", one, one.getUsers());
 
             // fetch all customers
@@ -63,14 +67,14 @@ public class Application {
             }
             log.info("");
 
-            /*shift.getUsers().forEach(
+            *//*shift.getUsers().forEach(
                     user1 -> log.info(user1.toString())
-            );*/
+            );*//*
 
             log.info("Printing shift with users");
             shiftRepo.findAll().forEach(shift1 -> shift1.getUsers().forEach(
                     user1 -> log.info(user1.toString()+" has shift "+shift1)
-            ));
+            ));*/
             /*// fetch an individual customer by ID
             Customer customer = repository.findOne(1L);
             log.info("Customer found with findOne(1L):");
