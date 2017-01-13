@@ -3,12 +3,16 @@ package minvakt.datamodel;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import minvakt.datamodel.enums.EmployeeType;
+import minvakt.util.TimeUtil;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by OlavH on 09-Jan-17.
@@ -170,5 +174,22 @@ public class User implements Serializable {
 
         return false;
     }
+
+    public Collection<Shift> getShiftsInRange(LocalDate start, LocalDate end){
+
+        Collection<Shift> shiftsForUser = getShiftsForUser();
+
+        List<Shift> collect = shiftsForUser
+                .stream()
+                .filter(shift -> TimeUtil.isInDateInterval(start, end, shift.getStartDateTime().toLocalDate()))
+                .collect(Collectors.toList());
+
+        return collect;
+
+    }
+
+
+
+
 
 }

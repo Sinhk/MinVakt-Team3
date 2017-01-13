@@ -11,5 +11,7 @@ public enum ShiftType {
     SCHEDULED,
     COMPLETED,
     ERROR,
-    REQUESTCHANGE
+    REQUESTCHANGE,
+    REQUESTCHANGE_OFFER
+
 }
