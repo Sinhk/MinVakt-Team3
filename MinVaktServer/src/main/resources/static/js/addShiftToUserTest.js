@@ -7,7 +7,7 @@ $("#addShiftToUser").click(function () {
     console.log(userId+" - "+shiftId);
 
     $.ajax({
-        url: "users/"+userId+"/shifts/"+shiftId,
+        url:  "users/"+userId+"/shifts/"+shiftId,
         type: "POST",
         contentType: "application/json",
         data: JSON.stringify({

@@ -18,7 +18,7 @@ import java.util.Collection;
 import java.util.Collections;
 
 @RestController
-@RequestMapping("tests/users")
+@RequestMapping("users")
 public class UserController {
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
 
