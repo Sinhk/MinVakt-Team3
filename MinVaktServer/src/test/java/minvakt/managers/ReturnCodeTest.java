@@ -8,6 +8,7 @@ import static org.junit.Assert.*;
 /**
  * Created by magnu on 11.01.2017.
  */
+@Deprecated
 public class ReturnCodeTest {
     @Before
     public void setUp() throws Exception {

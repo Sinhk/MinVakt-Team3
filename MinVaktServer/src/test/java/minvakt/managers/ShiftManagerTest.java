@@ -21,6 +21,7 @@ import static org.mockito.Mockito.when;
 /**
  * Created by magnu on 09.01.2017.
  */
+@Deprecated
 public class ShiftManagerTest {
     ShiftManager shiftManager;
     UserManager userManager;
@@ -35,8 +36,8 @@ public class ShiftManagerTest {
     LocalDate date2;
 
 
-/*
 
+/*
     @Before
     public void setUp() throws Exception {
         shiftManager = mock(ShiftManager.class);
@@ -117,7 +118,6 @@ public class ShiftManagerTest {
         assertEquals(true, shiftManager.isValidForShift(ole,per,shift2));
 
     }
+
 */
-
-
 }
