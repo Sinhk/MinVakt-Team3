@@ -1,16 +1,19 @@
 package minvakt.controller;
 
 import minvakt.controller.data.ChangePasswordInfo;
+import minvakt.controller.data.TwoStringsData;
 import minvakt.datamodel.Shift;
 import minvakt.datamodel.User;
 import minvakt.repos.ShiftRepository;
 import minvakt.repos.UserRepository;
+import minvakt.util.TimeUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.ws.rs.core.Response;
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -122,6 +125,27 @@ public class UserController {
 
         return (user != null) ? user.getShiftsForUser() : Collections.emptyList();
 
+    }
+
+    @RequestMapping("/{user_id}/shifts/inrange")
+    @GetMapping
+    public Collection<Shift> getShiftsForUserInRange(@PathVariable String user_id, @RequestBody TwoStringsData stringsData){
+
+        String startDate = stringsData.getString1();
+        String endDate = stringsData.getString2();
+
+        LocalDate start = TimeUtil.parseBadlyFormattedTime(startDate);
+        LocalDate end = TimeUtil.parseBadlyFormattedTime(endDate);
+
+        User user = userRepo.findOne(Integer.valueOf(user_id));
+
+        if (user != null){
+
+            return user.getShiftsInRange(start, end);
+
+        }
+
+        return Collections.emptyList();
     }
 
 
