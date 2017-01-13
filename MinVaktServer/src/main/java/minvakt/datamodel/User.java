@@ -3,6 +3,7 @@ package minvakt.datamodel;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import minvakt.datamodel.enums.EmployeeType;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -80,7 +81,6 @@ public class User implements Serializable {
     }
 
 
-
     public EmployeeType getEmployeeType() {
         return employeeType;
     }
@@ -142,14 +142,33 @@ public class User implements Serializable {
 
     }
 
-    public void addShiftToUser(Shift shift){
+    public boolean addShiftToUser(Shift shift){
 
-        shiftCollection.add(shift);
+        return shiftCollection.add(shift);
 
     }
-    public void removeShift(Shift shift){
+    public boolean removeShift(Shift shift){
 
-        shiftCollection.remove(shift);
+        return shiftCollection.remove(shift);
+    }
+    public boolean authenticatePassword(String attempt){
+
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
+        return encoder.matches(attempt, password);
+
+    }
+
+    public boolean changePassword(String oldPass, String newPass){
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
+        if (authenticatePassword(oldPass)){
+
+            setPassword(encoder.encode(newPass));
+            return true;
+        }
+
+        return false;
     }
 
 }

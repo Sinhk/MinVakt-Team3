@@ -8,8 +8,6 @@ import java.time.LocalDate;
 
 public interface ShiftRepository extends CrudRepository<Shift, Integer> {
 
-    //Page<UserEntity> findAll(Pageable pageable);
-
     Shift findBy(LocalDate date, PredeterminedIntervals interval);
 
 }

@@ -79,10 +79,12 @@ public class Shift {
         return userCollection;
     }
 
-    public void changeShiftFromUserToUser(User from, User to){
+    public boolean changeShiftFromUserToUser(User from, User to){
 
-        userCollection.remove(from);
-        userCollection.add(to);
+        boolean remove = userCollection.remove(from);
+        boolean add = userCollection.add(to);
+
+        return remove && add;
     }
 
     /*public User getResponsibleForShift(){

@@ -3,13 +3,14 @@ package minvakt.controller;
 import minvakt.controller.data.TwoUsersData;
 import minvakt.datamodel.Shift;
 import minvakt.datamodel.User;
-import minvakt.managers.ShiftManager;
 import minvakt.repos.ShiftRepository;
 import minvakt.repos.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.ws.rs.core.Response;
 
 /**
  * Created by magnu on 11.01.2017.
@@ -25,8 +26,6 @@ public class ShiftController {
     private UserRepository userRepo;
 
 
-    ShiftManager manager = ShiftManager.getInstance();
-
     @Autowired
     public ShiftController(ShiftRepository shiftRepo, UserRepository userRepo) {
 
@@ -35,9 +34,11 @@ public class ShiftController {
     }
 
     @PostMapping
-    public void addShift(@RequestBody Shift shift){
+    public Response addShift(@RequestBody Shift shift){
 
         shiftRepo.save(shift);
+
+        return Response.ok().build();
 
     }
     @GetMapping
@@ -56,7 +57,7 @@ public class ShiftController {
 
     @PutMapping
     @RequestMapping("/{shift_id}")
-    public void changeShiftFromUserToUser(@RequestParam(value = "shift_id") String shift_id, @RequestBody TwoUsersData usersData){
+    public Response changeShiftFromUserToUser(@PathVariable String shift_id, @RequestBody TwoUsersData usersData){
 
         User firstUser = userRepo.findOne(Integer.valueOf(usersData.getUserId1()));
 
@@ -64,9 +65,11 @@ public class ShiftController {
 
         Shift shift = shiftRepo.findOne(Integer.valueOf(shift_id));
 
-        shift.changeShiftFromUserToUser(firstUser, secondUser);
+        if (firstUser != null && secondUser != null && shift != null)
+            return shift.changeShiftFromUserToUser(firstUser, secondUser) ? Response.ok().build() : Response.notModified().build();
 
-        ShiftManager.getInstance().changeShiftFromUserToUser(shift, firstUser, secondUser);
+        return Response.noContent().build();
+
     }
 
 
