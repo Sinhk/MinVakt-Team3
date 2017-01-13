@@ -2,7 +2,6 @@ package minvakt;
 
 import minvakt.datamodel.Shift;
 import minvakt.datamodel.User;
-import minvakt.datamodel.UserShiftInfo;
 import minvakt.datamodel.enums.EmployeeType;
 import minvakt.datamodel.enums.PredeterminedIntervals;
 import minvakt.datamodel.enums.ShiftType;
@@ -43,17 +42,18 @@ public class Application {
             shiftRepo.save(new Shift(now, PredeterminedIntervals.MORNING, ShiftType.AVAILABLE));
             Shift shift = new Shift(now, PredeterminedIntervals.NIGHT, ShiftType.AVAILABLE);
             shiftRepo.save(shift);
-            //shift.getUsers().add(user);
+            shift.getUsers().add(user);
 
-            UserShiftInfo info = new UserShiftInfo(user, shift);
-            usRepo.save(info);
+
+            /*UserShiftInfo info = new UserShiftInfo(user, shift);
+            usRepo.save(info);*/
 
 
             Shift one = shiftRepo.findOne(shift.getShiftId());
+            one.getUsers().add(userRepo.findOne(1));
 
-            /*one.getUsers().add(userRepo.findOne(1));
-            */
-            log.info("Shift {},Users {}", one, one.getUsers().toArray()[0]);
+            user.addShiftToUser(shift);
+            log.info("Shift {},Users {}", one, one.getUsers());
 
             // fetch all customers
             log.info("Customers found with findAll():");
@@ -63,6 +63,14 @@ public class Application {
             }
             log.info("");
 
+            /*shift.getUsers().forEach(
+                    user1 -> log.info(user1.toString())
+            );*/
+
+            log.info("Printing shift with users");
+            shiftRepo.findAll().forEach(shift1 -> shift1.getUsers().forEach(
+                    user1 -> log.info(user1.toString()+" has shift "+shift1)
+            ));
             /*// fetch an individual customer by ID
             Customer customer = repository.findOne(1L);
             log.info("Customer found with findOne(1L):");

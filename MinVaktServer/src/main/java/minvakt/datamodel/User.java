@@ -40,7 +40,7 @@ public class User implements Serializable {
 
     @Column(nullable = false)
     @JsonIgnore
-    private String password; // Spring Security will hash and salt
+    private String password = "ost"; // Spring Security will hash and salt
 
     @Column(name = "user_type_id", nullable = false)
     private EmployeeType employeeType = EmployeeType.ASSISTENT;

@@ -43,8 +43,11 @@ public class Shift {
         Objects.requireNonNull(startDate);
         Objects.requireNonNull(interval);
 
+        System.out.println(startDate +" - "+interval);
+
         LocalDateTime startDateTime = LocalDateTime.of(startDate, interval.getInterval().getTimeStart());
         LocalDateTime endDateTime = startDateTime.plus(interval.getInterval().getDuration());
+
 
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;

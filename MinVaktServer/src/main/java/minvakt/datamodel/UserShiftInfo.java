@@ -14,6 +14,9 @@ import javax.persistence.*;
 public class UserShiftInfo {
 
     @Id
+    private UserShiftInfoId id = new UserShiftInfoId();
+
+    @Id
     @ManyToOne(cascade = {CascadeType.MERGE})
     @JoinColumn(name = "user_id")
     private User user;
@@ -73,5 +76,13 @@ public class UserShiftInfo {
 
     public boolean isResponsible() {
         return responsible;
+    }
+
+    public UserShiftInfoId getId() {
+        return id;
+    }
+
+    public void setId(UserShiftInfoId id) {
+        this.id = id;
     }
 }
