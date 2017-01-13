@@ -1,39 +1,18 @@
 $("#addShiftToUser").click(function () {
 
-    var email = $("#email").val();
-    var psw = $("#psw").val();
-    var tlf = $("#tlf").val();
-    var prcnt = $("#percentage").val();
-    var date = $("#date").val();
-    var preInter = $("#preInter").val();
 
-    console.log(email+" - "+psw+" - "+tlf+" - "+prcnt);
-    console.log(JSON.stringify({
-        "email": email,
-        "password": psw,
-        "tlf":tlf,
-        "positionPercentage":prcnt
-    }));
+    var userId = $("#userId").val();
+    var shiftId = $("#shiftId").val();
 
-    console.log(date+" - "+preInter);
-    console.log(JSON.stringify({
-        "date": date,
-        "preInter": preInter,
-    }));
+    console.log(userId+" - "+shiftId);
 
     $.ajax({
-        url: "users/addShiftToUser",
+        url: "users/"+userId+"/shifts/"+shiftId,
         type: "POST",
         contentType: "application/json",
         data: JSON.stringify({
-            "email": email,
-            "password": psw,
-            "tlf":tlf,
-            "positionPercentage":prcnt
-        }),
-        data1: JSON.stringify({
-            "date": date,
-            "preInter": preInter,
+            "userId": userId,
+            "shiftId": shiftId,
         }),
         /*beforeSend: function(x) {
          x.setRequestHeader('Authorization', 'Bearer ' );

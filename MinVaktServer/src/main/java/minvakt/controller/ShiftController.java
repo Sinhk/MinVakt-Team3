@@ -1,5 +1,6 @@
 package minvakt.controller;
 
+import minvakt.controller.data.DateWrapper;
 import minvakt.controller.data.TwoUsersData;
 import minvakt.datamodel.Shift;
 import minvakt.datamodel.User;
@@ -34,8 +35,8 @@ public class ShiftController {
     }
 
     @PostMapping
-    public Response addShift(@RequestBody Shift shift){
-
+    public Response addShift(@RequestBody DateWrapper info){
+        Shift shift = info.toShift();
         shiftRepo.save(shift);
 
         return Response.ok().build();
@@ -71,11 +72,5 @@ public class ShiftController {
         return Response.noContent().build();
 
     }
-
-
-
-
-
-
 }
 
