@@ -133,7 +133,7 @@ public class SpringWebConfig
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/login").setViewName("login");
         registry.addViewController("/employee").setViewName("employee");
-        registry.addViewController("/").setViewName("employee");
+        registry.addViewController("/timeSheet").setViewName("timeSheet");
         registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
     }
 
