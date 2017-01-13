@@ -53,7 +53,7 @@ public class Application {
 
             /*one.getUsers().add(userRepo.findOne(1));
             */
-            log.info("Shift {},Users {}", one, one.getUsers());
+            log.info("Shift {},Users {}", one, one.getUsers().toArray()[0]);
 
             // fetch all customers
             log.info("Customers found with findAll():");

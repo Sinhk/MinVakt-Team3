@@ -123,7 +123,7 @@ public class UserController {
 
         User user = userRepo.findOne(Integer.valueOf(userId));
 
-        return (user != null) ? user.getShiftsForUser() : Collections.emptyList();
+        return (user != null) ? user.getShifts() : Collections.emptyList();
 
     }
 
@@ -141,7 +141,7 @@ public class UserController {
 
         if (user != null){
 
-            return user.getShiftsInRange(start, end);
+            return user.shiftsInRange(start, end);
 
         }
 
@@ -158,7 +158,8 @@ public class UserController {
 
         Shift shift = shiftRepo.findOne(Integer.valueOf(shiftId));
 
-        if (user != null && shift != null) return user.getShiftsForUser().add(shift) ? Response.ok().build() : Response.notModified().build();
+        if (user != null && shift != null)
+            return user.getShifts().add(shift) ? Response.ok().build() : Response.notModified().build();
 
         return Response.noContent().build();
     }

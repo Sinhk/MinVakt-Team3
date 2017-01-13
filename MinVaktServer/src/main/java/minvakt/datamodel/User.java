@@ -138,10 +138,11 @@ public class User implements Serializable {
                 '}';
     }
 
-    @OneToMany(mappedBy = "user", targetEntity = UserShiftInfo.class)
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", targetEntity = UserShiftInfo.class, fetch = FetchType.EAGER)
     private Set<Shift> shifts = new HashSet<>();
 
-    public Set<Shift> getShiftsForUser() {
+    public Set<Shift> getShifts() {
 
         return shifts;
 
@@ -176,9 +177,9 @@ public class User implements Serializable {
         return false;
     }
 
-    public Collection<Shift> getShiftsInRange(LocalDate start, LocalDate end){
+    public Collection<Shift> shiftsInRange(LocalDate start, LocalDate end) {
 
-        Collection<Shift> shiftsForUser = getShiftsForUser();
+        Collection<Shift> shiftsForUser = getShifts();
 
         List<Shift> collect = shiftsForUser
                 .stream()

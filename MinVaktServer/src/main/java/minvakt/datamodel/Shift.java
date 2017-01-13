@@ -1,8 +1,8 @@
 package minvakt.datamodel;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import minvakt.datamodel.enums.PredeterminedIntervals;
 import minvakt.datamodel.enums.ShiftType;
-import minvakt.util.TimeInterval;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -62,7 +62,6 @@ public class Shift {
         return endDateTime;
     }
     public ShiftType getShiftType() { return shiftType; }
-    public TimeInterval getTimeInterval(){return new TimeInterval(startDateTime, endDateTime);}
 
     public void setShiftType(ShiftType shiftType) { this.shiftType = shiftType; }
 
@@ -74,6 +73,7 @@ public class Shift {
     }
 
 
+    @JsonIgnore
     @OneToMany(mappedBy = "shift", targetEntity = UserShiftInfo.class, fetch = FetchType.EAGER)
     private Set<User> users = new HashSet<>();
 
