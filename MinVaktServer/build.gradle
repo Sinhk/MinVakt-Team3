@@ -51,6 +51,10 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-security')
     //compile('org.springframework.boot:spring-boot-starter-actuator')
 
+    compile 'org.hibernate:hibernate-java8:5.+'
+    compile 'org.hibernate:hibernate-core:5.+'
+    compile 'org.hibernate:hibernate-entitymanager:5.+'
+
     compile "org.thymeleaf:thymeleaf:3.0.+"
     compile "org.thymeleaf:thymeleaf-spring4:3.0.+"
     compile "org.thymeleaf.extras:thymeleaf-extras-springsecurity4:3.0.+"
