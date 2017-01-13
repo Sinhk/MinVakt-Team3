@@ -10,22 +10,6 @@ public class UserShiftInfoId implements Serializable {
     private int user;
     private int shift;
 
-    public int getUser() {
-        return user;
-    }
-
-    public void setUser(int user) {
-        this.user = user;
-    }
-
-    public int getShift() {
-        return shift;
-    }
-
-    public void setShift(int shift) {
-        this.shift = shift;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

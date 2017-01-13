@@ -51,7 +51,7 @@ public class SpringWebConfig
         registry.addResourceHandler("/images/**").addResourceLocations("/static/images/");
         registry.addResourceHandler("/css/**").addResourceLocations("/static/css/");
         registry.addResourceHandler("/js/**").addResourceLocations("/static/js/");
-        registry.addResourceHandler("/**").addResourceLocations("/static/");
+        registry.addResourceHandler("/test/**").addResourceLocations("/static/test/");
     }
 
     /*
