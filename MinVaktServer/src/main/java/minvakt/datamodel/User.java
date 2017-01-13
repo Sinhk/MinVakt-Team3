@@ -142,16 +142,21 @@ public class User implements Serializable {
 
     public Collection<Shift> getShiftsForUser(){
 
-        userInfoCollection.forEach(userShiftInfo -> {
+        /*userInfoCollection.forEach(userShiftInfo -> {
             if (!shiftCollection.contains(userShiftInfo.getShift())){
                 shiftCollection.add(userShiftInfo.getShift());
 
             }
-        });
+        });*/
 
         return shiftCollection;
 
     }
+    /*@OneToMany
+    @JoinTable(name = "Users_Shifts",
+            joinColumns = { @JoinColumn(name = "user_id"), @JoinColumn(name = "shift_id")})
+    private Collection<UserShiftInfo> userInfoCollection = new ArrayList<>();
+*/
 
     public boolean addShiftToUser(Shift shift){
 

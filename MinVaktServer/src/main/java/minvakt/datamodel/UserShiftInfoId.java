@@ -27,4 +27,20 @@ public class UserShiftInfoId implements Serializable {
         result = 31 * result + shift;
         return result;
     }
+
+    public int getUser() {
+        return user;
+    }
+
+    public int getShift() {
+        return shift;
+    }
+
+    public void setUser(int user) {
+        this.user = user;
+    }
+
+    public void setShift(int shift) {
+        this.shift = shift;
+    }
 }

@@ -77,16 +77,21 @@ public class Shift {
 
     public Collection<User> getUsers(){
 
-        userInfoCollection.forEach(userShiftInfo -> {
+        /*userInfoCollection.forEach(userShiftInfo -> {
 
             if (!userCollection.contains(userShiftInfo.getUser())) {
                 userCollection.add(userShiftInfo.getUser());
             }
-        });
+        });*/
 
         return userCollection;
     }
 
+    /*@OneToMany
+    @JoinTable(name = "Users_Shifts",
+            joinColumns = { @JoinColumn(name = "shift_id"), @JoinColumn(name = "user_id")})
+    private Collection<UserShiftInfo> userInfoCollection = new ArrayList<>();
+*/
     public boolean changeShiftFromUserToUser(User from, User to){
 
         boolean remove = userCollection.remove(from);
