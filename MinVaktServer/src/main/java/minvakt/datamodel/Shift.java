@@ -27,9 +27,6 @@ public class Shift {
     @Transient
     private PredeterminedIntervals interval;
 
-    @Transient
-    private boolean responsible;
-
     private ShiftType shiftType = ShiftType.AVAILABLE;
 
     private String comment;
@@ -62,13 +59,9 @@ public class Shift {
         return endDateTime;
     }
     public PredeterminedIntervals getPredeterminedInterval() {return interval;}
-    public boolean isResponsible() {
-        return responsible;
-    }
     public ShiftType getShiftType() { return shiftType; }
     public TimeInterval getTimeInterval(){return new TimeInterval(startDateTime, endDateTime);}
 
-    public void setResponsible(boolean responsible) { this.responsible = responsible; }
     public void setShiftType(ShiftType shiftType) { this.shiftType = shiftType; }
 
     public String getComment() { return comment; }
@@ -79,18 +72,23 @@ public class Shift {
     }
 
 
-
-    @ManyToMany(mappedBy = "shiftCollection")
+    @OneToMany(mappedBy = "shift")
     private Collection<User> userCollection = new ArrayList<>();
 
     public Collection<User> getUsers(){
         return userCollection;
     }
 
-    public void changeShiftFromUserToUser(Shift shift, User from, User to){
+    public void changeShiftFromUserToUser(User from, User to){
 
         userCollection.remove(from);
         userCollection.add(to);
     }
+
+    /*public User getResponsibleForShift(){
+
+        Collection<User> users = getUsers();
+
+    }*/
 
 }

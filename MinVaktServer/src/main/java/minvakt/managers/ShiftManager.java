@@ -12,6 +12,7 @@ import java.util.*;
 /**
  * Created by OlavH on 09-Jan-17.
  */
+@Deprecated
 public class ShiftManager {
 
     private static final int MAX_MINUTES = 2400; // 60*8*5
@@ -40,7 +41,7 @@ public class ShiftManager {
     private boolean userHasShift(User user, Shift shift){
         return containsNonEmptyUser(user) && userShiftMap.get(user).contains(shift);
     }
-
+    @Deprecated // in UserController
     public ReturnCode addShiftToUser(User user, Shift shift){
         Objects.requireNonNull(user); Objects.requireNonNull(shift);
 
@@ -63,7 +64,7 @@ public class ShiftManager {
         shifts.add(shift);
         return ReturnCode.OK;
     }
-
+    @Deprecated // in Shift
     public ReturnCode changeShiftFromUserToUser(Shift fromShift, User fromUser, User toUser){
         Objects.requireNonNull(fromShift); Objects.requireNonNull(toUser); Objects.requireNonNull(fromUser);
 
@@ -103,7 +104,7 @@ public class ShiftManager {
 
         return ReturnCode.OK;
     }
-
+    @Deprecated // in UserController
     public ReturnCode removeShiftFromUser(User user, Shift shift){
         Objects.requireNonNull(user); Objects.requireNonNull(shift);
 
@@ -113,7 +114,7 @@ public class ShiftManager {
         return ReturnCode.OK;
 
     }
-    // UserController
+    @Deprecated // UserController
     public List<Shift> getShiftsForUser(User user){
         Objects.requireNonNull(user);
 
@@ -128,15 +129,12 @@ public class ShiftManager {
      * @param to Ecxlusive
      * @return
      */
-    public int getMinutesForUsersInInterval(User user, LocalDate from, LocalDate to){
+    public static int getMinutesForUsersInInterval(User user, LocalDate from, LocalDate to, List<Shift> shiftList){
         Objects.requireNonNull(user); Objects.requireNonNull(from); Objects.requireNonNull(to);
 
-        if (!containsNonEmptyUser(user)) return 0;
-
         int total = 0;
-        List<Shift> shiftsForUser = getShiftsForUser(user);
 
-        for (Shift shift : shiftsForUser) {
+        for (Shift shift : shiftList) {
 
             if (TimeUtil.isInDateInterval(from, to, shift.getStartDateTime().toLocalDate()) && shift.getShiftType() != ShiftType.ERROR){
 
@@ -147,12 +145,12 @@ public class ShiftManager {
 
         return total;
     }
-    public int getMinutesForWeek(User user, LocalDate dateInThatWeek){
+    public static int getMinutesForWeek(User user, LocalDate dateInThatWeek, List<Shift> shiftList){
         Objects.requireNonNull(user); Objects.requireNonNull(dateInThatWeek);
 
         WeekDateInterval thatWeek = WeekDateInterval.of(dateInThatWeek); // that week
 
-        return getMinutesForUsersInInterval(user, thatWeek.getStart(), thatWeek.getEnd());
+        return getMinutesForUsersInInterval(user, thatWeek.getStart(), thatWeek.getEnd(), shiftList);
 
     }
 
@@ -162,16 +160,15 @@ public class ShiftManager {
      * @param shift This shift in question
      * @return true if the user can replace the other user. Type must be the same, the user must have an availible shift
      */
-    public boolean isValidForShift(User userToReplace, User userReplacement, Shift shift){
+    public static boolean isValidForShift(User userToReplace, User userReplacement, Shift shift, List<Shift> shiftsForReplacement){
 
         if (userToReplace.getEmployeeType() != userReplacement.getEmployeeType()) return false;
 
-        if (getMinutesForWeek(userReplacement, shift.getStartDateTime().toLocalDate())+shift.getTimeInterval().getMinutes() > MAX_MINUTES)
+        if (getMinutesForWeek(userReplacement, shift.getStartDateTime().toLocalDate(),shiftsForReplacement)+shift.getTimeInterval().getMinutes() > MAX_MINUTES)
             return false;
 
-        List<Shift> shiftsForUser = getShiftsForUser(userReplacement);
 
-        for (Shift shift1 : shiftsForUser) {
+        for (Shift shift1 : shiftsForReplacement) {
 
             if (shift1.getStartDateTime().isEqual(shift.getStartDateTime()))
             if (shift1.getStartDateTime().toLocalDate().isEqual(shift.getStartDateTime().toLocalDate())

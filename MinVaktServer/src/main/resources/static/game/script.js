@@ -9,8 +9,6 @@ $(document).ready(function () {
     var docHeight = $(window).innerHeight()-100;
     var docWidth = $(window).innerWidth()-100;
 
-    var randomNumber = Math.random();
-
     //$("#view").fadeOut();
 
     $("#square").hover(function () {
@@ -21,7 +19,7 @@ $(document).ready(function () {
         $(this).animate( {
             top: randHeight,
             left: randWidth
-        },{queue: false, duration: 1000});
+        },{queue: false, duration: 1000/Math.sqrt(randWidth*randWidth+randWidth*randWidth)});
         // $(this).fadeIn(500);
     },function (){});
 

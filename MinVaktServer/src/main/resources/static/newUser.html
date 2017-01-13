@@ -1,75 +1,88 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <link rel="stylesheet" type="text/css" href="css/newUser.css">
-    <!--Import Google Icon Font-->
-    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <!--Import materialize.css-->
-    <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
-
-    <!--Let browser know website is optimized for mobile-->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+    <title>Materialize - Codepen</title>
+    <!-- CSS  -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.95.3/css/materialize.min.css" type="text/css"
+          rel="stylesheet" media="screen,projection"/>
 </head>
-
 <body>
-<script src = "newUser.js"></script>
-
-<h1>Legg til bruker:</h1>
-
-<form>
-    <div class="group">
-        <input id="first_name" type="text"><span class="validate"></span><span class="highlight"></span>
-        <label for="first_name">Fornavn</label>
-    </div>
-    <div class="group">
-        <input id="last_name" type="text"><span class="validate"></span><span class = "highlight"></span>
-        <label for="last_name">Etternavn</label>
-    </div>
-    <div class="group">
-        <input id ="email" type="text"><span class="validate"></span><span class="highlight"></span>
-        <label for="email">E-postadresse</label>
-    </div>
-    <div class="group">
-        <input id="password" type="password"><span class="validate"></span><span class = "highlight"></span>
-        <label for="password">Passord</label>
-    </div>
-    <div class="group">
-        <input id="phone" type="phone" class="validate">
-        <label for="phone">Telefon</label>
-    </div>
-    <div class="group">
-        <input id="positionPercentage" type="positionPercentage" class="validate">
-        <label for="positionPercentage">Stillingsprosent</label>
-    </div>
-
-<div class="group">
-    <select>
-        <option value="" disabled selected>Velg stillingen</option>
-        <option value="1">Sykepleier</option>
-        <option value="2">Helsefagarbeider</option>
-        <option value="3">Assistent</option>
-    </select>
-    <label>Stilling</label>
+<div class="header blue-text">
+    <h1>Opprett ny bruker</h1>
 </div>
 
-    <button type="button" class="button buttonBlue">Opprett bruker
-        <div class="ripplesCircle"><span class="ripplesCircle"></span></div>
-    </button>
 
-</form>
+<!--
+<div class="logo offset-s6">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <i class="large material-icons">perm_identity</i>
+</div>-->
 
 
+<div class="row">
+    <form class="col s12">
+        <div class="row">
+            <div class="input-field col s6">
+                <input id="first_name" type="text" class="validate">
+                <label for="first_name">Fornavn</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s6">
+                <input id="last_name" type="text" class="validate">
+                <label for="last_name">Etternavn</label>
+            </div>
+        </div>
 
-<!--Import jQuery before materialize.js-->
-<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-<script type="text/javascript" src="js/materialize.min.js"></script>
+        <div class="row">
+            <div class="input-field col s6">
+                <input id="password" type="password" class="validate">
+                <label for="password">Passord</label>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="input-field col s6">
+                <input id="email" type="text" class="validate">
+                <label for="email">E-postadresse</label>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="input-field col s6">
+                <input id="phone" type="text" class="validate">
+                <label for="phone">Telefon</label>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="input-field col s6">
+                <input id="positionPercentage" type="text" class="validate">
+                <label for="positionPercentage">Stillingsprosent</label>
+            </div>
+        </div>
+
+
+        <!--<div class="row">-->
+        <!-- Dropdown Trigger -->
+        <a class='dropdown-button btn' href='#' data-activates='dropdown1'>Velg stilling</a>
+
+        <!-- Dropdown Structure -->
+        <ul id='dropdown1' class='dropdown-content'>
+            <li><a href="#!">Sykepleier</a></li>
+            <li><a href="#!">Helsefagarbeider</a></li>
+            <li><a href="#!">Assistent</a></li>
+        </ul>
+        <!--</div>-->
+
+        <div class="row">
+            <a class="waves-effect waves-light btn">Opprett bruker</a>
+        </div>
+    </form>
+</div>
+<script src="https://code.jquery.com/jquery-2.1.2.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.95.3/js/materialize.min.js"></script>
 </body>
 </html>
-
-
-
-
-
-
-
-

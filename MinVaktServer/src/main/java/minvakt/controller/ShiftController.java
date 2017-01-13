@@ -3,7 +3,6 @@ package minvakt.controller;
 import minvakt.controller.data.TwoUsersData;
 import minvakt.datamodel.Shift;
 import minvakt.datamodel.User;
-import minvakt.managers.ReturnCode;
 import minvakt.managers.ShiftManager;
 import minvakt.repos.ShiftRepository;
 import minvakt.repos.UserRepository;
@@ -36,10 +35,14 @@ public class ShiftController {
     }
 
     @PostMapping
-    public ReturnCode addShiftToUser(@RequestBody User user, Shift shift) {
-        System.out.println("Adding shift to user: "+ user);
+    public void addShift(@RequestBody Shift shift){
 
-        return manager.addShiftToUser(user,shift);
+        shiftRepo.save(shift);
+
+    }
+    @GetMapping
+    public Iterable<Shift> getShifts(){
+        return shiftRepo.findAll();
     }
 
     /*@PostMapping
@@ -49,12 +52,7 @@ public class ShiftController {
         return manager.changeShiftFromUserToUser(shift,fromUser,toUser);
     }*/
 
-    @DeleteMapping
-    public ReturnCode removeShiftFromUser (@RequestBody User user, Shift shift) {
-        System.out.println("Removing shift from user: "+ user);
 
-        return manager.removeShiftFromUser(user, shift);
-    }
 
     @PutMapping
     @RequestMapping("/{shift_id}")
@@ -65,6 +63,8 @@ public class ShiftController {
         User secondUser = userRepo.findOne(Integer.valueOf(usersData.getUserId2()));
 
         Shift shift = shiftRepo.findOne(Integer.valueOf(shift_id));
+
+        shift.changeShiftFromUserToUser(firstUser, secondUser);
 
         ShiftManager.getInstance().changeShiftFromUserToUser(shift, firstUser, secondUser);
     }
