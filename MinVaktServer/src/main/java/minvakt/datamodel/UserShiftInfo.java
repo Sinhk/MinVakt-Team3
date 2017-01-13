@@ -23,7 +23,7 @@ public class UserShiftInfo {
     @JoinColumn(name = "shift_id")
     private Shift shift;
 
-    @Column(name = "resopnsible", nullable = false)
+    @Column(name = "responsible", nullable = false)
     private boolean responsible;
 
     @Column
