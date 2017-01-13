@@ -9,9 +9,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -138,34 +139,22 @@ public class User implements Serializable {
     }
 
     @OneToMany(mappedBy = "user", targetEntity = UserShiftInfo.class)
-    private Collection<Shift> shiftCollection = new ArrayList<>();
+    private Set<Shift> shifts = new HashSet<>();
 
-    public Collection<Shift> getShiftsForUser(){
+    public Set<Shift> getShiftsForUser() {
 
-        /*userInfoCollection.forEach(userShiftInfo -> {
-            if (!shiftCollection.contains(userShiftInfo.getShift())){
-                shiftCollection.add(userShiftInfo.getShift());
-
-            }
-        });*/
-
-        return shiftCollection;
+        return shifts;
 
     }
-    /*@OneToMany
-    @JoinTable(name = "Users_Shifts",
-            joinColumns = { @JoinColumn(name = "user_id"), @JoinColumn(name = "shift_id")})
-    private Collection<UserShiftInfo> userInfoCollection = new ArrayList<>();
-*/
 
     public boolean addShiftToUser(Shift shift){
 
-        return shiftCollection.add(shift);
+        return shifts.add(shift);
 
     }
     public boolean removeShift(Shift shift){
 
-        return shiftCollection.remove(shift);
+        return shifts.remove(shift);
     }
     public boolean authenticatePassword(String attempt){
 

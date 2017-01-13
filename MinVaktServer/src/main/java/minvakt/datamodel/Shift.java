@@ -5,10 +5,11 @@ import minvakt.datamodel.enums.ShiftType;
 import minvakt.util.TimeInterval;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 public class Shift {
@@ -24,9 +25,6 @@ public class Shift {
     @Column(nullable = false)
     private LocalDateTime endDateTime;
 
-    @Transient
-    private PredeterminedIntervals interval;
-
     private ShiftType shiftType = ShiftType.AVAILABLE;
 
     private String comment;
@@ -40,14 +38,19 @@ public class Shift {
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
     }
-    public Shift(LocalDateTime startDateTime, PredeterminedIntervals interval){
-        Objects.requireNonNull(startDateTime); Objects.requireNonNull(interval);
+
+    public Shift(LocalDate startDate, PredeterminedIntervals interval) {
+        Objects.requireNonNull(startDate);
+        Objects.requireNonNull(interval);
+
+        LocalDateTime startDateTime = LocalDateTime.of(startDate, interval.getInterval().getTimeStart());
+        LocalDateTime endDateTime = startDateTime.plus(interval.getInterval().getDuration());
 
         this.startDateTime = startDateTime;
-        this.interval = interval;
+        this.endDateTime = endDateTime;
     }
 
-    public Shift(LocalDateTime date, PredeterminedIntervals intervals, ShiftType type) {
+    public Shift(LocalDate date, PredeterminedIntervals intervals, ShiftType type) {
         this(date, intervals);
         this.shiftType = type;
     }
@@ -58,7 +61,6 @@ public class Shift {
     public LocalDateTime getEndDateTime() {
         return endDateTime;
     }
-    public PredeterminedIntervals getPredeterminedInterval() {return interval;}
     public ShiftType getShiftType() { return shiftType; }
     public TimeInterval getTimeInterval(){return new TimeInterval(startDateTime, endDateTime);}
 
@@ -72,32 +74,23 @@ public class Shift {
     }
 
 
-    @OneToMany(mappedBy = "shift", targetEntity = UserShiftInfo.class)
-    private Collection<User> userCollection = new ArrayList<>();
+    @OneToMany(mappedBy = "shift", targetEntity = UserShiftInfo.class, fetch = FetchType.EAGER)
+    private Set<User> users = new HashSet<>();
 
-    public Collection<User> getUsers(){
-
-        /*userInfoCollection.forEach(userShiftInfo -> {
-
-            if (!userCollection.contains(userShiftInfo.getUser())) {
-                userCollection.add(userShiftInfo.getUser());
-            }
-        });*/
-
-        return userCollection;
+    public Set<User> getUsers() {
+        return users;
     }
 
-    /*@OneToMany
-    @JoinTable(name = "Users_Shifts",
-            joinColumns = { @JoinColumn(name = "shift_id"), @JoinColumn(name = "user_id")})
-    private Collection<UserShiftInfo> userInfoCollection = new ArrayList<>();
-*/
     public boolean changeShiftFromUserToUser(User from, User to){
 
-        boolean remove = userCollection.remove(from);
-        boolean add = userCollection.add(to);
+        boolean remove = users.remove(from);
+        boolean add = users.add(to);
 
         return remove && add;
+    }
+
+    public int getShiftId() {
+        return shiftId;
     }
 
     /*public User getResponsibleForShift(){

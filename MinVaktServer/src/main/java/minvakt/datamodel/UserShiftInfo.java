@@ -1,5 +1,7 @@
 package minvakt.datamodel;
 
+import minvakt.datamodel.enums.ShiftType;
+
 import javax.persistence.*;
 
 /**
@@ -12,40 +14,35 @@ import javax.persistence.*;
 public class UserShiftInfo {
 
     @Id
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.MERGE})
     @JoinColumn(name = "user_id")
-    //@JoinTable(name = "users")
     private User user;
 
     @Id
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.MERGE})
     @JoinColumn(name = "shift_id")
-    //@JoinTable(name = "shifts")
     private Shift shift;
-    @Id
-    private UserShiftInfoId id = new UserShiftInfoId();
 
-    @Column(name = "responsible")
+    @Column(name = "resopnsible", nullable = false)
     private boolean responsible;
 
     @Column
-    private int shiftType;
+    private ShiftType shiftType;
 
     public UserShiftInfo() {
     }
 
-    public UserShiftInfoId getId() {
-        return id;
-    }
-    public void setId(UserShiftInfoId id) {
-        this.id = id;
+    public UserShiftInfo(User user, Shift shift) {
+        this.user = user;
+        this.shift = shift;
+        responsible = false;
     }
 
     public boolean getResponsible() {
         return responsible;
     }
 
-    public int getShiftType() {
+    public ShiftType getShiftType() {
         return shiftType;
     }
 
@@ -54,24 +51,24 @@ public class UserShiftInfo {
         responsible = resp;
     }
 
-    public void setShiftType(int shift) {
+    public void setShiftType(ShiftType shift) {
         shiftType = shift;
     }
 
-    public int getUser() {
-        return id.getUser();
+    public User getUser() {
+        return user;
     }
 
-    public void setUser(int user) {
-        this.id.setUser(user);
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public int getShift() {
-        return id.getShift();
+    public Shift getShift() {
+        return shift;
     }
 
-    public void setShift(int shift) {
-        this.id.setUser(shift);
+    public void setShift(Shift shift) {
+        this.shift = shift;
     }
 
     public boolean isResponsible() {
