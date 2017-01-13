@@ -6,81 +6,77 @@
     <title>Materialize - Codepen</title>
     <!-- CSS  -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.95.3/css/materialize.min.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+    <link rel="stylesheet" type="text/css" href="css/newUser.css">
 </head>
+
 <body>
-<div class="header blue-text" >
-<h1>Opprett ny bruker</h1>
-</div>
-
-
-<!--
-<div class="logo offset-s6">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <i class="large material-icons">perm_identity</i>
-</div>-->
-
 
 <div class="row">
-    <form class="col s12">
+    <a class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">add</i></a>
+    <div class="col s12">
+        <h2>Legg til bruker</h2>
         <div class="row">
-            <div class="input-field col s6">
+            <div class="input-field col s5">
                 <input id="first_name" type="text" class="validate">
                 <label for="first_name">Fornavn</label>
             </div>
             </div>
         <div class="row">
-            <div class="input-field col s6">
+            <div class="input-field col s5">
                 <input id="last_name" type="text" class="validate">
                 <label for="last_name">Etternavn</label>
             </div>
         </div>
 
         <div class="row">
-            <div class="input-field col s6">
-                <input id="password" type="password" class="validate">
+            <div class="input-field col s5">
+                <input id="password" type="text" class="validate">
                 <label for="password">Passord</label>
             </div>
         </div>
 
         <div class="row">
-            <div class="input-field col s6">
+            <div class="input-field col s5">
                 <input id="email" type="text" class="validate">
                 <label for="email">E-postadresse</label>
             </div>
         </div>
 
         <div class="row">
-            <div class="input-field col s6">
+            <div class="input-field col s5">
                 <input id="phone" type="text" class="validate">
                 <label for="phone">Telefon</label>
             </div>
         </div>
 
         <div class="row">
-            <div class="input-field col s6">
+            <div class="input-field col s5">
                 <input id="positionPercentage" type="text" class="validate">
                 <label for="positionPercentage">Stillingsprosent</label>
             </div>
         </div>
 
-
-        <!--<div class="row">-->
-        <!-- Dropdown Trigger -->
-        <a class='dropdown-button btn' href='#' data-activates='dropdown1'>Velg stilling</a>
-
-        <!-- Dropdown Structure -->
-        <ul id='dropdown1' class='dropdown-content'>
-            <li><a href="#!">Sykepleier</a></li>
-            <li><a href="#!">Helsefagarbeider</a></li>
-            <li><a href="#!">Assistent</a></li>
-        </ul>
-        <!--</div>-->
-
-        <div class ="row">
-        <a class="waves-effect waves-light btn">Opprett bruker</a>
+        <div class="row">
+            <div class="input-field col s5">
+                <select>
+                    <option value="" disabled selected>Velg stilling</option>
+                    <option value="1">Option 1</option>
+                    <option value="2">Option 2</option>
+                    <option value="3">Option 3</option>
+                </select>
+                <label>Stilling</label>
+            </div>
         </div>
-    </form>
+
+        <div class="left-align">
+            <button class="btn waves-effect waves-light blue lighten-2" type="submit" name="action">Logg inn
+                <i class="material-icons right">send</i>
+                <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+            </button>
+        </div>
+    </div>
 </div>
+
     <script src="https://code.jquery.com/jquery-2.1.2.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.95.3/js/materialize.min.js"></script>
 </body>
