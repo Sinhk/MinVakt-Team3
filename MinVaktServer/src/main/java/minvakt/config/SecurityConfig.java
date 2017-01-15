@@ -9,16 +9,33 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.JdbcUserDetailsManager;
+
+import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-   /* @Autowired
-    private DataSource dataSource;*/
+    @Autowired
+    private DataSource dataSource;
+
+    @Bean
+    // TODO: 15.01.2017 Set query to match database
+    public JdbcUserDetailsManager userDetailsManager() {
+        JdbcUserDetailsManager manager = new JdbcUserDetailsManager();
+        manager.setDataSource(dataSource);
+        manager.setUsersByUsernameQuery(
+                "select email,passwd,enabled from employee where email=?");
+        manager.setAuthoritiesByUsernameQuery(
+                "select username, role from user_roles where username=?");
+        manager.setRolePrefix("ROLE_");
+        return manager;
+    }
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        //auth.userDetailsService(userDetailsManager()).passwordEncoder(passwordEncoder());
         auth
                 .inMemoryAuthentication()
                 .withUser("user@minvakt.no").password("user").roles("USER")

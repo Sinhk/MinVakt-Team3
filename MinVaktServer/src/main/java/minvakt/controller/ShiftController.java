@@ -1,19 +1,20 @@
 package minvakt.controller;
 
-import minvakt.controller.data.DateWrapper;
 import minvakt.datamodel.Shift;
+import minvakt.datamodel.ShiftAssignment;
+import minvakt.datamodel.User;
 import minvakt.repos.ShiftRepository;
 import minvakt.repos.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
+import java.util.List;
 
-/**
- * Created by magnu on 11.01.2017.
- */
 
 @RestController
 @RequestMapping("/shifts")
@@ -27,48 +28,40 @@ public class ShiftController {
 
     @Autowired
     public ShiftController(ShiftRepository shiftRepo, UserRepository userRepo) {
-
         this.shiftRepo = shiftRepo;
         this.userRepo = userRepo;
     }
 
-    @PostMapping
-    public Response addShift(@RequestBody DateWrapper info){
-        Shift shift = info.toShift();
-        shiftRepo.save(shift);
-
-        return Response.ok().build();
-
-    }
     @GetMapping
     public Iterable<Shift> getShifts(){
         return shiftRepo.findAll();
     }
 
-    /*@PostMapping
-    public ReturnCode changeShiftFromUserToUser(@RequestBody Shift shift, User fromUser, User toUser) {
-        System.out.println("Giving "+ toUser +" Shift from "+ fromUser);
-
-        return manager.changeShiftFromUserToUser(shift,fromUser,toUser);
-    }*/
 
 
+    @RequestMapping(value = "/{shift_id}", method = RequestMethod.PUT)
+    @Transactional
+    public Response addUserToShift(@PathVariable int shift_id, @RequestBody User user) {
 
-    /*@PutMapping
-    @RequestMapping("/{shift_id}")
-    public Response changeShiftFromUserToUser(@PathVariable String shift_id, @RequestBody TwoUsersData usersData){
+        Shift shift = shiftRepo.findOne(shift_id);
 
-        User firstUser = userRepo.findOne(Integer.valueOf(usersData.getUserId1()));
+        ShiftAssignment shiftAssignment = new ShiftAssignment(shift, user);
 
-        User secondUser = userRepo.findOne(Integer.valueOf(usersData.getUserId2()));
+        shift.getShiftAssignments().add(shiftAssignment);
 
-        Shift shift = shiftRepo.findOne(Integer.valueOf(shift_id));
+        shiftRepo.save(shift);
+        return Response.ok().build();
+    }
 
-        if (firstUser != null && secondUser != null && shift != null)
-            return shift.changeShiftFromUserToUser(firstUser, secondUser) ? Response.ok().build() : Response.notModified().build();
-
-        return Response.noContent().build();
-
-    }*/
+    @RequestMapping(value = "/{shift_id}", method = RequestMethod.GET)
+    @Transactional
+    public List<User> getUsersForShift(@PathVariable int shift_id) {
+        Shift shift = shiftRepo.findOne(shift_id);
+        List<User> users = new ArrayList<>();
+        for (ShiftAssignment assignment : shift.getShiftAssignments()) {
+            users.add(assignment.getUser());
+        }
+        return users;
+    }
 }
 

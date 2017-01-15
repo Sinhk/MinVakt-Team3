@@ -1,14 +1,12 @@
 package minvakt.datamodel;
 
 import minvakt.datamodel.enums.PredeterminedIntervals;
-import minvakt.datamodel.enums.ShiftType;
+import org.hibernate.annotations.Cascade;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -19,21 +17,24 @@ public class Shift {
     @Column(updatable = false, nullable = false)
     private int shiftId;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "from_time")
     private LocalDateTime startDateTime;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "to_time")
     private LocalDateTime endDateTime;
 
-    private ShiftType shiftType = ShiftType.AVAILABLE;
+    private String comments;
 
-    private String comment;
+    @OneToMany(mappedBy = "shift", orphanRemoval = true, cascade = {javax.persistence.CascadeType.PERSIST, javax.persistence.CascadeType.MERGE})
+    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+    private List<ShiftAssignment> shiftAssignments;
 
     public Shift() {
     }
 
     public Shift(LocalDateTime startDateTime, LocalDateTime endDateTime) {
-        Objects.requireNonNull(startDateTime); Objects.requireNonNull(endDateTime);
+        Objects.requireNonNull(startDateTime);
+        Objects.requireNonNull(endDateTime);
 
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
@@ -43,57 +44,67 @@ public class Shift {
         Objects.requireNonNull(startDate);
         Objects.requireNonNull(interval);
 
-        System.out.println(startDate +" - "+interval);
-
-        LocalDateTime startDateTime = LocalDateTime.of(startDate, interval.getInterval().getTimeStart());
-        LocalDateTime endDateTime = startDateTime.plus(interval.getInterval().getDuration());
-
-
+        LocalDateTime startDateTime = LocalDateTime.of(startDate, interval.getStartTime());
+        LocalDateTime endDateTime;
+        if (interval.getStartTime().isAfter(interval.getEndTime())) {
+            endDateTime = LocalDateTime.of(startDate.plusDays(1), interval.getEndTime());
+        } else {
+            endDateTime = LocalDateTime.of(startDate, (interval.getEndTime()));
+        }
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
-    }
-
-    public Shift(LocalDate date, PredeterminedIntervals intervals, ShiftType type) {
-        this(date, intervals);
-        this.shiftType = type;
     }
 
     public LocalDateTime getStartDateTime() {
         return startDateTime;
     }
+
     public LocalDateTime getEndDateTime() {
         return endDateTime;
     }
-    public ShiftType getShiftType() { return shiftType; }
 
-    public void setShiftType(ShiftType shiftType) { this.shiftType = shiftType; }
-
-    public String getComment() { return comment; }
-    public void setComment(String comment) { this.comment = comment; }
-
-    public String toString() {
-        return startDateTime.toString()+": "+ endDateTime.toString()+" -> "+endDateTime.toString();
+    public String getComments() {
+        return comments;
     }
 
+    public void setComments(String comments) {
+        this.comments = comments;
+    }
 
-   /* //@JsonIgnore
-    @OneToMany(mappedBy = "pk.shift", targetEntity = UserShiftInfo.class, fetch = FetchType.EAGER)
-    private Set<User> users = new HashSet<>();
-
-    public Set<User> getUsers() {
-        return users;
-    }*/
-
-    /*public boolean changeShiftFromUserToUser(User from, User to){
-
-        boolean remove = users.remove(from);
-        boolean add = users.add(to);
-
-        return remove && add;
-    }*/
+    public String toString() {
+        return startDateTime.toString() + " -> " + endDateTime.toString();
+    }
 
     public int getShiftId() {
         return shiftId;
+    }
+
+    public List<ShiftAssignment> getShiftAssignments() {
+        return shiftAssignments;
+    }
+
+    public void setShiftAssignments(List<ShiftAssignment> shiftAssignments) {
+        this.shiftAssignments = shiftAssignments;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Shift shift = (Shift) o;
+
+        if (shiftId != shift.shiftId) return false;
+        if (!startDateTime.equals(shift.startDateTime)) return false;
+        return endDateTime.equals(shift.endDateTime);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = shiftId;
+        result = 31 * result + startDateTime.hashCode();
+        result = 31 * result + endDateTime.hashCode();
+        return result;
     }
 
     /*public User getResponsibleForShift(){
@@ -101,5 +112,6 @@ public class Shift {
         Collection<User> users = getUsers();
 
     }*/
+
 
 }

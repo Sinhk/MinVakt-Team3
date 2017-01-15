@@ -1,9 +1,5 @@
 package minvakt.datamodel.enums;
 
-import minvakt.datamodel.Shift;
-import minvakt.util.TimeInterval;
-
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 /**
@@ -11,22 +7,24 @@ import java.time.LocalTime;
  */
 public enum PredeterminedIntervals {
 
-    MORNING(new TimeInterval(LocalTime.of(6,0),LocalTime.of(14,0))), // 6-14
-    DAYTIME(new TimeInterval(LocalTime.of(14,0),LocalTime.of(22,0))), // 14-22
-    NIGHT(new TimeInterval(LocalTime.of(22,0),LocalTime.of(6,0)));     // 22-6
+    MORNING(LocalTime.of(7, 30), LocalTime.of(15, 30)),
+    DAYTIME(LocalTime.of(15, 0), LocalTime.of(22, 30)),
+    NIGHT(LocalTime.of(22, 0), LocalTime.of(8, 0));
 
 
-    private TimeInterval interval;
-    PredeterminedIntervals(TimeInterval interval){
-        this.interval = interval;
+    private final LocalTime startTime;
+    private final LocalTime endTime;
+
+    PredeterminedIntervals(LocalTime startTime, LocalTime endTime) {
+        this.startTime = startTime;
+        this.endTime = endTime;
     }
 
-    public TimeInterval getInterval() {
-        return interval;
+    public LocalTime getStartTime() {
+        return startTime;
     }
-    public static Shift shiftForDate(LocalDateTime date, PredeterminedIntervals shift){
 
-        return new Shift(date, shift.getInterval().getStart());
-
+    public LocalTime getEndTime() {
+        return endTime;
     }
 }
