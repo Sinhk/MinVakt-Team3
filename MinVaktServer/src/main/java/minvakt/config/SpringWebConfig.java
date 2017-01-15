@@ -19,10 +19,13 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
+import org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 import org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.TemplateMode;
+import org.thymeleaf.templateresolver.UrlTemplateResolver;
 
 import java.util.List;
 
@@ -62,7 +65,6 @@ public class SpringWebConfig
     }
 
 
-
     /* ******************************************************************* */
     /*  GENERAL CONFIGURATION ARTIFACTS                                    */
     /*  Static Resources, i18n Messages, Formatters (Conversion Service)   */
@@ -78,7 +80,6 @@ public class SpringWebConfig
         registry.addResourceHandler("/css/**").addResourceLocations("/static/css/");
         registry.addResourceHandler("/js/**").addResourceLocations("/static/js/");
         registry.addResourceHandler("/test/**").addResourceLocations("/static/test/");
-        registry.addResourceHandler("/**").addResourceLocations("/static/");
     }
 
     /*
@@ -113,7 +114,6 @@ public class SpringWebConfig
     }*/
 
 
-
     /* **************************************************************** */
     /*  THYMELEAF-SPECIFIC ARTIFACTS                                    */
     /*  TemplateResolver <- TemplateEngine <- ViewResolver              */
@@ -136,16 +136,19 @@ public class SpringWebConfig
     }
 
     @Bean
+    public UrlTemplateResolver urlTemplateResolver() {
+        return new UrlTemplateResolver();
+    }
+
+    @Bean
     public SpringTemplateEngine templateEngine() {
         // SpringTemplateEngine automatically applies SpringStandardDialect and
         // enables Spring's own MessageSource message resolution mechanisms.
         SpringTemplateEngine templateEngine = new SpringTemplateEngine();
-        templateEngine.setTemplateResolver(templateResolver());
-        // Enabling the SpringEL compiler with Spring 4.2.4 or newer can
-        // speed up execution in most scenarios, but might be incompatible
-        // with specific cases when expressions in one template are reused
-        // across different data types, so this flag is "false" by default
-        // for safer backwards compatibility.
+        templateEngine.addTemplateResolver(templateResolver());
+        templateEngine.addTemplateResolver(urlTemplateResolver());
+        templateEngine.addDialect(new SpringSecurityDialect());
+        templateEngine.addDialect(new Java8TimeDialect());
         templateEngine.setEnableSpringELCompiler(true);
         return templateEngine;
     }
@@ -154,6 +157,7 @@ public class SpringWebConfig
     public ThymeleafViewResolver viewResolver() {
         ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
         viewResolver.setTemplateEngine(templateEngine());
+        viewResolver.setCharacterEncoding("UTF-8");
         return viewResolver;
     }
 
