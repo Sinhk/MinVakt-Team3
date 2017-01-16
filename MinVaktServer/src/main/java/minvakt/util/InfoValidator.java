@@ -13,6 +13,10 @@ public class InfoValidator {
      */
     public static boolean checkPasswordRequirements(String attempt) {
 
+        if (attempt == null || attempt.equals(null) || attempt.equals("\0")) {
+            return false;
+        }
+
         Pattern uppercase = Pattern.compile(".*\\p{Upper}+.*");
         Pattern lower = Pattern.compile(".*\\p{Lower}+.*");
         int length = attempt.trim().length();
@@ -26,6 +30,10 @@ public class InfoValidator {
      * @return If the adress has a valid format or not
      */
     public static boolean checkEmailRequirements(String attempt) {
+
+        if (attempt == null || attempt.equals(null) || attempt.equals("\0")) {
+            return false;
+        }
 
         return attempt.matches(".+@.+\\..+");
 

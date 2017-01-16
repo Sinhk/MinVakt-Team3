@@ -1,6 +1,6 @@
 package minvakt.managers;
 
-import minvakt.datamodel.User;
+import minvakt.datamodel.Employee;
 import org.hibernate.SessionFactory;
 
 import java.util.ArrayList;
@@ -11,6 +11,7 @@ import java.util.Optional;
 /**
  * Created by OlavH on 09-Jan-17.
  */
+@Deprecated
 public class UserManager {
     private static UserManager ourInstance = new UserManager();
 
@@ -20,35 +21,39 @@ public class UserManager {
     //Singelton, do not modify
     private UserManager(){}
 
-    private static SessionFactory factory ;
+    private static SessionFactory factory;
 
-    private List<User> userList = new ArrayList<>();
+    private List<Employee> employeeList = new ArrayList<>();
 
-    public List<User> getUserList() {
+    @Deprecated // UserController
+    public List<Employee> getEmployeeList() {
 
         /*Session session = factory.openSession();
 
         List<User> list = session.createQuery("from users").list();*/
 
-        return userList;
+        return employeeList;
     }
 
-    public boolean addUser(User user){
-        Objects.requireNonNull(user);
+    @Deprecated // UserController
+    public boolean addUser(Employee employee){
+        Objects.requireNonNull(employee);
 
-        return userList.add(user);
+        return employeeList.add(employee);
 
     }
-    public boolean removeUser(User user){
-        Objects.requireNonNull(user);
+    @Deprecated // UserController
+    public boolean removeUser(Employee employee){
+        Objects.requireNonNull(employee);
 
-        return userList.remove(user);
+        return employeeList.remove(employee);
     }
 
-    public Optional<User> findUser(String email){
+    @Deprecated // UserRepo
+    public Optional<Employee> findUser(String email){
         Objects.requireNonNull(email);
 
-        return userList.stream().filter(user -> user.getEmail().equalsIgnoreCase(email)).findFirst();
+        return employeeList.stream().filter(user -> user.getEmail().equalsIgnoreCase(email)).findFirst();
 
     }
 

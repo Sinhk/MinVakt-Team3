@@ -1,3 +1,5 @@
+
+/*
 package minvakt.managers;
 
 import minvakt.datamodel.Shift;
@@ -18,6 +20,8 @@ import static org.mockito.Mockito.when;
 /**
  * Created by magnu on 09.01.2017.
  */
+/*
+@Deprecated
 public class ShiftManagerTest {
     ShiftManager manager;
     User per;
@@ -92,3 +96,4 @@ public class ShiftManagerTest {
 
 
 }
+*/

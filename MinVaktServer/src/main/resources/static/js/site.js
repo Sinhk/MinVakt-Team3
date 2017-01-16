@@ -18,13 +18,13 @@ var Calendar = FC.Calendar = Class.extend({
 
 
     // Subclasses can override this for initialization logic after the constructor has been called
-    initialize: function() {
+    initialize: function () {
     },
 
 
     // Computes the flattened options hash for the calendar and assigns to `this.options`.
     // Assumes this.overrides and this.dynamicOverrides have already been initialized.
-    populateOptionsHash: function() {
+    populateOptionsHash: function () {
         var locale, localeDefaults;
         var isRTL, dirDefaults;
 
@@ -60,7 +60,7 @@ var Calendar = FC.Calendar = Class.extend({
 
 
     // Gets information about how to create a view. Will use a cache.
-    getViewSpec: function(viewType) {
+    getViewSpec: function (viewType) {
         var cache = this.viewSpecCache;
 
         return cache[viewType] || (cache[viewType] = this.buildViewSpec(viewType));
@@ -69,7 +69,7 @@ var Calendar = FC.Calendar = Class.extend({
 
     // Given a duration singular unit, like "week" or "day", finds a matching view spec.
     // Preference is given to views that have corresponding buttons.
-    getUnitViewSpec: function(unit) {
+    getUnitViewSpec: function (unit) {
         var viewTypes;
         var i;
         var spec;
@@ -78,7 +78,7 @@ var Calendar = FC.Calendar = Class.extend({
 
             // put views that have buttons first. there will be duplicates, but oh well
             viewTypes = this.header.getViewsWithButtons(); // TODO: include footer as well?
-            $.each(FC.views, function(viewType) { // all views
+            $.each(FC.views, function (viewType) { // all views
                 viewTypes.push(viewType);
             });
 
@@ -95,7 +95,7 @@ var Calendar = FC.Calendar = Class.extend({
 
 
     // Builds an object with information on how to create a given view
-    buildViewSpec: function(requestedViewType) {
+    buildViewSpec: function (requestedViewType) {
         var viewOverrides = this.overrides.views || {};
         var specChain = []; // for the view. lowest to highest priority
         var defaultsChain = []; // for the view. lowest to highest priority
@@ -113,7 +113,7 @@ var Calendar = FC.Calendar = Class.extend({
             viewType = null; // clear. might repopulate for another iteration
 
             if (typeof spec === 'function') { // TODO: deprecate
-                spec = { 'class': spec };
+                spec = {'class': spec};
             }
 
             if (spec) {
@@ -162,7 +162,7 @@ var Calendar = FC.Calendar = Class.extend({
 
 
     // Builds and assigns a view spec's options object from its already-assigned defaults and overrides
-    buildViewSpecOptions: function(spec) {
+    buildViewSpecOptions: function (spec) {
         spec.options = mergeOptions([ // lowest to highest priority
             Calendar.defaults, // global defaults
             spec.defaults, // view's defaults (from ViewSubclass.defaults)
@@ -177,16 +177,16 @@ var Calendar = FC.Calendar = Class.extend({
 
 
     // Computes and assigns a view spec's buttonText-related options
-    buildViewSpecButtonText: function(spec, requestedViewType) {
+    buildViewSpecButtonText: function (spec, requestedViewType) {
 
         // given an options object with a possible `buttonText` hash, lookup the buttonText for the
         // requested view, falling back to a generic unit entry like "week" or "day"
         function queryButtonText(options) {
             var buttonText = options.buttonText || {};
             return buttonText[requestedViewType] ||
-                    // view can decide to look up a certain key
+                // view can decide to look up a certain key
                 (spec.buttonTextKey ? buttonText[spec.buttonTextKey] : null) ||
-                    // a key like "month"
+                // a key like "month"
                 (spec.singleUnit ? buttonText[spec.singleUnit] : null);
         }
 
@@ -208,7 +208,7 @@ var Calendar = FC.Calendar = Class.extend({
 
 
     // Given a view name for a custom view or a standard view, creates a ready-to-go View object
-    instantiateView: function(viewType) {
+    instantiateView: function (viewType) {
         var spec = this.getViewSpec(viewType);
 
         return new spec['class'](this, viewType, spec.options, spec.duration);
@@ -216,13 +216,13 @@ var Calendar = FC.Calendar = Class.extend({
 
 
     // Returns a boolean about whether the view is okay to instantiate at some point
-    isValidViewType: function(viewType) {
+    isValidViewType: function (viewType) {
         return Boolean(this.getViewSpec(viewType));
     },
 
 
     // Should be called when any type of async data fetching begins
-    pushLoading: function() {
+    pushLoading: function () {
         if (!(this.loadingLevel++)) {
             this.publiclyTrigger('loading', null, true, this.view);
         }
@@ -230,7 +230,7 @@ var Calendar = FC.Calendar = Class.extend({
 
 
     // Should be called when any type of async data fetching completes
-    popLoading: function() {
+    popLoading: function () {
         if (!(--this.loadingLevel)) {
             this.publiclyTrigger('loading', null, false, this.view);
         }
@@ -238,7 +238,7 @@ var Calendar = FC.Calendar = Class.extend({
 
 
     // Given arguments to the select method in the API, returns a span (unzoned start/end and other info)
-    buildSelectSpan: function(zonedStartInput, zonedEndInput) {
+    buildSelectSpan: function (zonedStartInput, zonedEndInput) {
         var start = this.moment(zonedStartInput).stripZone();
         var end;
 
@@ -252,7 +252,7 @@ var Calendar = FC.Calendar = Class.extend({
             end = start.clone().add(this.defaultAllDayEventDuration);
         }
 
-        return { start: start, end: end };
+        return {start: start, end: end};
     }
 
 });
@@ -300,7 +300,6 @@ function Calendar_constructor(element, overrides) {
     t.populateOptionsHash(); // sets this.options
 
 
-
     // Locale-data Internals
     // -----------------------------------------------------------------------------------
     // Apply overrides to the current locale's data
@@ -311,7 +310,7 @@ function Calendar_constructor(element, overrides) {
     // Happens before any internal objects rebuild or rerender, because this is very core.
     t.bindOptions([
         'locale', 'monthNames', 'monthNamesShort', 'dayNames', 'dayNamesShort', 'firstDay', 'weekNumberCalculation'
-    ], function(locale, monthNames, monthNamesShort, dayNames, dayNamesShort, firstDay, weekNumberCalculation) {
+    ], function (locale, monthNames, monthNamesShort, dayNames, dayNamesShort, firstDay, weekNumberCalculation) {
 
         // normalize
         if (weekNumberCalculation === 'iso') {
@@ -370,7 +369,7 @@ function Calendar_constructor(element, overrides) {
 
     // Builds a moment using the settings of the current calendar: timezone and locale.
     // Accepts anything the vanilla moment() constructor accepts.
-    t.moment = function() {
+    t.moment = function () {
         var mom;
 
         if (t.options.timezone === 'local') {
@@ -398,18 +397,19 @@ function Calendar_constructor(element, overrides) {
     function localizeMoment(mom) {
         mom._locale = localeData;
     }
+
     t.localizeMoment = localizeMoment;
 
 
     // Returns a boolean about whether or not the calendar knows how to calculate
     // the timezone offset of arbitrary dates in the current timezone.
-    t.getIsAmbigTimezone = function() {
+    t.getIsAmbigTimezone = function () {
         return t.options.timezone !== 'local' && t.options.timezone !== 'UTC';
     };
 
 
     // Returns a copy of the given date in the current timezone. Has no effect on dates without times.
-    t.applyTimezone = function(date) {
+    t.applyTimezone = function (date) {
         if (!date.hasTime()) {
             return date.clone();
         }
@@ -432,7 +432,7 @@ function Calendar_constructor(element, overrides) {
 
     // Returns a moment for the current date, as defined by the client's computer or from the `now` option.
     // Will return an moment with an ambiguous timezone.
-    t.getNow = function() {
+    t.getNow = function () {
         var now = t.options.now;
         if (typeof now === 'function') {
             now = now();
@@ -442,7 +442,7 @@ function Calendar_constructor(element, overrides) {
 
 
     // Get an event's normalized end date. If not present, calculate it from the defaults.
-    t.getEventEnd = function(event) {
+    t.getEventEnd = function (event) {
         if (event.end) {
             return event.end.clone();
         }
@@ -454,7 +454,7 @@ function Calendar_constructor(element, overrides) {
 
     // Given an event's allDay status and start date, return what its fallback end date should be.
     // TODO: rename to computeDefaultEventEnd
-    t.getDefaultEventEnd = function(allDay, zonedStart) {
+    t.getDefaultEventEnd = function (allDay, zonedStart) {
         var end = zonedStart.clone();
 
         if (allDay) {
@@ -474,10 +474,9 @@ function Calendar_constructor(element, overrides) {
 
     // Produces a human-readable string for the given duration.
     // Side-effect: changes the locale of the given duration.
-    t.humanizeDuration = function(duration) {
+    t.humanizeDuration = function (duration) {
         return duration.locale(t.options.locale).humanize();
     };
-
 
 
     // Imports
@@ -485,7 +484,6 @@ function Calendar_constructor(element, overrides) {
 
 
     EventManager.call(t);
-
 
 
     // Locals
@@ -504,7 +502,6 @@ function Calendar_constructor(element, overrides) {
     var windowResizeProxy; // wraps the windowResize function
     var ignoreWindowResize = 0;
     var date; // unzoned
-
 
 
     // Main Rendering
@@ -536,7 +533,7 @@ function Calendar_constructor(element, overrides) {
         element.addClass('fc');
 
         // event delegation for nav links
-        element.on('click.fc', 'a[data-goto]', function(ev) {
+        element.on('click.fc', 'a[data-goto]', function (ev) {
             var anchorEl = $(this);
             var gotoOptions = anchorEl.data('goto'); // will automatically parse JSON
             var date = t.moment(gotoOptions.date);
@@ -557,7 +554,7 @@ function Calendar_constructor(element, overrides) {
         });
 
         // called immediately, and upon option change
-        t.bindOption('theme', function(theme) {
+        t.bindOption('theme', function (theme) {
             tm = theme ? 'ui' : 'fc'; // affects a larger scope
             element.toggleClass('ui-widget', theme);
             element.toggleClass('fc-unthemed', !theme);
@@ -565,7 +562,7 @@ function Calendar_constructor(element, overrides) {
 
         // called immediately, and upon option change.
         // HACK: locale often affects isRTL, so we explicitly listen to that too.
-        t.bindOptions([ 'isRTL', 'locale' ], function(isRTL) {
+        t.bindOptions(['isRTL', 'locale'], function (isRTL) {
             element.toggleClass('fc-ltr', !isRTL);
             element.toggleClass('fc-rtl', isRTL);
         });
@@ -615,7 +612,6 @@ function Calendar_constructor(element, overrides) {
     }
 
 
-
     // View Rendering
     // -----------------------------------------------------------------------------------
 
@@ -653,8 +649,7 @@ function Calendar_constructor(element, overrides) {
 
             // render or rerender the view
             if (
-                !currentView.isDateSet ||
-                !( // NOT within interval range signals an implicit date window change
+                !currentView.isDateSet || !( // NOT within interval range signals an implicit date window change
                     date >= currentView.intervalStart &&
                     date < currentView.intervalEnd
                 )
@@ -713,12 +708,11 @@ function Calendar_constructor(element, overrides) {
     }
 
 
-
     // Resizing
     // -----------------------------------------------------------------------------------
 
 
-    t.getSuggestedViewHeight = function() {
+    t.getSuggestedViewHeight = function () {
         if (suggestedViewHeight === undefined) {
             calcSize();
         }
@@ -726,7 +720,7 @@ function Calendar_constructor(element, overrides) {
     };
 
 
-    t.isHeightAuto = function() {
+    t.isHeightAuto = function () {
         return t.options.contentHeight === 'auto' || t.options.height === 'auto';
     };
 
@@ -780,7 +774,7 @@ function Calendar_constructor(element, overrides) {
 
 
     function queryToolbarsHeight() {
-        return toolbarsManager.items.reduce(function(accumulator, toolbar) {
+        return toolbarsManager.items.reduce(function (accumulator, toolbar) {
             var toolbarHeight = toolbar.el ? toolbar.el.outerHeight(true) : 0; // includes margin
             return accumulator + toolbarHeight;
         }, 0);
@@ -800,7 +794,6 @@ function Calendar_constructor(element, overrides) {
     }
 
 
-
     /* Event Rendering
      -----------------------------------------------------------------------------*/
 
@@ -810,7 +803,6 @@ function Calendar_constructor(element, overrides) {
             t.reportEventChange(); // will re-trasmit events to the view, causing a rerender
         }
     }
-
 
 
     /* Toolbars
@@ -861,7 +853,7 @@ function Calendar_constructor(element, overrides) {
     }
 
 
-    t.setToolbarsTitle = function(title) {
+    t.setToolbarsTitle = function (title) {
         toolbarsManager.proxyCall('updateTitle', title);
     };
 
@@ -875,7 +867,6 @@ function Calendar_constructor(element, overrides) {
             toolbarsManager.proxyCall('enableButton', 'today');
         }
     }
-
 
 
     /* Selection
@@ -895,7 +886,6 @@ function Calendar_constructor(element, overrides) {
             currentView.unselect();
         }
     }
-
 
 
     /* Date
@@ -963,7 +953,6 @@ function Calendar_constructor(element, overrides) {
     }
 
 
-
     /* Height "Freezing"
      -----------------------------------------------------------------------------*/
 
@@ -994,7 +983,6 @@ function Calendar_constructor(element, overrides) {
             });
         }
     }
-
 
 
     /* Misc

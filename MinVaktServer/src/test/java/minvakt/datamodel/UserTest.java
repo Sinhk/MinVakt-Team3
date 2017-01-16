@@ -11,11 +11,17 @@ import static org.mockito.Mockito.mock;
 /**
  * Created by magnu on 09.01.2017.
  */
+/*
 public class UserTest {
-    UserManager userManager;
+    Employee bob, per, billy, petter;
+
+
     @Before
     public void setUp() throws Exception {
-        userManager = mock(UserManager.class);
+        bob = new User("Bob", "Bobsen", "bob@bob.bob", 12345678, 100);
+        per = new User("Per", "Persson", "per@sverige.se", 11223344, 50);
+        billy = new User("Billy Bob", "Billy", "billy@nsa.gov", 98989898, 75);
+        petter = new User("Petter", "Knutsen", "123@gmail.com", 22224444, 25);
     }
 
     @After
@@ -24,19 +30,32 @@ public class UserTest {
     }
 
     @Test
-    public void addUserTest(){
-
-
+    public void getUserId() throws Exception {
 
     }
 
     @Test
-    public void authenticatePassword() throws Exception {
+    public void setUserId() throws Exception {
 
     }
 
     @Test
-    public void changePassword() throws Exception {
+    public void getFirstName() throws Exception {
+
+    }
+
+    @Test
+    public void setFirstName() throws Exception {
+
+    }
+
+    @Test
+    public void getLastName() throws Exception {
+
+    }
+
+    @Test
+    public void setLastName() throws Exception {
 
     }
 
@@ -46,12 +65,27 @@ public class UserTest {
     }
 
     @Test
-    public void getTlf() throws Exception {
+    public void setEmail() throws Exception {
 
     }
 
     @Test
-    public void getEmployeeType() throws Exception {
+    public void getPositionPercentage() throws Exception {
+
+    }
+
+    @Test
+    public void setPositionPercentage() throws Exception {
+
+    }
+
+    @Test
+    public void getPhone() throws Exception {
+
+    }
+
+    @Test
+    public void setPhone() throws Exception {
 
     }
 
@@ -60,4 +94,34 @@ public class UserTest {
 
     }
 
+    @Test
+    public void getCategory() throws Exception {
+
+    }
+
+    @Test
+    public void setCategory() throws Exception {
+
+    }
+
+    @Test
+    public void getShifts() throws Exception {
+
+    }
+
+    @Test
+    public void setShifts() throws Exception {
+
+    }
+
+    @Test
+    public void equals() throws Exception {
+
+    }
+
+    @Test
+    public void testHashCode() throws Exception {
+
+    }
 }
+*/

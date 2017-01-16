@@ -6,8 +6,8 @@ $("#removeEmailButton").click(function () {
     var email = $("#removeEmailInput").val();
 
     $.ajax({
-        url: "users/removeUser",
-        type: "POST",
+        url: "users",
+        type: "DELETE",
         contentType: "Text/plain",
         data: email,
 

@@ -9,8 +9,6 @@ $(document).ready(function () {
     var docHeight = $(window).innerHeight()-100;
     var docWidth = $(window).innerWidth()-100;
 
-    var randomNumber = Math.random();
-
     //$("#view").fadeOut();
 
     $("#square").hover(function () {

@@ -1,3 +1,4 @@
+/*
 package minvakt.datamodel;
 
 import minvakt.managers.ShiftManager;
@@ -7,9 +8,11 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.*;
 
+*/
 /**
  * Created by OlavH on 09-Jan-17.
- */
+ *//*
+
 @Deprecated // Do with UI, use ShiftManager
 public class TimeSheet {
 
@@ -42,7 +45,9 @@ public class TimeSheet {
 
             for (Shift shift : shiftsForUser) {
 
-                if (/*TimeUtil.dayOfWeekOf(shift.getStartDateTime()) == DayOfWeek.of(i) && */shift.getStartDateTime().getDayOfMonth()==now.getDayOfMonth()+(i-1)){
+                if (*/
+/*TimeUtil.dayOfWeekOf(shift.getStartDateTime()) == DayOfWeek.of(i) && *//*
+shift.getStartDateTime().getDayOfMonth()==now.getDayOfMonth()+(i-1)){
 
                     list.add(shift);
                     added = true;
@@ -59,7 +64,8 @@ public class TimeSheet {
 
     }
 
-    /*public static void main(String[] args) {
+    */
+/*public static void main(String[] args) {
 
         List<User> users = new ArrayList<>();
         User user = new User("olavh96@gmail.com", 78912978, "ostostO--", 100);
@@ -72,6 +78,8 @@ public class TimeSheet {
         
         ShiftManager shiftManager = ShiftManager.getInstance();
         *//*
+*/
+/*
         shiftManager.addShiftToUser(user, new Shift(LocalDate.of(2017,1,10), LocalTime.of(6,0)));
         shiftManager.addShiftToUser(user, new Shift(LocalDate.of(2017,1,11), LocalTime.of(6,0)));
         shiftManager.addShiftToUser(user, new Shift(LocalDate.of(2017,1,12), LocalTime.of(6,0)));
@@ -82,6 +90,8 @@ public class TimeSheet {
         shiftManager.addShiftToUser(user1, new Shift(LocalDate.of(2017,1,12), LocalTime.of(10,0)));
         shiftManager.addShiftToUser(user1, new Shift(LocalDate.of(2017,1,13), LocalTime.of(10,0)));
         *//*
+*/
+/*
         TimeSheet timeSheet = new TimeSheet();
 
         System.out.println("Shifts for user: "+shiftManager.getShiftsForUser(user));
@@ -95,5 +105,7 @@ public class TimeSheet {
 
         timeSheetForAllUsers.forEach((user2, shifts) -> System.out.println(user2+" - "+shifts));
 
-    }*/
+    }*//*
+
 }
+*/

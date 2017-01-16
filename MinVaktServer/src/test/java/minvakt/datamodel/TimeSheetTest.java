@@ -7,6 +7,7 @@ import org.junit.Test;
 /**
  * Created by magnu on 09.01.2017.
  */
+@Deprecated
 public class TimeSheetTest {
     @Before
     public void setUp() throws Exception {

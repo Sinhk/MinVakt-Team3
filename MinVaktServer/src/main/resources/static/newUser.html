@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+    <title>Test</title>
+    <!-- CSS  -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.95.3/css/materialize.min.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+    <link rel="stylesheet" type="text/css" href="css/test.css">
+
+</head>
+
+<body>
+
+<div id="nav">
+    <div class="navbar-fixed">
+        <nav class="blue lighten-2 z-depth-1">
+            <div class="nav-wrapper">
+                <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+                <i class="small material-icons">home</i>
+
+                <!--<a href="#" class="large material-icons">home</a>-->
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    <li><a href="timeSheet.html">Vaktliste</a></li>
+                    <li><a href="badges.html">Tilgjengelighet</a></li>
+                    <li><a href="collapsible.html">Ledige vakter</a></li>
+                    <li><a href="collapsible.html">Ansatte</a></li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+</div>
+
+<!-- Page Layout here -->
+
+<div class="row">
+    <div class="col s12 m7 l10">
+        <div class="row">
+
+            <h2>Legg til bruker</h2>
+
+            <div class="row">
+                <div class="input-field col s5">
+                    <input id="first_name1" type="text" class="validate">
+                    <label for="first_name1">Fornavn</label>
+                </div>
+
+                <div class="input-field col s5">
+                    <input id="last_name1" type="text" class="validate">
+                    <label for="last_name1">Etternavn</label>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="input-field col s5">
+                    <input id="email1" type="text" class="validate">
+                    <label for="email1">E-postadresse</label>
+                </div>
+
+                <div class="input-field col s5">
+                    <input id="phone1" type="text" class="validate">
+                    <label for="phone1">Telefon</label>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="input-field col s5">
+                    <input id="positionPercentage" type="text" class="validate">
+                    <label for="positionPercentage">Stillingsprosent</label>
+                </div>
+
+                <div class="input-field col s5">
+                    <select class="browser-default white">
+                        <option value="" disabled selected>Velg stilling</option>
+                        <option value="1">Sykepleier</option>
+                        <option value="2">Helsefagarbeider</option>
+                        <option value="3">Assistent</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="left-align">
+                <button class="btn waves-effect waves-light blue lighten-2" type="submit" name="action">Opprett bruker
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<aside>
+    <!-- Sidebar-->
+    <div>
+        <div class="right grey lighten-2 z-depth-3">
+            <form>
+                <div class="center-align">
+                    <div class="section"></div>
+                    <i class="large material-icons">face</i>
+                </div>
+                <div class="firstname row">
+                    <div class="input-field col s11">
+                        <input id="first_name" type="text" class="validate">
+                        <label for="first_name">Fornavn</label>
+                    </div>
+                </div>
+
+                <div class="lastname row">
+                    <div class="input-field col s11">
+                        <input id="last_name" type="text" class="validate">
+                        <label for="last_name">Etternavn</label>
+                    </div>
+                </div>
+
+                <!-- Modal Trigger -->
+                <div class="col s12 center">
+                    <a class="modal-trigger waves-effect blue lighten-2 btn" href="#modal1">Rediger</a>
+                </div>
+                <!-- Modal Structure -->
+                <div id="modal1" class="modal modal-fixed-footer">
+                    <div class="modal-content">
+                        <h4>Rediger informasjon</h4>
+                        <div class="firstname row">
+                            <div class="input-field col s11">
+                                <input id="first_name" type="text" class="validate">
+                                <label for="first_name">Fornavn</label>
+                            </div>
+                        </div>
+
+                        <div class="lastname row">
+                            <div class="input-field col s11">
+                                <input id="last_name" type="text" class="validate">
+                                <label for="last_name">Etternavn</label>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="input-field col s11">
+                                <input id="email" type="text" class="validate">
+                                <label for="email">E-postadresse</label>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="input-field col s11">
+                                <input id="phone" type="text" class="validate">
+                                <label for="phone">Telefon</label>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col s12">
+                                <a class="waves-effect blue lighten-2 btn">Endre passord</a>
+                            </div>
+                        </div>
+
+                        <hr/>
+                        <div class="center-align red-text">
+                            <h6>Viktig info.:</h6>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Oppdater</a>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col s12">
+                        <a class="waves-effect blue lighten-2 btn">Endre passord</a>
+                    </div>
+                </div>
+
+                <hr/>
+                <br>
+                <br>
+                <br>
+            </form>
+        </div>
+    </div>
+</aside>
+
+
+</div>
+
+    <script src="https://code.jquery.com/jquery-2.1.2.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.95.3/js/materialize.min.js"></script>
+</body>
+</html>
