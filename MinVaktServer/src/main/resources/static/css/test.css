@@ -1,10 +1,10 @@
 aside
 {
     position: fixed;
-    padding-left: 84em;
+    margin-left: 65.45em;
+    padding:0;
     width: 300px;
-    /*top: 4em;*/
-    /*bottom: 0;*/
+    top: 4em;
     left: 0;
 }
 
