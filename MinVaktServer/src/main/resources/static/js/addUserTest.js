@@ -14,13 +14,13 @@ $("#addUser").click(function () {
     }));
 
     $.ajax({
-        url: "users",
+        url: "/users",
         type: "POST",
-        contentType: "application/json",
+        contentType: "application/JSON",
         data: JSON.stringify({
             "email": email,
             "password": psw,
-            "tlf":tlf,
+            "phone":tlf,
             "positionPercentage":prcnt
         }),
         /*beforeSend: function(x) {
@@ -28,10 +28,10 @@ $("#addUser").click(function () {
          },*/
 
         success: function (data) {
-            console.log("You added a user - "+data);
+            console.log("You added a user - "+JSON.stringify(data));
         },
         error: function (data) {
-            alert("Failed! " + data);
+            alert("Failed! " + JSON.stringify(data));
         }
     });
 

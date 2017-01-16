@@ -1,5 +1,10 @@
 package minvakt.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -7,6 +12,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
@@ -15,6 +22,8 @@ import org.thymeleaf.spring4.SpringTemplateEngine;
 import org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.TemplateMode;
+
+import java.util.List;
 
 @Configuration
 @EnableWebMvc
@@ -35,6 +44,20 @@ public class SpringWebConfig
         this.applicationContext = applicationContext;
     }
 
+    @Override
+    public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
+        for (HttpMessageConverter converter : converters) {
+            if (converter instanceof org.springframework.http.converter.json.MappingJackson2HttpMessageConverter) {
+                ObjectMapper mapper = ((MappingJackson2HttpMessageConverter) converter).getObjectMapper();
+                mapper
+                        .registerModule(new Hibernate5Module())
+                        .registerModule(new ParameterNamesModule())
+                        .registerModule(new Jdk8Module())
+                        .registerModule(new JavaTimeModule());
+            }
+        }
+    }
+
 
 
     /* ******************************************************************* */
@@ -51,6 +74,8 @@ public class SpringWebConfig
         registry.addResourceHandler("/images/**").addResourceLocations("/static/images/");
         registry.addResourceHandler("/css/**").addResourceLocations("/static/css/");
         registry.addResourceHandler("/js/**").addResourceLocations("/static/js/");
+        registry.addResourceHandler("/test/**").addResourceLocations("/static/test/");
+        registry.addResourceHandler("/**").addResourceLocations("/static/");
     }
 
     /*
@@ -133,7 +158,7 @@ public class SpringWebConfig
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/login").setViewName("login");
         registry.addViewController("/employee").setViewName("employee");
-        registry.addViewController("/").setViewName("employee");
+        registry.addViewController("/timeSheet").setViewName("timeSheet");
         registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
     }
 

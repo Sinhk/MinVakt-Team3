@@ -1,3 +1,4 @@
+/*
 package minvakt.managers;
 
 import minvakt.datamodel.Shift;
@@ -9,9 +10,11 @@ import minvakt.util.WeekDateInterval;
 import java.time.LocalDate;
 import java.util.*;
 
+*/
 /**
  * Created by OlavH on 09-Jan-17.
- */
+ *//*
+
 @Deprecated
 public class ShiftManager {
 
@@ -122,13 +125,15 @@ public class ShiftManager {
 
     }
 
-    /**
-     *
-     * @param user
-     * @param from Inclusive
-     * @param to Ecxlusive
-     * @return
-     */
+    */
+/**
+ *
+ * @param user
+ * @param from Inclusive
+ * @param to Ecxlusive
+ * @return
+ *//*
+
     public static int getMinutesForUsersInInterval(User user, LocalDate from, LocalDate to, List<Shift> shiftList){
         Objects.requireNonNull(user); Objects.requireNonNull(from); Objects.requireNonNull(to);
 
@@ -154,12 +159,14 @@ public class ShiftManager {
 
     }
 
-    /**
-     * @param userToReplace The user that is to be replaced
-     * @param userReplacement The potential user to replace the user
-     * @param shift This shift in question
-     * @return true if the user can replace the other user. Type must be the same, the user must have an availible shift
-     */
+    */
+/**
+ * @param userToReplace The user that is to be replaced
+ * @param userReplacement The potential user to replace the user
+ * @param shift This shift in question
+ * @return true if the user can replace the other user. Type must be the same, the user must have an availible shift
+ *//*
+
     public static boolean isValidForShift(User userToReplace, User userReplacement, Shift shift, List<Shift> shiftsForReplacement){
 
         if (userToReplace.getEmployeeType() != userReplacement.getEmployeeType()) return false;
@@ -193,3 +200,4 @@ public class ShiftManager {
     }
 
 }
+*/

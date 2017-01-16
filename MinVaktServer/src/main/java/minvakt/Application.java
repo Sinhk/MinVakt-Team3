@@ -1,7 +1,11 @@
 package minvakt;
 
+import minvakt.controller.ShiftController;
+import minvakt.datamodel.Shift;
 import minvakt.datamodel.User;
-import minvakt.datamodel.enums.EmployeeType;
+import minvakt.repos.CategoryRepository;
+import minvakt.repos.ShiftAssignmentRepository;
+import minvakt.repos.ShiftRepository;
 import minvakt.repos.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,37 +24,47 @@ public class Application {
     }
 
     @Bean
-    public CommandLineRunner demo(UserRepository repository) {
+    public CommandLineRunner demo(UserRepository userRepo, ShiftRepository shiftRepo, ShiftAssignmentRepository usRepo, CategoryRepository categoryRepo, ShiftController shiftController) {
         return (args) -> {
             // save a couple of customers
-            repository.save(new User("Jack", "Bauer", "test1@test.com", 98127331, "qwerty", EmployeeType.ASSISTENT, 12));
-            repository.save(new User("Chloe", "O'Brian", "test2@test.com", 98127331, "qwerty", EmployeeType.ASSISTENT, 12));
-            repository.save(new User("Kim", "Bauer", "test3@test.com", 98127331, "qwerty", EmployeeType.ASSISTENT, 12));
-            repository.save(new User("David", "Palmer", "test4@test.com", 98127331, "qwerty", EmployeeType.ASSISTENT, 12));
-            repository.save(new User("Michelle", "Dessler", "test5@test.com", 98127331, "qwerty", EmployeeType.ASSISTENT, 12));
+//            userRepo.save(new Employee("Jack", "Bauer", "test1@test.com", 98127331, "qwerty", 12));
+//            userRepo.save(new Employee("Chloe", "O'Brian", "test2@test.com", 98127331, "qwerty", 12));
+//            userRepo.save(new Employee("Kim", "Bauer", "test3@test.com", 98127331, "qwerty", 12));
+//            userRepo.save(new Employee("David", "Palmer", "test4@test.com", 98127331, "qwerty", 12));
+            /*Employee user = new Employee("Michelle", "Dessler", "test5@test.com", 98127331, "qwerty", 12);
+            userRepo.save(user);
+*/
+            /*LocalDate now = LocalDate.now();
+            shiftRepo.save(new Shift(now, PredeterminedIntervals.DAYTIME));
+            shiftRepo.save(new Shift(now, PredeterminedIntervals.MORNING));
+            Shift shift = new Shift(now, PredeterminedIntervals.NIGHT);
+            shiftRepo.save(shift);
+            */
+            //shift.getUsers().add(user);
+/*
+
+            log.info("get user");
+            User user1 = userRepo.findOne(2);
+            log.info("get shift");
+            Shift one = shiftRepo.findOne(6);
+            log.info("create object");
+
+            log.info("save object");
+            shiftController.addUserToShift(one.getShiftId(),user1);
+//            usRepo.save(shiftAssignment);
+            log.info("save done");
+
+*/
+            Shift one = shiftRepo.findOne(6);
+//            log.info("Shift {},Users {}", one, one.getShiftAssignments().size());
 
             // fetch all customers
-            log.info("Customers found with findAll():");
+            log.info("Users found with findAll():");
             log.info("-------------------------------");
-            for (User user : repository.findAll()) {
-                log.info(user.toString());
+            for (User aUser : userRepo.findAll()) {
+                log.info(aUser.toString());
             }
             log.info("");
-
-            /*// fetch an individual customer by ID
-            Customer customer = repository.findOne(1L);
-            log.info("Customer found with findOne(1L):");
-            log.info("--------------------------------");
-            log.info(customer.toString());
-            log.info("");
-
-            // fetch customers by last name
-            log.info("Customer found with findByLastName('Bauer'):");
-            log.info("--------------------------------------------");
-            for (Customer bauer : repository.findByLastName("Bauer")) {
-                log.info(bauer.toString());
-            }
-            log.info("");*/
         };
     }
 }

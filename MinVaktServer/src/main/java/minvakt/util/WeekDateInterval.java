@@ -1,5 +1,6 @@
 package minvakt.util;
 
+import java.io.Serializable;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
@@ -7,7 +8,7 @@ import java.time.temporal.TemporalAdjusters;
 /**
  * Created by OlavH on 10-Jan-17.
  */
-public class WeekDateInterval {
+public class WeekDateInterval implements Serializable{
 
     private LocalDate start;
     private LocalDate end;

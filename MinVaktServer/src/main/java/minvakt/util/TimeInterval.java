@@ -4,6 +4,7 @@ import minvakt.datamodel.Shift;
 
 import java.io.Serializable;
 import java.time.DayOfWeek;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
@@ -26,7 +27,6 @@ public class TimeInterval implements Serializable{
 
     // Special case for PredeterminedIntervals.java enum
     public TimeInterval(LocalTime start, LocalTime end){
-
         timeStart = start;
         timeEnd = end;
     }
@@ -122,5 +122,13 @@ public class TimeInterval implements Serializable{
         i0.addDay(DayOfWeek.MONDAY);
         i0.getDays().ifPresent(consumer->{System.out.println(Arrays.toString(consumer));});
 
+    }
+
+    public LocalTime getTimeStart() {
+        return timeStart;
+    }
+
+    public Duration getDuration() {
+        return Duration.between(timeStart, timeEnd);
     }
 }

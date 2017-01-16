@@ -1,57 +1,52 @@
 package minvakt.datamodel;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import minvakt.datamodel.enums.EmployeeType;
-
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by OlavH on 09-Jan-17.
  */
 @Entity
+@Table(name = "employee")
 public class User implements Serializable {
 
     @Id
-    @GeneratedValue
-    @Column(updatable = false, nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "employee_id", updatable = false, nullable = false)
     private int userId;
 
     @Column(nullable = false)
-    private String firstName = "Ola";
+    private String firstName;
 
     @Column(nullable = false)
-    private String lastName = "Nordmann";
+    private String lastName;
+
+    @Column(nullable = false)
+    private int phone;
 
     @Column(nullable = false)
     private String email;
 
     @Column(nullable = false)
-    private long phone;
-
-    @Column(nullable = false)
-    @JsonIgnore
-    private String password; // Spring Security will hash and salt
-
-    @Column(name = "user_type_id", nullable = false)
-    private EmployeeType employeeType = EmployeeType.ASSISTENT;
-
-    @Column(nullable = false)
     private int positionPercentage;
 
-    User() {
+    @ManyToOne
+    @JoinColumn(name = "category_id", nullable = false)
+    private EmployeeCategory category;
+
+    @OneToMany(mappedBy = "user")
+    private List<ShiftAssignment> shifts;
+
+    public User() {
     }
 
-    public User(String firstName, String lastName, String email, long phone, String password, EmployeeType employeeType, int positionPercentage) {
+    public User(String firstName, String lastName, String email, int phone, int positionPercentage) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phone = phone;
-        this.password = password;
-        this.employeeType = employeeType;
         this.positionPercentage = positionPercentage;
     }
 
@@ -59,64 +54,48 @@ public class User implements Serializable {
         return userId;
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public int getPositionPercentage() {
-        return positionPercentage;
-    }
-
-    public long getPhone() {
-        return phone;
-    }
-
-
-
-    public EmployeeType getEmployeeType() {
-        return employeeType;
-    }
-
-
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    public String getFirstName() {
+        return firstName;
     }
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
+    public String getLastName() {
+        return lastName;
+    }
+
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
     }
 
-    public void setPhone(long phone) {
-        this.phone = phone;
-    }
-
-
-    public void setEmployeeType(EmployeeType employeeType) {
-        this.employeeType = employeeType;
+    public int getPositionPercentage() {
+        return positionPercentage;
     }
 
     public void setPositionPercentage(int positionPercentage) {
         this.positionPercentage = positionPercentage;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public long getPhone() {
+        return phone;
+    }
+
+    public void setPhone(int phone) {
+        this.phone = phone;
     }
 
     @Override
@@ -127,29 +106,62 @@ public class User implements Serializable {
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", phone=" + phone +
-                ", password='" + password + '\'' +
-                ", employeeType=" + employeeType +
                 ", positionPercentage=" + positionPercentage +
                 '}';
     }
 
-    @OneToMany(mappedBy = "user")
-    private Collection<Shift> shiftCollection = new ArrayList<>();
-
-    public Collection<Shift> getShiftsForUser(){
-
-        return shiftCollection;
-
+    public EmployeeCategory getCategory() {
+        return category;
     }
 
-    public void addShiftToUser(Shift shift){
-
-        shiftCollection.add(shift);
-
-    }
-    public void removeShift(Shift shift){
-
-        shiftCollection.remove(shift);
+    public void setCategory(EmployeeCategory category) {
+        this.category = category;
     }
 
+    public List<ShiftAssignment> getShifts() {
+        return shifts;
+    }
+
+    public void setShifts(List<ShiftAssignment> shifts) {
+        this.shifts = shifts;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        User user = (User) o;
+
+        if (userId != user.userId) return false;
+        if (phone != user.phone) return false;
+        if (positionPercentage != user.positionPercentage) return false;
+        if (firstName != null ? !firstName.equals(user.firstName) : user.firstName != null) return false;
+        if (lastName != null ? !lastName.equals(user.lastName) : user.lastName != null) return false;
+        return email.equals(user.email);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = userId;
+        result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
+        result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
+        result = 31 * result + (int) (phone ^ (phone >>> 32));
+        result = 31 * result + email.hashCode();
+        result = 31 * result + positionPercentage;
+        return result;
+    }
+
+    /*public Collection<Shift> shiftsInRange(LocalDate start, LocalDate end) {
+
+        Collection<Shift> shiftsForUser = getShifts();
+
+        List<Shift> collect = shiftsForUser
+                .stream()
+                .filter(shift -> TimeUtil.isInDateInterval(start, end, shift.getStartDateTime().toLocalDate()))
+                .collect(Collectors.toList());
+
+        return collect;
+
+    }*/
 }

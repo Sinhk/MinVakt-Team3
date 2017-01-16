@@ -4,3 +4,8 @@
     align-items: center;
     justify-content: center;
 }
+
+.row {
+    border-left: 5px solid #42a5f5;
+    margin-top: 10px;
+}

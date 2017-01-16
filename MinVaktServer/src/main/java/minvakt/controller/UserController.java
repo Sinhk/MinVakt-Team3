@@ -1,5 +1,6 @@
 package minvakt.controller;
 
+import minvakt.controller.data.ChangePasswordInfo;
 import minvakt.datamodel.Shift;
 import minvakt.datamodel.User;
 import minvakt.repos.ShiftRepository;
@@ -7,56 +8,47 @@ import minvakt.repos.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.web.bind.annotation.*;
 
 import javax.ws.rs.core.Response;
 import java.util.Collection;
+import java.util.Collections;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("users")
 public class UserController {
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
 
     private UserRepository userRepo;
     private ShiftRepository shiftRepo;
+    private final UserDetailsManager userDetailsManager;
 
     @Autowired
-    public UserController(UserRepository userRepo, ShiftRepository shiftRepo) {
+    public UserController(UserRepository userRepo, ShiftRepository shiftRepo, UserDetailsManager userDetailsManager) {
         this.userRepo = userRepo;
         this.shiftRepo = shiftRepo;
+        this.userDetailsManager = userDetailsManager;
     }
 
     @GetMapping
     public Iterable<User> getUsers() {//@RequestParam(value="name", defaultValue="World") String name) {
-        Iterable<User> users = userRepo.findAll();
-        //users.forEach(user -> log.info(user.toString()));
-        return users;
-    }
-
-    @GetMapping
-    @RequestMapping("/user")
-    public User getUser(String email){
-        User user = userRepo.findByEmail(email);
-        return user;
+        return userRepo.findAll();
     }
 
     @PostMapping
-    public boolean addUser(@RequestBody User user) {
-
-        System.out.println("Adding user: "+user);
-
+    public Response addUser(@RequestBody User user) {
         userRepo.save(user);
-        return true;
-
+        return Response.ok().build();
     }
 
     @DeleteMapping
     public Response removeUser(@RequestBody String user) {
-
         User byEmail = userRepo.findByEmail(user);
 
         if (byEmail != null){
-            System.out.println("Removing user: " + byEmail);
             userRepo.delete(byEmail);
             return Response.ok().build();
         }
@@ -64,65 +56,86 @@ public class UserController {
         return Response.noContent().build();
     }
 
-    /*@GetMapping
-    public User findUser(@RequestBody String email) {
-
+    @RequestMapping(value = "/{email}/", method = RequestMethod.GET)
+    public User findUser(@PathVariable String email) {
         System.out.println("Finding user on email: "+ email);
         return userRepo.findByEmail(email);
-    }*/
-    // TODO: 11.01.2017 Figure out how to integrate with Spring Security
-    /*@PostMapping
+    }
 
-    @RequestMapping("/login")
-    public boolean logInUserWithEmail(@RequestBody LoginInfo info){
+    @RequestMapping(value = "/{user_id}/changepassword", method = RequestMethod.PUT)
+    public Response changePasswordForUser(@PathVariable String user_id, @RequestBody ChangePasswordInfo info){
+        String oldPass = info.getOldPassAttempt();
+        String newPass = info.getNewPassAttempt();
 
-        Optional<User> user = manager.findUser(info.getEmail());
-
-        if (user.isPresent()){
-
-            return user.get().authenticatePassword(info.getPassword());
-
+        try {
+            userDetailsManager.changePassword(oldPass, newPass);
+        } catch (AccessDeniedException ade) {
+            //Not signed in
+            return Response.status(403).build();
+        } catch (BadCredentialsException bce) {
+            //Wrong oldPass
+            return Response.notModified("Wrong password").build();
         }
-        return false;
 
-    }*/
+        return Response.ok().build();
+    }
 
- /*   @PostMapping
-    @RequestMapping("/user/changepassword")
-    public boolean changePasswordForUser(@RequestBody ChangePasswordInfo info){
 
-        return info.getUser().changePassword(info.getOldPassAttempt(), info.getNewPassAttempt());
-    }*/
-    @RequestMapping("/{user_id}/shifts")
-    @GetMapping
+    @RequestMapping(value = "/{user_id}/shifts", method = RequestMethod.GET)
     public Collection<Shift> getShiftsForUser(@PathVariable(value="user_id") String userId){
 
         User user = userRepo.findOne(Integer.valueOf(userId));
 
-        return user.getShiftsForUser();
+        return (user != null) ? shiftRepo.findByShiftAssignments_User(user) : Collections.emptyList();
+
     }
 
+    // FIXME: 15.01.2017
+    /*@RequestMapping("/{user_id}/shifts/inrange")
+    @GetMapping
+    public Collection<Shift> getShiftsForUserInRange(@PathVariable String user_id, @RequestBody TwoStringsData stringsData){
+
+        String startDate = stringsData.getString1();
+        String endDate = stringsData.getString2();
+
+        LocalDate start = TimeUtil.parseBadlyFormattedTime(startDate);
+        LocalDate end = TimeUtil.parseBadlyFormattedTime(endDate);
+
+        User user = userRepo.findOne(Integer.valueOf(user_id));
+
+        if (user != null){
+            return user.shiftsInRange(start, end);
+        }
+
+        return Collections.emptyList();
+    }*/
 
 
-    @PostMapping
+
+  /*  @PostMapping
     @RequestMapping(value = "/{user_id}/shifts/{shift_id}", method = RequestMethod.POST)
-    public void addShiftToUser(@PathVariable(value = "user_id") String userId, @PathVariable(value = "shift_id") String shiftId){
+    public Response addShiftToUser(@PathVariable(value = "user_id") String userId, @PathVariable(value = "shift_id") String shiftId){
 
         User user = userRepo.findOne(Integer.valueOf(userId));
 
         Shift shift = shiftRepo.findOne(Integer.valueOf(shiftId));
 
-        user.getShiftsForUser().add(shift);
-    }
+        if (user != null && shift != null)
+            return shift.getUsers().add(user) ? Response.ok().build() : Response.notModified().build();
 
-    @DeleteMapping
+        return Response.noContent().build();
+    }*/
+
+   /* @DeleteMapping
     @RequestMapping(value = "/{user_id}/shifts/{shift_id}", method = RequestMethod.DELETE)
-    public void removeShiftFromUser (@PathVariable(value = "user_id") String userId, @PathVariable(value = "shift_id") String shiftId) {
+    public Response removeShiftFromUser (@PathVariable(value = "user_id") String userId, @PathVariable(value = "shift_id") String shiftId) {
 
         User user = userRepo.findOne(Integer.valueOf(userId));
 
         Shift shift = shiftRepo.findOne(Integer.valueOf(shiftId));
 
-        user.removeShift(shift);
-    }
+        if (user != null && shift != null) return shift.getUsers().remove(user) ? Response.ok().build() : Response.notModified().build();
+
+        return Response.noContent().build();
+    }*/
 }
