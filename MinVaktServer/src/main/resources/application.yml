@@ -14,6 +14,7 @@ spring:
   jackson:
     serialization:
       WRITE_DATES_AS_TIMESTAMPS: false
+    date-format: com.fasterxml.jackson.databind.util.ISO8601DateFormat
 logging:
   level:
     org:
