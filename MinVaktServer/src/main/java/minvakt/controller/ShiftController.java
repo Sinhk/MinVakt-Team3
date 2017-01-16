@@ -1,5 +1,6 @@
 package minvakt.controller;
 
+import minvakt.controller.data.DateWrapper;
 import minvakt.controller.data.TwoIntData;
 import minvakt.datamodel.Shift;
 import minvakt.datamodel.ShiftAssignment;
@@ -42,6 +43,13 @@ public class ShiftController {
     public Shift getShift(@PathVariable int shift_id){
 
         return shiftRepo.findOne(shift_id);
+
+    }
+
+    @PostMapping
+    public void addShift(@RequestBody DateWrapper shift){
+
+        shiftRepo.save(shift.toShift());
 
     }
 

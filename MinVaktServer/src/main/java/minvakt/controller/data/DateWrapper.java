@@ -11,17 +11,17 @@ import java.time.format.DateTimeFormatter;
  */
 public class DateWrapper {
 
-        private int startD;
-        private int startY;
-        private int startH;
-        private int startMonth;
-        private int startMin;
+        private String startD;
+        private String startY;
+        private String startH;
+        private String startMonth;
+        private String startMin;
 
-        private int endD;
-        private int endY;
-        private int endH;
-        private int endMonth;
-        private int endMin;
+        private String endD;
+        private String endY;
+        private String endH;
+        private String endMonth;
+        private String endMin;
 
 
 
@@ -41,47 +41,47 @@ public class DateWrapper {
 
         }
 
-        public int getstartD() {
+        public String getstartD() {
             return startD;
         }
-        public int getstartY() {
+        public String getstartY() {
         return startY;
     }
-        public int getstartH() {
+        public String getstartH() {
             return startH;
         }
-        public int getStartMonth() {
+        public String getStartMonth() {
             return startMonth;
         }
-        public int getStartMin() {
+        public String getStartMin() {
         return startMin;
     }
 
-        public int getEndD() {
+        public String getEndD() {
         return endD;
     }
-        public int getEndY() {
+        public String getEndY() {
         return endY;
     }
-        public int getEndH() {
+        public String getEndH() {
         return endH;
     }
-        public int getEndMonth() {
+        public String getEndMonth() {
         return endMonth;
     }
-        public int getEndMin() {
+        public String getEndMin() {
         return endMin;
     }
 
-        public void setStartD(int startD) { this.startD =startD;}
-        public void setStartY(int startY) { this.startY =startY;}
-        public void setStartMonth(int startMonth) { this.startMonth =startMonth;}
-        public void setStartMin(int startMin) { this.startMin =startMin;}
-        public void setStartH(int startH) { this.startH =startH;}
+        public void setStartD(String startD) { this.startD =startD;}
+        public void setStartY(String startY) { this.startY =startY;}
+        public void setStartMonth(String startMonth) { this.startMonth =startMonth;}
+        public void setStartMin(String startMin) { this.startMin =startMin;}
+        public void setStartH(String startH) { this.startH =startH;}
 
-        public void endD(int endD) { this.endD =endD;}
-        public void endY(int endY) { this.endY =endY;}
-        public void endMonth(int endMonth) { this.endMonth =endMonth;}
-        public void endMin(int endMin) { this.endMin =endMin;}
-        public void endH(int endH) { this.endH =endH;}
+        public void endD(String endD) { this.endD =endD;}
+        public void endY(String endY) { this.endY =endY;}
+        public void endMonth(String endMonth) { this.endMonth =endMonth;}
+        public void endMin(String endMin) { this.endMin =endMin;}
+        public void endH(String endH) { this.endH =endH;}
 }

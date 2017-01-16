@@ -141,7 +141,7 @@ public class UserController {
 
         Shift shift = shiftRepo.findOne(shiftId);
 
-        ShiftAssignment shiftAssignment = new ShiftAssignment(user, shift);
+        ShiftAssignment shiftAssignment = new ShiftAssignment(shift, user);
 
         user.getShiftAssignments().add(shiftAssignment);
 

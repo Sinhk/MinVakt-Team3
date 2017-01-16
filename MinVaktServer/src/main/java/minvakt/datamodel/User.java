@@ -38,7 +38,7 @@ public class User implements Serializable {
     @JoinColumn(name = "category_id", nullable = false)
     private EmployeeCategory category = new EmployeeCategory(){{setCategoryId(1);}};
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = {javax.persistence.CascadeType.PERSIST, javax.persistence.CascadeType.MERGE})
     @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     private List<ShiftAssignment> shiftAssignments;
 
