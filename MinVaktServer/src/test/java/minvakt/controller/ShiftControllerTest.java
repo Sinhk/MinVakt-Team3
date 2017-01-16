@@ -26,30 +26,38 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class ShiftControllerTest {
 
+    // Mock controller
     @Mock
     private ShiftController mockedShiftController;
 
-    private Employee user1, user2;
+    // Objects for use in tests
+    private Employee employee1, employee2;
     private Shift shift1, shift2;
     private TwoIntData twoIntThing1, twoIntThing2;
 
     @Before
     public void setUp() throws Exception {
-        user1 = new Employee("Bob", "Bobsen", "bob@bob.bob", 12345678, 100);
-        user2 = new Employee("Per", "Persson", "per@sverige.se", 11223344, 50);
 
-        user1.setEmployeeId(1);
-        user2.setEmployeeId(2);
+        // Setup of users for tests
+        employee1 = new Employee("Bob", "Bobsen", "bob@bob.bob", 12345678, 100);
+        employee2 = new Employee("Per", "Persson", "per@sverige.se", 11223344, 50);
 
+        // Assign employeeID to test-employees (needed for tests)
+        employee1.setEmployeeId(1);
+        employee2.setEmployeeId(2);
+
+        // LocalDateTime objects for initializing Shift objects
         LocalDateTime date1 = LocalDateTime.of(2017, 1, 10, 10, 0, 0);
         LocalDateTime date2 = LocalDateTime.of(2017, 1, 10, 14, 0, 0);
 
         shift1 = new Shift(date1, date2);
         shift2 = new Shift(date1.toLocalDate(), PredeterminedIntervals.DAYTIME);
 
+        // Assign ID to shifts, needed for tests
         shift1.setShiftId(1);
         shift2.setShiftId(2);
 
+        // TwoIntData objects for use with addUserToShift
         twoIntThing1 = new TwoIntData(); twoIntThing2 = new TwoIntData();
 
         twoIntThing1.setInt1(2);
@@ -57,32 +65,36 @@ public class ShiftControllerTest {
         twoIntThing2.setInt1(1);
         twoIntThing2.setInt2(1);
 
+        // Add a shift to employee2 for tests
         mockedShiftController.addUserToShift(twoIntThing1);
 
+        // Stubbing methods
         when(mockedShiftController.getShifts()).thenReturn(Arrays.asList(shift1, shift2));
         when(mockedShiftController.addUserToShift(twoIntThing2)).thenReturn(Response.ok().build());
-        when(mockedShiftController.getUsersForShift(2)).thenReturn(Arrays.asList(user2));
-    }
-
-    @After
-    public void tearDown() throws Exception {
-
+        when(mockedShiftController.getUsersForShift(2)).thenReturn(Arrays.asList(employee2));
     }
 
     @Test
     public void testMock() throws Exception {
+        // Does mocked object actually exist?
         assertNotNull(mockedShiftController);
     }
 
     @Test
     public void getShifts() throws Exception {
+        // Get all shifts
         List<Shift> allShifts = (List) mockedShiftController.getShifts();
+
+        // Test if shifts are equal
         assertEquals(shift1, allShifts.get(0));
         assertEquals(shift2, allShifts.get(1));
+        assertNotEquals(shift2, allShifts.get(0));
 
+        // Test shiftIDs
         assertEquals(shift1.getShiftId(), allShifts.get(0).getShiftId());
         assertNotEquals(shift2.getShiftId(), allShifts.get(0).getShiftId());
 
+        // Test start times and end times
         assertEquals(shift1.getStartDateTime(), allShifts.get(0).getStartDateTime());
         assertNotEquals(shift1.getEndDateTime(), allShifts.get(1).getEndDateTime());
 
@@ -90,8 +102,10 @@ public class ShiftControllerTest {
 
     @Test
     public void addUserToShift() throws Exception {
+        // Attempt to add user to shift
         Response response = mockedShiftController.addUserToShift(twoIntThing2);
 
+        // Compare response with expected response (can't directly compare Response)
         assertEquals(Response.ok().build().getStatus(), response.getStatus());
         assertEquals(Response.ok().build().getLength(), response.getLength());
         assertEquals(Response.ok().build().getEntity(), response.getEntity());
@@ -102,11 +116,13 @@ public class ShiftControllerTest {
 
     @Test
     public void getUsersForShift() throws Exception {
+        // Get users assigned to shift with ID 2
         List<Employee> userList = mockedShiftController.getUsersForShift(2);
 
-        assertEquals(user2, userList.get(0));
+        // Check if correct employees are assigned to shift with ID 2
+        assertEquals(employee2, userList.get(0));
 
-        assertNotEquals(user1, userList.get(0));
+        assertNotEquals(employee1, userList.get(0));
 
     }
 }
