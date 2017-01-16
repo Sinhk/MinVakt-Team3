@@ -11,8 +11,9 @@ import static org.mockito.Mockito.mock;
 /**
  * Created by magnu on 09.01.2017.
  */
+/*
 public class UserTest {
-    User bob, per, billy, petter;
+    Employee bob, per, billy, petter;
 
 
     @Before
@@ -123,3 +124,4 @@ public class UserTest {
 
     }
 }
+*/
