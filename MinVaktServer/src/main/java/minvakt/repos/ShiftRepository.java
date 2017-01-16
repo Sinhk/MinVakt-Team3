@@ -13,4 +13,7 @@ public interface ShiftRepository extends CrudRepository<Shift, Integer> {
     Shift findBy(LocalDate date, PredeterminedIntervals interval);
 
     List<Shift> findByShiftAssignments_User(User user);
+
+    // TODO: 16-Jan-17  
+    //List<Shift> findShiftsInRange(User user, LocalDate start, LocalDate end);
 }

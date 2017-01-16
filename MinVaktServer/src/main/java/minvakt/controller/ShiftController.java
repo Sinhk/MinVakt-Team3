@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.ws.rs.core.Response;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -56,12 +55,15 @@ public class ShiftController {
     @RequestMapping(value = "/{shift_id}", method = RequestMethod.GET)
     @Transactional
     public List<User> getUsersForShift(@PathVariable int shift_id) {
+
         Shift shift = shiftRepo.findOne(shift_id);
-        List<User> users = new ArrayList<>();
+
+        return userRepo.findByShiftAssignments_User(shift);
+        /*List<User> users = new ArrayList<>();
         for (ShiftAssignment assignment : shift.getShiftAssignments()) {
             users.add(assignment.getUser());
         }
-        return users;
+        return users;*/
     }
 }
 

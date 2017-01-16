@@ -19,7 +19,7 @@ $(document).ready(function () {
         $(this).animate( {
             top: randHeight,
             left: randWidth
-        },{queue: false, duration: 1000/Math.sqrt(randWidth*randWidth+randWidth*randWidth)});
+        },{queue: false, duration: 1000});
         // $(this).fadeIn(500);
     },function (){});
 

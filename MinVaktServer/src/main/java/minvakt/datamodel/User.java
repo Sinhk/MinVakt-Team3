@@ -18,10 +18,10 @@ public class User implements Serializable {
     private int userId;
 
     @Column(nullable = false)
-    private String firstName;
+    private String firstName = "";
 
     @Column(nullable = false)
-    private String lastName;
+    private String lastName = "";
 
     @Column(nullable = false)
     private int phone;
@@ -34,10 +34,10 @@ public class User implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
-    private EmployeeCategory category;
+    private EmployeeCategory category = new EmployeeCategory(){{setCategoryId(1);}};
 
     @OneToMany(mappedBy = "user")
-    private List<ShiftAssignment> shifts;
+    private List<ShiftAssignment> shiftAssignments;
 
     public User() {
     }
@@ -118,12 +118,12 @@ public class User implements Serializable {
         this.category = category;
     }
 
-    public List<ShiftAssignment> getShifts() {
-        return shifts;
+    public List<ShiftAssignment> getShiftAssignments() {
+        return shiftAssignments;
     }
 
-    public void setShifts(List<ShiftAssignment> shifts) {
-        this.shifts = shifts;
+    public void setShiftAssignments(List<ShiftAssignment> shiftAssignments) {
+        this.shiftAssignments = shiftAssignments;
     }
 
     @Override
@@ -152,9 +152,10 @@ public class User implements Serializable {
         return result;
     }
 
+
     /*public Collection<Shift> shiftsInRange(LocalDate start, LocalDate end) {
 
-        Collection<Shift> shiftsForUser = getShifts();
+        Collection<Shift> shiftsForUser = getShiftAssignments();
 
         List<Shift> collect = shiftsForUser
                 .stream()

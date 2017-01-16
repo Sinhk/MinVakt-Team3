@@ -25,7 +25,7 @@ public class ShiftAssignment {
     private boolean changeRequest;
     private boolean absent;
 
-    public ShiftAssignment() {
+    public ShiftAssignment(User user, Shift shift) {
     }
 
     public ShiftAssignment(Shift shift, User user) {
