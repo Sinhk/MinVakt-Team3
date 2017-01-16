@@ -1,19 +1,17 @@
 /**
- * Created by klk94 on 12.01.2017.
+ * Created by klk94 on 13.01.2017.
  */
 
-/**
- * Created by OlavH on 11-Jan-17.
- */
-$("#getEmailbutton").click(function () {
+$("#removeShiftFromUserButton").click(function () {
 
-    var getEmail = $("#getEmail").val();
+    var user_id = $("#user_id").val();
+    var shift_id = $("#shift_id").val();
+
 
     $.ajax({
-        url: "users/user",
-        type: "POST",
+        url: "users/"+user_id+"/shifts/"+shift_id,
+        type: "DELETE",
         contentType: "Text/plain",
-        data: getEmail,
 
         success: function (data) {
             console.log("Success: "+data);

@@ -1,19 +1,16 @@
 /**
- * Created by klk94 on 12.01.2017.
+ * Created by klk94 on 13.01.2017.
  */
 
-$("#getShiftsForUser").click(function () {
-
-    var user_id = $("#userId").val();
 
 
-
-
+$("#getShiftsButton").click(function () {
 
     $.ajax({
-        url: "users/"+user_id+"/shifts",
-        type: "GET",
+        url: "/users",
+        type: "Get",
         contentType: "Application/JSON",
+
 
         success: function (data) {
             console.log("Success: "+data);
