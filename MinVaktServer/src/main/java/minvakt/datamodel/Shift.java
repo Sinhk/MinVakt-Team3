@@ -79,6 +79,10 @@ public class Shift {
         return shiftId;
     }
 
+    public void setShiftId(int shiftId) {
+        this.shiftId = shiftId;
+    }
+
     public List<ShiftAssignment> getShiftAssignments() {
         return shiftAssignments;
     }

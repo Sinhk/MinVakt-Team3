@@ -1,4 +1,7 @@
+
+/*
 package minvakt.managers;
+
 
 import minvakt.datamodel.*;
 import org.junit.After;
@@ -21,6 +24,7 @@ import static org.mockito.Mockito.when;
 /**
  * Created by magnu on 09.01.2017.
  */
+/*
 @Deprecated
 public class ShiftManagerTest {
     ShiftManager shiftManager;
@@ -119,5 +123,6 @@ public class ShiftManagerTest {
 
     }
 
-*/
+
 }
+*/
