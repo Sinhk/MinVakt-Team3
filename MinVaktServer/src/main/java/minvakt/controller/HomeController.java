@@ -21,6 +21,7 @@ public class HomeController {
     String index(Model model) {
         model.addAttribute("now", LocalDateTime.now());
         UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        log.info("UserDetail type: {}", principal.getClass());
 
         //SecurityContextHolder.getContext().getAuthentication().get
 

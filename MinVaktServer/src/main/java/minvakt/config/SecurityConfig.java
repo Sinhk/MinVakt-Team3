@@ -28,19 +28,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         manager.setUsersByUsernameQuery(
                 "select email,passwd,enabled from employee where email=?");
         manager.setAuthoritiesByUsernameQuery(
-                "select username, role from user_roles where username=?");
+                "SELECT email, IF(admin,'ADMIN','USER') from employee e Left JOIN employee_category ec ON e.category_id = ec.category_id WHERE email =?;");
+        manager.setChangePasswordSql("UPDATE employee SET passwd = ? WHERE email = ?");
+        manager.setCreateUserSql("INSERT INTO employee (email,passwd,enabled) VALUES (?,?,?)");
+        manager.setUpdateUserSql("UPDATE employee SET passwd = ?, enabled = ? WHERE email = ?");
+        manager.setUserExistsSql("SELECT email FROM employee WHERE email= ?");
         manager.setRolePrefix("ROLE_");
         return manager;
     }
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        //auth.userDetailsService(userDetailsManager()).passwordEncoder(passwordEncoder());
-        auth
+        auth.userDetailsService(userDetailsManager()).passwordEncoder(passwordEncoder());
+        /*auth
                 .inMemoryAuthentication()
                 .withUser("user@minvakt.no").password("user").roles("USER")
                 .and().withUser("admin@minvakt.no").password("admin").roles("ADMIN", "USER");
-        /*auth
+        *//*auth
                 .jdbcAuthentication()
                 .passwordEncoder(passwordEncoder())
                 .usersByUsernameQuery("select username,password, enabled from users where username=?")

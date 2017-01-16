@@ -2,11 +2,11 @@ package minvakt.repos;
 
 import minvakt.datamodel.Employee;
 import minvakt.datamodel.Shift;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface EmployeeRepository extends CrudRepository<Employee, Integer> {
+public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
 
     Employee findByFirstName(String name);
 

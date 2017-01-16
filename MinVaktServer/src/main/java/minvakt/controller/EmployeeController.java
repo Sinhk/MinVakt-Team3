@@ -14,16 +14,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.ws.rs.core.Response;
 import java.time.LocalDate;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -51,12 +50,10 @@ public class EmployeeController {
     public Response addEmployee(@RequestBody Employee employee) {
 
         String password = new RandomString(8).nextString();
-        //userDetailsManager.createUser();
-
+        log.info("Generated password: {}", employee);
         // TODO: 16-Jan-17 send email
-
-
-        employeeRepo.save(employee);
+        employeeRepo.saveAndFlush(employee);
+        userDetailsManager.updateUser(new User(employee.getEmail(), password, new ArrayList<SimpleGrantedAuthority>() {{add(new SimpleGrantedAuthority("ROLE_USER"));}}));
         return Response.ok().build();
     }
 
