@@ -1,0 +1,9 @@
+/* label focus color
+.input-group input[type=text]:focus + label {
+    color: #64b5f6;
+}
+/* label underline focus color
+.input-group input[type=text]:focus {
+    border-bottom: 1.5px solid #64b5f6;
+} */
+

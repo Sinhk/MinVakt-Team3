@@ -8,196 +8,98 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.95.3/css/materialize.min.css" type="text/css" rel="stylesheet" media="screen,projection"/>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-    <!-- <link rel="stylesheet" type="text/css" href="css/employee.css">-->
+    <link rel="stylesheet" type="text/css" href="../css/employee.css">
 </head>
 <body>
 
-<div class="container">
+<div class="row">
 
-<nav>
-    <div class="nav-wrapper black-text white 2s">
-        <form>
-            <div class="input-field">
-                <input id="search" type="search" required>
-                <label for="search"><i class="material-icons black-text">search</i></label>
-                <i class="material-icons">close</i>
-            </div>
-        </form>
-    </div>
-</nav>
-
-<!--
-<div id="example-wrapper" class="dataTables-wrapper form-ingline dt-material">
-    <div class="mdl-grid">
-        <div class="mdl-cell mdl-cell--6-col">
-            <div class="dataTables_length" id="example_length">
-                <label>
-                    "Vis "
-                    <select name="example_length" aria-controls="example" class="fomr-control input-sm">
-                        <option value="10">10</option>
-                        <option value="25">25</option>
-                    </select>
-                    " elementer"
-                </label>
-            </div>
+    <nav class="blue lighten-2 flat hide-on-med-and-down">
+        <div class="nav-wrapper">
+            <form>
+                <div class="input-field">
+                    <input id="search" type="search" required="">
+                    <label for="search"><i class="mdi-action-search"></i></label>
+                    <i class="mdi-navigation-close"></i>
+                </div>
+            </form>
         </div>
-        <div class="mdl-cell mdl-cell--6-col">
-            <div id="example_filter" class="dataTabled_filter">
-                <label>
-                    "Søk "
-                    <input type="search" class="form-control input-sm" placeholder aria-controls="example">
-                </label>
-            </div>
-        </div>
-    </div>
-    <div class="mdl-grid dt-table">
-        <div class="mdl-cell mdl-cell---12-col">
-            <table id="example" class="mdl-data-table dataTable" cellspacing="0" width="100%" role="grid" aria-describedby="example_info" style="witdh: 100%;">
-                <thead>
-                <tr role="row">
-                    <th class="mdl-data-table__cell--non-numeric sorting_asc" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" style="witdh: 98px;">
-                        ::before
-                        "Navn"
-                        ::after
-                    </th>
-                    <th class="mdl-data-table__cell--non-numeric sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Position: activate to sort column ascending" style="witdh: 156px;">
-                        ::before
-                        "Stilling"
-                        ::after
-                    </th>
-                    <th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Positionpercent: activate to sort column ascending" style="witdh: 72px;">
-                        ::before
-                        "Stillingsprosent"
-                        ::after
-                    </th>
-                    <th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Phone: activate to sort column ascending" style="witdh: 72px;">
-                        ::before
-                        "Tlf"
-                        ::after
-                    </th>
-                    <th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Hours: activate to sort column ascending" style="witdh: 56px;">
-                        ::before
-                        "Antall timer"
-                        ::after
-                    </th>
-                    <th class="mdl-data-table__cell--non-numeric sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Mail: activate to sort column ascending" style="witdh: 156px;">
-                        ::before
-                        "E-post"
-                        ::after
-                    </th>
-                </tr>
-                </thead>
+    </nav>
 
-                <tbody>
-                <tr role="row" class="odd">
-                    <td class="mdl-data-table__cell--non-numeric sorting_1">Kristin Weiseth</td>
-                    <td class="mdl-data-table__cell--non-numeric">Sykepleier</td>
-                    <td>100%</td>
-                    <td>12345678</td>
-                    <td>37,5</td>
-                    <td class="mdl-data-table__cell--non-numeric">kristin@hotmail.com</td>
-                </tr>
-                <tr role="row" class="even">
-                    <td class="mdl-data-table__cell--non-numeric sorting_1">Kristin Øien</td>
-                    <td class="mdl-data-table__cell--non-numeric">Helsefagarbeider</td>
-                    <td>70%</td>
-                    <td>23456789</td>
-                    <td>25</td>
-                    <td class="mdl-data-table__cell--non-numeric">stine@hotmail.com</td>
-                </tr>
-                <tr role="row" class="odd">
-                    <td class="mdl-data-table__cell--non-numeric sorting_1">Elisabeth Mesøy</td>
-                    <td class="mdl-data-table__cell--non-numeric">Assistent</td>
-                    <td>50%</td>
-                    <td>34567890</td>
-                    <td>17</td>
-                    <td class="mdl-data-table__cell--non-numeric">betty@hotmail.com</td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div> -->
-
- <!--
-<div class="col s12 m8 l9">
-    <table id="data-table-simple" class="responsive-table display" cellspacing="0">
-        <table id="example" class="mdl-data-table" cellspacing="0" width="100%">
-        <thead>
-        <tr>
-            <th>Navn</th>
-            <th>Stilling</th>
-            <th>Stillingsprosent</th>
-            <th>Tlf</th>
-            <th>Antall timer per uke</th>
-            <th>E-post</th>
-        </tr>
-        </thead>
-
-        <tbody>
-        <tr>
-            <td>Kristin Weiseth</td>
-            <td>Sykepleier</td>
-            <td>100%</td>
-            <td>12345678</td>
-            <td>37,5</td>
-            <td>kristin@hotmail.com</td>
-        </tr>
-        <tr>
-            <td>Stine Sandvold Øien</td>
-            <td>Helsefagarbeider</td>
-            <td>100%</td>
-            <td>23456789</td>
-            <td>37,5</td>
-            <td>stine@hotmail.com</td>
-        </tr>
-        </tbody>
-    </table>
-</div>
- -->
-<table class="bordered">
-    <thead>
-    <tr>
-        <th data-field="name">Navn</th>
-        <th data-field="position">Stilling</th>
-        <th data-field="percent">Stillingsprosent</th>
-        <th data-field="phone">Tlf</th>
-        <th data-field="hours">Antall timer</th>
-        <th data-field="mail">E-post</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    <tr>
-        <td>Kristin</td>
-        <td>Sykepleier</td>
-        <td>100%</td>
-        <td>12345678</td>
-        <td>37.5</td>
-        <td>kristin@hotmail.com</td>
-    </tr>
-    <tr>
-        <td>Stine</td>
-        <td>Helsefagarbeider</td>
-        <td>100%</td>
-        <td>23456789</td>
-        <td>37.5</td>
-        <td>stine@hotmail.com</td>
-    </tr>
-    <tr>
-        <td>Elisabeth</td>
-        <td>Assistent</td>
-        <td>100%</td>
-        <td>34567890</td>
-        <td>37.5</td>
-        <td>elisabeth@hotmail.com</td>
-    </tr>
-    </tbody>
-</table>
 </div>
 
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped table-fixed">
+            <thead>
+            <tr>
+                <th>
+                    <a href="" ng-click="sortType = 'name'; sortReverse = !sortReverse">Navn<span class="pull-right"><i class="fa" ng-class="{'fa-sort': sortType != 'name', 'fa-caret-down': sortType == 'name' && !sortReverse, 'fa-caret-up': sortType == 'name'&& sortReverse} "></i>
+                    </span>
+                    </a>
+                </th>
+                <th>
+                    <a href="" ng-click="sortType = 'position'; sortReverse = !sortReverse">Stilling<span class="pull-right"><i class="fa" ng-class="{'fa-sort': sortType != 'position', 'fa-caret-down': sortType == 'position' && !sortReverse, 'fa-caret-up': sortType == 'position' && sortReverse} "></i>
+                    </span>
+                    </a>
+                </th>
+                <th>
+                    <a href="" ng-click="sortType = 'percent'; sortReverse = !sortReverse">Stillingsprosent<span class="pull-right"><i class="fa" ng-class="{'fa-sort': sortType != 'percent', 'fa-caret-down': sortType == 'percent' && !sortReverse, 'fa-caret-up': sortType == 'percent' && sortReverse} "></i>
+                    </span>
+                    </a>
+                </th>
+                <th>
+                    <a href="" ng-click="sortType = 'phone'; sortReverse = !sortReverse">Tlf<span class="pull-right"><i class="fa" ng-class="{'fa-sort': sortType != 'phone', 'fa-caret-down': sortType == 'phone' && !sortReverse, 'fa-caret-up': sortType == 'phone' && sortReverse} "></i>
+                    </span>
+                    </a>
+                </th>
+                <th>
+                    <a href="" ng-click="sortType = 'hours'; sortReverse = !sortReverse">Antall timer<span class="pull-right"><i class="fa" ng-class="{'fa-sort': sortType != 'hours', 'fa-caret-down': sortType == 'hours' && !sortReverse, 'fa-caret-up': sortType == 'hours' && sortReverse} "></i>
+                    </span>
+                    </a>
+                </th>
+                <th>
+                    <a href="" ng-click="sortType = 'mail'; sortReverse = !sortReverse">E-post<span class="pull-right"><i class="fa" ng-class="{'fa-sort': sortType != 'mail', 'fa-caret-down': sortType == 'mail' && !sortReverse, 'fa-caret-up': sortType == 'mail' && sortReverse} "></i>
+                    </span>
+                    </a>
+                </th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr>
+                <td>Kristin</td>
+                <td>Sykepleier</td>
+                <td>100%</td>
+                <td>12345678</td>
+                <td>37.5</td>
+                <td>kristin@hotmail.com</td>
+            </tr>
+            <tr>
+                <td>Stine</td>
+                <td>Helsefagarbeider</td>
+                <td>100%</td>
+                <td>23456789</td>
+                <td>37.5</td>
+                <td>stine@hotmail.com</td>
+            </tr>
+            <tr>
+                <td>Elisabeth</td>
+                <td>Assistent</td>
+                <td>100%</td>
+                <td>34567890</td>
+                <td>37.5</td>
+                <td>elisabeth@hotmail.com</td>
+            </tr>
+            </tbody>
+
+
+        </table>
+    </div>
+</div>
 
 <script src="https://code.jquery.com/jquery-2.1.2.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.95.3/js/materialize.min.js"></script>
+
+<script src="js/employee.js"></script>
 </body>
 </html>
