@@ -1,0 +1,19 @@
+aside
+{
+    position: fixed;
+    margin-left: 77%;
+    padding:0;
+    width: 300px;
+    top: 4em;
+    left: 0;
+}
+
+.cal
+{
+    margin-left: 2%;
+    width: 75%;
+}
+
+.fc-sat { color:red; }
+.fc-sun { color:red;  }
+

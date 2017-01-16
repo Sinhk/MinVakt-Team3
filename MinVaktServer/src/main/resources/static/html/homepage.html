@@ -1,39 +1,57 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
-    <link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+    <meta charset="UTF-8">
+    <title>Title</title>
 
-
-   <!--
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.css' />
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.js'></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.95.3/js/materialize.min.js"></script>
--->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.95.3/css/materialize.min.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+    <link rel="stylesheet" type="text/css" href="../css/homepage.css">
+    <script src="js/homepage.js"></script>
 
-<!--
-     <link rel="stylesheet" type="text/css" href="../css/homepage.css">
--->
 
-    <script>$(document).ready(function() {
+    <script language="javascript">
 
-        // page is now ready, initialize the calendar...
+        $(document).ready(function() {
+            $('#calendar').fullCalendar({
+                header: {
+                    left:'prev, today',
+                    center:'title',
+                    right:'next'
+                },
+                firstDay: 1,
+                weekNumbers: true,
+                dayNamesShort: ['Søndag', 'Mandag', 'Tirsdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lørdag'],
+                monthNames: ['Januar', 'Februar', 'Mars', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Desember'],
+                weekNumberTitle: 'Uke',
+                buttonText: {
+                    today:    'I dag',
+                    month:    'Måned',
+                    week:     'Uke',
+                    day:      'Dag',
+                    list:     'Liste'
+                }
+            })
+        });
 
-        $('#calendar').fullCalendar({
-            // put your options and callbacks here
-        })
-
-    });</script>
+    </script>
 
 
 </head>
 <body>
 
-<!--<div id="nav">
+<div id="nav">
     <div class="navbar-fixed">
         <nav class="blue lighten-2 z-depth-1">
             <div class="nav-wrapper">
                 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
                 <i class="small material-icons">home</i>
 
+                <!--<a href="#" class="large material-icons">home</a>-->
                 <ul id="nav-mobile" class="right hide-on-med-and-down">
                     <li><a href="timeSheet.html">Vaktliste</a></li>
                     <li><a href="badges.html">Tilgjengelighet</a></li>
@@ -44,21 +62,33 @@
         </nav>
     </div>
 </div>
--->
-<div id="calendar"></div>
 
-<div class="row">
+
+<!-- calendar -->
+<div class="cal">
     <div class="section"></div>
+    <div id="calendar"></div>
+</div>
+<br>
+<br>
 
+<!-- Modal  -->
+<a class="waves-effect waves-light btn" href="#modal">Bytt vakt</a>
+<div id="modal" class="modal">
+    <div class="modal-footer">
+        <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+    </div>
+</div>
 
-    <!-- sidenav -->
-  <!--  <div class="col s12 m5 l2">
+<!-- Sidebar-->
+<aside>
+    <div>
         <div class="right grey lighten-2 z-depth-3">
             <form>
-                <a class="btn-floating btn-small waves-effect waves-light right red">
-                    <i class="large material-icons">mode_edit</i>
-                </a>
-
+                <div class="center-align">
+                    <div class="section"></div>
+                    <i class="large material-icons">face</i>
+                </div>
                 <div class="firstname row">
                     <div class="input-field col s11">
                         <input id="first_name" type="text" class="validate">
@@ -73,17 +103,55 @@
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="input-field col s11">
-                        <input id="email" type="text" class="validate">
-                        <label for="email">E-postadresse</label>
-                    </div>
+                <!-- Modal Trigger -->
+                <div class="col s12 center">
+                    <a class="modal-trigger waves-effect blue lighten-2 btn" href="#modal1">Rediger</a>
                 </div>
+                <!-- Modal Structure -->
+                <div id="modal1" class="modal modal-fixed-footer">
+                    <div class="modal-content">
+                        <h4>Rediger informasjon</h4>
+                        <div class="firstname row">
+                            <div class="input-field col s11">
+                                <input id="first_name" type="text" class="validate">
+                                <label for="first_name">Fornavn</label>
+                            </div>
+                        </div>
 
-                <div class="row">
-                    <div class="input-field col s11">
-                        <input id="phone" type="text" class="validate">
-                        <label for="phone">Telefon</label>
+                        <div class="lastname row">
+                            <div class="input-field col s11">
+                                <input id="last_name" type="text" class="validate">
+                                <label for="last_name">Etternavn</label>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="input-field col s11">
+                                <input id="email" type="text" class="validate">
+                                <label for="email">E-postadresse</label>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="input-field col s11">
+                                <input id="phone" type="text" class="validate">
+                                <label for="phone">Telefon</label>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col s12">
+                                <a class="waves-effect blue lighten-2 btn">Endre passord</a>
+                            </div>
+                        </div>
+
+                        <hr/>
+                        <div class="center-align red-text">
+                            <h6>Viktig info.:</h6>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Oppdater</a>
                     </div>
                 </div>
 
@@ -94,34 +162,13 @@
                 </div>
 
                 <hr/>
-                <div class="center-align red-text">
-                    <h6>Viktig info.:</h6>
-                </div>
                 <br>
                 <br>
                 <br>
             </form>
         </div>
-    </div> -->
-</div>
-
-
-
-
-
-
-
-<script src="../js/homepage.js"></script>
-
-<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.css' />
-<script src="https://code.jquery.com/jquery-2.1.2.min.js" language="JavaScript"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.5.1/moment.min.js" language="JavaScript"></script>
-<!--
-    <script src="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.min.js"></script>
--->
-
-<link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.min.css" type="text/css" rel="stylesheet">
-<link href="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.print.css" type="text/css" rel="stylesheet">
+    </div>
+</aside>
 
 </body>
 </html>
