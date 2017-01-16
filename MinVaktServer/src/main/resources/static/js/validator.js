@@ -21,13 +21,3 @@ function isValidEmail(email) {
 
 }
 
-function toFullCalendarEvent(event) {
-
-    return {
-        id: event.id,
-        title: event.start+" - "+event.end,
-        start: event.start,
-        end: event.end
-    }
-    
-}

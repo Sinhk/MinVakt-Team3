@@ -28,6 +28,9 @@ public class ShiftAssignment {
     public ShiftAssignment(User user, Shift shift) {
     }
 
+    public ShiftAssignment() {
+    }
+
     public ShiftAssignment(Shift shift, User user) {
         this.shift = shift;
         this.user = user;

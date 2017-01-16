@@ -1,6 +1,8 @@
 package minvakt.datamodel;
 
 
+import org.hibernate.annotations.Cascade;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
@@ -37,6 +39,7 @@ public class User implements Serializable {
     private EmployeeCategory category = new EmployeeCategory(){{setCategoryId(1);}};
 
     @OneToMany(mappedBy = "user")
+    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     private List<ShiftAssignment> shiftAssignments;
 
     public User() {

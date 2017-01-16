@@ -160,13 +160,17 @@ public class UserController {
 
         Shift shift = shiftRepo.findOne(Integer.valueOf(shiftId));
 
+        System.out.println(user +" - "+shift);
+
         Optional<ShiftAssignment> first = user.getShiftAssignments()
-                .stream().filter(shiftAssignment -> shiftAssignment.getShift() == shift)
+                .stream()
+                .filter(shiftAssignment -> shiftAssignment.getShift() == shift)
                 .findFirst();
 
         first.ifPresent(user.getShiftAssignments()::remove);
 
         userRepo.save(user);
+
 
         return Response.noContent().build();
     }
