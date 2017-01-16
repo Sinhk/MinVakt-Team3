@@ -17,9 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.ws.rs.core.Response;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -99,21 +97,41 @@ public class ShiftController {
     @RequestMapping(value = "/suitable", method = RequestMethod.GET)
     public Iterable<Shift> getSuitableShiftsForUser(){
 
+        // Details for logged in user
         UserDetails details = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         Employee user = employeeRepo.findByEmail(details.getUsername());
 
+        System.out.println(user);
+
+        // All shift that are have changerequests
         List<Shift> changeRequestShifts = shiftAssignmentRepo
                 .findAll()
                 .stream()
                 .filter(ShiftAssignment::isChangeRequest)
                 .map(ShiftAssignment::getShift)
                 .collect(Collectors.toList());
+        //
 
-        Iterable<Shift> allShifts = getShifts();
+        // Shifts that require employees
+        List<ShiftAssignment> requiresEmployees = shiftAssignmentRepo.findAll();
 
-        List<Shift> shiftList = new ArrayList<>((Collection<? extends Shift>) allShifts);
+        Map<Shift, Integer> shiftsWithEmployeeCountMap = new HashMap<>();
 
+        requiresEmployees.forEach(
+                shiftAssignment ->{
+                    if (shiftsWithEmployeeCountMap.containsKey(shiftAssignment.getShift())){shiftsWithEmployeeCountMap.put(shiftAssignment.getShift(), shiftsWithEmployeeCountMap.get(shiftAssignment.getShift()));}
+                    else shiftsWithEmployeeCountMap.put(shiftAssignment.getShift(),1);
+                }
+        );
+
+        List<Shift> shiftsThatRequiresEmployees = new ArrayList<>();
+
+        shiftsWithEmployeeCountMap.forEach((shift, integer) -> {
+            if (integer < shift.getRequiredEmployees()) shiftsThatRequiresEmployees.add(shift);
+        });
+        //
+        // Shifts that belong to the user
         List<Shift> allShiftsForUser = shiftAssignmentRepo
                 .findAll()
                 .stream()
@@ -121,7 +139,13 @@ public class ShiftController {
                 .map(ShiftAssignment::getShift)
                 .collect(Collectors.toList());
 
+
+        System.out.println("ChangeRequests: "+changeRequestShifts);
+        System.out.println("Shifts that belong to the user: "+allShiftsForUser);
+        System.out.println("Shift that require employees: "+shiftsThatRequiresEmployees);
+
         changeRequestShifts.addAll(allShiftsForUser);
+        changeRequestShifts.addAll(shiftsThatRequiresEmployees);
 
         // looks through all the all the shifts, all their assignments, filters the ones not
         // connected to the user
@@ -139,8 +163,15 @@ public class ShiftController {
                         .forEach(shiftAssignment -> changeRequestShifts.add(shiftAssignment.getShift())));
 
 */
-        System.out.println(allShiftsForUser);
-        return changeRequestShifts;
+
+       // removes duplicates, just a bit of a hack
+        HashSet<Shift> shifts = new HashSet<>(changeRequestShifts);
+        return new ArrayList<>(shifts);
+
+    }
+    int getEmployeesOnShift(int shiftId){
+
+        return (int) shiftAssignmentRepo.findAll().stream().filter(shiftAssignment -> shiftAssignment.getShift().getShiftId() == shiftId).count();
 
     }
 }

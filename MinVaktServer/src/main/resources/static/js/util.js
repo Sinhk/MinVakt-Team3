@@ -63,6 +63,7 @@ function toFullCalendarEvent(event) {
     var dateEnd = new Date(end);
 
     var full = {
+        id: event.shiftId,
         title: start.split("T")[1]+" -> "+end.split("T")[1],
         start: dateStart,
         end: dateEnd

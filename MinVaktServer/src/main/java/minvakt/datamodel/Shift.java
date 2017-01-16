@@ -74,9 +74,7 @@ public class Shift {
         this.comments = comments;
     }
 
-    public String toString() {
-        return startDateTime.toString() + " -> " + endDateTime.toString();
-    }
+    public String toString() { return shiftId+": "+startDateTime.toString() + " -> " + endDateTime.toString();}
 
     public int getShiftId() {
         return shiftId;
