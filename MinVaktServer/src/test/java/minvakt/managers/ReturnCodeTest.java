@@ -1,14 +1,15 @@
-package minvakt.datamodel;
+package minvakt.managers;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Test;
+
+import static org.junit.Assert.*;
 
 /**
- * Created by magnu on 09.01.2017.
+ * Created by magnu on 11.01.2017.
  */
 @Deprecated
-public class TimeSheetTest {
+public class ReturnCodeTest {
     @Before
     public void setUp() throws Exception {
 
@@ -16,11 +17,6 @@ public class TimeSheetTest {
 
     @After
     public void tearDown() throws Exception {
-
-    }
-
-    @Test
-    public void getTimeSheetForUser() throws Exception {
 
     }
 

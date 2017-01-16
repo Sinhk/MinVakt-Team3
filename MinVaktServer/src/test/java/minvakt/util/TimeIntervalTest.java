@@ -1,4 +1,4 @@
-package util;
+package minvakt.util;
 
 import org.junit.After;
 import org.junit.Before;

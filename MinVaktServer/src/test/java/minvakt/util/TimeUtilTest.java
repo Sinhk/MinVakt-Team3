@@ -1,4 +1,4 @@
-package util;
+package minvakt.util;
 
 import org.junit.After;
 import org.junit.Before;
@@ -9,7 +9,7 @@ import static org.junit.Assert.*;
 /**
  * Created by magnu on 10.01.2017.
  */
-public class WeekDateIntervalTest {
+public class TimeUtilTest {
     @Before
     public void setUp() throws Exception {
 
@@ -21,17 +21,13 @@ public class WeekDateIntervalTest {
     }
 
     @Test
-    public void of() throws Exception {
+    public void dayOfWeekOf() throws Exception {
 
     }
 
     @Test
-    public void getStart() throws Exception {
+    public void shiftsOverlap() throws Exception {
 
     }
 
-    @Test
-    public void getEnd() throws Exception {
-
-    }
 }

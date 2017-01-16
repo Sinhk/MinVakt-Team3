@@ -1,4 +1,4 @@
-package util;
+package minvakt.datamodel.enums;
 
 import org.junit.After;
 import org.junit.Before;
@@ -7,9 +7,9 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- * Created by magnu on 10.01.2017.
+ * Created by magnu on 11.01.2017.
  */
-public class TimeUtilTest {
+public class PredeterminedIntervalsTest {
     @Before
     public void setUp() throws Exception {
 
@@ -21,12 +21,12 @@ public class TimeUtilTest {
     }
 
     @Test
-    public void dayOfWeekOf() throws Exception {
+    public void getInterval() throws Exception {
 
     }
 
     @Test
-    public void shiftsOverlap() throws Exception {
+    public void shiftForDate() throws Exception {
 
     }
 
