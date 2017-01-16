@@ -13,7 +13,5 @@ jdk:
   - oraclejdk8
 before_script:
   - chmod +x gradlew
-test:
-    post:
-        - if [ -e ./gradlew ]; then ./gradlew jacocoTestReport;else gradle jacocoTestReport;fi
-        - bash <(curl -s https://codecov.io/bash) -t 4b96937a-3320-4bc6-9044-e50eda8265d6
+after_success:
+  - bash <(curl -s https://codecov.io/bash) -t 4b96937a-3320-4bc6-9044-e50eda8265d6
