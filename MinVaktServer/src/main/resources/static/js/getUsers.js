@@ -4,7 +4,7 @@
 
 
 
-$("#getShiftsButton").click(function () {
+$("#getUsersButton").click(function () {
 
     $.ajax({
         url: "/users",
@@ -13,7 +13,7 @@ $("#getShiftsButton").click(function () {
 
 
         success: function (data) {
-            console.log("Success: "+data);
+            console.log("Success: "+JSON.stringify(data));
         },
         error: function (data) {
             console.log("Error: "+data)

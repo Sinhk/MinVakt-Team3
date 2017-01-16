@@ -5,18 +5,17 @@
 /**
  * Created by OlavH on 11-Jan-17.
  */
-$("#getEmailbutton").click(function () {
+$("#getEmailButton").click(function () {
 
     var getEmail = $("#getEmail").val();
 
     $.ajax({
-        url: "users/user",
-        type: "POST",
+        url: "users/"+getEmail+"/",
+        type: "GET",
         contentType: "Text/plain",
-        data: getEmail,
 
         success: function (data) {
-            console.log("Success: "+data);
+            console.log("Success: "+JSON.stringify(data));
         },
         error: function (data) {
             console.log("Error: "+data)

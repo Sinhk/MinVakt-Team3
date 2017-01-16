@@ -2,7 +2,7 @@
  * Created by klk94 on 13.01.2017.
  */
 
-$("#removeShiftFromUserButton").click(function () {
+$("#removeButton").click(function () {
 
     var user_id = $("#user_id").val();
     var shift_id = $("#shift_id").val();
@@ -11,8 +11,11 @@ $("#removeShiftFromUserButton").click(function () {
     $.ajax({
         url: "users/"+user_id+"/shifts/"+shift_id,
         type: "DELETE",
-        contentType: "Text/plain",
-
+        contentType: "application/json",
+        data: JSON.stringify({
+            "user_id": user_id,
+            "shift_id": shift_id,
+        }),
         success: function (data) {
             console.log("Success: "+data);
         },

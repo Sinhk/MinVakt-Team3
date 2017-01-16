@@ -1,25 +1,25 @@
 $("#addShiftToUser").click(function () {
 
+    var int1 = $("#shift_id").val();
+    var int2 = $("#user_id").val();
 
-    var userId = $("#userId").val();
-    var shiftId = $("#shiftId").val();
 
-    console.log(userId+" - "+shiftId);
+    console.log(int1+" - "+int2);
 
     $.ajax({
-        url:  "users/"+userId+"/shifts/"+shiftId,
-        type: "POST",
+        url:  "shifts/"+int1,
+        type: "PUT",
         contentType: "application/json",
         data: JSON.stringify({
-            "userId": userId,
-            "shiftId": shiftId,
+            "int1": int1,
+            "int2": int2,
         }),
         /*beforeSend: function(x) {
          x.setRequestHeader('Authorization', 'Bearer ' );
          },*/
 
         success: function (data) {
-            console.log("You added shift to user - "+data);
+            console.log("You added shift to user - "+JSON.stringify(data));
         },
         error: function (data) {
             alert("Failed! " + data);
