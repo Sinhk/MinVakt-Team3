@@ -106,12 +106,4 @@ public class Shift {
         result = 31 * result + endDateTime.hashCode();
         return result;
     }
-
-    /*public User getResponsibleForShift(){
-
-        Collection<User> users = getUsers();
-
-    }*/
-
-
 }

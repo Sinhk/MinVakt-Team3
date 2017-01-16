@@ -1,12 +1,12 @@
 package minvakt;
 
 import minvakt.controller.ShiftController;
+import minvakt.datamodel.Employee;
 import minvakt.datamodel.Shift;
-import minvakt.datamodel.User;
 import minvakt.repos.CategoryRepository;
+import minvakt.repos.EmployeeRepository;
 import minvakt.repos.ShiftAssignmentRepository;
 import minvakt.repos.ShiftRepository;
-import minvakt.repos.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -24,7 +24,7 @@ public class Application {
     }
 
     @Bean
-    public CommandLineRunner demo(UserRepository userRepo, ShiftRepository shiftRepo, ShiftAssignmentRepository usRepo, CategoryRepository categoryRepo, ShiftController shiftController) {
+    public CommandLineRunner demo(EmployeeRepository userRepo, ShiftRepository shiftRepo, ShiftAssignmentRepository usRepo, CategoryRepository categoryRepo, ShiftController shiftController) {
         return (args) -> {
             // save a couple of customers
 //            userRepo.save(new Employee("Jack", "Bauer", "test1@test.com", 98127331, "qwerty", 12));
@@ -61,8 +61,8 @@ public class Application {
             // fetch all customers
             log.info("Users found with findAll():");
             log.info("-------------------------------");
-            for (User aUser : userRepo.findAll()) {
-                log.info(aUser.toString());
+            for (Employee aEmployee : userRepo.findAll()) {
+                log.info(aEmployee.toString());
             }
             log.info("");
         };

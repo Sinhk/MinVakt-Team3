@@ -18,7 +18,7 @@ public class EmployeeCategory {
     private boolean admin;
     private int requiredPerShift;
     @OneToMany(mappedBy = "category")
-    private List<User> employeesByCategory;
+    private List<Employee> employeesByCategory;
 
     public int getCategoryId() {
         return categoryId;
@@ -36,7 +36,7 @@ public class EmployeeCategory {
         return requiredPerShift;
     }
 
-    public List<User> getEmployeesByCategory() {
+    public List<Employee> getEmployeesByCategory() {
         return employeesByCategory;
     }
 
@@ -56,7 +56,7 @@ public class EmployeeCategory {
         this.requiredPerShift = requiredPerShift;
     }
 
-    public void setEmployeesByCategory(List<User> employeesByCategory) {
+    public void setEmployeesByCategory(List<Employee> employeesByCategory) {
         this.employeesByCategory = employeesByCategory;
     }
 

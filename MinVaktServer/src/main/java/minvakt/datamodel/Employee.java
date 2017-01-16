@@ -12,12 +12,12 @@ import java.util.List;
  */
 @Entity
 @Table(name = "employee")
-public class User implements Serializable {
+public class Employee implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "employee_id", updatable = false, nullable = false)
-    private int userId;
+    private int employeeId;
 
     @Column(nullable = false)
     private String firstName = "";
@@ -38,14 +38,14 @@ public class User implements Serializable {
     @JoinColumn(name = "category_id", nullable = false)
     private EmployeeCategory category = new EmployeeCategory(){{setCategoryId(1);}};
 
-    @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = {javax.persistence.CascadeType.PERSIST, javax.persistence.CascadeType.MERGE})
+    @OneToMany(mappedBy = "employee", orphanRemoval = true, cascade = {javax.persistence.CascadeType.PERSIST, javax.persistence.CascadeType.MERGE})
     @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     private List<ShiftAssignment> shiftAssignments;
 
-    public User() {
+    public Employee() {
     }
 
-    public User(String firstName, String lastName, String email, int phone, int positionPercentage) {
+    public Employee(String firstName, String lastName, String email, int phone, int positionPercentage) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -53,12 +53,12 @@ public class User implements Serializable {
         this.positionPercentage = positionPercentage;
     }
 
-    public int getUserId() {
-        return userId;
+    public int getEmployeeId() {
+        return employeeId;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setEmployeeId(int employeeId) {
+        this.employeeId = employeeId;
     }
 
     public String getFirstName() {
@@ -103,8 +103,8 @@ public class User implements Serializable {
 
     @Override
     public String toString() {
-        return "User{" +
-                "userId=" + userId +
+        return "Employee{" +
+                "employeeId=" + employeeId +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
@@ -134,19 +134,19 @@ public class User implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        User user = (User) o;
+        Employee employee = (Employee) o;
 
-        if (userId != user.userId) return false;
-        if (phone != user.phone) return false;
-        if (positionPercentage != user.positionPercentage) return false;
-        if (firstName != null ? !firstName.equals(user.firstName) : user.firstName != null) return false;
-        if (lastName != null ? !lastName.equals(user.lastName) : user.lastName != null) return false;
-        return email.equals(user.email);
+        if (employeeId != employee.employeeId) return false;
+        if (phone != employee.phone) return false;
+        if (positionPercentage != employee.positionPercentage) return false;
+        if (firstName != null ? !firstName.equals(employee.firstName) : employee.firstName != null) return false;
+        if (lastName != null ? !lastName.equals(employee.lastName) : employee.lastName != null) return false;
+        return email.equals(employee.email);
     }
 
     @Override
     public int hashCode() {
-        int result = userId;
+        int result = employeeId;
         result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
         result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
         result = 31 * result + (int) (phone ^ (phone >>> 32));
@@ -154,18 +154,4 @@ public class User implements Serializable {
         result = 31 * result + positionPercentage;
         return result;
     }
-
-
-    /*public Collection<Shift> shiftsInRange(LocalDate start, LocalDate end) {
-
-        Collection<Shift> shiftsForUser = getShiftAssignments();
-
-        List<Shift> collect = shiftsForUser
-                .stream()
-                .filter(shift -> TimeUtil.isInDateInterval(start, end, shift.getStartDateTime().toLocalDate()))
-                .collect(Collectors.toList());
-
-        return collect;
-
-    }*/
 }

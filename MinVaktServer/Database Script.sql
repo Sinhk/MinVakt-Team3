@@ -21,9 +21,10 @@ CREATE TABLE IF NOT EXISTS employee
   first_name          VARCHAR(30)     NOT NULL,
   last_name           VARCHAR(30)     NOT NULL,
   phone               INT             NOT NULL,
-  email               VARCHAR(50)     NOT NULL,
+  email               VARCHAR(50)     NOT NULL UNIQUE,
   position_percentage INT             NOT NULL,
   passwd              VARCHAR(60),
+  enabled             BOOL                     DEFAULT TRUE,
   CONSTRAINT employee_category_fk FOREIGN KEY (category_id) REFERENCES employee_category (category_id)
 );
 
@@ -67,26 +68,32 @@ INSERT INTO employee_category (category_name, required_per_shift) VALUES ('Sykep
 INSERT INTO employee_category (category_name, required_per_shift) VALUES ('Helsefagarbeider', 30);
 INSERT INTO employee_category (category_name) VALUES ('Assistent');
 
-INSERT INTO employee (employee_id, category_id, first_name, last_name, phone, email, position_percentage)
-VALUES (1, 1, 'Jennifer', 'Payne', '12345678', 'jpayne0@comcast.net', 100);
-INSERT INTO employee (employee_id, category_id, first_name, last_name, phone, email, position_percentage)
-VALUES (2, 2, 'Andrea', 'Ferguson', '12345678', 'aferguson1@blogger.com', 100);
-INSERT INTO employee (employee_id, category_id, first_name, last_name, phone, email, position_percentage)
-VALUES (3, 2, 'Patricia', 'Pierce', '12345678', 'ppierce2@flickr.com', 100);
-INSERT INTO employee (employee_id, category_id, first_name, last_name, phone, email, position_percentage)
-VALUES (4, 2, 'Nancy', 'Johnston', '12345678', 'njohnston3@angelfire.com', 100);
-INSERT INTO employee (employee_id, category_id, first_name, last_name, phone, email, position_percentage)
-VALUES (5, 3, 'Sarah', 'Morales', '12345678', 'smorales4@netscape.com', 100);
-INSERT INTO employee (employee_id, category_id, first_name, last_name, phone, email, position_percentage)
-VALUES (6, 3, 'Andrew', 'Smith', '12345678', 'asmith5@theglobeandmail.com', 100);
-INSERT INTO employee (employee_id, category_id, first_name, last_name, phone, email, position_percentage)
-VALUES (7, 4, 'Harry', 'Garcia', '12345678', 'hgarcia6@hc360.com', 100);
-INSERT INTO employee (employee_id, category_id, first_name, last_name, phone, email, position_percentage)
-VALUES (8, 4, 'Daniel', 'Ruiz', '12345678', 'druiz7@google.com', 100);
-INSERT INTO employee (employee_id, category_id, first_name, last_name, phone, email, position_percentage)
-VALUES (9, 1, 'Diane', 'Watkins', '12345678', 'dwatkins8@archive.org', 100);
-INSERT INTO employee (employee_id, category_id, first_name, last_name, phone, email, position_percentage)
-VALUES (10, 3, 'Aaron', 'Watkins', '12345678', 'awatkins9@sina.com.cn', 100);
+INSERT INTO employee (category_id, first_name, last_name, phone, email, position_percentage, passwd)
+VALUES
+  (1, 'admin', '', '12345678', 'admin@minvakt.no', 100, '$2a$04$c7YTJkh8TVGsmCNNWW7pXu0f/dmy6E6TdsCgX7dnZlJQP7DBfuKjq');
+INSERT INTO employee (category_id, first_name, last_name, phone, email, position_percentage, passwd)
+VALUES
+  (2, 'user', '', '12345678', 'user@minvakt.no', 100, '$2a$06$vMO32hhPzSrnvM8tRYwMZ.mzxkrrtXHtsYmRNxESKiClLPtZGRtF6');
+INSERT INTO employee (category_id, first_name, last_name, phone, email, position_percentage)
+VALUES (1, 'Jennifer', 'Payne', '12345678', 'jpayne0@comcast.net', 100);
+INSERT INTO employee (category_id, first_name, last_name, phone, email, position_percentage)
+VALUES (2, 'Andrea', 'Ferguson', '12345678', 'aferguson1@blogger.com', 100);
+INSERT INTO employee (category_id, first_name, last_name, phone, email, position_percentage)
+VALUES (2, 'Patricia', 'Pierce', '12345678', 'ppierce2@flickr.com', 100);
+INSERT INTO employee (category_id, first_name, last_name, phone, email, position_percentage)
+VALUES (2, 'Nancy', 'Johnston', '12345678', 'njohnston3@angelfire.com', 100);
+INSERT INTO employee (category_id, first_name, last_name, phone, email, position_percentage)
+VALUES (3, 'Sarah', 'Morales', '12345678', 'smorales4@netscape.com', 100);
+INSERT INTO employee (category_id, first_name, last_name, phone, email, position_percentage)
+VALUES (3, 'Andrew', 'Smith', '12345678', 'asmith5@theglobeandmail.com', 100);
+INSERT INTO employee (category_id, first_name, last_name, phone, email, position_percentage)
+VALUES (4, 'Harry', 'Garcia', '12345678', 'hgarcia6@hc360.com', 100);
+INSERT INTO employee (category_id, first_name, last_name, phone, email, position_percentage)
+VALUES (4, 'Daniel', 'Ruiz', '12345678', 'druiz7@google.com', 100);
+INSERT INTO employee (category_id, first_name, last_name, phone, email, position_percentage)
+VALUES (1, 'Diane', 'Watkins', '12345678', 'dwatkins8@archive.org', 100);
+INSERT INTO employee (category_id, first_name, last_name, phone, email, position_percentage)
+VALUES (3, 'Aaron', 'Watkins', '12345678', 'awatkins9@sina.com.cn', 100);
 
 INSERT INTO shift (from_time, to_time) VALUES ('2017-01-17 06:00', '2017-01-17 14:00');
 INSERT INTO shift (from_time, to_time) VALUES ('2017-01-17 14:00', '2017-01-17 22:00');

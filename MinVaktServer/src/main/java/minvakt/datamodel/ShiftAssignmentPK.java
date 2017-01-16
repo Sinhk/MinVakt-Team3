@@ -8,7 +8,7 @@ import java.io.Serializable;
  */
 public class ShiftAssignmentPK implements Serializable {
     private int shift;
-    private int user;
+    private int employee;
 
     public int getShift() {
         return shift;
@@ -18,12 +18,12 @@ public class ShiftAssignmentPK implements Serializable {
         this.shift = shift;
     }
 
-    public int getUser() {
-        return user;
+    public int getEmployee() {
+        return employee;
     }
 
-    public void setUser(int user) {
-        this.user = user;
+    public void setEmployee(int employee) {
+        this.employee = employee;
     }
 
     @Override
@@ -34,13 +34,13 @@ public class ShiftAssignmentPK implements Serializable {
         ShiftAssignmentPK that = (ShiftAssignmentPK) o;
 
         if (shift != that.shift) return false;
-        return user == that.user;
+        return employee == that.employee;
     }
 
     @Override
     public int hashCode() {
         int result = shift;
-        result = 31 * result + user;
+        result = 31 * result + employee;
         return result;
     }
 }

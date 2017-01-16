@@ -1,6 +1,6 @@
 package minvakt.managers;
 
-import minvakt.datamodel.User;
+import minvakt.datamodel.Employee;
 import org.hibernate.SessionFactory;
 
 import java.util.ArrayList;
@@ -23,37 +23,37 @@ public class UserManager {
 
     private static SessionFactory factory;
 
-    private List<User> userList = new ArrayList<>();
+    private List<Employee> employeeList = new ArrayList<>();
 
     @Deprecated // UserController
-    public List<User> getUserList() {
+    public List<Employee> getEmployeeList() {
 
         /*Session session = factory.openSession();
 
         List<User> list = session.createQuery("from users").list();*/
 
-        return userList;
+        return employeeList;
     }
 
     @Deprecated // UserController
-    public boolean addUser(User user){
-        Objects.requireNonNull(user);
+    public boolean addUser(Employee employee){
+        Objects.requireNonNull(employee);
 
-        return userList.add(user);
+        return employeeList.add(employee);
 
     }
     @Deprecated // UserController
-    public boolean removeUser(User user){
-        Objects.requireNonNull(user);
+    public boolean removeUser(Employee employee){
+        Objects.requireNonNull(employee);
 
-        return userList.remove(user);
+        return employeeList.remove(employee);
     }
 
     @Deprecated // UserRepo
-    public Optional<User> findUser(String email){
+    public Optional<Employee> findUser(String email){
         Objects.requireNonNull(email);
 
-        return userList.stream().filter(user -> user.getEmail().equalsIgnoreCase(email)).findFirst();
+        return employeeList.stream().filter(user -> user.getEmail().equalsIgnoreCase(email)).findFirst();
 
     }
 

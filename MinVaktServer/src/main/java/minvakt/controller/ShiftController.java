@@ -2,11 +2,11 @@ package minvakt.controller;
 
 import minvakt.controller.data.DateWrapper;
 import minvakt.controller.data.TwoIntData;
+import minvakt.datamodel.Employee;
 import minvakt.datamodel.Shift;
 import minvakt.datamodel.ShiftAssignment;
-import minvakt.datamodel.User;
+import minvakt.repos.EmployeeRepository;
 import minvakt.repos.ShiftRepository;
-import minvakt.repos.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,14 +21,14 @@ import java.util.List;
 @RequestMapping("/shifts")
 public class ShiftController {
 
-    private static final Logger log = LoggerFactory.getLogger(UserController.class);
+    private static final Logger log = LoggerFactory.getLogger(EmployeeController.class);
 
     private ShiftRepository shiftRepo;
-    private UserRepository userRepo;
+    private EmployeeRepository userRepo;
 
 
     @Autowired
-    public ShiftController(ShiftRepository shiftRepo, UserRepository userRepo) {
+    public ShiftController(ShiftRepository shiftRepo, EmployeeRepository userRepo) {
         this.shiftRepo = shiftRepo;
         this.userRepo = userRepo;
     }
@@ -60,9 +60,9 @@ public class ShiftController {
 
         Shift shift = shiftRepo.findOne(intData.getInt1());
 
-        User user = userRepo.findOne(intData.getInt2());
+        Employee employee = userRepo.findOne(intData.getInt2());
 
-        ShiftAssignment shiftAssignment = new ShiftAssignment(shift, user);
+        ShiftAssignment shiftAssignment = new ShiftAssignment(shift, employee);
 
         shift.getShiftAssignments().add(shiftAssignment);
 
@@ -72,11 +72,11 @@ public class ShiftController {
 
     @RequestMapping(value = "/{shift_id}/users", method = RequestMethod.GET)
     @Transactional
-    public List<User> getUsersForShift(@PathVariable int shift_id) {
+    public List<Employee> getUsersForShift(@PathVariable int shift_id) {
 
         Shift shift = shiftRepo.findOne(shift_id);
 
-        return userRepo.findByShiftAssignments_User(shift);
+        return userRepo.findByShiftAssignments_Shift(shift);
         /*List<User> users = new ArrayList<>();
         for (ShiftAssignment assignment : shift.getShiftAssignments()) {
             users.add(assignment.getUser());

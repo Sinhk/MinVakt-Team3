@@ -2,11 +2,11 @@ package minvakt.controller;
 
 import minvakt.controller.data.ChangePasswordInfo;
 import minvakt.controller.data.TwoStringsData;
+import minvakt.datamodel.Employee;
 import minvakt.datamodel.Shift;
 import minvakt.datamodel.ShiftAssignment;
-import minvakt.datamodel.User;
+import minvakt.repos.EmployeeRepository;
 import minvakt.repos.ShiftRepository;
-import minvakt.repos.UserRepository;
 import minvakt.util.RandomString;
 import minvakt.util.TimeUtil;
 import org.slf4j.Logger;
@@ -27,54 +27,55 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("users")
-public class UserController {
-    private static final Logger log = LoggerFactory.getLogger(UserController.class);
+@RequestMapping("/users")
+public class EmployeeController {
+    private static final Logger log = LoggerFactory.getLogger(EmployeeController.class);
 
-    private UserRepository userRepo;
+    private EmployeeRepository employeeRepo;
     private ShiftRepository shiftRepo;
     private final UserDetailsManager userDetailsManager;
 
     @Autowired
-    public UserController(UserRepository userRepo, ShiftRepository shiftRepo, UserDetailsManager userDetailsManager) {
-        this.userRepo = userRepo;
+    public EmployeeController(EmployeeRepository employeeRepo, ShiftRepository shiftRepo, UserDetailsManager userDetailsManager) {
+        this.employeeRepo = employeeRepo;
         this.shiftRepo = shiftRepo;
         this.userDetailsManager = userDetailsManager;
     }
 
     @GetMapping
-    public Iterable<User> getUsers() {//@RequestParam(value="name", defaultValue="World") String name) {
-        return userRepo.findAll();
+    public Iterable<Employee> getUsers() {//@RequestParam(value="name", defaultValue="World") String name) {
+        return employeeRepo.findAll();
     }
 
     @PostMapping
-    public Response addUser(@RequestBody User user) {
+    public Response addEmployee(@RequestBody Employee employee) {
 
         String password = new RandomString(8).nextString();
+        //userDetailsManager.createUser();
 
         // TODO: 16-Jan-17 send email
 
 
-        userRepo.save(user);
+        employeeRepo.save(employee);
         return Response.ok().build();
     }
 
     @DeleteMapping
-    public Response removeUser(@RequestBody String email) {
-        User byEmail = userRepo.findByEmail(email);
+    public Response removeEmployee(@RequestBody String email) {
+        Employee byEmail = employeeRepo.findByEmail(email);
 
         if (byEmail != null){
-            userRepo.delete(byEmail);
+            employeeRepo.delete(byEmail);
             return Response.ok().build();
         }
 
         return Response.noContent().build();
     }
 
-    @RequestMapping(value = "/{email}/", method = RequestMethod.GET)
-    public User findUser(@PathVariable String email) {
+    @RequestMapping(value = "{email}", method = RequestMethod.GET)
+    public Employee findUser(@PathVariable String email) {
         System.out.println("Finding user on email: "+ email);
-        return userRepo.findByEmail(email);
+        return employeeRepo.findByEmail(email);
     }
 
     @RequestMapping(value = "/{user_id}/changepassword", method = RequestMethod.PUT)
@@ -99,9 +100,9 @@ public class UserController {
     @RequestMapping(value = "/{user_id}/shifts", method = RequestMethod.GET)
     public Collection<Shift> getShiftsForUser(@PathVariable(value="user_id") int userId){
 
-        User user = userRepo.findOne(userId);
+        Employee employee = employeeRepo.findOne(userId);
 
-        return (user != null) ? shiftRepo.findByShiftAssignments_User(user) : Collections.emptyList();
+        return (employee != null) ? shiftRepo.findByShiftAssignments_Employee(employee) : Collections.emptyList();
 
     }
 
@@ -116,9 +117,9 @@ public class UserController {
         LocalDate start = TimeUtil.parseBadlyFormattedTime(startDate);
         LocalDate end = TimeUtil.parseBadlyFormattedTime(endDate);
 
-        User user = userRepo.findOne(user_id);
+        Employee employee = employeeRepo.findOne(user_id);
 
-        List<Shift> byShiftAssignments_user = shiftRepo.findByShiftAssignments_User(user);
+        List<Shift> byShiftAssignments_user = shiftRepo.findByShiftAssignments_Employee(employee);
 
         List<Shift> shiftList = byShiftAssignments_user
                 .stream()
@@ -137,15 +138,15 @@ public class UserController {
     @RequestMapping(value = "/{user_id}/shifts/{shift_id}", method = RequestMethod.POST)
     public Response addShiftToUser(@PathVariable(value = "user_id") int userId, @PathVariable(value = "shift_id") int shiftId){
 
-        User user = userRepo.findOne(userId);
+        Employee employee = employeeRepo.findOne(userId);
 
         Shift shift = shiftRepo.findOne(shiftId);
 
-        ShiftAssignment shiftAssignment = new ShiftAssignment(shift, user);
+        ShiftAssignment shiftAssignment = new ShiftAssignment(shift, employee);
 
-        user.getShiftAssignments().add(shiftAssignment);
+        employee.getShiftAssignments().add(shiftAssignment);
 
-        userRepo.save(user);
+        employeeRepo.save(employee);
 
 
         return Response.noContent().build();
@@ -156,21 +157,18 @@ public class UserController {
     @RequestMapping(value = "/{user_id}/shifts/{shift_id}", method = RequestMethod.DELETE)
     public Response removeShiftFromUser (@PathVariable(value = "user_id") String userId, @PathVariable(value = "shift_id") String shiftId) {
 
-        User user = userRepo.findOne(Integer.valueOf(userId));
+        Employee employee = employeeRepo.findOne(Integer.valueOf(userId));
 
         Shift shift = shiftRepo.findOne(Integer.valueOf(shiftId));
 
-        System.out.println(user +" - "+shift);
-
-        Optional<ShiftAssignment> first = user.getShiftAssignments()
+        Optional<ShiftAssignment> first = employee.getShiftAssignments()
                 .stream()
                 .filter(shiftAssignment -> shiftAssignment.getShift() == shift)
                 .findFirst();
 
-        first.ifPresent(user.getShiftAssignments()::remove);
+        first.ifPresent(employee.getShiftAssignments()::remove);
 
-        userRepo.save(user);
-
+        employeeRepo.save(employee);
 
         return Response.noContent().build();
     }

@@ -20,30 +20,28 @@ public class ShiftAssignment {
     @Id
     @ManyToOne
     @JoinColumn(name = "employee_id", nullable = false)
-    private User user;
+    private Employee employee;
     private boolean responsible;
     private boolean changeRequest;
     private boolean absent;
 
-
-
     public ShiftAssignment() {
     }
 
-    public ShiftAssignment(Shift shift, User user) {
+    public ShiftAssignment(Shift shift, Employee employee) {
         this.shift = shift;
-        this.user = user;
+        this.employee = employee;
         this.responsible = false;
         this.changeRequest = false;
         this.absent = false;
     }
 
-    public User getUser() {
-        return user;
+    public Employee getEmployee() {
+        return employee;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
     }
 
     public boolean isResponsible() {
@@ -86,7 +84,7 @@ public class ShiftAssignment {
                 ", changeRequest=" + changeRequest +
                 ", absent=" + absent +
                 ", shift=" + shift +
-                ", user=" + user +
+                ", employee=" + employee +
                 '}';
     }
 
@@ -101,13 +99,13 @@ public class ShiftAssignment {
         if (changeRequest != that.changeRequest) return false;
         if (absent != that.absent) return false;
         if (!shift.equals(that.shift)) return false;
-        return user.equals(that.user);
+        return employee.equals(that.employee);
     }
 
     @Override
     public int hashCode() {
         int result = shift.hashCode();
-        result = 31 * result + user.hashCode();
+        result = 31 * result + employee.hashCode();
         result = 31 * result + (responsible ? 1 : 0);
         result = 31 * result + (changeRequest ? 1 : 0);
         result = 31 * result + (absent ? 1 : 0);
