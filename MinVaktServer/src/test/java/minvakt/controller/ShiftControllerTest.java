@@ -1,7 +1,8 @@
 package minvakt.controller;
 
 import minvakt.datamodel.Shift;
-import minvakt.datamodel.User;
+import minvakt.datamodel.Employee;
+import minvakt.controller.data.TwoIntData;
 
 import minvakt.datamodel.enums.PredeterminedIntervals;
 import org.junit.After;
@@ -28,16 +29,17 @@ public class ShiftControllerTest {
     @Mock
     private ShiftController mockedShiftController;
 
-    private User user1, user2;
+    private Employee user1, user2;
     private Shift shift1, shift2;
+    private TwoIntData twoIntThing1, twoIntThing2;
 
     @Before
     public void setUp() throws Exception {
-        user1 = new User("Bob", "Bobsen", "bob@bob.bob", 12345678, 100);
-        user2 = new User("Per", "Persson", "per@sverige.se", 11223344, 50);
+        user1 = new Employee("Bob", "Bobsen", "bob@bob.bob", 12345678, 100);
+        user2 = new Employee("Per", "Persson", "per@sverige.se", 11223344, 50);
 
-        user1.setUserId(1);
-        user2.setUserId(2);
+        user1.setEmployeeId(1);
+        user2.setEmployeeId(2);
 
         LocalDateTime date1 = LocalDateTime.of(2017, 1, 10, 10, 0, 0);
         LocalDateTime date2 = LocalDateTime.of(2017, 1, 10, 14, 0, 0);
@@ -48,10 +50,17 @@ public class ShiftControllerTest {
         shift1.setShiftId(1);
         shift2.setShiftId(2);
 
-        mockedShiftController.addUserToShift(2, user2);
+        twoIntThing1 = new TwoIntData(); twoIntThing2 = new TwoIntData();
+
+        twoIntThing1.setInt1(2);
+        twoIntThing1.setInt2(2);
+        twoIntThing2.setInt1(1);
+        twoIntThing2.setInt2(1);
+
+        mockedShiftController.addUserToShift(twoIntThing1);
 
         when(mockedShiftController.getShifts()).thenReturn(Arrays.asList(shift1, shift2));
-        when(mockedShiftController.addUserToShift(1, user1)).thenReturn(Response.ok().build());
+        when(mockedShiftController.addUserToShift(twoIntThing2)).thenReturn(Response.ok().build());
         when(mockedShiftController.getUsersForShift(2)).thenReturn(Arrays.asList(user2));
     }
 
@@ -81,7 +90,7 @@ public class ShiftControllerTest {
 
     @Test
     public void addUserToShift() throws Exception {
-        Response response = mockedShiftController.addUserToShift(1, user1);
+        Response response = mockedShiftController.addUserToShift(twoIntThing2);
 
         assertEquals(Response.ok().build().getStatus(), response.getStatus());
         assertEquals(Response.ok().build().getLength(), response.getLength());
@@ -93,7 +102,7 @@ public class ShiftControllerTest {
 
     @Test
     public void getUsersForShift() throws Exception {
-        List<User> userList = mockedShiftController.getUsersForShift(2);
+        List<Employee> userList = mockedShiftController.getUsersForShift(2);
 
         assertEquals(user2, userList.get(0));
 
