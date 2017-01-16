@@ -28,3 +28,47 @@ function toFullCalendarEvent(event) {
     return full;
 
 }*/
+
+
+function getAllSuitableShifts() {
+
+    var shifts;
+
+    $.ajax({
+        async: false,
+        url: "/shifts/suitable",
+        type: "GET",
+        contentType: "Application/JSON",
+
+        success: function (data) {
+            console.log("Success: /shifts.GET");
+
+            shifts = data;
+        },
+        error: function (data) {
+            console.log("Error: "+data);
+        }
+    });
+
+    return shifts;
+
+}
+
+function toFullCalendarEvent(event) {
+
+    var start = event.startDateTime;
+    var end = event.endDateTime;
+
+    var dateStart = new Date(start);
+    var dateEnd = new Date(end);
+
+    var full = {
+        title: start.split("T")[1]+" -> "+end.split("T")[1],
+        start: dateStart,
+        end: dateEnd
+    };
+
+
+    return full;
+
+}

@@ -1,6 +1,7 @@
 /**
  * Created by OlavH on 16-Jan-17.
  */
+
 $(document).ready(function() {
     // page is now ready, initialize the calendar...
     console.log("Opening calendar..");
@@ -21,12 +22,19 @@ $(document).ready(function() {
     $('#calendar').fullCalendar({
         // put your options and callbacks here
 
+        locale: "nb",
+        timezone: "local",
         dayClick:function (data ) {
-
             console.log("You clicked: "+data);
-
         },
-        events: fullCalendarEvents
+        events: fullCalendarEvents,
+
+        eventClick: function( event, jsEvent, view ) {
+
+            console.log(event);
+
+        }
+
 
 
 
@@ -36,10 +44,7 @@ $(document).ready(function() {
 
         $('#calendar').fullCalendar( 'renderEvent', fullCalendarEvents[i], true);
 
-        console.log(fullCalendarEvents[i]);
-
     }
-
 
 
 });
@@ -73,16 +78,15 @@ function toFullCalendarEvent(event) {
     var start = event.startDateTime;
     var end = event.endDateTime;
 
-    var dateStart = new Date(start[0], start[1], start[2], start[3], start[4]);
-    var dateEnd = new Date(end[0], end[1], end[2], end[3], end[4]);
-
-    console.log(event);
+    var dateStart = new Date(start);
+    var dateEnd = new Date(end);
 
     var full = {
-        title: dateStart+" - "+dateEnd,
+        title: start.split("T")[1]+" -> "+end.split("T")[1],
         start: dateStart,
         end: dateEnd
     };
+
 
     return full;
 

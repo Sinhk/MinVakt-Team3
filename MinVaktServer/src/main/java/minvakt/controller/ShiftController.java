@@ -6,15 +6,21 @@ import minvakt.datamodel.Employee;
 import minvakt.datamodel.Shift;
 import minvakt.datamodel.ShiftAssignment;
 import minvakt.repos.EmployeeRepository;
+import minvakt.repos.ShiftAssignmentRepository;
 import minvakt.repos.ShiftRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -24,13 +30,15 @@ public class ShiftController {
     private static final Logger log = LoggerFactory.getLogger(EmployeeController.class);
 
     private ShiftRepository shiftRepo;
-    private EmployeeRepository userRepo;
+    private EmployeeRepository employeeRepo;
+    private ShiftAssignmentRepository shiftAssignmentRepo;
 
 
     @Autowired
-    public ShiftController(ShiftRepository shiftRepo, EmployeeRepository userRepo) {
+    public ShiftController(ShiftRepository shiftRepo, EmployeeRepository employeeRepository, ShiftAssignmentRepository shiftAssignmentRepo) {
         this.shiftRepo = shiftRepo;
-        this.userRepo = userRepo;
+        this.employeeRepo = employeeRepository;
+        this.shiftAssignmentRepo = shiftAssignmentRepo;
     }
 
     @GetMapping
@@ -60,7 +68,7 @@ public class ShiftController {
 
         Shift shift = shiftRepo.findOne(intData.getInt1());
 
-        Employee employee = userRepo.findOne(intData.getInt2());
+        Employee employee = employeeRepo.findOne(intData.getInt2());
 
         ShiftAssignment shiftAssignment = new ShiftAssignment(shift, employee);
 
@@ -76,12 +84,64 @@ public class ShiftController {
 
         Shift shift = shiftRepo.findOne(shift_id);
 
-        return userRepo.findByShiftAssignments_Shift(shift);
+        return employeeRepo.findByShiftAssignments_Shift(shift);
         /*List<User> users = new ArrayList<>();
         for (ShiftAssignment assignment : shift.getShiftAssignments()) {
             users.add(assignment.getUser());
         }
         return users;*/
+    }
+
+    /**
+     * Lord forgive me
+     */
+    @GetMapping
+    @RequestMapping(value = "/suitable", method = RequestMethod.GET)
+    public Iterable<Shift> getSuitableShiftsForUser(){
+
+        UserDetails details = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        Employee user = employeeRepo.findByEmail(details.getUsername());
+
+        List<Shift> changeRequestShifts = shiftAssignmentRepo
+                .findAll()
+                .stream()
+                .filter(ShiftAssignment::isChangeRequest)
+                .map(ShiftAssignment::getShift)
+                .collect(Collectors.toList());
+
+        Iterable<Shift> allShifts = getShifts();
+
+        List<Shift> shiftList = new ArrayList<>((Collection<? extends Shift>) allShifts);
+
+        List<Shift> allShiftsForUser = shiftAssignmentRepo
+                .findAll()
+                .stream()
+                .filter(shiftAssignment -> shiftAssignment.getEmployee() != user)
+                .map(ShiftAssignment::getShift)
+                .collect(Collectors.toList());
+
+        changeRequestShifts.addAll(allShiftsForUser);
+
+        // looks through all the all the shifts, all their assignments, filters the ones not
+        // connected to the user
+       /* List<List<ShiftAssignment>> collect1 = shiftList
+                .stream()
+                .map(Shift::getShiftAssignments)
+                .filter(shiftAssignments -> shiftAssignments
+                        .stream()
+                        .filter(shiftAssignment -> shiftAssignment.getEmployee() != user)
+                        .collect(Collectors.toList()).contains(user))
+                .collect(Collectors.toList());
+
+        collect1
+                .forEach(shiftAssignments -> shiftAssignments
+                        .forEach(shiftAssignment -> changeRequestShifts.add(shiftAssignment.getShift())));
+
+*/
+        System.out.println(allShiftsForUser);
+        return changeRequestShifts;
+
     }
 }
 

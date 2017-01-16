@@ -6,6 +6,7 @@ import minvakt.datamodel.Employee;
 import minvakt.datamodel.Shift;
 import minvakt.datamodel.ShiftAssignment;
 import minvakt.repos.EmployeeRepository;
+import minvakt.repos.ShiftAssignmentRepository;
 import minvakt.repos.ShiftRepository;
 import minvakt.util.RandomString;
 import minvakt.util.TimeUtil;
@@ -32,12 +33,15 @@ public class EmployeeController {
 
     private EmployeeRepository employeeRepo;
     private ShiftRepository shiftRepo;
+    private ShiftAssignmentRepository shiftAssignmentRepo;
     private final UserDetailsManager userDetailsManager;
 
+
     @Autowired
-    public EmployeeController(EmployeeRepository employeeRepo, ShiftRepository shiftRepo, UserDetailsManager userDetailsManager) {
+    public EmployeeController(EmployeeRepository employeeRepo, ShiftRepository shiftRepo, UserDetailsManager userDetailsManager, ShiftAssignmentRepository shiftAssignmentRepo) {
         this.employeeRepo = employeeRepo;
         this.shiftRepo = shiftRepo;
+        this.shiftAssignmentRepo = shiftAssignmentRepo;
         this.userDetailsManager = userDetailsManager;
     }
 
@@ -127,8 +131,6 @@ public class EmployeeController {
 
         return shiftList;
     }
-
-
 
     @Transactional
     @PostMapping
