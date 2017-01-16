@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Index</title>
+    <link href="css/temp.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.1.0.js"
+            integrity="sha256-slogkvB1K3VOkzAI8QITxV3VzpOnkeNVsKvtkYLMjfk=" crossorigin="anonymous"></script>
+</head>
+<body>
+<div>
+    <a href="/game/website.html">Play a game!</a><br>
+    <a href="/addUserTest.html">Test adding a user</a><br>
+    <a href="/users">Users</a><br>
+    <a href="/shifts">Shifts</a><br>
+    <a href="login.html">Login</a><br>
+    <a href="/removeUserTest.html">Remove users</a><br>
+    <a href="/getShiftsForUser.html">Get shifts for user</a><br>
+    <a href="/addShift.html">addShift</a><br>
+
+
+
+    <form name="logout_form" id="logout_form" method="post" th:action="@{/do_logout}">
+        <input type="hidden" name="perform_logout" value="1">
+        <input type="submit" value="Logout" id="perform_logout_button">
+        <a href="#" style="display:none;" id="logout_link">Logout</a>
+    </form>
+
+    <script type="text/javascript">
+        // Assuming you're using jQuery...
+        $('#perform_logout_button').hide();
+        $('#logout_link').click(function () {
+            document.logout_form.submit();
+            return false;
+        }).show();
+    </script>
+
+</div>
+</body>
+</html>
