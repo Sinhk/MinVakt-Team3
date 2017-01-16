@@ -29,10 +29,11 @@ CREATE TABLE IF NOT EXISTS employee
 );
 
 CREATE TABLE IF NOT EXISTS shift (
-  shift_id  INT      NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  from_time DATETIME NOT NULL,
-  to_time   DATETIME NOT NULL,
-  comments  VARCHAR(255)
+  shift_id           INT           NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  from_time          DATETIME      NOT NULL,
+  to_time            DATETIME      NOT NULL,
+  comments           VARCHAR(255),
+  required_employees INT DEFAULT 5 NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS shift_assignment

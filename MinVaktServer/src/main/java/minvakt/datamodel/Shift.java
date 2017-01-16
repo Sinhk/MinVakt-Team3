@@ -25,6 +25,9 @@ public class Shift {
 
     private String comments;
 
+    @Column(nullable = false)
+    private int requiredEmployees = 5;
+
     @OneToMany(mappedBy = "shift", orphanRemoval = true, cascade = {javax.persistence.CascadeType.PERSIST, javax.persistence.CascadeType.MERGE})
     @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     private List<ShiftAssignment> shiftAssignments;
@@ -109,5 +112,13 @@ public class Shift {
         result = 31 * result + startDateTime.hashCode();
         result = 31 * result + endDateTime.hashCode();
         return result;
+    }
+
+    public int getRequiredEmployees() {
+        return requiredEmployees;
+    }
+
+    public void setRequiredEmployees(int requiredEmployees) {
+        this.requiredEmployees = requiredEmployees;
     }
 }
