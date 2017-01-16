@@ -1,176 +1,125 @@
-<!DOCTYPE html>
 <html>
 <head>
-    <title>How to add calendar using jQuery and fullCalendar</title>
-    <!--FullCalendar Dependencies-->
-    <link href='fullcalendar/fullcalendar.css' rel='stylesheet' />
-    <link href='fullcalendar/fullcalendar.print.css' rel='stylesheet' media='print' />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+    <link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
 
-    <!--jQuery-->
-    <script src='jquery/jquery-1.9.1.min.js'></script>
-    <script src='jquery/jquery-ui-1.10.2.custom.min.js'></script>
 
-    <!--FullCalendar-->
-    <script src='fullcalendar/fullcalendar.min.js'></script>
-    <script type="text/javascript">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.95.3/css/materialize.min.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+    <link rel='stylesheet' href='fullcalendar/fullcalendar.css' />
+    <link href="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.min.css" type="text/css" rel="stylesheet">
+    <link href="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.print.css" type="text/css" rel="stylesheet">
 
-        /*
-         jQuery document ready
-         */
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.95.3/js/materialize.min.js"></script>
 
-        $(document).ready(function()
-        {
-            /*
-             date store today date.
-             d store today date.
-             m store current month.
-             y store current year.
-             */
-            var date = new Date();
-            var d = date.getDate();
-            var m = date.getMonth();
-            var y = date.getFullYear();
 
-            /*
-             Initialize fullCalendar and store into variable.
-             Why in variable?
-             Because doing so we can use it inside other function.
-             In order to modify its option later.
-             */
 
-            var calendar = $('#calendar').fullCalendar(
-                    {
-                        /*
-                         header option will define our calendar header.
-                         left define what will be at left position in calendar
-                         center define what will be at center position in calendar
-                         right define what will be at right position in calendar
-                         */
-                        header:
-                        {
-                            left: 'prev,next today',
-                            center: 'title',
-                            right: 'month,agendaWeek,agendaDay'
-                        },
-                        /*
-                         defaultView option used to define which view to show by default,
-                         for example we have used agendaWeek.
-                         */
-                        defaultView: 'agendaWeek',
-                        /*
-                         selectable:true will enable user to select datetime slot
-                         selectHelper will add helpers for selectable.
-                         */
-                        selectable: true,
-                        selectHelper: true,
-                        /*
-                         when user select timeslot this option code will execute.
-                         It has three arguments. Start,end and allDay.
-                         Start means starting time of event.
-                         End means ending time of event.
-                         allDay means if events is for entire day or not.
-                         */
-                        select: function(start, end, allDay)
-                        {
-                            /*
-                             after selection user will be promted for enter title for event.
-                             */
-                            var title = prompt('Event Title:');
-                            /*
-                             if title is enterd calendar will add title and event into fullCalendar.
-                             */
-                            if (title)
-                            {
-                                calendar.fullCalendar('renderEvent',
-                                        {
-                                            title: title,
-                                            start: start,
-                                            end: end,
-                                            allDay: allDay
-                                        },
-                                        true // make the event "stick"
-                                );
-                            }
-                            calendar.fullCalendar('unselect');
-                        },
-                        /*
-                         editable: true allow user to edit events.
-                         */
-                        editable: true,
-                        /*
-                         events is the main option for calendar.
-                         for demo we have added predefined events in json object.
-                         */
-                        events: [
-                            {
-                                title: 'All Day Event',
-                                start: new Date(y, m, 1)
-                            },
-                            {
-                                title: 'Long Event',
-                                start: new Date(y, m, d-5),
-                                end: new Date(y, m, d-2)
-                            },
-                            {
-                                id: 999,
-                                title: 'Repeating Event',
-                                start: new Date(y, m, d-3, 16, 0),
-                                allDay: false
-                            },
-                            {
-                                id: 999,
-                                title: 'Repeating Event',
-                                start: new Date(y, m, d+4, 16, 0),
-                                allDay: false
-                            },
-                            {
-                                title: 'Meeting',
-                                start: new Date(y, m, d, 10, 30),
-                                allDay: false
-                            },
-                            {
-                                title: 'Lunch',
-                                start: new Date(y, m, d, 12, 0),
-                                end: new Date(y, m, d, 14, 0),
-                                allDay: false
-                            },
-                            {
-                                title: 'Birthday Party',
-                                start: new Date(y, m, d+1, 19, 0),
-                                end: new Date(y, m, d+1, 22, 30),
-                                allDay: false
-                            },
-                            {
-                                title: 'Click for Google',
-                                start: new Date(y, m, 28),
-                                end: new Date(y, m, 29),
-                                url: 'http://google.com/'
-                            }
-                        ]
-                    });
+    <script src="https://code.jquery.com/jquery-2.1.2.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.5.1/moment.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.min.js"></script>
 
-        });
 
-    </script>
-    <style type="text/css">
-        body
-        {
-            margin-top: 40px;
-            text-align: center;
-            font-size: 14px;
-            font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
-        }
-        #calendar
-        {
-            width: 900px;
-            margin: 0 auto;
-        }
-    </style>
+
+    <link rel="stylesheet" type="text/css" href="../css/homepage.css"> -->
+
+    <script>$(document).ready(function() {
+
+        // page is now ready, initialize the calendar...
+
+        $('#calendar').fullCalendar({
+            // put your options and callbacks here
+        })
+
+    });</script>
+
+
 </head>
 <body>
 
-<!--FullCalendar container div-->
-<div id='calendar'></div>
+<!--<div id="nav">
+    <div class="navbar-fixed">
+        <nav class="blue lighten-2 z-depth-1">
+            <div class="nav-wrapper">
+                <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+                <i class="small material-icons">home</i>
 
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    <li><a href="timeSheet.html">Vaktliste</a></li>
+                    <li><a href="badges.html">Tilgjengelighet</a></li>
+                    <li><a href="collapsible.html">Ledige vakter</a></li>
+                    <li><a href="collapsible.html">Ansatte</a></li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+</div>
+-->
+<div id="calendar"></div>
+
+<div class="row">
+    <div class="section"></div>
+
+
+    <!-- sidenav -->
+  <!--  <div class="col s12 m5 l2">
+        <div class="right grey lighten-2 z-depth-3">
+            <form>
+                <a class="btn-floating btn-small waves-effect waves-light right red">
+                    <i class="large material-icons">mode_edit</i>
+                </a>
+
+                <div class="firstname row">
+                    <div class="input-field col s11">
+                        <input id="first_name" type="text" class="validate">
+                        <label for="first_name">Fornavn</label>
+                    </div>
+                </div>
+
+                <div class="lastname row">
+                    <div class="input-field col s11">
+                        <input id="last_name" type="text" class="validate">
+                        <label for="last_name">Etternavn</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="input-field col s11">
+                        <input id="email" type="text" class="validate">
+                        <label for="email">E-postadresse</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="input-field col s11">
+                        <input id="phone" type="text" class="validate">
+                        <label for="phone">Telefon</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col s12">
+                        <a class="waves-effect blue lighten-2 btn">Endre passord</a>
+                    </div>
+                </div>
+
+                <hr/>
+                <div class="center-align red-text">
+                    <h6>Viktig info.:</h6>
+                </div>
+                <br>
+                <br>
+                <br>
+            </form>
+        </div>
+    </div> -->
+</div>
+
+
+
+
+
+
+
+<script src="../js/homepage.js"></script>
 </body>
 </html>
