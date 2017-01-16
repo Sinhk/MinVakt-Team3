@@ -14,5 +14,6 @@ public interface UserRepository extends CrudRepository<User, Integer> {
 
     List<User> findByShiftAssignments_User(Shift shift);
 
+    //void setPassword(User user, String password);
 
 }

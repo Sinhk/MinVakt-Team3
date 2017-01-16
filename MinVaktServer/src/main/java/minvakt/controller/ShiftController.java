@@ -1,5 +1,6 @@
 package minvakt.controller;
 
+import minvakt.controller.data.TwoIntData;
 import minvakt.datamodel.Shift;
 import minvakt.datamodel.ShiftAssignment;
 import minvakt.datamodel.User;
@@ -36,13 +37,22 @@ public class ShiftController {
         return shiftRepo.findAll();
     }
 
+    @RequestMapping("/{shift_id}")
+    @GetMapping
+    public Shift getShift(@PathVariable int shift_id){
+
+        return shiftRepo.findOne(shift_id);
+
+    }
 
 
     @RequestMapping(value = "/{shift_id}", method = RequestMethod.PUT)
     @Transactional
-    public Response addUserToShift(@PathVariable int shift_id, @RequestBody User user) {
+    public Response addUserToShift(@RequestBody TwoIntData intData) { // shift id and user id
 
-        Shift shift = shiftRepo.findOne(shift_id);
+        Shift shift = shiftRepo.findOne(intData.getInt1());
+
+        User user = userRepo.findOne(intData.getInt2());
 
         ShiftAssignment shiftAssignment = new ShiftAssignment(shift, user);
 
@@ -52,7 +62,7 @@ public class ShiftController {
         return Response.ok().build();
     }
 
-    @RequestMapping(value = "/{shift_id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{shift_id}/users", method = RequestMethod.GET)
     @Transactional
     public List<User> getUsersForShift(@PathVariable int shift_id) {
 

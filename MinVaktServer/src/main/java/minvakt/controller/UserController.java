@@ -7,6 +7,7 @@ import minvakt.datamodel.ShiftAssignment;
 import minvakt.datamodel.User;
 import minvakt.repos.ShiftRepository;
 import minvakt.repos.UserRepository;
+import minvakt.util.RandomString;
 import minvakt.util.TimeUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,6 +49,12 @@ public class UserController {
 
     @PostMapping
     public Response addUser(@RequestBody User user) {
+
+        String password = new RandomString(8).nextString();
+
+        // TODO: 16-Jan-17 send email
+
+
         userRepo.save(user);
         return Response.ok().build();
     }

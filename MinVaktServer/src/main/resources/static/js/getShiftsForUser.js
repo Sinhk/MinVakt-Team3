@@ -7,9 +7,6 @@ $("#getShiftsForUser").click(function () {
     var user_id = $("#userId").val();
 
 
-
-
-
     $.ajax({
         url: "users/"+user_id+"/shifts",
         type: "GET",
