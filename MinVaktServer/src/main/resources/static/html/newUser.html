@@ -5,88 +5,71 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
     <title>Materialize - Codepen</title>
     <!-- CSS  -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.95.3/css/materialize.min.css" type="text/css"
-          rel="stylesheet" media="screen,projection"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.95.3/css/materialize.min.css" type="text/css" rel="stylesheet" media="screen,projection"/>
     <link rel="stylesheet" type="text/css" href="../css/newUser.css">
 </head>
 
 <body>
 
 <div class="row">
-    <a class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">add</i></a>
+
     <div class="col s12">
-        <h2>Legg til bruker</h2>
         <div class="row">
-            <div class="input-field col s5">
-                <input id="first_name" type="text" class="validate">
-                <label for="first_name">Fornavn</label>
+
+            <h2>Legg til bruker</h2>
+
+            <div class="row">
+                <div class="input-field col s5">
+                    <input id="first_name1" type="text" class="validate">
+                    <label for="first_name1">Fornavn</label>
+                </div>
+
+                <div class="input-field col s5">
+                    <input id="last_name1" type="text" class="validate">
+                    <label for="last_name1">Etternavn</label>
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="input-field col s5">
-                <input id="last_name" type="text" class="validate">
-                <label for="last_name">Etternavn</label>
+
+            <div class="row">
+                <div class="input-field col s5">
+                    <input id="email1" type="text" class="validate">
+                    <label for="email1">E-postadresse</label>
+                </div>
+
+                <div class="input-field col s5">
+                    <input id="phone1" type="text" class="validate">
+                    <label for="phone1">Telefon</label>
+                </div>
             </div>
-        </div>
 
-        <div class="row">
-            <div class="input-field col s5">
-                <input id="password" type="text" class="validate">
-                <label for="password">Passord</label>
+            <div class="row">
+                <div class="input-field col s5">
+                    <input id="positionPercentage" type="text" class="validate">
+                    <label for="positionPercentage">Stillingsprosent</label>
+                </div>
+
+
+
+
+                <div class="input-field col s5">
+                    <select class="browser-default white">
+                        <option value="" disabled selected>Velg stilling</option>
+                        <option value="1">Sykepleier</option>
+                        <option value="2">Helsefagarbeider</option>
+                        <option value="3">Assistent</option>
+                    </select>
+                </div>
             </div>
-        </div>
 
-        <div class="row">
-            <div class="input-field col s5">
-                <input id="email" type="text" class="validate">
-                <label for="email">E-postadresse</label>
+
+
+            <div class="left-align">
+                <button class="btn waves-effect waves-light blue lighten-2" type="submit" name="action">Opprett bruker
+                </button>
             </div>
-        </div>
-
-        <div class="row">
-            <div class="input-field col s5">
-                <input id="phone" type="text" class="validate">
-                <label for="phone">Telefon</label>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="input-field col s5">
-                <input id="positionPercentage" type="text" class="validate">
-                <label for="positionPercentage">Stillingsprosent</label>
-            </div>
-        </div>
-
-        <!-- Dropdown Trigger -->
-        <a class='dropdown-button btn' href='#' data-activates='dropdown1'>Drop Me!</a>
-
-        <!-- Dropdown Structure -->
-        <ul id='dropdown1' class='dropdown-content'>
-            <li><a href="#!">one</a></li>
-            <li><a href="#!">two</a></li>
-            <li class="divider"></li>
-            <li><a href="#!">three</a></li>
-        </ul>
-
-        <div class="row">
-            <div class="input-field col s5">
-                <select>
-                    <option value="" disabled selected>Velg stilling</option>
-                    <option value="1">Option 1</option>
-                    <option value="2">Option 2</option>
-                    <option value="3">Option 3</option>
-                </select>
-                <label>Stilling</label>
-            </div>
-        </div>
-
-        <div class="left-align">
-            <button class="btn waves-effect waves-light blue lighten-2" type="submit" name="action">Logg inn
-                <i class="material-icons right">send</i>
-                <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-            </button>
         </div>
     </div>
+        </div>
 </div>
 
 <script src="https://code.jquery.com/jquery-2.1.2.min.js"></script>
