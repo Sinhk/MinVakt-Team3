@@ -68,7 +68,7 @@ $(document).ready(function(){
 
         eventClick: function( event, jsEvent, view ) {
             if (event.title) {
-                alert(event.title);
+                alert('Klokkeslett: ' + event.title);
             }
 
             var eventId = event.id;
