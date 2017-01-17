@@ -3,8 +3,7 @@ package minvakt.datamodel.enums;
 /**
  * Created by OlavH on 10-Jan-17.
  */
-@Deprecated
-public enum ShiftType {
+public enum ShiftStatus {
     EXTRA_SCHEDULED,
     EXTRA_COMPLETED,
     AVAILABLE,

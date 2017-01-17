@@ -1,15 +1,7 @@
 
-.input-group input[type=text]:focus + label {
-    color: #64b5f6;
-}
-
-.input-group input[type=text]:focus {
-    border-bottom: 1.5px solid #64b5f6;
-}
-
 #search-bar {
-    border-bottom: 1.5px solid #64b5f6;
-}
+     border-bottom: 1.5px solid #64b5f6;
+ }
 
 .search-container{
     width: 300px;
