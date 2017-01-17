@@ -15,6 +15,9 @@ $(document).ready(function(){
         }
     );*/
 
+    $('.modal-trigger').leanModal();
+
+
 
     var shifts = getAllSuitableShifts();
 
@@ -32,6 +35,7 @@ $(document).ready(function(){
 
         locale: "no",
         timezone: "UTC",
+        selectable: true,
         header: {
             left:'prev, today',
             center:'title',
@@ -49,21 +53,25 @@ $(document).ready(function(){
             day:      'Dag',
             list:     'Liste'
         },
-        dayClick:function (data ) {
-            console.log("You clicked: "+data);
+        select: function (start, end, jsEvent, view) {
+
+            console.log("Start date: " + moment(start).format()+
+            "\nEnd date: " + moment(end).format());
+
         },
+        /*dayClick:function (data ) {
+            console.log("You clicked: "+data);
+        },*/
         events: fullCalendarEvents,
 
         eventClick: function( event, jsEvent, view ) {
 
-            console.log(event);
+            var eventId = event.id;
+
+            var eventDB = getEventViaID(eventId);
+
+            console.log(eventDB);
 
         }
     });
-
-    /*for(var i = 0; i<shifts.length; i++) {
-
-        $('#calendar').fullCalendar( 'renderEvent', fullCalendarEvents[i], true);
-
-    }*/
 });

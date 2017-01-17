@@ -15,70 +15,10 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.95.3/js/materialize.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.95.3/css/materialize.min.css" type="text/css" rel="stylesheet" media="screen,projection"/>
-    <link rel="stylesheet" type="text/css" href="../static/css/vaktliste.css">
-    <script src="../static/js/vaktliste.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/vaktliste.css">
 
-    <script language="javascript">
-
-        $(function() { // document ready
-
-            $('#calendar').fullCalendar({
-                resourceAreaWidth: 230,
-                editable: true,
-                aspectRatio: 1.5,
-                scrollTime: '00:00',
-                header: {
-                    left: 'prev, promptResource today',
-                    center: 'title',
-                    right: 'customWeek, next'
-                },
-                firstDay: 1,
-                defaultView: 'customWeek',
-                views: {
-                    customWeek: {
-                        type: 'timeline',
-                        duration: { weeks: 1 },
-                        slotDuration: {days: 1},
-                        buttonText: 'Vaktliste'
-                    }
-                },
-                dayNamesShort: ['Søndag', 'Mandag', 'Tirsdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lørdag'],
-                monthNames: ['Januar', 'Februar', 'Mars', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Desember'],
-                weekNumberTitle: 'Uke',
-                buttonText: {
-                    today:    'I dag',
-                    month:    'Måned',
-                    week:     'Uke',
-                    day:      'Dag',
-                    list:     'Liste'
-                },
-                resourceLabelText: 'Ansatte',
-                resources: [
-                    { id: 'a', title: 'Ole' },
-                    { id: 'b', title: 'Per', eventColor: 'green' },
-                    { id: 'c', title: 'Kari', eventColor: 'orange' },
-                    { id: 'd', title: 'Petter'},
-                    { id: 'e', title: 'Nils' },
-                    { id: 'f', title: 'Rune', eventColor: 'red' },
-                    { id: 'g', title: 'Ansatt 1' },
-                    { id: 'h', title: 'Ansatt 2' },
-                    { id: 'i', title: 'Ansatt 3' },
-                    { id: 'j', title: 'Ansatt 4' }
-                ],
-                events: [
-                    { id: '1', resourceId: 'b', start: '2017-01-07T02:00:00', end: '2017-02-07T07:00:00', title: 'event 1' },
-                    { id: '2', resourceId: 'c', start: '2015-08-07T05:00:00', end: '2015-08-07T22:00:00', title: 'event 2' },
-                    { id: '3', resourceId: 'd', start: '2015-08-06', end: '2015-08-08', title: 'event 3' },
-                    { id: '4', resourceId: 'e', start: '2015-08-07T03:00:00', end: '2015-08-07T08:00:00', title: 'event 4' },
-                    { id: '5', resourceId: 'f', start: '2015-08-07T00:30:00', end: '2015-08-07T02:30:00', title: 'event 5' }
-                ],
-                schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives'
-            });
-
-        });
-
-    </script>
-
+    <script src="../js/vaktliste.js"></script>
+    <script src="../js/util.js"></script>
 
 </head>
 <body>

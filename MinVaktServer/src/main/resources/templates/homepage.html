@@ -10,40 +10,9 @@
     <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.js'></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.95.3/js/materialize.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.95.3/css/materialize.min.css" type="text/css" rel="stylesheet" media="screen,projection"/>
-    <link rel="stylesheet" type="text/css" href="../css/homepage.css">
-    <link rel="stylesheet" type="text/css" href="../static/css/homepage.css">
+    <link rel="stylesheet" type="text/css" href="/css/homepage.css">
+
     <script src="js/homepage.js"></script>
-
-
-    <script language="javascript">
-        $(document).ready(function(){
-            // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
-            $('.modal-trigger').leanModal();
-        });
-
-        $(document).ready(function() {
-            $('#calendar').fullCalendar({
-                header: {
-                    left:'prev, today',
-                    center:'title',
-                    right:'next'
-                },
-                firstDay: 1,
-                weekNumbers: true,
-                dayNamesShort: ['Søndag', 'Mandag', 'Tirsdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lørdag'],
-                monthNames: ['Januar', 'Februar', 'Mars', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Desember'],
-                weekNumberTitle: 'Uke',
-                buttonText: {
-                    today:    'I dag',
-                    month:    'Måned',
-                    week:     'Uke',
-                    day:      'Dag',
-                    list:     'Liste'
-                }
-            })
-        });
-
-    </script>
 
     <script src="js/util.js"></script>
 

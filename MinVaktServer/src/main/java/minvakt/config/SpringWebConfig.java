@@ -166,6 +166,8 @@ public class SpringWebConfig
         registry.addViewController("/login").setViewName("login");
         registry.addViewController("/employee").setViewName("employee");
         registry.addViewController("/timeSheet").setViewName("timeSheet");
+        registry.addViewController("/homepage").setViewName("homepage");
+        registry.addViewController("/vaktliste").setViewName("vaktliste");
         registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
     }
 
