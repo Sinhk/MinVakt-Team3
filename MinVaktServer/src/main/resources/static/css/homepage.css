@@ -8,8 +8,8 @@ aside
     left: 0;
 }
 
-#knapp{
-    margin-left:2%;
+#edit_button{
+    width: 200px;
 }
 
 .cal
