@@ -1,19 +1,33 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <!--Let browser know website is optimized for mobile-->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+    <title>Logg inn</title>
+    <!-- CSS  -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.95.3/css/materialize.min.css" type="text/css" rel="stylesheet" media="screen,projection"/>
 
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
-    <link rel="stylesheet" type="text/css" href="css/login.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/login.css">
 </head>
 
+<style>
+    body {
+        background-image: url("http://wandering.tv/wp-content/uploads/2014/10/shutterstock_46332052-1.jpg");
+        background-size: 100% 100%;
+        background-repeat: no-repeat;
+    }
+</style>
+
 <body>
+
+
+<div class="section"></div>
+<div class="section"></div>
+<div class="section"></div>
+
 <div class="valign-wrapper">
     <div class="row">
-        <div class="col l20">
+        <div class="col s12">
             <div class="card grey lighten-4">
                 <div class="card blue lighten-2">
                     <div class="card-content white-text">
@@ -21,44 +35,39 @@
                     </div>
                 </div>
 
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="emailInput" type="text" class="validate">
+                        <label for="emailInput">E-post</label>
+                    </div>
+                </div>
 
-                <form name="f" th:action="@{/login}" method="post">
-                    <fieldset>
-                        <!--<input type="hidden"
-                               th:name="${_csrf.parameterName}"
-                               th:value="${_csrf.token}" />-->
-                        <div th:if="${param.error}" class="alert alert-error">
-                            Invalid username and password.
-                        </div>
-                        <div th:if="${param.logout}" class="alert alert-success">
-                            You have been logged out.
-                        </div>
-                        <div class="row">
-                            <div class="input-field col s12">
-                                <input id="emailInput" type="email" name="email" class="validate">
-                                <label for="emailInput">E-post</label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="input-field col s12">
-                                <input id="passwordInput" type="password" name="password" class="validate">
-                                <label for="passwordInput">Passord</label>
-                            </div>
-                        </div>
-                        <div class="form-actions center-align card-action">
-                            <button type="submit" class="btn waves-effect waves-light blue lighten-2">Logg inn <i
-                                    class="material-icons right">send</i></button>
-                        </div>
-                    </fieldset>
-                </form>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="passwordInput" type="text" class="validate">
+                        <label for="passwordInput">Passord</label>
+                    </div>
+                </div>
+                <div class="center-align">
+                    <button class="btn waves-effect waves-light blue lighten-2" type="submit" name="action">Logg inn
+                        <i class="material-icons right">send</i>
+                        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+                    </button>
+                </div>
+                <br>
+                <label style='float: right;'>
+                    <a class='grey-text' href='#!'><h8>Glemt passord?</h8></a>
+                </label>
             </div>
         </div>
     </div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.1.0.js" integrity="sha256-slogkvB1K3VOkzAI8QITxV3VzpOnkeNVsKvtkYLMjfk="
-        crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
+
+<!-- Script -->
+<script src="https://code.jquery.com/jquery-2.1.2.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.95.3/js/materialize.min.js"></script>
 
 </body>
 </html>

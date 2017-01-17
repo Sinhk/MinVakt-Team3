@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <link href='http://fullcalendar.io/js/fullcalendar-2.5.0/fullcalendar.css' rel='stylesheet' />
+    <link href='http://fullcalendar.io/js/fullcalendar-2.5.0/fullcalendar.print.css' rel='stylesheet' media='print' />
+    <link href='http://fullcalendar.io/js/fullcalendar-scheduler-1.1.0/scheduler.min.css' rel='stylesheet' />
+    <script src='//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js'></script>
+    <script src='//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+    <script src='http://fullcalendar.io/js/fullcalendar-2.5.0/fullcalendar.js'></script>
+    <script src='http://fullcalendar.io/js/fullcalendar-scheduler-1.1.0/scheduler.js'></script>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.95.3/js/materialize.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.95.3/css/materialize.min.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/vaktliste.css">
+    <script src="../static/js/vaktliste.js"></script>
+
+    <script language="javascript">
+
+        $(function() { // document ready
+
+            $('#calendar').fullCalendar({
+                resourceAreaWidth: 230,
+                editable: true,
+                aspectRatio: 1.5,
+                scrollTime: '00:00',
+                header: {
+                    left: 'prev, promptResource today',
+                    center: 'title',
+                    right: 'customWeek, next'
+                },
+                firstDay: 1,
+                defaultView: 'customWeek',
+                views: {
+                    customWeek: {
+                        type: 'timeline',
+                        duration: { weeks: 1 },
+                        slotDuration: {days: 1},
+                        buttonText: 'Vaktliste'
+                    }
+                },
+                dayNamesShort: ['Søndag', 'Mandag', 'Tirsdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lørdag'],
+                monthNames: ['Januar', 'Februar', 'Mars', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Desember'],
+                weekNumberTitle: 'Uke',
+                buttonText: {
+                    today:    'I dag',
+                    month:    'Måned',
+                    week:     'Uke',
+                    day:      'Dag',
+                    list:     'Liste'
+                },
+                resourceLabelText: 'Ansatte',
+                resources: [
+                    { id: 'a', title: 'Ole' },
+                    { id: 'b', title: 'Per', eventColor: 'green' },
+                    { id: 'c', title: 'Kari', eventColor: 'orange' },
+                    { id: 'd', title: 'Petter'},
+                    { id: 'e', title: 'Nils' },
+                    { id: 'f', title: 'Rune', eventColor: 'red' },
+                    { id: 'g', title: 'Ansatt 1' },
+                    { id: 'h', title: 'Ansatt 2' },
+                    { id: 'i', title: 'Ansatt 3' },
+                    { id: 'j', title: 'Ansatt 4' }
+                ],
+                events: [
+                    { id: '1', resourceId: 'b', start: '2017-01-07T02:00:00', end: '2017-02-07T07:00:00', title: 'event 1' },
+                    { id: '2', resourceId: 'c', start: '2015-08-07T05:00:00', end: '2015-08-07T22:00:00', title: 'event 2' },
+                    { id: '3', resourceId: 'd', start: '2015-08-06', end: '2015-08-08', title: 'event 3' },
+                    { id: '4', resourceId: 'e', start: '2015-08-07T03:00:00', end: '2015-08-07T08:00:00', title: 'event 4' },
+                    { id: '5', resourceId: 'f', start: '2015-08-07T00:30:00', end: '2015-08-07T02:30:00', title: 'event 5' }
+                ]
+            });
+
+        });
+
+    </script>
+
+
+</head>
+<body>
+
+<div id="nav">
+    <div class="navbar-fixed">
+        <nav class="blue lighten-2 z-depth-1">
+            <div class="nav-wrapper">
+                <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+                <i class="small material-icons">home</i>
+
+                <!--<a href="#" class="large material-icons">home</a>-->
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    <li><a href="timeSheet.html">Vaktliste</a></li>
+                    <li><a href="badges.html">Tilgjengelighet</a></li>
+                    <li><a href="collapsible.html">Ledige vakter</a></li>
+                    <li><a href="collapsible.html">Ansatte</a></li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+</div>
+
+
+<!-- calendar -->
+<div class="cal">
+    <div class="section"></div>
+    <div id="calendar"></div>
+</div>
+<br>
+<br>
+
+<!-- Modal  -->
+<a class="waves-effect waves-light btn modal-trigger" href="#modal1">Bytt vakt</a>
+
+<div id="modal1" class="modal bottom-sheet">
+    <div class="modal-content">
+        <h4>Modal Header</h4>
+        <p>A bunch of text</p>
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+    </div>
+</div>
+
+<!-- Sidebar-->
+<aside>
+    <div>
+        <div class="right grey lighten-2 z-depth-3">
+            <form>
+                <div class="center-align">
+                    <div class="section"></div>
+                    <i class="large material-icons">face</i>
+                </div>
+                <div class="firstname row">
+                    <div class="input-field col s11">
+                        <input id="first_name" type="text" class="validate">
+                        <label for="first_name">Fornavn</label>
+                    </div>
+                </div>
+
+                <div class="lastname row">
+                    <div class="input-field col s11">
+                        <input id="last_name" type="text" class="validate">
+                        <label for="last_name">Etternavn</label>
+                    </div>
+                </div>
+
+                <!-- Modal Trigger -->
+                <div class="col s12 center">
+                    <a class="modal-trigger waves-effect blue lighten-2 btn" href="#modal1">Rediger</a>
+                </div>
+                <!-- Modal Structure -->
+                <div id="modal1" class="modal modal-fixed-footer">
+                    <div class="modal-content">
+                        <h4>Rediger informasjon</h4>
+                        <div class="firstname row">
+                            <div class="input-field col s11">
+                                <input id="first_name" type="text" class="validate">
+                                <label for="first_name">Fornavn</label>
+                            </div>
+                        </div>
+
+                        <div class="lastname row">
+                            <div class="input-field col s11">
+                                <input id="last_name" type="text" class="validate">
+                                <label for="last_name">Etternavn</label>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="input-field col s11">
+                                <input id="email" type="text" class="validate">
+                                <label for="email">E-postadresse</label>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="input-field col s11">
+                                <input id="phone" type="text" class="validate">
+                                <label for="phone">Telefon</label>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col s12">
+                                <a class="waves-effect blue lighten-2 btn">Endre passord</a>
+                            </div>
+                        </div>
+
+                        <hr/>
+                        <div class="center-align red-text">
+                            <h6>Viktig info.:</h6>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Oppdater</a>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col s12">
+                        <a class="waves-effect blue lighten-2 btn">Endre passord</a>
+                    </div>
+                </div>
+
+                <hr/>
+                <br>
+                <br>
+                <br>
+            </form>
+        </div>
+    </div>
+</aside>
+
+</body>
+</html>
