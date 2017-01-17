@@ -145,7 +145,7 @@ public class ShiftController {
 
         System.out.println("ChangeRequests: "+changeRequestShifts);
         System.out.println("Shifts that belong to the user: "+allShiftsForUser);
-        System.out.println("Shift that require employees: "+shiftsThatRequiresEmployees);
+        //System.out.println("Shift that require employees: "+shiftsThatRequiresEmployees);
 
         changeRequestShifts.addAll(allShiftsForUser);
         changeRequestShifts.addAll(shiftsThatRequiresEmployees);

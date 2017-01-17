@@ -164,10 +164,10 @@ public class SpringWebConfig
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/login").setViewName("login");
-        registry.addViewController("/employee").setViewName("employee");
-        registry.addViewController("/timeSheet").setViewName("timeSheet");
-        registry.addViewController("/homepage").setViewName("homepage");
-        registry.addViewController("/vaktliste").setViewName("vaktliste");
+        registry.addViewController("/ansatte").setViewName("employee");
+        registry.addViewController("/ansatte/ny").setViewName("newUser");
+        registry.addViewController("/vaktliste").setViewName("timeSheet");
+        registry.addViewController("/teststuff").setViewName("index");
         registry.addViewController("/tilgjengelighet").setViewName("availability");
         registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
     }
