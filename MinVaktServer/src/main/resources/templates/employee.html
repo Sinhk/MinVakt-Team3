@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" th:href="@{css/employee.css}">
+</head>
+<body>
+<div id="nav" th:replace="fragments/header :: header">
+    <div>
+        <a href="newUser.html" class="btn-flat btn-small white waves-effect waves-light" id="myButton"><i
+                class="material-icons">person_add</i></a>
+    </div>
+
+    <div id="search">
+        <form class="search-container">
+            <input type="text" id="search-bar" placeholder="Søk"><i class="material-icons" id="icon">search</i>
+        </form>
+    </div>
+
+    <table id="myTable" class="tablesorter">
+        <thead>
+        <tr>
+            <th>Fornavn</th>
+            <th>Etternavn</th>
+            <th>Stilling</th>
+            <th>Stillingsprosent</th>
+            <th>Telefon</th>
+            <th>Antall timer per uke</th>
+            <th>E-post</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>Kristin</td>
+            <td>Weiseth</td>
+            <td>Sykepleier</td>
+            <td>30%</td>
+            <td>123456789</td>
+            <td>utregning</td>
+            <td>kristin@mail.no</td>
+        </tr>
+        <tr>
+            <td>Stine</td>
+            <td>Øien</td>
+            <td>Helsefagarbeider</td>
+            <td>100%</td>
+            <td>23456789</td>
+            <td>utregning</td>
+            <td>stine@mail.no</td>
+        </tr>
+        <tr>
+            <td>Elisabeth</td>
+            <td>Mesøy</td>
+            <td>Assistent</td>
+            <td>50%</td>
+            <td>34567890</td>
+            <td>utregning</td>
+            <td>elisabeth@mail.no</td>
+        </tr>
+        <tr>
+            <td>Olav</td>
+            <td>Husby</td>
+            <td>Assistent</td>
+            <td>25%</td>
+            <td>45678901</td>
+            <td>utregning</td>
+            <td>olav@mail.no</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div th:replace="fragments/header :: sidebar"></div>
+
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js' integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.28.4/js/jquery.tablesorter.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
+<script src="/js/tableTest.js"></script>
+
+
+<!--<script language="javascript">
+    $(document).ready(function () {
+            $("#myTable").tablesorter({sortList: [[0, 0], [1, 0]]});
+        }
+    );
+</script>-->
+
+</body>
+</html>

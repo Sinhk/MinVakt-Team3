@@ -1,25 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Hjem</title>
-
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.css' />
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js'></script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js'></script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.js'></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.95.3/js/materialize.min.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.95.3/css/materialize.min.css" type="text/css" rel="stylesheet" media="screen,projection"/>
-    <link rel="stylesheet" type="text/css" href="/css/homepage.css">
-
-    <script src="js/homepage.js"></script>
-    <script src="js/util.js"></script>
-    <script src="js/shiftManager.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/homepage.css}">
 
 </head>
 <body>
 
-<div id="nav">
+<div id="nav" th:replace="fragments/header :: header">
+    <!--This will be replace at runtime-->
     <div class="navbar-fixed">
         <nav class="blue lighten-2 z-depth-1">
             <div class="nav-wrapper">
@@ -52,100 +44,15 @@
 <br>
 <br>
 
+<div th:replace="fragments/header :: sidebar"></div>
 
-
-
-<!-- Sidebar-->
-<aside>
-    <div>
-        <div class="right grey lighten-2 z-depth-3">
-            <form>
-                <div class="center-align">
-                    <div class="section"></div>
-                    <i class="large material-icons">face</i>
-                </div>
-                <div class="firstname row">
-                    <div class="input-field col s11">
-                        <input id="first_name" type="text" class="validate">
-                        <label for="first_name">Fornavn</label>
-                    </div>
-                </div>
-
-                <div class="lastname row">
-                    <div class="input-field col s11">
-                        <input id="last_name" type="text" class="validate">
-                        <label for="last_name">Etternavn</label>
-                    </div>
-                </div>
-
-                <!-- Modal Trigger -->
-                <div id="edit_button">
-                <div class="col s12 center">
-                    <a class="modal-trigger waves-effect blue lighten-2 btn" href="#modal1">Rediger</a>
-                </div>
-                </div>
-                <!-- Modal Structure -->
-                <div id="modal1" class="modal modal-fixed-footer">
-                    <div class="modal-content">
-                        <h4>Rediger informasjon</h4>
-                        <div class="firstname row">
-                            <div class="input-field col s11">
-                                <input id="first_name" type="text" class="validate">
-                                <label for="first_name">Fornavn</label>
-                            </div>
-                        </div>
-
-                        <div class="lastname row">
-                            <div class="input-field col s11">
-                                <input id="last_name" type="text" class="validate">
-                                <label for="last_name">Etternavn</label>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="input-field col s11">
-                                <input id="email" type="text" class="validate">
-                                <label for="email">E-postadresse</label>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="input-field col s11">
-                                <input id="phone" type="text" class="validate">
-                                <label for="phone">Telefon</label>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col s12">
-                                <a class="waves-effect blue lighten-2 btn">Endre passord</a>
-                            </div>
-                        </div>
-
-                        <hr/>
-                        <div class="center-align red-text">
-                            <h6>Viktig info.:</h6>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Oppdater</a>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col s12">
-                        <a class="waves-effect blue lighten-2 btn">Endre passord</a>
-                    </div>
-                </div>
-
-                <hr/>
-                <br>
-                <br>
-                <br>
-            </form>
-        </div>
-    </div>
-</aside>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js' integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.js'></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
+<script src="js/util.js"></script>
+<script src="js/homepage.js"></script>
+<script src="js/shiftManager.js"></script>
 
 </body>
 </html>

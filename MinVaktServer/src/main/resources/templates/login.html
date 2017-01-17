@@ -14,31 +14,32 @@
 
 <body>
 
-<div class="section"></div>
-<div class="section"></div>
-<div class="section"></div>
 
-<div class="valign-wrapper">
+<div class="valign-wrapper" style="width:100%;height:100%;position: absolute;">
+    <div class="valign" style="width:100%;">
+        <div class="container">
     <div class="row">
-        <div class="col s12">
+        <div class="col s12 m6 offset-m3">
             <div class="card grey lighten-4">
                 <div class="card blue lighten-2">
                     <div class="card-content white-text">
                         <h4>Trondheim kommune</h4>
                     </div>
                 </div>
+                <div class="card-content">
 
-                <div th:if="${param.error}" class="alert alert-error">
-                    Feil e-postadresse eller passord
+                <div th:if="${param.error}" class="red-text valign-center center-align">
+                    <i class="material-icons">error</i>
+                    <span>Feil e-postadresse eller passord</span>
                 </div>
-                <div th:if="${param.logout}" class="alert alert-success">
+                <div th:if="${param.logout}" class="green-text center-align">
                     Du ble logget ut
                 </div>
                 <form name="f" th:action="@{/login}" method="post">
                         <div class="row">
                             <div class="input-field col s12">
                                 <input id="emailInput" type="email" name="email" class="validate">
-                                <label for="emailInput">E-post</label>
+                                <label for="emailInput" data-error="Ikke en e-postadresse">E-post</label>
                             </div>
                         </div>
                         <div class="row">
@@ -47,18 +48,23 @@
                                 <label for="passwordInput">Passord</label>
                             </div>
                         </div>
-                        <div class="form-actions center-align card-action">
+
+                        <div class="form-actions center-align">
                             <button type="submit" class="btn waves-effect waves-light blue lighten-2">Logg inn <i
                                     class="material-icons right">send</i></button>
-                            <label style='float: right;'>
-                                <a class='grey-text' href='#!'><h8>Glemt passord?</h8></a>
-                            </label>
                         </div>
-
                 </form>
-                <br>
+                    <br>
+                    <label style='float: right;'>
+                        <a class='grey-text' href='#!'>
+                            <h8>Glemt passord?</h8>
+                        </a>
+                    </label>
+                </div>
             </div>
         </div>
+    </div>
+</div>
     </div>
 </div>
 
