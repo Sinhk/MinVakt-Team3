@@ -21,6 +21,7 @@ $(document).ready(function(){
 
     var shifts = getAllSuitableShifts();
 
+
     console.log(shifts);
 
     var fullCalendarEvents = [];
@@ -66,6 +67,9 @@ $(document).ready(function(){
         events: fullCalendarEvents,
 
         eventClick: function( event, jsEvent, view ) {
+            if (event.title) {
+                alert(event.title);
+            }
 
             var eventId = event.id;
 
@@ -73,6 +77,6 @@ $(document).ready(function(){
 
             console.log(eventDB);
 
-        }
+        },
     });
 });
