@@ -196,7 +196,7 @@ public class ShiftController {
     }
 
     @GetMapping
-    @RequestMapping(value = "/{shift_id/{employee_id}/status")
+    @RequestMapping(value = "/{shift_id}/{employee_id}/status")
     public ShiftStatus getShiftStatusForUserAndShift(@PathVariable int shift_id, @PathVariable int employee_id) {
 
         return shiftAssignmentRepo
@@ -210,7 +210,7 @@ public class ShiftController {
     }
 
     @GetMapping
-    @RequestMapping(value = "/{shift_id/{employee_id}/responsible")
+    @RequestMapping(value = "/{shift_id}/{employee_id}/responsible")
     public boolean userIsResponsibleForShift(@PathVariable int shift_id, @PathVariable int employee_id) {
 
         return shiftAssignmentRepo
