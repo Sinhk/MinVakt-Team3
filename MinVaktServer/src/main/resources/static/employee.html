@@ -1,14 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.28.4/js/jquery.tablesorter.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.95.3/js/materialize.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.95.3/css/materialize.min.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
-    <title>Materialize - Codepen</title>
-    <!-- CSS  -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.95.3/css/materialize.min.css" type="text/css" rel="stylesheet" media="screen,projection"/>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-    <link rel="stylesheet" type="text/css" href="css/employee.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/employee.css">
+    <script src="../js/tableTest.js"></script>
+
+
+    <script language="javascript">
+        $(document).ready(function()
+                {
+                    $("#myTable").tablesorter();
+                    $("#myTable").tablesorter( {sortList: [[0,0], [1,0]]} );
+                }
+    );
+    </script>
+
 </head>
 <body>
 
@@ -20,78 +36,57 @@
     </div>
 </div>
 
-    <div class="table-responsive">
-        <table class="table table-bordered table-striped table-fixed">
-            <thead>
-            <tr>
-                <th>
-                    <a href="" ng-click="sortType = 'name'; sortReverse = !sortReverse">Navn<span class="pull-right"><i class="fa" ng-class="{'fa-sort': sortType != 'name', 'fa-caret-down': sortType == 'name' && !sortReverse, 'fa-caret-up': sortType == 'name'&& sortReverse} "></i>
-                    </span>
-                    </a>
-                </th>
-                <th>
-                    <a href="" ng-click="sortType = 'position'; sortReverse = !sortReverse">Stilling<span class="pull-right"><i class="fa" ng-class="{'fa-sort': sortType != 'position', 'fa-caret-down': sortType == 'position' && !sortReverse, 'fa-caret-up': sortType == 'position' && sortReverse} "></i>
-                    </span>
-                    </a>
-                </th>
-                <th>
-                    <a href="" ng-click="sortType = 'percent'; sortReverse = !sortReverse">Stillingsprosent<span class="pull-right"><i class="fa" ng-class="{'fa-sort': sortType != 'percent', 'fa-caret-down': sortType == 'percent' && !sortReverse, 'fa-caret-up': sortType == 'percent' && sortReverse} "></i>
-                    </span>
-                    </a>
-                </th>
-                <th>
-                    <a href="" ng-click="sortType = 'phone'; sortReverse = !sortReverse">Tlf<span class="pull-right"><i class="fa" ng-class="{'fa-sort': sortType != 'phone', 'fa-caret-down': sortType == 'phone' && !sortReverse, 'fa-caret-up': sortType == 'phone' && sortReverse} "></i>
-                    </span>
-                    </a>
-                </th>
-                <th>
-                    <a href="" ng-click="sortType = 'hours'; sortReverse = !sortReverse">Antall timer<span class="pull-right"><i class="fa" ng-class="{'fa-sort': sortType != 'hours', 'fa-caret-down': sortType == 'hours' && !sortReverse, 'fa-caret-up': sortType == 'hours' && sortReverse} "></i>
-                    </span>
-                    </a>
-                </th>
-                <th>
-                    <a href="" ng-click="sortType = 'mail'; sortReverse = !sortReverse">E-post<span class="pull-right"><i class="fa" ng-class="{'fa-sort': sortType != 'mail', 'fa-caret-down': sortType == 'mail' && !sortReverse, 'fa-caret-up': sortType == 'mail' && sortReverse} "></i>
-                    </span>
-                    </a>
-                </th>
-            </tr>
-            </thead>
+<table id="myTable" class="tablesorter">
+    <thead>
+    <tr>
+        <th>Fornavn</th>
+        <th>Etternavn</th>
+        <th>Stilling</th>
+        <th>Stillingsprosent</th>
+        <th>Telefon</th>
+        <th>Antall timer per uke</th>
+        <th>E-post</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>Kristin</td>
+        <td>Weiseth</td>
+        <td>Sykepleier</td>
+        <td>30%</td>
+        <td>123456789</td>
+        <td>utregning</td>
+        <td>kristin@mail.no</td>
+    </tr>
+    <tr>
+        <td>Stine</td>
+        <td>Øien</td>
+        <td>Helsefagarbeider</td>
+        <td>100%</td>
+        <td>23456789</td>
+        <td>utregning</td>
+        <td>stine@mail.no</td>
+    </tr>
+    <tr>
+        <td>Elisabeth</td>
+        <td>Mesøy</td>
+        <td>Assistent</td>
+        <td>50%</td>
+        <td>34567890</td>
+        <td>utregning</td>
+        <td>elisabeth@mail.no</td>
+    </tr>
+    <tr>
+        <td>Olav</td>
+        <td>Husby</td>
+        <td>Assistent</td>
+        <td>25%</td>
+        <td>45678901</td>
+        <td>utregning</td>
+        <td>olav@mail.no</td>
+    </tr>
+    </tbody>
+</table>
 
-            <tbody>
-            <tr>
-                <td>Kristin</td>
-                <td>Sykepleier</td>
-                <td>100%</td>
-                <td>12345678</td>
-                <td>37.5</td>
-                <td>kristin@hotmail.com</td>
-            </tr>
-            <tr>
-                <td>Stine</td>
-                <td>Helsefagarbeider</td>
-                <td>100%</td>
-                <td>23456789</td>
-                <td>37.5</td>
-                <td>stine@hotmail.com</td>
-            </tr>
-            <tr>
-                <td>Elisabeth</td>
-                <td>Assistent</td>
-                <td>100%</td>
-                <td>34567890</td>
-                <td>37.5</td>
-                <td>elisabeth@hotmail.com</td>
-            </tr>
-            </tbody>
-
-
-        </table>
-    </div>
-</div>
-
-<script src="https://code.jquery.com/jquery-2.1.2.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.95.3/js/materialize.min.js"></script>
-
-<script src="js/employee.js"></script>
 </body>
 </html>
