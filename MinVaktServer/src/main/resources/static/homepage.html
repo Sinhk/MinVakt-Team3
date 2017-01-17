@@ -11,8 +11,42 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.95.3/js/materialize.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.95.3/css/materialize.min.css" type="text/css" rel="stylesheet" media="screen,projection"/>
     <link rel="stylesheet" type="text/css" href="../css/homepage.css">
-
     <script src="js/homepage.js"></script>
+
+
+
+
+
+    <script language="javascript">
+        $(document).ready(function(){
+            // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
+            $('.modal-trigger').leanModal();
+        });
+
+        $(document).ready(function() {
+            $('#calendar').fullCalendar({
+                header: {
+                    left:'prev, today',
+                    center:'title',
+                    right:'next'
+                },
+                firstDay: 1,
+                weekNumbers: true,
+                dayNamesShort: ['Søndag', 'Mandag', 'Tirsdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lørdag'],
+                monthNames: ['Januar', 'Februar', 'Mars', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Desember'],
+                weekNumberTitle: 'Uke',
+                buttonText: {
+                    today:    'I dag',
+                    month:    'Måned',
+                    week:     'Uke',
+                    day:      'Dag',
+                    list:     'Liste'
+                }
+            })
+        });
+
+    </script>
+
     <script src="js/util.js"></script>
 
 </head>
@@ -46,12 +80,21 @@
 <br>
 <br>
 
-<!-- Modal  -->
-<a class="waves-effect waves-light btn" href="#modal">Bytt vakt</a>
-<div id="modal" class="modal">
-    <div class="modal-footer">
-        <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+<div id="knapp">
+<!-- Modal Trigger -->
+
+<a class="waves-effect waves-light btn modal-trigger blue lighten-2" href="#mda">Bytte vakt</a>
+
+<!-- Modal Structure -->
+<div id="mda" class="modal modal-fixed-footer bottom-sheet">
+    <div class="modal-content">
+        <h4>Vaktbytte</h4>
+        <p>Trykk på den vakten du vil bytte dermed "Bytt vakt"</p>
     </div>
+    <div class="modal-footer">
+        <a href="javascript:;" class=" modal-action modal-close waves-effect waves-green btn-flat">Ok</a>
+    </div>
+</div>
 </div>
 
 <!-- Sidebar-->
