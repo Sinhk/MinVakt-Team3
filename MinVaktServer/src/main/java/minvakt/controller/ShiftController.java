@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.ws.rs.core.Response;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -114,14 +115,16 @@ public class ShiftController {
         //
 
         // Shifts that require employees
-        List<ShiftAssignment> requiresEmployees = shiftAssignmentRepo.findAll();
+        Iterable<Shift> req = shiftRepo.findAll();
+
+        List<Shift> requiresEmployees = new ArrayList<>((Collection<? extends Shift>) req);
 
         Map<Shift, Integer> shiftsWithEmployeeCountMap = new HashMap<>();
 
         requiresEmployees.forEach(
                 shiftAssignment ->{
-                    if (shiftsWithEmployeeCountMap.containsKey(shiftAssignment.getShift())){shiftsWithEmployeeCountMap.put(shiftAssignment.getShift(), shiftsWithEmployeeCountMap.get(shiftAssignment.getShift()));}
-                    else shiftsWithEmployeeCountMap.put(shiftAssignment.getShift(),1);
+                    if (shiftsWithEmployeeCountMap.containsKey(shiftAssignment)){shiftsWithEmployeeCountMap.put(shiftAssignment, shiftsWithEmployeeCountMap.get(shiftAssignment));}
+                    else shiftsWithEmployeeCountMap.put(shiftAssignment,1);
                 }
         );
 
@@ -138,7 +141,6 @@ public class ShiftController {
                 .filter(shiftAssignment -> shiftAssignment.getEmployee() != user)
                 .map(ShiftAssignment::getShift)
                 .collect(Collectors.toList());
-
 
         System.out.println("ChangeRequests: "+changeRequestShifts);
         System.out.println("Shifts that belong to the user: "+allShiftsForUser);
@@ -166,7 +168,8 @@ public class ShiftController {
 
        // removes duplicates, just a bit of a hack
         HashSet<Shift> shifts = new HashSet<>(changeRequestShifts);
-        return new ArrayList<>(shifts);
+        ArrayList<Shift> shifts1 = new ArrayList<>(shifts);
+        return shifts1.stream().filter(shift -> shift.getStartDateTime().isAfter(LocalDateTime.now())).collect(Collectors.toList());
 
     }
     int getEmployeesOnShift(int shiftId){

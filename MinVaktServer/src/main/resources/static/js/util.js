@@ -54,7 +54,7 @@ function getAllSuitableShifts() {
 
 }
 
-function toFullCalendarEvent(event, resource) {
+function toFullCalendarEventWithResource(event, resource) {
 
     var start = event.startDateTime;
     var end = event.endDateTime;
@@ -64,7 +64,7 @@ function toFullCalendarEvent(event, resource) {
 
     return {
         id: event.shiftId || 0,
-        title: start.split("T")[1] + " -> " + end.split("T")[1],
+        title: start.split("T")[1].substr(0,3) + " -> " + end.split("T")[1].substr(0,3),
         start: dateStart,
         end: dateEnd,
         resourceId: resource.id
@@ -81,7 +81,7 @@ function toFullCalendarEvent(event) {
 
     return {
         id: event.shiftId,
-        title: start.split("T")[1] + " -> " + end.split("T")[1],
+        title: start.split("T")[1].substr(0,3) + " -> " + end.split("T")[1].substr(0,3),
         start: dateStart,
         end: dateEnd,
     };
@@ -101,7 +101,7 @@ function listToFullCalendarEventList(events, resourceList) {
 
         for(var j = 0; j<theEvents.length; j++){
 
-            list.push(toFullCalendarEvent(theEvents[j], resource));
+            list.push(toFullCalendarEventWithResource(theEvents[j], resource));
 
         }
 

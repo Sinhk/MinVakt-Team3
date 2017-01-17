@@ -168,6 +168,7 @@ public class SpringWebConfig
         registry.addViewController("/timeSheet").setViewName("timeSheet");
         registry.addViewController("/homepage").setViewName("homepage");
         registry.addViewController("/vaktliste").setViewName("vaktliste");
+        registry.addViewController("/tilgjengelighet").setViewName("availability");
         registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
     }
 
