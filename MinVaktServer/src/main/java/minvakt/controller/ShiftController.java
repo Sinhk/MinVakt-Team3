@@ -173,10 +173,54 @@ public class ShiftController {
         return shifts1.stream().filter(shift -> shift.getStartDateTime().isAfter(LocalDateTime.now())).collect(Collectors.toList());
 
     }
+
     int getEmployeesOnShift(int shiftId){
 
         return (int) shiftAssignmentRepo.findAll().stream().filter(shiftAssignment -> shiftAssignment.getShift().getShiftId() == shiftId).count();
 
+    }
+
+    @GetMapping
+    @RequestMapping(value = "/{shift_id}/responsible")
+    public Employee getResponsibleEmployeeForShift(@PathVariable int shift_id){
+
+        return shiftAssignmentRepo
+                .findAll()
+                .stream()
+                .filter(shiftAssignment -> shiftAssignment.getShift().getShiftId() == shift_id)
+                .filter(ShiftAssignment::isResponsible)
+                .map(ShiftAssignment::getEmployee)
+                .findFirst()
+                .get();
+
+    }
+
+    @GetMapping
+    @RequestMapping(value = "/{shift_id/{employee_id}/status")
+    public ShiftStatus getShiftStatusForUserAndShift(@PathVariable int shift_id, @PathVariable int employee_id) {
+
+        return shiftAssignmentRepo
+                .findAll()
+                .stream()
+                .filter(shiftAssignment -> shiftAssignment.getShift().getShiftId() == shift_id)
+                .filter(shiftAssignment -> shiftAssignment.getEmployee().getEmployeeId() == employee_id)
+                .map(ShiftAssignment::getStatus)
+                .findFirst()
+                .get();
+    }
+
+    @GetMapping
+    @RequestMapping(value = "/{shift_id/{employee_id}/responsible")
+    public boolean userIsResponsibleForShift(@PathVariable int shift_id, @PathVariable int employee_id) {
+
+        return shiftAssignmentRepo
+                .findAll()
+                .stream()
+                .filter(shiftAssignment -> shiftAssignment.getShift().getShiftId() == shift_id)
+                .filter(shiftAssignment -> shiftAssignment.getEmployee().getEmployeeId() == employee_id)
+                .map(ShiftAssignment::isResponsible)
+                .findFirst()
+                .get();
     }
 }
 
