@@ -5,10 +5,13 @@
 
 .search-container{
     width: 300px;
-    margin-left: 75%
+    margin-left: 58.6%;
+    margin-right:15%;
+    position: fixed;
+    margin-top: 3%;
 }
 
-.material-icons{
+#icon{
     position: relative;
     float: right;
     width: 75px;
@@ -19,4 +22,31 @@
 
 .table {
     margin-top: -23%;
+}
+
+aside
+{
+    position: fixed;
+    margin-left: 77%;
+
+    width: 300px;
+    top: 4em;
+    left: 0;
+}
+
+#myTable {
+    width:80%;
+    margin-left:2%;
+    margin-right:15%;
+    vertical-align: top;
+    margin-top: 8%;
+}
+
+#myButton {
+    position: relative;
+    float: left;
+    width: 40px;
+    height: 40px;
+    top: 50px;
+    margin-left:53%;
 }
