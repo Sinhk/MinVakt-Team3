@@ -195,8 +195,7 @@ public class ShiftController {
 
     }
 
-    @GetMapping
-    @RequestMapping(value = "/{shift_id}/{employee_id}/status")
+    @GetMapping(value = "/{shift_id}/{employee_id}/status")
     public ShiftStatus getShiftStatusForUserAndShift(@PathVariable int shift_id, @PathVariable int employee_id) {
 
         return shiftAssignmentRepo
@@ -209,9 +208,8 @@ public class ShiftController {
                 .get();
     }
 
-    @PutMapping
-    @RequestMapping(value = "/{shift_id}/{employee_id}/status")
-    public void getShiftStatusForUserAndShift(@PathVariable int shift_id, @PathVariable int employee_id, @RequestBody ShiftStatus status) {
+    @PutMapping(value = "/{shift_id}/{employee_id}/status")
+    public void setShiftStatusForUserAndShift(@PathVariable int shift_id, @PathVariable int employee_id, @RequestBody ShiftStatus status) {
 
         shiftAssignmentRepo
                 .findAll()
@@ -222,8 +220,7 @@ public class ShiftController {
                 .ifPresent(shiftAssignment -> shiftAssignment.setStatus(status));
     }
 
-    @GetMapping
-    @RequestMapping(value = "/{shift_id}/{employee_id}/responsible")
+    @GetMapping(value = "/{shift_id}/{employee_id}/responsible")
     public boolean userIsResponsibleForShift(@PathVariable int shift_id, @PathVariable int employee_id) {
 
         return shiftAssignmentRepo
@@ -236,8 +233,7 @@ public class ShiftController {
                 .get();
     }
 
-    @PutMapping
-    @RequestMapping(value = "/{shift_id}/{employee_id}/responsible")
+    @PutMapping(value = "/{shift_id}/{employee_id}/responsible")
     public void setUserIsResponsibleForShift(@PathVariable int shift_id, @PathVariable int employee_id, @RequestBody boolean resp) {
 
          shiftAssignmentRepo
