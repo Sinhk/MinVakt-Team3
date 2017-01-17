@@ -5,6 +5,7 @@ import minvakt.controller.data.TwoIntData;
 import minvakt.datamodel.Employee;
 import minvakt.datamodel.Shift;
 import minvakt.datamodel.ShiftAssignment;
+import minvakt.datamodel.enums.ShiftStatus;
 import minvakt.repos.EmployeeRepository;
 import minvakt.repos.ShiftAssignmentRepository;
 import minvakt.repos.ShiftRepository;
@@ -109,7 +110,7 @@ public class ShiftController {
         List<Shift> changeRequestShifts = shiftAssignmentRepo
                 .findAll()
                 .stream()
-                .filter(ShiftAssignment::isChangeRequest)
+                .filter(s -> s.getStatus().equals(ShiftStatus.REQUESTCHANGE))
                 .map(ShiftAssignment::getShift)
                 .collect(Collectors.toList());
         //

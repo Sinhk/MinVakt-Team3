@@ -1,6 +1,7 @@
 package minvakt.datamodel;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import minvakt.datamodel.enums.ShiftStatus;
 
 import javax.persistence.*;
 
@@ -22,8 +23,8 @@ public class ShiftAssignment {
     @JoinColumn(name = "employee_id", nullable = false)
     private Employee employee;
     private boolean responsible;
-    private boolean changeRequest;
-    private boolean absent;
+    @Column(nullable = false, name = "status_id")
+    private ShiftStatus status = ShiftStatus.AVAILABLE;
 
     public ShiftAssignment() {
     }
@@ -32,8 +33,6 @@ public class ShiftAssignment {
         this.shift = shift;
         this.employee = employee;
         this.responsible = false;
-        this.changeRequest = false;
-        this.absent = false;
     }
 
     public Employee getEmployee() {
@@ -52,22 +51,6 @@ public class ShiftAssignment {
         this.responsible = responsible;
     }
 
-    public boolean isChangeRequest() {
-        return changeRequest;
-    }
-
-    public void setChangeRequest(boolean changeRequest) {
-        this.changeRequest = changeRequest;
-    }
-
-    public boolean isAbsent() {
-        return absent;
-    }
-
-    public void setAbsent(boolean absent) {
-        this.absent = absent;
-    }
-
     public Shift getShift() {
         return shift;
     }
@@ -81,8 +64,6 @@ public class ShiftAssignment {
     public String toString() {
         return "ShiftAssignment{" +
                 "responsible=" + responsible +
-                ", changeRequest=" + changeRequest +
-                ", absent=" + absent +
                 ", shift=" + shift +
                 ", employee=" + employee +
                 '}';
@@ -96,8 +77,6 @@ public class ShiftAssignment {
         ShiftAssignment that = (ShiftAssignment) o;
 
         if (responsible != that.responsible) return false;
-        if (changeRequest != that.changeRequest) return false;
-        if (absent != that.absent) return false;
         if (!shift.equals(that.shift)) return false;
         return employee.equals(that.employee);
     }
@@ -107,8 +86,14 @@ public class ShiftAssignment {
         int result = shift.hashCode();
         result = 31 * result + employee.hashCode();
         result = 31 * result + (responsible ? 1 : 0);
-        result = 31 * result + (changeRequest ? 1 : 0);
-        result = 31 * result + (absent ? 1 : 0);
         return result;
+    }
+
+    public ShiftStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(ShiftStatus status) {
+        this.status = status;
     }
 }

@@ -41,12 +41,11 @@ CREATE TABLE IF NOT EXISTS shift_assignment
   shift_id       INT                 NOT NULL,
   employee_id    INT                 NOT NULL,
   responsible    BOOL DEFAULT FALSE  NOT NULL,
-  change_request BOOL DEFAULT FALSE  NOT NULL,
-  absent         BOOL DEFAULT FALSE  NOT NULL,
+  status_id         INT DEFAULT 1       NOT NULL,
   CONSTRAINT shift_assignment_pk PRIMARY KEY (employee_id, shift_id),
   CONSTRAINT shift_assignment_employee_id_fk FOREIGN KEY (employee_id) REFERENCES employee (employee_id),
-  CONSTRAINT shift_assignment_shift_id_fk FOREIGN KEY (shift_id) REFERENCES shift (shift_id)
-    ON DELETE CASCADE
+  CONSTRAINT shift_assignment_shift_id_fk FOREIGN KEY (shift_id) REFERENCES shift (shift_id) ON DELETE CASCADE
+#   CONSTRAINT shift_assignment_status_id_fk FOREIGN KEY (status_id) REFERENCES shift_status (status_id)
 );
 
 CREATE TABLE IF NOT EXISTS department (
