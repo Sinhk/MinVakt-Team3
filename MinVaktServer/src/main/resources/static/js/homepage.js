@@ -33,6 +33,7 @@ $(document).ready(function(){
 
     $('#calendar').fullCalendar({
 
+        displayEventTime: false,
         locale: "no",
         timezone: "UTC",
         selectable: true,

@@ -63,13 +63,30 @@ function toFullCalendarEvent(event, resource) {
     var dateEnd = new Date(end);
 
     return {
-        id: event.shiftId,
+        id: event.shiftId || 0,
         title: start.split("T")[1] + " -> " + end.split("T")[1],
         start: dateStart,
         end: dateEnd,
         resourceId: resource.id
     };
 }
+
+function toFullCalendarEvent(event) {
+
+    var start = event.startDateTime;
+    var end = event.endDateTime;
+
+    var dateStart = new Date(start);
+    var dateEnd = new Date(end);
+
+    return {
+        id: event.shiftId,
+        title: start.split("T")[1] + " -> " + end.split("T")[1],
+        start: dateStart,
+        end: dateEnd,
+    };
+}
+
 
 function listToFullCalendarEventList(events, resourceList) {
 

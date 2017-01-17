@@ -12,6 +12,7 @@ $(function() { // document ready
 
     $('#calendar').fullCalendar({
 
+        displayEventTime: false,
         locale: "no",
         timezone: "UTC",
         selectable: true,
@@ -47,7 +48,24 @@ $(function() { // document ready
         resourceLabelText: 'Ansatte',
         resources: userListToResourceList(employees),
 
-        events: listToFullCalendarEventList(events, resourceList)
+        events: listToFullCalendarEventList(events, resourceList),
+
+        eventClick: function( event, jsEvent, view ) {
+
+            var eventId = event.id;
+
+            var eventDB = getEventViaID(eventId);
+
+            console.log(eventDB);
+
+        },
+
+        select: function (start, end, jsEvent, view) {
+
+            console.log("Start date: " + moment(start).format()+
+                "\nEnd date: " + moment(end).format());
+
+        }
     });
 
 });
