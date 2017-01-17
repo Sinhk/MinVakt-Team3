@@ -8,6 +8,10 @@ aside
     left: 0;
 }
 
+#knapp{
+    margin-left:2%;
+}
+
 .cal
 {
     margin-left: 2%;
@@ -16,4 +20,5 @@ aside
 
 .fc-sat { color:red; }
 .fc-sun { color:red;  }
+
 

@@ -15,3 +15,32 @@ logging:
     org:
       hibernate: WARN
       springframework: WARN
+server:
+  port: ${port:8080}
+---
+
+spring:
+  profiles:
+    active: dev
+logging:
+  level:
+    org:
+      hibernate: INFO
+      springframework: INFO
+---
+
+spring:
+  profiles: production
+  datasource:
+    tomcat:
+      max-active: 10
+      initial-size: 3
+      min-idle: 2
+      max-idle: 6
+logging:
+  level:
+    org:
+      hibernate: WARN
+      springframework: WARN
+      apache: WARN
+    minvakt: WARN
