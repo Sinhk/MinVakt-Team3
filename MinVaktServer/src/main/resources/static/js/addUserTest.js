@@ -1,25 +1,23 @@
+/**
+ * Created by OlavH on 16-Jan-17.
+ */
+
 $("#addUser").click(function () {
 
+    var firstname = $("#first_name");
+    var lastname= $("#last_name");
     var email = $("#email").val();
-    var psw = $("#psw").val();
-    var tlf = $("#tlf").val();
-    var prcnt = $("#percentage").val();
-
-    console.log(email+" - "+psw+" - "+tlf+" - "+prcnt);
-    console.log(JSON.stringify({
-        "email": email,
-        "password": psw,
-        "tlf":tlf,
-        "positionPercentage":prcnt
-    }));
+    var tlf = $("#phone").val();
+    var prcnt = $("#positionPercentage").val();
 
     $.ajax({
         url: "/users",
         type: "POST",
         contentType: "application/JSON",
         data: JSON.stringify({
+            "firstName":firstname,
+            "lastName":lastname,
             "email": email,
-            "password": psw,
             "phone":tlf,
             "positionPercentage":prcnt
         }),

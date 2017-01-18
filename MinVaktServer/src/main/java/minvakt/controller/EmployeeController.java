@@ -3,6 +3,7 @@ package minvakt.controller;
 import minvakt.controller.data.ChangePasswordInfo;
 import minvakt.controller.data.TwoStringsData;
 import minvakt.datamodel.Employee;
+import minvakt.datamodel.EmployeeCategory;
 import minvakt.datamodel.Shift;
 import minvakt.datamodel.ShiftAssignment;
 import minvakt.datamodel.enums.ShiftStatus;
@@ -60,7 +61,7 @@ public class EmployeeController {
         log.info("Generated password: {}", employee);
         // TODO: 16-Jan-17 send email
         employeeRepo.saveAndFlush(employee);
-        userDetailsManager.updateUser(new User(employee.getEmail(), password, new ArrayList<SimpleGrantedAuthority>() {{add(new SimpleGrantedAuthority("ROLE_USER"));}}));
+        userDetailsManager.createUser(new User(employee.getEmail(), password, new ArrayList<SimpleGrantedAuthority>() {{add(new SimpleGrantedAuthority("ROLE_USER"));}}));
         return Response.ok().build();
     }
 
@@ -196,6 +197,30 @@ public class EmployeeController {
         System.out.println(collect);
 
         return collect;
+    }
+
+
+    @Transactional
+    @PostMapping
+    @RequestMapping(value = "/{email1}/changeCategory", method = RequestMethod.POST)
+    public void changeCategory(@PathVariable(value = "email1") String email1, @PathVariable(value = "EmployeeCategory") EmployeeCategory category){
+
+        Employee employee = employeeRepo.findByEmail(email1);
+
+        employee.setCategory(category);
+
+        employeeRepo.save(employee);
+
+    }
+
+    @GetMapping
+    @RequestMapping(value = "/{user_id}/changeCategory", method = RequestMethod.GET)
+    public EmployeeCategory getCategory(@PathVariable(value = "user_id") int userId){
+
+        Employee employee = employeeRepo.findOne(userId);
+
+
+        return employee.getCategory();
     }
 
 }
