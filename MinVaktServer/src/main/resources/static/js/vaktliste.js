@@ -13,7 +13,7 @@ $(function() { // document ready
 
 
     $('#calendar').fullCalendar({
-
+        schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
         displayEventTime: false,
         locale: "no",
         timezone: "UTC",

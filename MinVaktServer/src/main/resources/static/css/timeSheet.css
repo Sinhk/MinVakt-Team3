@@ -2,15 +2,6 @@
     width:75%;
 
 }
-aside
-{
-    position: fixed;
-    margin-left: 77%;
-    padding:0;
-    width: 300px;
-    top: 4em;
-    left: 0;
-}
 
 .pagination {
     display: flex;

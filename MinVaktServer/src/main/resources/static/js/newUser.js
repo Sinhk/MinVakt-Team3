@@ -39,8 +39,6 @@ function newUser(first_name1,last_name1,email,phone1,positionPercentage) {
 
 function changeCategory(email1,category) {
 
-
-
     $.ajax({
         async: false,
         url: "/users/"+email1+"/changeCategory",
@@ -63,8 +61,6 @@ function changeCategory(email1,category) {
 }
 
 function getCategory(email) {
-
-
     $.ajax({
         async: false,
         url: "/users/"+email+"/changeCategory",

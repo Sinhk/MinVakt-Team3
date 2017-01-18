@@ -1,49 +1,21 @@
 <!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Tilgjengelighet</title>
-
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.css' />
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js'></script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js'></script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.js'></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.95.3/js/materialize.min.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.95.3/css/materialize.min.css" type="text/css" rel="stylesheet" media="screen,projection"/>
-    <link rel="stylesheet" type="text/css" href="/css/availability.css">
-    <script src="/js/availability.js"></script>
-    <script src="/js/util.js"></script>
-
-    <!-- Javascript -->
-    <script language="javascript">
-        $(document).ready(function(){
-            $('.modal-trigger').leanModal();
-
-            $('#calendar').fullCalendar({
-                header: {
-                    left:'prev, today',
-                    center:'title',
-                    right:'next'
-                },
-                firstDay: 1,
-                weekNumbers: true,
-                dayNamesShort: ['Søndag', 'Mandag', 'Tirsdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lørdag'],
-                monthNames: ['Januar', 'Februar', 'Mars', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Desember'],
-                weekNumberTitle: 'Uke',
-                buttonText: {
-                    today:    'I dag',
-                    month:    'Måned',
-                    week:     'Uke',
-                    day:      'Dag',
-                    list:     'Liste'
-                }
-            })
-        });
-    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/common.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/availability.css}">
 </head>
 
 <body>
 
 <div id="nav" th:replace="fragments/header :: header"></div>
-
+<main>
 <!-- calendar -->
 <div class="cal">
     <div class="section"></div>
@@ -68,8 +40,42 @@
         </div>
     </div>
 </div>
+</main>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js' integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.js'></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
+<script th:src="@{js/util.js}"></script>
+<script th:src="@{js/common.js}"></script>
+<script th:src="@{js/availability.js}"></script>
 
-<div th:replace="fragments/header :: sidebar"></div>
+
+<!-- Javascript -->
+<script language="javascript">
+    $(document).ready(function(){
+        $('.modal-trigger').modal();
+
+        $('#calendar').fullCalendar({
+            header: {
+                left:'prev, today',
+                center:'title',
+                right:'next'
+            },
+            firstDay: 1,
+            weekNumbers: true,
+            dayNamesShort: ['Søndag', 'Mandag', 'Tirsdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lørdag'],
+            monthNames: ['Januar', 'Februar', 'Mars', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Desember'],
+            weekNumberTitle: 'Uke',
+            buttonText: {
+                today:    'I dag',
+                month:    'Måned',
+                week:     'Uke',
+                day:      'Dag',
+                list:     'Liste'
+            }
+        })
+    });
+</script>
 
 </body>
 </html>
