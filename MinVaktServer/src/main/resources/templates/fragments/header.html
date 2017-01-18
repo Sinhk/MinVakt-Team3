@@ -2,6 +2,14 @@
 <html>
 <head>
     ...
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Ansatte</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+
 </head>
 <body>
 <header th:fragment="header">
@@ -18,6 +26,7 @@
                     <li><a th:href="@{/vakter}">Ledige vakter</a></li>
                     <li><a th:href="@{/ansatte}">Ansatte</a></li>
                     <a><i class="small material-icons">help_outline</i></a>
+
                 </ul>
                 <!--<ul class="side-nav" id="sideNav">
                     <li><a th:href="@{/vaktliste}">Vaktliste</a></li>
@@ -114,6 +123,20 @@
 
     </aside>
 </div>
+
+<script language="JavaScript">
+    $(document).ready(function() {
+        $('.modal-trigger').leanModal();
+    });
+</script>
+
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js' integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.28.4/js/jquery.tablesorter.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
+<script src="/js/userManager.js"></script>
+<script src="/js/util.js"></script>
+<script src="/js/newUser.js"></script>
+<script th:src="@{js/common.js}"></script>
 
 </body>
 </html>
