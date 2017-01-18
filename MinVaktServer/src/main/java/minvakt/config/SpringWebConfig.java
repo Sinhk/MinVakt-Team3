@@ -79,7 +79,7 @@ public class SpringWebConfig
         registry.addResourceHandler("/images/**").addResourceLocations("/static/images/");
         registry.addResourceHandler("/css/**").addResourceLocations("/static/css/");
         registry.addResourceHandler("/js/**").addResourceLocations("/static/js/");
-        registry.addResourceHandler("/test/**").addResourceLocations("/static/");
+        registry.addResourceHandler("/**").addResourceLocations("/static/");
     }
 
     /*
@@ -167,7 +167,7 @@ public class SpringWebConfig
         registry.addViewController("/login").setViewName("login");
         registry.addViewController("/ansatte").setViewName("employee");
         registry.addViewController("/ansatte/ny").setViewName("newUser");
-        registry.addViewController("/vaktliste").setViewName("timeSheet");
+        registry.addViewController("/vaktliste").setViewName("vaktliste");
         registry.addViewController("/teststuff").setViewName("index");
         registry.addViewController("/tilgjengelighet").setViewName("availability");
         registry.setOrder(Ordered.HIGHEST_PRECEDENCE);

@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.ws.rs.core.Response;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -292,12 +293,42 @@ public class ShiftController {
         Employee toUser = employeeRepo.findOne(user2_id);
 
 
-
-
     }
 
     void getChangeRequests(){
 
+
+
+    }
+
+    @GetMapping(value = "/byday")
+    public List<Shift> getShiftsByDay(@RequestBody String day){
+
+        LocalDate date = LocalDate.parse(day);
+
+        Iterable<Shift> all = shiftRepo.findAll();
+
+        List<Shift> shiftList = new ArrayList<>((Collection<? extends Shift>) all);
+
+        return shiftList
+                .stream()
+                .filter(shift -> shift.getStartDateTime().toLocalDate().isEqual(date))
+                .collect(Collectors.toList());
+
+    }
+
+
+    @GetMapping(value = "/{shift_id}")
+    public boolean shiftIsAvailable(@PathVariable int shift_id){
+
+        return shiftAssignmentRepo
+                .findAll()
+                .stream()
+                .filter(shiftAssignment -> shiftAssignment.getShift().getShiftId() == shift_id)
+                .filter(shiftAssignment -> shiftAssignment.getStatus() == ShiftStatus.AVAILABLE)
+                .map(ShiftAssignment::getShift)
+                .collect(Collectors.toList())
+                .contains(shiftRepo.findOne(shift_id));
 
 
     }

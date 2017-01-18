@@ -6,6 +6,7 @@ import minvakt.datamodel.Employee;
 import minvakt.datamodel.EmployeeCategory;
 import minvakt.datamodel.Shift;
 import minvakt.datamodel.ShiftAssignment;
+import minvakt.datamodel.enums.EmployeeType;
 import minvakt.datamodel.enums.ShiftStatus;
 import minvakt.repos.EmployeeRepository;
 import minvakt.repos.ShiftAssignmentRepository;
@@ -39,6 +40,9 @@ public class EmployeeController {
     private ShiftRepository shiftRepo;
     private ShiftAssignmentRepository shiftAssignmentRepo;
     private final UserDetailsManager userDetailsManager;
+
+    private ShiftController shiftController = new ShiftController(shiftRepo, employeeRepo, shiftAssignmentRepo);
+
 
 
     @Autowired
@@ -197,6 +201,24 @@ public class EmployeeController {
         System.out.println(collect);
 
         return collect;
+    }
+
+
+    @GetMapping(value = "/canberesponsible/{shift_id}")
+    public List<Employee> getEmployeesThatCanBeResponsible(@PathVariable int shift_id){
+
+
+        Shift shift = shiftRepo.findOne(shift_id);
+
+        List<Employee> all = employeeRepo.findAll();
+
+        return  all
+                .stream()
+                .filter(employee -> EmployeeType.of(employee.getCategory()) == EmployeeType.NURSE)
+                .filter(employee -> shiftController.getUsersForShift(shift_id).contains(employee))
+                .collect(Collectors.toList());
+
+
     }
 
 

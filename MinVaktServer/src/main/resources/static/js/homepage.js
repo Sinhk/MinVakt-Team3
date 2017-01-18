@@ -18,8 +18,6 @@ $(document).ready(function(){
     $('.modal-trigger').modal();
      // $(".side-nav").css("margin-top", $(".nav-wrapper").height());
 
-
-
     var shifts = getAllScheduledShiftsForUser();
 
     console.log(shifts);
@@ -76,7 +74,6 @@ $(document).ready(function(){
             var eventDB = getEventViaID(eventId);
 
             console.log(eventDB);
-
 
         }
     });

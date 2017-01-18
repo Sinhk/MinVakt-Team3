@@ -9,6 +9,8 @@ $(function() { // document ready
 
     var resourceList = userListToResourceList(employees);
 
+    //console.log("Responsible users: "+getResponsibleUsersForShifts(events));
+
 
     $('#calendar').fullCalendar({
 
@@ -46,7 +48,7 @@ $(function() { // document ready
             list:     'Liste'
         },
         resourceLabelText: 'Ansatte',
-        resources: userListToResourceList(employees),
+        resources: resourceList,
 
         events: listToFullCalendarEventList(events, resourceList),
 

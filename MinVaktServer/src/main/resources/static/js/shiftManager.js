@@ -117,6 +117,24 @@ function getResponsibleUserForShift(shift_id) {
 
 }
 
+function getResponsibleUsersForShifts(shifts) {
+
+    var list = [];
+
+    for(var i = 0; i < shifts.length; i++){
+
+        var employeeShifts = shifts[i];
+
+        for(var i = 0; i < employeeShifts.length; i++) {
+            list.push(getResponsibleUserForShift(employeeShifts[i].shiftId));
+            console.log(employeeShifts[i]);
+        }
+
+    }
+    return list;
+
+}
+
 function setResponsibleUserForShift(shift_id, user_id, boolean) {
 
 
@@ -158,6 +176,56 @@ function changeShiftFromUserToUser(fromUser_id, toUser_id, shift_id) {
             console.log("Error: "+JSON.stringify(data));
         }
     });
+
+
+}
+
+function getShiftsByDay(day) {
+
+    var list;
+
+    $.ajax({
+        async: false,
+        url: "shifts/byday",
+        type: "GET",
+        contentType: "text/plain",
+        data: day,
+
+        success: function (data) {
+            console.log("Success: "+JSON.stringify(data))
+            list = data;
+        },
+
+        error: function (data) {
+            console.log("Error: "+JSON.stringify(data));
+        }
+    });
+
+    return list;
+
+}
+
+function eventIsAvailable(event_id) {
+
+    var is;
+
+    $.ajax({
+        async: false,
+        url: "shifts/byday",
+        type: "GET",
+        contentType: "text/plain",
+        data: day,
+
+        success: function (data) {
+            console.log("Success: "+JSON.stringify(data))
+            list = data;
+        },
+
+        error: function (data) {
+            console.log("Error: "+JSON.stringify(data));
+        }
+    });
+
 
 
 }
