@@ -1,19 +1,4 @@
 $(document).ready(function(){
-    // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
-    /*$('.modal').modal({
-            dismissible: true, // Modal can be dismissed by clicking outside of the modal
-            opacity: .5, // Opacity of modal background
-            in_duration: 300, // Transition in duration
-            out_duration: 200, // Transition out duration
-            starting_top: '4%', // Starting top style attribute
-            ending_top: '10%', // Ending top style attribute
-            ready: function(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
-                alert("Ready");
-                console.log(modal, trigger);
-            },
-            complete: function() { alert('Closed'); } // Callback for Modal close
-        }
-    );*/
 
     $('.modal-trigger').modal();
      // $(".side-nav").css("margin-top", $(".nav-wrapper").height());
@@ -68,11 +53,35 @@ $(document).ready(function(){
         },*/
         events: fullCalendarEvents,
 
-        eventClick: function( event, jsEvent, view ) {
+        eventMouseover: function(calEvent, jsEvent) {
+            var tooltip = '<div class="tooltipevent" style="width:130px;height:100px;background:#aed0ea;position:absolute;z-index:10001;">' + ' ' + 'Title: ' + calEvent.title + 'Ansvarsvakt: ' + calEvent.type + '</div>';
+            var $tool = $(tooltip).appendTo('body');
+            $(this).mouseover(function(e) {
+                $(this).css('z-index', 10000);
+                $tool.fadeIn('500');
+                $tool.fadeTo('10', 1.9);
+            }).mousemove(function(e) {
+                $tool.css('top', e.pageY + 10);
+                $tool.css('left', e.pageX + 20);
+            });
+        },
+        eventMouseout: function(calEvent, jsEvent) {
+            $(this).css('z-index', 8);
+            $('.tooltipevent').remove();
+        }
 
-            /*if (event.title) {
-                alert('Klokkeslett: ' + event.title);
-            }*/
+
+        /*eventClick: function(calEvent,jsEvent) {
+            xOffset = 10;
+            yOffset = 30;
+            $("body").append(calEvent.tooltip);
+            $("#tooltip")
+                .css("top",(jsEvent.clientY - xOffset) + "px")
+                .css("left",(jsEvent.clientX + yOffset) + "px")
+        },
+    eventMouseout: function(calEvent,jsEvent) {
+            $("#tooltip").remove();
+        }
 
             var eventId = event.id;
 
@@ -80,6 +89,6 @@ $(document).ready(function(){
 
             console.log(eventDB);
 
-        }
+        }*/
     });
 });
