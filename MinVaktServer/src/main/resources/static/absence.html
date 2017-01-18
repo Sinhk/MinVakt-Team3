@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Hjem</title>
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.css' />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/common.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/static/css/absence.css}">
+</head>
+<body>
+<div id="nav" th:replace="fragments/header :: header"></div>
+
+<div class="row">
+    <div class="col s3">
+        <table id="myTable1" class="tablesorter">
+            <thead>
+            <tr>
+                <th><b>Dato</b></th>
+                <th><b>Klokkeslett</b></th>
+            </tr>
+            </thead>
+
+
+        </table>
+    </div>
+
+    <div class="input-field col s5">
+        <select class="browser-default white">
+            <option value="" disabled selected>Status</option>
+            <option value="1">Satt opp på ekstravakt</option>
+            <option value="2">Fullført ekstravakt</option>
+            <option value="3">Tilgjengelig</option>
+            <option value="4">Satt opp på vakt</option>
+            <option value="5">Ikke fullført skift</option>
+            <option value="6">Forespørsel om vaktbytte</option>
+            <option value="7">Godta foresløprsel om vaktbytte</option>
+        </select>
+    </div>
+</div>
+
+</body>
+</html>
