@@ -318,18 +318,24 @@ public class ShiftController {
     }
 
 
-    @GetMapping(value = "/{shift_id}")
+    @GetMapping(value = "/{shift_id}/isAvailable")
     public boolean shiftIsAvailable(@PathVariable int shift_id){
 
         return shiftAssignmentRepo
                 .findAll()
                 .stream()
                 .filter(shiftAssignment -> shiftAssignment.getShift().getShiftId() == shift_id)
-                .filter(shiftAssignment -> shiftAssignment.getStatus() == ShiftStatus.AVAILABLE)
+                .filter(shiftAssignment -> shiftAssignment.getStatus() == ShiftStatus.REQUESTCHANGE)
                 .map(ShiftAssignment::getShift)
                 .collect(Collectors.toList())
                 .contains(shiftRepo.findOne(shift_id));
 
+    }
+
+    @GetMapping(value = "/requestchange")
+    public List<Shift> getShiftsWithRequestChangeStatus(){
+
+        return shiftAssignmentRepo.findAll().stream().filter(shiftAssignment -> shiftAssignment.getStatus() == ShiftStatus.REQUESTCHANGE).map(ShiftAssignment::getShift).collect(Collectors.toList());
 
     }
 }

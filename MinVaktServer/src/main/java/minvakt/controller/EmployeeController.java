@@ -189,11 +189,14 @@ public class EmployeeController {
 
         Employee user = employeeRepo.findByEmail(details.getUsername());
 
-        List<Shift> collect = shiftAssignmentRepo.findAll().stream().filter(shiftAssignment -> shiftAssignment.getEmployee().getEmployeeId() == user.getEmployeeId()).filter(shiftAssignment -> {
+        List<Shift> collect = shiftAssignmentRepo
+                .findAll()
+                .stream()
+                .filter(shiftAssignment -> shiftAssignment.getEmployee().getEmployeeId() == user.getEmployeeId()).filter(shiftAssignment -> {
 
                     System.out.println(shiftAssignment.getStatus());
 
-                    return shiftAssignment.getStatus() == ShiftStatus.SCHEDULED || shiftAssignment.getStatus() == ShiftStatus.AVAILABLE || shiftAssignment.getStatus() == ShiftStatus.REQUESTCHANGE;
+                    return shiftAssignment.getStatus() == ShiftStatus.SCHEDULED || shiftAssignment.getStatus() == ShiftStatus.AVAILABLE;
                 }
 
         ).map(ShiftAssignment::getShift).collect(Collectors.toList());

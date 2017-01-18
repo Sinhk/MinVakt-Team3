@@ -69,7 +69,7 @@ function toFullCalendarEventWithResource(event, resource) {
         start: dateStart,
         end: dateEnd,
         resourceId: resource.id,
-        backgroundColor: responsible.employeeId == resource.id ? "#9B0300" : "#3E9B85"
+        backgroundColor: responsible != undefined && responsible.employeeId == resource.id ? "#9B0300" : "#3E9B85"
     };
 }
 
@@ -81,6 +81,8 @@ function toFullCalendarEvent(event) {
     var dateStart = new Date(start);
     var dateEnd = new Date(end);
 
+    var is = eventIsAvailable(event.shiftId);
+
 
 
     return {
@@ -89,9 +91,7 @@ function toFullCalendarEvent(event) {
         start: dateStart,
         end: dateEnd,
         status: event.status,
-/*
-        backgroundColor:
-*/
+        backgroundColor: is ? "#9B0300":"#3E9B85"
     };
 }
 
@@ -133,7 +133,7 @@ function getEventViaID(id) {
             contentType: "Application/JSON",
 
             success: function (data) {
-            console.log("Success: /shifts/id.GET");
+            console.log("Success: /shifts/id.GET"+data);
 
             event = data;
         },

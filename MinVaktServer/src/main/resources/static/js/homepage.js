@@ -18,7 +18,11 @@ $(document).ready(function(){
     $('.modal-trigger').modal();
      // $(".side-nav").css("margin-top", $(".nav-wrapper").height());
 
-    var shifts = getAllScheduledShiftsForUser();
+    var shifts1 = getAllScheduledShiftsForUser();
+
+    var requestChangeShifts = getShiftsWithRequestChange();
+
+    var shifts = shifts1.concat(requestChangeShifts);
 
     console.log(shifts);
 
@@ -65,9 +69,10 @@ $(document).ready(function(){
         events: fullCalendarEvents,
 
         eventClick: function( event, jsEvent, view ) {
-            if (event.title) {
+
+            /*if (event.title) {
                 alert('Klokkeslett: ' + event.title);
-            }
+            }*/
 
             var eventId = event.id;
 

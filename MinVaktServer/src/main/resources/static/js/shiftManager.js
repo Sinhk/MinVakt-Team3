@@ -211,13 +211,33 @@ function eventIsAvailable(event_id) {
 
     $.ajax({
         async: false,
-        url: "shifts/byday",
+        url: "shifts/"+event_id+"/isAvailable",
         type: "GET",
-        contentType: "text/plain",
-        data: day,
 
         success: function (data) {
-            console.log("Success: "+JSON.stringify(data))
+            console.log("Success: "+JSON.stringify(data));
+            is = data;
+        },
+
+        error: function (data) {
+            console.log("Error: "+JSON.stringify(data));
+        }
+    });
+    return is;
+
+
+}
+function getShiftsWithRequestChange() {
+
+
+    var list = [];
+    $.ajax({
+        async: false,
+        url: "shifts/requestchange",
+        type: "GET",
+
+        success: function (data) {
+            console.log("Success: "+JSON.stringify(data));
             list = data;
         },
 
@@ -226,6 +246,5 @@ function eventIsAvailable(event_id) {
         }
     });
 
-
-
+    return list;
 }
