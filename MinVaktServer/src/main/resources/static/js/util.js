@@ -84,6 +84,7 @@ function toFullCalendarEvent(event) {
         title: start.split("T")[1].substr(0,3) + " -> " + end.split("T")[1].substr(0,3),
         start: dateStart,
         end: dateEnd,
+        status: event.status
     };
 }
 

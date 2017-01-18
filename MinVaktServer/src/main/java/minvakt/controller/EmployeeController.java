@@ -5,6 +5,7 @@ import minvakt.controller.data.TwoStringsData;
 import minvakt.datamodel.Employee;
 import minvakt.datamodel.Shift;
 import minvakt.datamodel.ShiftAssignment;
+import minvakt.datamodel.enums.ShiftStatus;
 import minvakt.repos.EmployeeRepository;
 import minvakt.repos.ShiftAssignmentRepository;
 import minvakt.repos.ShiftRepository;
@@ -16,7 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -171,4 +174,28 @@ public class EmployeeController {
 
         return Response.noContent().build();
     }
+
+
+    @GetMapping
+    @RequestMapping("/scheduled")
+    public List<Shift> getScheduledShiftsForUser(){
+
+        UserDetails details = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        Employee user = employeeRepo.findByEmail(details.getUsername());
+
+        List<Shift> collect = shiftAssignmentRepo.findAll().stream().filter(shiftAssignment -> shiftAssignment.getEmployee().getEmployeeId() == user.getEmployeeId()).filter(shiftAssignment -> {
+
+                    System.out.println(shiftAssignment.getStatus());
+
+                    return shiftAssignment.getStatus() == ShiftStatus.SCHEDULED || shiftAssignment.getStatus() == ShiftStatus.AVAILABLE || shiftAssignment.getStatus() == ShiftStatus.REQUESTCHANGE;
+                }
+
+        ).map(ShiftAssignment::getShift).collect(Collectors.toList());
+
+        System.out.println(collect);
+
+        return collect;
+    }
+
 }

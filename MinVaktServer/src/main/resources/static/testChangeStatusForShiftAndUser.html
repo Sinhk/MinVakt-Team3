@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <link href="css/temp.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.1.0.js" integrity="sha256-slogkvB1K3VOkzAI8QITxV3VzpOnkeNVsKvtkYLMjfk=" crossorigin="anonymous"></script>
+    <script src="js/shiftManager.js"></script>
+
+
+</head>
+<body>
+
+    <div>
+
+        <input id="userIdInput">User_ID<br>
+        <input id="shiftIdInput">Shift_ID<br>
+        <input id="statusInput">Status<br>
+
+        <button id="sendButton">Change</button>
+
+    </div>
+
+
+    <!--Only because it's a test file-->
+    <script>
+
+        $("#sendButton").click(function() {
+
+            var user_id = $("#userIdInput").val();
+            var shift_id = $("#shiftIdInput").val();
+            var status = $("#statusInput").val();
+
+            setStatusForShiftAndUser(shift_id, user_id, status);
+
+
+
+        });
+
+    </script>
+</body>
+</html>

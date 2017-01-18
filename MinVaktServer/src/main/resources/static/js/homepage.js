@@ -19,8 +19,7 @@ $(document).ready(function(){
 
 
 
-    var shifts = getAllSuitableShifts();
-
+    var shifts = getAllScheduledShiftsForUser();
 
     console.log(shifts);
 
@@ -77,6 +76,8 @@ $(document).ready(function(){
 
             console.log(eventDB);
 
+
+        }
         },
     });
 });
