@@ -5,10 +5,10 @@
 </head>
 <body>
 <header th:fragment="header">
-    <nav>
+    <div class="navbar-fixed">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        <div class="navbar-fixed">
-            <div class="nav-wrapper blue lighten-2">
+        <nav>
+            <div class="nav-wrapper blue lighten-2 z-depth-3">
                 <a th:href="@{/}" class="brand-logo"><i class="material-icons">home</i>MinVakt</a>
 
                 <!--<a href="#" class="large material-icons">home</a>-->
@@ -28,9 +28,10 @@
                     <a><i class="small material-icons">help_outline</i></a>
                 </ul>-->
             </div>
-        </div>
-    </nav>
-    <ul id="slide-out" class="side-nav fixed grey lighten-2">
+        </nav>
+    </div>
+
+    <ul id="slide-out" class="side-nav fixed grey lighten-2 z-depth-3">
         <div>
             <form>
                 <div class="center-align">

@@ -20,6 +20,7 @@ $(document).ready(function(){
         menuWidth: 300,
         edge: 'right'
     });
+    // $(".side-nav").css("margin-top", $(".nav-wrapper").height());
 
 
 
