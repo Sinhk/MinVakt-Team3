@@ -39,6 +39,8 @@ function newUser(first_name1,last_name1,email,phone1,positionPercentage) {
 
 function changeCategory(email1,category) {
 
+
+
     $.ajax({
         async: false,
         url: "/users/"+email1+"/changeCategory",
@@ -61,9 +63,13 @@ function changeCategory(email1,category) {
 }
 
 function getCategory(email) {
+
+
+    var c;
+
     $.ajax({
         async: false,
-        url: "/users/"+email+"/changeCategory",
+        url: "/users/"+email+"/getCategory",
         type: "GET",
         contentType: "Application/JSON",
         data: JSON.stringify({
@@ -72,11 +78,12 @@ function getCategory(email) {
         }),
         success: function (data) {
             console.log("Success");
-            return true;
+
+            c = data;
         },
         error: function (data) {
             console.log("Error: "+data);
-            return false;
         }
     });
+    return c;
 }

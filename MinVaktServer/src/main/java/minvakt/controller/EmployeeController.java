@@ -242,10 +242,10 @@ public class EmployeeController {
     }
 
     @GetMapping
-    @RequestMapping(value = "/{user_id}/changeCategory", method = RequestMethod.GET)
-    public EmployeeCategory getCategory(@PathVariable(value = "user_id") int userId){
+    @RequestMapping(value = "/{email}/getCategory", method = RequestMethod.GET)
+    public EmployeeCategory getCategory(@PathVariable(value = "email") String email){
 
-        Employee employee = employeeRepo.findOne(userId);
+        Employee employee = employeeRepo.findByEmail(email);
 
 
         return employee.getCategory();
