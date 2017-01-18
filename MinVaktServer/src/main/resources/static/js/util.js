@@ -69,7 +69,9 @@ function toFullCalendarEventWithResource(event, resource) {
         start: dateStart,
         end: dateEnd,
         resourceId: resource.id,
-        backgroundColor: responsible != undefined && responsible.employeeId == resource.id ? "#9B0300" : "#3E9B85"
+        backgroundColor: responsible != undefined && responsible.employeeId == resource.id ? "#9B0300" : "#3E9B85",
+        isResponsible: is
+
     };
 }
 
@@ -91,7 +93,8 @@ function toFullCalendarEvent(event) {
         start: dateStart,
         end: dateEnd,
         status: event.status,
-        backgroundColor: is ? "#9B0300":"#3E9B85"
+        backgroundColor: is ? "#9B0300":"#3E9B85",
+        isResponsible: is
     };
 }
 
