@@ -11,11 +11,41 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" type="text/css" th:href="@{/css/common.css}">
-    <link rel="stylesheet" type="text/css" th:href="@{/css/changeShift.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/static/css/changeShift.css}">
 </head>
 <body>
 <div id="nav" th:replace="fragments/header :: header"></div>
 
+<div class="row">
+    <div class="col s3">
+<table id="myTable1" class="tablesorter">
+    <thead>
+    <tr>
+        <th><b>Dato</b></th>
+        <th><b>Klokkeslett</b></th>
+    </tr>
+    </thead>
+
+
+</table>
+    </div>
+
+    <div class="col s5">
+<table id="myTable2" class="tablesorter">
+    <thead>
+    <tr>
+        <th><b>Fornavn</b></th>
+        <th><b>Etternavn</b></th>
+        <th><b>Stilling</b></th>
+        <th><b>Stillingsprosent</b></th>
+        <th><b>Antall timer per uke</b></th>
+
+    </tr>
+    </thead>
+
+</table>
+    </div>
+</div>
 
 
 
@@ -23,9 +53,11 @@
 <script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js'></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.js'></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
-<script src="js/util.js"></script>
-<script src="js/common.js"></script>
+<script src="../static/js/util.js"></script>
+<script src="../static/js/common.js"></script>
 <script src="js/changeShift.js"></script>
-<script src="js/shiftManager.js"></script>
+<script src="../static/js/shiftManager.js"></script>
+<script th:src="@{js/common.js}"></script>
+<script th:src="@{js/employee.js}"></script>
 </body>
 </html>

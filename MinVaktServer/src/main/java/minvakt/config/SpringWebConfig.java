@@ -170,6 +170,7 @@ public class SpringWebConfig
         registry.addViewController("/vaktliste").setViewName("vaktliste");
         registry.addViewController("/teststuff").setViewName("index");
         registry.addViewController("/tilgjengelighet").setViewName("availability");
+        registry.addViewController("/changeShift").setViewName("changeShift");
         registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
     }
 

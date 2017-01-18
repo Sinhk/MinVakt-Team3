@@ -1,3 +1,6 @@
+/**
+ * Created by kristinweiseth on 18.01.2017.
+ */
 $(document).ready(function(){
 
 
@@ -15,7 +18,7 @@ $(document).ready(function(){
         var hours = getHourThisWeek(employee.employeeId);
 
         div.innerHTML +=
-        "<tr>"+
+            "<tr>"+
             "<td>"+employee.firstName+"</td>"+
             "<td>"+employee.lastName+"</td>"+
             "<td>"+category.categoryName+"</td>"+
@@ -23,23 +26,23 @@ $(document).ready(function(){
             "<td>"+employee.phone+"</td>"+
             "<td>"+hours+" time(r)</td>"+
             "<td>"+employee.email+"</td>"+
-        "</tr>"
+            "</tr>"
 
     }
 
     $("#myTable").tablesorter();
     $("#myTable").tablesorter( {sortList: [[0,0], [1,0]]} );
     /*
-    $(".modal-trigger").click(function(e){
-        e.preventDefault();
-        dataModal = $(this).attr("data-modal");
-        $("#" + dataModal).css({"display":"block"});
-    });
+     $(".modal-trigger").click(function(e){
+     e.preventDefault();
+     dataModal = $(this).attr("data-modal");
+     $("#" + dataModal).css({"display":"block"});
+     });
 
-    $(".close-modal, .modal-sandbox").click(function(){
-        $(".modal").css({"display":"none"});
-    });
-*/
+     $(".close-modal, .modal-sandbox").click(function(){
+     $(".modal").css({"display":"none"});
+     });
+     */
 
 
 });

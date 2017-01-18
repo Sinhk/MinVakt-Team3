@@ -1,0 +1,29 @@
+#myTable1 {
+    width: 40%;
+    margin-left:2%;
+    margin-right:17%;
+    vertical-align: top;
+    margin-top: 8%;
+}
+
+#myTable2 {
+    width: 40%;
+    margin-left:10%;
+    margin-right:17%;
+    vertical-align: top;
+    margin-top: 8%;
+}
+
+.inlineTable{
+    dislpay: inline-block;
+}
+
+.floatLeft{
+    width:40%;
+    float: left;
+}
+
+.floatRight{
+    width: 40%;
+    float: right;
+}
