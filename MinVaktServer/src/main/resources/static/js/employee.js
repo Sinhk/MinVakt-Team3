@@ -1,7 +1,6 @@
 $(document).ready(function(){
 
 
-
     var employees = /*util.*/getAllEmployees();
 
     for(var i = 0; i<employees.length; i++){
@@ -10,10 +9,10 @@ $(document).ready(function(){
 
         var category = getCategory(employee.email);
 
-        console.log(employee);
 
         var div = document.getElementById('employeeBody');
 
+        var hours = getHourThisWeek(employee.employeeId);
 
         div.innerHTML +=
         "<tr>"+
@@ -22,7 +21,7 @@ $(document).ready(function(){
             "<td>"+category.categoryName+"</td>"+
             "<td>"+employee.positionPercentage+"%</td>"+
             "<td>"+employee.phone+"</td>"+
-            "<td>TODO</td>"+
+            "<td>"+hours+" time(r)</td>"+
             "<td>"+employee.email+"</td>"+
         "</tr>"
 

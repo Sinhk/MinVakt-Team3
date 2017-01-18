@@ -13,6 +13,7 @@ import minvakt.repos.ShiftAssignmentRepository;
 import minvakt.repos.ShiftRepository;
 import minvakt.util.RandomString;
 import minvakt.util.TimeUtil;
+import minvakt.util.WeekDateInterval;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.ws.rs.core.Response;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -249,6 +251,27 @@ public class EmployeeController {
 
 
         return employee.getCategory();
+    }
+
+    @GetMapping(value = "/{user_id}/getHoursThisWeek")
+    public int getHoursThisWeekForUser(@PathVariable int user_id){
+
+        Employee user = employeeRepo.findOne(user_id);
+
+        Collection<Shift> shiftsForUser = getShiftsForUser(user_id);
+
+        return shiftsForUser
+                .stream()
+                .filter(shift -> {
+
+                    WeekDateInterval of = WeekDateInterval.of(shift.getStartDateTime().toLocalDate());
+
+
+                    return TimeUtil.isInDateInterval(of.getStart(), of.getEnd(),shift.getStartDateTime().toLocalDate());
+                })
+                .mapToInt(shift -> (int)ChronoUnit.HOURS.between(shift.getStartDateTime(), shift.getEndDateTime()))
+                .sum();
+
     }
 
 }
