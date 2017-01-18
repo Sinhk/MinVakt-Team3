@@ -6,9 +6,7 @@
 
 $("#changeShiftFromUserToUser").click(function () {
 
-    var shift_id = $("#shift_id").val();
-    var userId1 =$("#userId1").val();
-    var userId2 =$("#userId2").val();
+
 
 
     $.ajax({

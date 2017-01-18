@@ -11,9 +11,9 @@
 <body>
 
 <div>
-    <p>userId1</p><input id="userId1" name="userId1">
-    <p>userId2</p><input id="userId2" name="userId2">
-    <p>shift_id</p><input id="shift_id" name="shift_id">
+    <p>fromUser</p><input id="userId1">
+    <p>toUser</p><input id="userId2">
+    <p>shift_id</p><input id="shift_id" >
 
     <button id="changeShiftFromUserToUser">Change</button>
 
@@ -21,7 +21,26 @@
 
 <script src="https://code.jquery.com/jquery-3.1.0.js" integrity="sha256-slogkvB1K3VOkzAI8QITxV3VzpOnkeNVsKvtkYLMjfk="
         crossorigin="anonymous"></script>
-<script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
-<script src="js/changePasswordForUser.js" language="JavaScript"></script>
+
+<script src="js/shiftManager.js"></script>
+<!--for testing-->
+<script language="JavaScript">
+
+    $("#changeShiftFromUserToUser").click(function () {
+
+        var shift_id = $("#shift_id").val();
+        var userId1 =$("#userId1").val();
+        var userId2 =$("#userId2").val();
+
+        console.log(shift_id+" - "+userId1+" - "+userId2);
+        console.log(typeof userId1);
+
+        changeShiftFromUserToUser(userId1, userId2, shift_id)
+
+    })
+
+
+</script>
+
 </body>
 </html>

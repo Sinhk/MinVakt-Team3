@@ -255,5 +255,50 @@ public class ShiftController {
 
          shiftAssignmentRepo.save(shiftAssign);
     }
-}
 
+    @Transactional
+    @PutMapping(value = "/{shift_id}/changeUser")
+    public void changeShiftFromUserToUser(@PathVariable int shift_id, @RequestBody TwoIntData userIds){
+
+        Shift shift = shiftRepo.findOne(shift_id);
+
+        Employee fromUser = employeeRepo.findOne(userIds.getInt1());
+        Employee toUser = employeeRepo.findOne(userIds.getInt2());
+
+        //ShiftAssignment shiftAssignment = shiftAssignmentRepo.findOne(new ShiftAssignmentPK(shift.getShiftId(), fromUser.getEmployeeId()));
+
+        Optional<ShiftAssignment> first = shiftAssignmentRepo
+                .findAll()
+                .stream()
+                .filter(shiftAssignment -> shiftAssignment.getEmployee().getEmployeeId() == fromUser.getEmployeeId())
+                .filter(shiftAssignment ->  shiftAssignment.getShift().getShiftId() == shift_id)
+                .findFirst();
+
+        if (first.isPresent()){
+
+            fromUser.getShiftAssignments().remove(first.get());
+
+            toUser.getShiftAssignments().add(new ShiftAssignment(shift, toUser));
+
+            //first.get().setEmployee(toUser); // Kan ikke endre PK
+        }
+    }
+
+    @PostMapping(value = "/{shift_id}/users/{user_id}/requestchange/{user2_id}")
+    void requestChangeForShift(@PathVariable int shift_id, @PathVariable int user_id, @PathVariable int user2_id){
+
+        Shift shift = shiftRepo.findOne(shift_id);
+        Employee fromUser = employeeRepo.findOne(user_id);
+        Employee toUser = employeeRepo.findOne(user2_id);
+
+
+
+
+    }
+
+    void getChangeRequests(){
+
+
+
+    }
+}

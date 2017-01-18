@@ -135,3 +135,29 @@ function setResponsibleUserForShift(shift_id, user_id, boolean) {
         }
     });
 }
+
+function changeShiftFromUserToUser(fromUser_id, toUser_id, shift_id) {
+
+    console.log(fromUser_id+" - "+toUser_id+" - "+shift_id);
+
+    $.ajax({
+        async: false,
+        url: "shifts/"+shift_id+"/changeUser",
+        type: "PUT",
+        contentType: "Application/JSON",
+        data: JSON.stringify({
+            "int1": fromUser_id,
+            "int2": toUser_id
+        }),
+
+        success: function (data) {
+            console.log("Success: "+JSON.stringify(data))
+        },
+
+        error: function (data) {
+            console.log("Error: "+JSON.stringify(data));
+        }
+    });
+
+
+}

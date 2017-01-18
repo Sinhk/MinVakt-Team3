@@ -10,6 +10,9 @@ public class ShiftAssignmentPK implements Serializable {
     private int shift;
     private int employee;
 
+    public ShiftAssignmentPK(){
+    }
+
     public int getShift() {
         return shift;
     }
