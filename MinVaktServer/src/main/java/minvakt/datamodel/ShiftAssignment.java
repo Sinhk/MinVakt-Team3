@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import minvakt.datamodel.enums.ShiftStatus;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * MinVakt-Team3
@@ -12,7 +13,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "shift_assignment")
 @IdClass(ShiftAssignmentPK.class)
-public class ShiftAssignment {
+public class ShiftAssignment implements Serializable{
     @Id
     @ManyToOne
     @JsonIgnore

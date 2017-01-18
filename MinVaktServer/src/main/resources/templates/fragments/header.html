@@ -37,18 +37,9 @@
                     <div class="section"></div>
                     <i class="large material-icons">face</i>
                 </div>
-                <div class="firstname row">
-                    <div class="input-field col s11">
-                        <input id="first_name" type="text" class="validate">
-                        <label for="first_name">Fornavn</label>
-                    </div>
-                </div>
-
-                <div class="lastname row">
-                    <div class="input-field col s11">
-                        <input id="last_name" type="text" class="validate">
-                        <label for="last_name">Etternavn</label>
-                    </div>
+                <div class="firstname row center">
+                    <span sec:authentication="principal.username"></span>
+                    <!--<span sec:authentication="principal.lastName"></span>-->
                 </div>
 
                 <!-- Modal Trigger -->

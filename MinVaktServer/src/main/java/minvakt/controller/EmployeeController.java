@@ -65,7 +65,10 @@ public class EmployeeController {
         log.info("Generated password: {}", employee);
         // TODO: 16-Jan-17 send email
         employeeRepo.saveAndFlush(employee);
-        userDetailsManager.createUser(new User(employee.getEmail(), password, new ArrayList<SimpleGrantedAuthority>() {{add(new SimpleGrantedAuthority("ROLE_USER"));}}));
+        User user = new User(employee.getEmail(), password, new ArrayList<SimpleGrantedAuthority>() {{
+            add(new SimpleGrantedAuthority("ROLE_USER"));
+        }});
+        userDetailsManager.updateUser(user);
         return Response.ok().build();
     }
 
