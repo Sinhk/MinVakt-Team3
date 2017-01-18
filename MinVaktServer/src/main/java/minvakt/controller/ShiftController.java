@@ -209,15 +209,21 @@ public class ShiftController {
     }
 
     @PutMapping(value = "/{shift_id}/{employee_id}/status")
+    @Transactional
     public void setShiftStatusForUserAndShift(@PathVariable int shift_id, @PathVariable int employee_id, @RequestBody String status) {
 
-        shiftAssignmentRepo
+        ShiftAssignment shiftAssign = shiftAssignmentRepo
                 .findAll()
                 .stream()
                 .filter(shiftAssignment -> shiftAssignment.getShift().getShiftId() == shift_id)
                 .filter(shiftAssignment -> shiftAssignment.getEmployee().getEmployeeId() == employee_id)
                 .findFirst()
-                .ifPresent(shiftAssignment -> shiftAssignment.setStatus(ShiftStatus.valueOf(status)));
+                .get();
+
+        shiftAssign.setStatus(ShiftStatus.valueOf(status));
+
+        //shiftAssignmentRepo.save(shiftAssign);
+
     }
 
     @GetMapping(value = "/{shift_id}/{employee_id}/responsible")
@@ -234,15 +240,20 @@ public class ShiftController {
     }
 
     @PutMapping(value = "/{shift_id}/{employee_id}/responsible")
+    @Transactional
     public void setUserIsResponsibleForShift(@PathVariable int shift_id, @PathVariable int employee_id, @RequestBody boolean resp) {
 
-         shiftAssignmentRepo
+         ShiftAssignment shiftAssign = shiftAssignmentRepo
                 .findAll()
                 .stream()
                 .filter(shiftAssignment -> shiftAssignment.getShift().getShiftId() == shift_id)
                 .filter(shiftAssignment -> shiftAssignment.getEmployee().getEmployeeId() == employee_id)
                 .findFirst()
-                .ifPresent(shiftAssignment -> shiftAssignment.setResponsible(resp));
+                .get();
+
+         shiftAssign.setResponsible(resp);
+
+         shiftAssignmentRepo.save(shiftAssign);
     }
 }
 
