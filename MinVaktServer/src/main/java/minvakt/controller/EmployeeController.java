@@ -8,10 +8,7 @@ import minvakt.datamodel.Shift;
 import minvakt.datamodel.ShiftAssignment;
 import minvakt.datamodel.enums.EmployeeType;
 import minvakt.datamodel.enums.ShiftStatus;
-import minvakt.repos.ChangeRequestRepository;
-import minvakt.repos.EmployeeRepository;
-import minvakt.repos.ShiftAssignmentRepository;
-import minvakt.repos.ShiftRepository;
+import minvakt.repos.*;
 import minvakt.util.RandomString;
 import minvakt.util.TimeUtil;
 import minvakt.util.WeekDateInterval;
@@ -19,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -43,7 +41,7 @@ public class EmployeeController {
     private ShiftRepository shiftRepo;
     private ShiftAssignmentRepository shiftAssignmentRepo;
     private ChangeRequestRepository changeRequestRepository;
-
+    private CategoryRepository catRepo;
 
     private final UserDetailsManager userDetailsManager;
 
@@ -52,18 +50,13 @@ public class EmployeeController {
 
 
     @Autowired
-    public EmployeeController(
-            EmployeeRepository employeeRepo,
-            ShiftRepository shiftRepo,
-            UserDetailsManager userDetailsManager,
-            ShiftAssignmentRepository shiftAssignmentRepo,
-            ChangeRequestRepository changeRequestRepository
-            ) {
+    public EmployeeController(EmployeeRepository employeeRepo, ShiftRepository shiftRepo, UserDetailsManager userDetailsManager, ShiftAssignmentRepository shiftAssignmentRepo, ChangeRequestRepository changeRequestRepository, CategoryRepository catRepo) {
         this.employeeRepo = employeeRepo;
         this.shiftRepo = shiftRepo;
         this.shiftAssignmentRepo = shiftAssignmentRepo;
         this.userDetailsManager = userDetailsManager;
         this.changeRequestRepository = changeRequestRepository;
+        this.catRepo = catRepo;
     }
 
     @GetMapping
@@ -71,11 +64,14 @@ public class EmployeeController {
         return employeeRepo.findAll();
     }
 
-    @PostMapping
-    public Response addEmployee(@RequestBody Employee employee) {
+    @PostMapping("/{category_id}")
+    @Secured({"ROLE_ADMIN"})
+    public Response addEmployee(@RequestBody Employee employee,@PathVariable int category_id) {
 
+        EmployeeCategory cat = catRepo.getOne(category_id);
+        employee.setCategory(cat);
         String password = new RandomString(8).nextString();
-        log.info("Generated password: {}", employee);
+        log.info("Generated password: {}", password);
         // TODO: 16-Jan-17 send email
         employeeRepo.saveAndFlush(employee);
         User user = new User(employee.getEmail(), password, new ArrayList<SimpleGrantedAuthority>() {{

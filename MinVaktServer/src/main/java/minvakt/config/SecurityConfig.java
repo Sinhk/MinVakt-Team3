@@ -1,5 +1,6 @@
 package minvakt.config;
 
+import minvakt.managers.AUserDetailsManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,7 +26,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     // TODO: 15.01.2017 Set query to match database
     public JdbcUserDetailsManager userDetailsManager() {
-        JdbcUserDetailsManager manager = new JdbcUserDetailsManager();
+        JdbcUserDetailsManager manager = new AUserDetailsManager();
         manager.setDataSource(dataSource);
         manager.setUsersByUsernameQuery(
                 "select email,passwd,enabled from employee where email=?");

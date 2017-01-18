@@ -36,7 +36,7 @@ public class Employee implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
-    private EmployeeCategory category = new EmployeeCategory(){{setCategoryId(1);}};
+    private EmployeeCategory category;
 
     @OneToMany(mappedBy = "employee", orphanRemoval = true, cascade = {javax.persistence.CascadeType.PERSIST, javax.persistence.CascadeType.MERGE})
     @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
