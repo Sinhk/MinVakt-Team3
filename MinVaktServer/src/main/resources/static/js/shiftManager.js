@@ -124,9 +124,12 @@ function setResponsibleUserForShift(shift_id, user_id, boolean) {
         async: false,
         url: "shifts/"+shift_id+"/"+user_id+"/responsible",
         type: "PUT",
-        contentType: "JSON",
-        data: boolean ? 1 : 0,
+        contentType: "Application/JSON",
+        data: boolean,
 
+        success: function (data) {
+            console.log("Success: " +data);
+        },
         error: function (data) {
             console.log("Error: "+data);
         }
