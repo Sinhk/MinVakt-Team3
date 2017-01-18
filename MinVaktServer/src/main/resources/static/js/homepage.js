@@ -54,7 +54,7 @@ $(document).ready(function(){
         events: fullCalendarEvents,
 
         eventMouseover: function(calEvent, jsEvent) {
-            var tooltip = '<div class="tooltipevent" style="width:130px;height:100px;background:#aed0ea;position:absolute;z-index:10001;">' + ' ' + 'Title: ' + calEvent.title + 'Ansvarsvakt: ' + calEvent.type + '</div>';
+            var tooltip = '<div class="tooltipevent" style="width:150px;height:50px;background:#e3f2fd;border-style:solid;border-color:#212121;border-width:1px;position:absolute;z-index:10001;">' + ' ' + ' Tidspunkt: ' + calEvent.title + '<br> Avdeling: ' + '</div>';
             var $tool = $(tooltip).appendTo('body');
             $(this).mouseover(function(e) {
                 $(this).css('z-index', 10000);
