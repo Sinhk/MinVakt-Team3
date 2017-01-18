@@ -8,6 +8,7 @@ import minvakt.datamodel.Shift;
 import minvakt.datamodel.ShiftAssignment;
 import minvakt.datamodel.enums.EmployeeType;
 import minvakt.datamodel.enums.ShiftStatus;
+import minvakt.repos.ChangeRequestRepository;
 import minvakt.repos.EmployeeRepository;
 import minvakt.repos.ShiftAssignmentRepository;
 import minvakt.repos.ShiftRepository;
@@ -41,18 +42,28 @@ public class EmployeeController {
     private EmployeeRepository employeeRepo;
     private ShiftRepository shiftRepo;
     private ShiftAssignmentRepository shiftAssignmentRepo;
+    private ChangeRequestRepository changeRequestRepository;
+
+
     private final UserDetailsManager userDetailsManager;
 
-    private ShiftController shiftController = new ShiftController(shiftRepo, employeeRepo, shiftAssignmentRepo);
+    private ShiftController shiftController = new ShiftController(shiftRepo, employeeRepo, shiftAssignmentRepo, changeRequestRepository);
 
 
 
     @Autowired
-    public EmployeeController(EmployeeRepository employeeRepo, ShiftRepository shiftRepo, UserDetailsManager userDetailsManager, ShiftAssignmentRepository shiftAssignmentRepo) {
+    public EmployeeController(
+            EmployeeRepository employeeRepo,
+            ShiftRepository shiftRepo,
+            UserDetailsManager userDetailsManager,
+            ShiftAssignmentRepository shiftAssignmentRepo,
+            ChangeRequestRepository changeRequestRepository
+            ) {
         this.employeeRepo = employeeRepo;
         this.shiftRepo = shiftRepo;
         this.shiftAssignmentRepo = shiftAssignmentRepo;
         this.userDetailsManager = userDetailsManager;
+        this.changeRequestRepository = changeRequestRepository;
     }
 
     @GetMapping
@@ -254,7 +265,7 @@ public class EmployeeController {
     }
 
     @GetMapping(value = "/{user_id}/getHoursThisWeek")
-    public int getHoursThisWeekForUser(@PathVariable int user_id){
+    public int getHoursThisWeekForUser(@PathVariable(value = "user_id") int user_id){
 
         Employee user = employeeRepo.findOne(user_id);
 

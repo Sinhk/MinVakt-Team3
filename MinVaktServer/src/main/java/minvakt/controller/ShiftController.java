@@ -1,11 +1,14 @@
 package minvakt.controller;
 
 import minvakt.controller.data.DateWrapper;
+import minvakt.controller.data.ThreeIntsData;
 import minvakt.controller.data.TwoIntData;
+import minvakt.datamodel.ChangeRequest;
 import minvakt.datamodel.Employee;
 import minvakt.datamodel.Shift;
 import minvakt.datamodel.ShiftAssignment;
 import minvakt.datamodel.enums.ShiftStatus;
+import minvakt.repos.ChangeRequestRepository;
 import minvakt.repos.EmployeeRepository;
 import minvakt.repos.ShiftAssignmentRepository;
 import minvakt.repos.ShiftRepository;
@@ -33,13 +36,19 @@ public class ShiftController {
     private ShiftRepository shiftRepo;
     private EmployeeRepository employeeRepo;
     private ShiftAssignmentRepository shiftAssignmentRepo;
+    private ChangeRequestRepository changeRequestRepository;
 
 
     @Autowired
-    public ShiftController(ShiftRepository shiftRepo, EmployeeRepository employeeRepository, ShiftAssignmentRepository shiftAssignmentRepo) {
+    public ShiftController(
+            ShiftRepository shiftRepo,
+            EmployeeRepository employeeRepository,
+            ShiftAssignmentRepository shiftAssignmentRepo,
+            ChangeRequestRepository changeRequestRepository) {
         this.shiftRepo = shiftRepo;
         this.employeeRepo = employeeRepository;
         this.shiftAssignmentRepo = shiftAssignmentRepo;
+        this.changeRequestRepository = changeRequestRepository;
     }
 
     @GetMapping
@@ -285,6 +294,7 @@ public class ShiftController {
         }
     }
 
+    @Transactional
     @PostMapping(value = "/{shift_id}/users/{user_id}/requestchange/{user2_id}")
     void requestChangeForShift(@PathVariable int shift_id, @PathVariable int user_id, @PathVariable int user2_id){
 
@@ -335,7 +345,25 @@ public class ShiftController {
     @GetMapping(value = "/requestchange")
     public List<Shift> getShiftsWithRequestChangeStatus(){
 
-        return shiftAssignmentRepo.findAll().stream().filter(shiftAssignment -> shiftAssignment.getStatus() == ShiftStatus.REQUESTCHANGE).map(ShiftAssignment::getShift).collect(Collectors.toList());
+        return new ArrayList<ChangeRequest>((Collection<? extends ChangeRequest>) changeRequestRepository
+                .findAll())
+                .stream()
+                .map(ChangeRequest::getShift)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
+    @PostMapping(value = "/requestchange")
+    public void requestChange(@RequestBody ThreeIntsData data){
+
+        Shift shift = shiftRepo.findOne(data.getInt1());
+        Employee from = employeeRepo.findOne(data.getInt2());
+        Employee to = employeeRepo.findOne(data.getInt3());
+
+        ChangeRequest changeRequest = new ChangeRequest(shift, from, to);
+
+        changeRequestRepository.save(changeRequest);
+
 
     }
 }

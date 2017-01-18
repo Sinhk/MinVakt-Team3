@@ -24,6 +24,4 @@ function getHourThisWeek(user_id) {
 
     return hours;
 
-
-
 }
