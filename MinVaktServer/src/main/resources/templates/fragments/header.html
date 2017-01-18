@@ -4,31 +4,34 @@
     ...
 </head>
 <body>
-<div id="nav" th:fragment="header">
-    <div class="navbar-fixed">
-        <nav class="blue lighten-2 z-depth-1">
-            <div class="nav-wrapper">
-                <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
-                <a th:href="@{/}"><i class="small material-icons">home</i></a>
+<header th:fragment="header">
+    <nav>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <div class="navbar-fixed">
+            <div class="nav-wrapper blue lighten-2">
+                <a th:href="@{/}" class="brand-logo"><i class="material-icons">home</i>MinVakt</a>
 
                 <!--<a href="#" class="large material-icons">home</a>-->
-                <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <a href="#" data-activates="slide-out" class="button-collapse right"><i class="material-icons">menu</i></a>
+                <ul class="right hide-on-med-and-down">
                     <li><a th:href="@{/vaktliste}">Vaktliste</a></li>
                     <li><a th:href="@{/tilgjengelighet}">Tilgjengelighet</a></li>
                     <li><a th:href="@{/vakter}">Ledige vakter</a></li>
                     <li><a th:href="@{/ansatte}">Ansatte</a></li>
                     <a><i class="small material-icons">help_outline</i></a>
                 </ul>
+                <!--<ul class="side-nav" id="sideNav">
+                    <li><a th:href="@{/vaktliste}">Vaktliste</a></li>
+                    <li><a th:href="@{/tilgjengelighet}">Tilgjengelighet</a></li>
+                    <li><a th:href="@{/vakter}">Ledige vakter</a></li>
+                    <li><a th:href="@{/ansatte}">Ansatte</a></li>
+                    <a><i class="small material-icons">help_outline</i></a>
+                </ul>-->
             </div>
-        </nav>
-    </div>
-</div>
-<div th:fragment="sidebar">
-<aside>
-    <!-- Sidebar-->
-    <div>
-        <div class="right grey lighten-2 z-depth-3">
+        </div>
+    </nav>
+    <ul id="slide-out" class="side-nav fixed grey lighten-2">
+        <div>
             <form>
                 <div class="center-align">
                     <div class="section"></div>
@@ -49,64 +52,9 @@
                 </div>
 
                 <!-- Modal Trigger -->
-                <div id="edit_button">
-                <div class="col s12 center">
-                    <a class="modal-trigger waves-effect blue lighten-2 btn" href="#modal1">Rediger</a>
-                </div>
-                </div>
-                <!-- Modal Structure -->
-                <div id="modal1" class="modal modal-fixed-footer">
-                    <div class="modal-content">
-                        <h4>Rediger informasjon</h4>
-                        <div class="firstname row">
-                            <div class="input-field col s11">
-                                <input id="first_name" type="text" class="validate">
-                                <label for="first_name">Fornavn</label>
-                            </div>
-                        </div>
+                <a class="modal-trigger waves-effect blue lighten-2 btn" href="#modal1">Rediger</a>
 
-                        <div class="lastname row">
-                            <div class="input-field col s11">
-                                <input id="last_name" type="text" class="validate">
-                                <label for="last_name">Etternavn</label>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="input-field col s11">
-                                <input id="email" type="text" class="validate">
-                                <label for="email">E-postadresse</label>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="input-field col s11">
-                                <input id="phone" type="text" class="validate">
-                                <label for="phone">Telefon</label>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col s12">
-                                <a class="waves-effect blue lighten-2 btn">Endre passord</a>
-                            </div>
-                        </div>
-
-                        <hr/>
-                        <div class="center-align red-text">
-                            <h6>Viktig info.:</h6>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Oppdater</a>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col s12">
-                        <a class="waves-effect blue lighten-2 btn">Endre passord</a>
-                    </div>
-                </div>
+                <a class="waves-effect blue lighten-2 btn">Endre passord</a>
                 <hr/>
             </form>
             <div class="row">
@@ -117,8 +65,63 @@
                 </div>
             </div>
         </div>
+    </ul>
+    <!-- Modal Structure -->
+    <div id="modal1" class="modal modal-fixed-footer">
+        <div class="modal-content">
+            <h4>Rediger informasjon</h4>
+            <div class="firstname row">
+                <div class="input-field col s11">
+                    <input id="first_name" type="text" class="validate">
+                    <label for="first_name">Fornavn</label>
+                </div>
+            </div>
+
+            <div class="lastname row">
+                <div class="input-field col s11">
+                    <input id="last_name" type="text" class="validate">
+                    <label for="last_name">Etternavn</label>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="input-field col s11">
+                    <input id="email" type="text" class="validate">
+                    <label for="email">E-postadresse</label>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="input-field col s11">
+                    <input id="phone" type="text" class="validate">
+                    <label for="phone">Telefon</label>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col s12">
+                    <a class="waves-effect blue lighten-2 btn">Endre passord</a>
+                </div>
+            </div>
+
+            <hr/>
+            <div class="center-align red-text">
+                <h6>Viktig info.:</h6>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a href="#!"
+               class="modal-action modal-close waves-effect waves-green btn-flat ">Oppdater</a>
+        </div>
     </div>
-</aside>
+
+    <!--<a href="#" data-activates="slide-out" class="button-collapse show-on-large"><i class="material-icons">menu</i></a>-->
+</header>
+<div th:fragment="sidebar">
+    <aside>
+        <!-- Sidebar-->
+
+    </aside>
 </div>
 
 </body>

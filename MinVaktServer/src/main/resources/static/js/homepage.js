@@ -15,7 +15,11 @@ $(document).ready(function(){
         }
     );*/
 
-    $('.modal-trigger').leanModal();
+    $('.modal-trigger').modal();
+    $(".button-collapse").sideNav({
+        menuWidth: 300,
+        edge: 'right'
+    });
 
 
 
@@ -78,6 +82,5 @@ $(document).ready(function(){
 
 
         }
-        },
     });
 });

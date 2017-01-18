@@ -1,23 +1,17 @@
-aside
-{
-    position: fixed;
-    margin-left: 77%;
-    padding:0;
-    width: 300px;
-    top: 4em;
-    left: 0;
-}
-
-#edit_button{
-    width: 200px;
-}
-
 .cal
 {
     margin-left: 2%;
-    width: 75%;
+    margin-right: 2%;
 }
 
 .fc-sun { color:red; }
 
+header, main, footer {
+    padding-right: 300px;
+}
 
+@media only screen and (max-width: 992px) {
+    header, main, footer {
+        padding-right: 0
+    }
+}

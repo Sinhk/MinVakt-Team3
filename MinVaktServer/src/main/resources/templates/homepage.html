@@ -1,41 +1,19 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Hjem</title>
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.css' />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
     <link rel="stylesheet" type="text/css" th:href="@{/css/homepage.css}">
-
 </head>
 <body>
 
-<div id="nav" th:replace="fragments/header :: header">
-    <!--This will be replace at runtime-->
-    <div class="navbar-fixed">
-        <nav class="blue lighten-2 z-depth-1">
-            <div class="nav-wrapper">
-                <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-                &nbsp;
-                &nbsp;
-                <i class="small material-icons">home</i>
+<div id="nav" th:replace="fragments/header :: header"></div>
 
-                <!--<a href="#" class="large material-icons">home</a>-->
-                <ul id="nav-mobile" class="right hide-on-med-and-down">
-                    <li><a href="timeSheet.html">Vaktliste</a></li>
-                    <li><a href="badges.html">Tilgjengelighet</a></li>
-                    <li><a href="collapsible.html">Ledige vakter</a></li>
-                    <li><a href="collapsible.html">Ansatte</a></li>
-                    &nbsp;
-                    <i class="small material-icons">help_outline</i>
-                    &nbsp;
-                </ul>
-            </div>
-        </nav>
-    </div>
-</div>
-
-
+<main>
 <!-- calendar -->
 <div class="cal">
     <div class="section"></div>
@@ -43,8 +21,7 @@
 </div>
 <br>
 <br>
-
-<div th:replace="fragments/header :: sidebar"></div>
+</main>
 
 <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js' integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js'></script>
