@@ -1,5 +1,6 @@
 DROP TABLE IF EXISTS shift_assignment;
 DROP TABLE IF EXISTS shift_department;
+DROP TABLE IF EXISTS change_request;
 DROP TABLE IF EXISTS employee;
 DROP TABLE IF EXISTS shift;
 DROP TABLE IF EXISTS employee_category;
@@ -46,6 +47,16 @@ CREATE TABLE IF NOT EXISTS shift_assignment
   CONSTRAINT shift_assignment_employee_id_fk FOREIGN KEY (employee_id) REFERENCES employee (employee_id),
   CONSTRAINT shift_assignment_shift_id_fk FOREIGN KEY (shift_id) REFERENCES shift (shift_id) ON DELETE CASCADE
 #   CONSTRAINT shift_assignment_status_id_fk FOREIGN KEY (status_id) REFERENCES shift_status (status_id)
+);
+
+CREATE TABLE IF NOT EXISTS change_request (
+  request_id        INT       NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  shift_id          INT       NOT NULL,
+  old_employee_id   INT       NOT NULL,
+  new_employee_id   INT       NOT NULL,
+  CONSTRAINT change_request_shift_id_fk FOREIGN KEY (shift_id) REFERENCES shift (shift_id),
+  CONSTRAINT change_request_old_employee_id_fk FOREIGN KEY (old_employee_id) REFERENCES employee (employee_id),
+  CONSTRAINT change_request_new_employee_id_fk FOREIGN KEY (new_employee_id) REFERENCES employee (employee_id)
 );
 
 CREATE TABLE IF NOT EXISTS department (
