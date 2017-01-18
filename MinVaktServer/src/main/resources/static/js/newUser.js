@@ -39,6 +39,7 @@ $(document).ready(function () {
             }),
             success: function (data) {
                 console.log("Success");
+                window.alert(JSON.stringify(data));
                 return data;
             },
             error: function (data) {

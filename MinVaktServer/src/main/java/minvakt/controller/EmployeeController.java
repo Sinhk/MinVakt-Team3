@@ -66,19 +66,20 @@ public class EmployeeController {
 
     @PostMapping("/{category_id}")
     @Secured({"ROLE_ADMIN"})
-    public Response addEmployee(@RequestBody Employee employee,@PathVariable int category_id) {
+    public String addEmployee(@RequestBody Employee employee,@PathVariable int category_id) {
 
         EmployeeCategory cat = catRepo.getOne(category_id);
         employee.setCategory(cat);
         String password = new RandomString(8).nextString();
         log.info("Generated password: {}", password);
         // TODO: 16-Jan-17 send email
+
         employeeRepo.saveAndFlush(employee);
         User user = new User(employee.getEmail(), password, new ArrayList<SimpleGrantedAuthority>() {{
             add(new SimpleGrantedAuthority("ROLE_USER"));
         }});
         userDetailsManager.updateUser(user);
-        return Response.ok().build();
+        return password;
     }
 
     @DeleteMapping
@@ -278,6 +279,18 @@ public class EmployeeController {
                 })
                 .mapToInt(shift -> (int)ChronoUnit.HOURS.between(shift.getStartDateTime(), shift.getEndDateTime()))
                 .sum();
+
+    }
+
+    @Transactional
+    @PutMapping(value = "/{user_id}/changePositionPercentage", consumes = "text/plain")
+    public void changePositionPercentage(@PathVariable(value = "user_id") int user_id, @RequestBody int positionPercentage){
+
+        Employee employee = employeeRepo.findOne(user_id);
+
+        employee.setPositionPercentage(positionPercentage);
+
+        employeeRepo.save(employee);
 
     }
 
