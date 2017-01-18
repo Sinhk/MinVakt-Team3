@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS employee_category
   category_id          INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
   category_name        VARCHAR(30)     NOT NULL,
   admin                BOOL                     DEFAULT FALSE,
-  required_per_shift   INT                      DEFAULT 0,
+  required_per_shift   TINYINT                  DEFAULT 0,
   available_for_shifts BOOL                     DEFAULT TRUE
 );
 
@@ -23,18 +23,18 @@ CREATE TABLE IF NOT EXISTS employee
   last_name           VARCHAR(30)     NOT NULL,
   phone               INT             NOT NULL,
   email               VARCHAR(50)     NOT NULL UNIQUE,
-  position_percentage INT             NOT NULL,
+  position_percentage TINYINT         NOT NULL,
   passwd              VARCHAR(60),
   enabled             BOOL                     DEFAULT TRUE,
   CONSTRAINT employee_category_fk FOREIGN KEY (category_id) REFERENCES employee_category (category_id)
 );
 
 CREATE TABLE IF NOT EXISTS shift (
-  shift_id           INT           NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  from_time          DATETIME      NOT NULL,
-  to_time            DATETIME      NOT NULL,
+  shift_id           INT                   NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  from_time          DATETIME              NOT NULL,
+  to_time            DATETIME              NOT NULL,
   comments           VARCHAR(255),
-  required_employees INT DEFAULT 5 NOT NULL
+  required_employees MEDIUMINT DEFAULT 5   NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS shift_assignment
@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS shift_assignment
   shift_id       INT                 NOT NULL,
   employee_id    INT                 NOT NULL,
   responsible    BOOL DEFAULT FALSE  NOT NULL,
-  status_id         INT DEFAULT 1       NOT NULL,
+  status_id      TINYINT DEFAULT 1   NOT NULL,
   CONSTRAINT shift_assignment_pk PRIMARY KEY (employee_id, shift_id),
   CONSTRAINT shift_assignment_employee_id_fk FOREIGN KEY (employee_id) REFERENCES employee (employee_id),
   CONSTRAINT shift_assignment_shift_id_fk FOREIGN KEY (shift_id) REFERENCES shift (shift_id) ON DELETE CASCADE
