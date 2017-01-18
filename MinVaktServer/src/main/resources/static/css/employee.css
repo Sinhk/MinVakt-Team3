@@ -24,16 +24,6 @@
     margin-top: -23%;
 }
 
-aside
-{
-    position: fixed;
-    margin-left: 77%;
-
-    width: 300px;
-    top: 4em;
-    left: 0;
-}
-
 #myTable {
     width:80%;
     margin-left:2%;

@@ -16,11 +16,7 @@ $(document).ready(function(){
     );*/
 
     $('.modal-trigger').modal();
-    $(".button-collapse").sideNav({
-        menuWidth: 300,
-        edge: 'right'
-    });
-    // $(".side-nav").css("margin-top", $(".nav-wrapper").height());
+     // $(".side-nav").css("margin-top", $(".nav-wrapper").height());
 
 
 
