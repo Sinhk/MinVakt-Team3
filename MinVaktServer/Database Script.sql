@@ -134,12 +134,12 @@ VALUES (1, 'Diane', 'Watkins', '12345678', 'dwatkins8@archive.org', 100);
 INSERT INTO employee (category_id, first_name, last_name, phone, email, position_percentage)
 VALUES (3, 'Aaron', 'Watkins', '12345678', 'awatkins9@sina.com.cn', 100);
 
-INSERT INTO shift (from_time, to_time) VALUES ('2017-01-17 06:00', '2017-01-17 14:00');
-INSERT INTO shift (from_time, to_time) VALUES ('2017-01-17 14:00', '2017-01-17 22:00');
-INSERT INTO shift (from_time, to_time) VALUES ('2017-01-17 22:00', '2017-01-18 06:00');
-INSERT INTO shift (from_time, to_time) VALUES ('2017-01-18 06:00', '2017-01-18 14:00');
-INSERT INTO shift (from_time, to_time) VALUES ('2017-01-18 14:00', '2017-01-18 22:00');
-INSERT INTO shift (from_time, to_time) VALUES ('2017-01-18 22:00', '2017-01-19 06:00');
+INSERT INTO shift (responsible_employee_id, from_time, to_time) VALUES (4, '2017-01-17 06:00', '2017-01-17 14:00');
+INSERT INTO shift (responsible_employee_id, from_time, to_time) VALUES (5, '2017-01-17 14:00', '2017-01-17 22:00');
+INSERT INTO shift (responsible_employee_id, from_time, to_time) VALUES (6, '2017-01-17 22:00', '2017-01-18 06:00');
+INSERT INTO shift (responsible_employee_id, from_time, to_time) VALUES (5, '2017-01-18 06:00', '2017-01-18 14:00');
+INSERT INTO shift (responsible_employee_id, from_time, to_time) VALUES (4, '2017-01-18 14:00', '2017-01-18 22:00');
+INSERT INTO shift (responsible_employee_id, from_time, to_time) VALUES (6, '2017-01-18 22:00', '2017-01-19 06:00');
 
 INSERT INTO shift_assignment (shift_id, employee_id, responsible) VALUES (1, 2, FALSE);
 INSERT INTO shift_assignment (shift_id, employee_id, responsible) VALUES (1, 3, FALSE);
@@ -158,3 +158,16 @@ INSERT INTO shift_department (shift_id, department_id) VALUES (4, 2);
 INSERT INTO shift_department (shift_id, department_id) VALUES (5, 3);
 INSERT INTO shift_department (shift_id, department_id) VALUES (6, 3);
 */
+
+INSERT INTO shift_overtime (shift_id, employee_id, minutes) VALUES (1, 3, 60);
+INSERT INTO shift_overtime (shift_id, employee_id, minutes) VALUES (4, 5, 75);
+
+INSERT INTO change_request (shift_id, old_employee_id, new_employee_id) VALUES (2, 3, 4);
+
+INSERT INTO department_required_employees_per_category (department_id, category_id, amount) VALUES (1, 2, 3);
+INSERT INTO department_required_employees_per_category (department_id, category_id, amount) VALUES (2, 2, 3);
+INSERT INTO department_required_employees_per_category (department_id, category_id, amount) VALUES (2, 2, 3);
+
+INSERT INTO department_required_per_shift (department_id, shift_id, amount) VALUES (1, 1, 10);
+INSERT INTO department_required_per_shift (department_id, shift_id, amount) VALUES (2, 1, 10);
+INSERT INTO department_required_per_shift (department_id, shift_id, amount) VALUES (3, 1, 10);
