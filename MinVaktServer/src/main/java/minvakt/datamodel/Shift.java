@@ -23,17 +23,12 @@ public class Shift {
     @Column(nullable = false, name = "to_time")
     private LocalDateTime endDateTime;
 
-    private String comments;
-
-    @Column(nullable = false)
-    private int requiredEmployees = 5;
-
     @OneToMany(mappedBy = "shift", orphanRemoval = true, cascade = {javax.persistence.CascadeType.PERSIST, javax.persistence.CascadeType.MERGE})
     @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     private List<ShiftAssignment> shiftAssignments;
 
     @ManyToOne
-    @JoinColumn(name = "responsible_user_employee_id")
+    @JoinColumn(name = "responsible_employee_id", referencedColumnName = "employee_id")
     private Employee responsibleUser;
 
     public Shift() {
@@ -68,14 +63,6 @@ public class Shift {
 
     public LocalDateTime getEndDateTime() {
         return endDateTime;
-    }
-
-    public String getComments() {
-        return comments;
-    }
-
-    public void setComments(String comments) {
-        this.comments = comments;
     }
 
     public String toString() { return shiftId+": "+startDateTime.toString().substring(0,4) + " -> " + endDateTime.toString().substring(0,4);}
@@ -124,11 +111,4 @@ public class Shift {
         return result;
     }
 
-    public int getRequiredEmployees() {
-        return requiredEmployees;
-    }
-
-    public void setRequiredEmployees(int requiredEmployees) {
-        this.requiredEmployees = requiredEmployees;
-    }
 }

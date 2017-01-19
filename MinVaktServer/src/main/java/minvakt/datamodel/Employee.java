@@ -42,6 +42,9 @@ public class Employee implements Serializable {
     @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     private List<ShiftAssignment> shiftAssignments;
 
+    @OneToMany(mappedBy = "employeeByResponsibleEmployeeId")
+    private List<Shift> responsibleShifts;
+
     public Employee() {
     }
 
