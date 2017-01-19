@@ -16,9 +16,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.web.bind.annotation.*;
 
@@ -206,7 +204,7 @@ public class EmployeeController {
 
 
     // TODO: 19-Jan-17 fix
-    @GetMapping
+    /*@GetMapping
     @RequestMapping("/scheduled")
     public List<Shift> getScheduledShiftsForUser(){
 
@@ -221,6 +219,14 @@ public class EmployeeController {
     // TODO: 19-Jan-17 EmployeeCategory
     @GetMapping("/canberesponsible/")
     public List<Employee> getEmployeesThatCanBeResponsible(@RequestParam int shift_id){
+
+        return collect;
+    }*/
+
+
+    @GetMapping(value = "/canberesponsible/{shift_id}")
+    public List<Employee> getEmployeesThatCanBeResponsible(@PathVariable int shift_id) {
+
 
         //Shift shift = shiftRepo.findOne(shift_id);
 
