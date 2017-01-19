@@ -1,18 +1,17 @@
 package minvakt.repos;
 
-import minvakt.datamodel.Employee;
-import minvakt.datamodel.Shift;
-import minvakt.datamodel.enums.PredeterminedIntervals;
+import minvakt.datamodel.tables.pojos.Shift;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
-import java.time.LocalDate;
 import java.util.List;
+
+//import minvakt.datamodel.enums.PredeterminedIntervals;
 
 public interface ShiftRepository extends CrudRepository<Shift, Integer> {
 
-    Shift findBy(LocalDate date, PredeterminedIntervals interval);
-
-    List<Shift> findByShiftAssignments_Employee(Employee employee);
+    //List<Shift> findByShiftAssignments_Employee(Employee employee);
+    @Query("SELECT s from Shift s LEFT JOIN ShiftAssignment a on s.shiftId = a.shiftId where a.employeeId = ?1")
     List<Shift> findByShiftAssignments_Employee_id(int employee);
 
     // TODO: 16-Jan-17  

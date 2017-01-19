@@ -1,6 +1,6 @@
 package minvakt.controller;
 
-import minvakt.datamodel.EmployeeCategory;
+import minvakt.datamodel.tables.pojos.EmployeeCategory;
 import minvakt.repos.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +25,7 @@ public class CategoryController {
 
     @GetMapping
     public List<EmployeeCategory> getCategories() {
-        return (List<EmployeeCategory>) categoryRepo.findAll();
+        return categoryRepo.findAll();
     }
 
 }

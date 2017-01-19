@@ -1,9 +1,11 @@
 package minvakt.repos;
 
-import minvakt.datamodel.ShiftAssignment;
-import minvakt.datamodel.ShiftAssignmentPK;
+import minvakt.datamodel.tables.pojos.ShiftAssignment;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ShiftAssignmentRepository extends JpaRepository<ShiftAssignment, ShiftAssignmentPK> {
+import java.util.Optional;
 
+public interface ShiftAssignmentRepository extends JpaRepository<ShiftAssignment, Integer> {
+
+    Optional<ShiftAssignment> getByShiftIdAndEmployeeId(int shift_id, int user_id);
 }

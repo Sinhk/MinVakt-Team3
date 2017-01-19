@@ -4,15 +4,20 @@ buildscript {
     }
     repositories {
         mavenCentral()
+        maven {
+            url 'https://plugins.gradle.org/m2/'
+        }
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath 'nu.studer:gradle-jooq-plugin:2.0.3'
     }
 }
 
 apply plugin: 'java'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'jacoco'
+apply plugin: 'nu.studer.jooq'
 
 sourceCompatibility = 1.8
 
@@ -52,6 +57,7 @@ dependencies {
     compile 'org.hibernate:hibernate-core:5.+'
     compile 'org.hibernate:hibernate-entitymanager:5.+'
 
+
     compile 'com.fasterxml.jackson.module:jackson-module-parameter-names:2.8.5'
     compile 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.8.5'
     compile 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.8.5'
@@ -64,11 +70,14 @@ dependencies {
 
     compile("org.springframework.boot:spring-boot-devtools")
 
+    compile 'org.jooq:jooq'
+
     //Auth
     compile 'io.jsonwebtoken:jjwt:0.7.+'
     compile 'org.jasypt:jasypt:1.9.+'
     compile 'io.codearte.jfairy:jfairy:0.5.5'
 
+    jooqRuntime'mysql:mysql-connector-java:5.1.+'
     runtime('mysql:mysql-connector-java')
     /*//DB
     compile 'org.mariadb.jdbc:mariadb-java-client:1.2.0'
@@ -103,4 +112,48 @@ task stage {
 
 bootRun {
     addResources = true
+}
+
+jooq {
+    version = '3.9.0'
+    edition = 'OSS'
+    iee(sourceSets.main) {
+        jdbc {
+            driver = 'com.mysql.jdbc.Driver'
+            url = 'jdbc:mysql://mysql.stud.iie.ntnu.no/g_scrum03'
+            user = 'g_scrum03'
+            password = 'Xc3e3V5A'
+            schema = 'g_scrum03'
+        }
+        generator {
+            name = 'org.jooq.util.DefaultGenerator'
+            strategy {
+                name = 'org.jooq.util.DefaultGeneratorStrategy'
+                // ...
+            }
+            database {
+                name = 'org.jooq.util.mysql.MySQLDatabase'
+                inputSchema = 'g_scrum03'
+                forcedTypes {
+                    forcedType{
+                        name = 'BOOLEAN'
+                        types = $/(?i:TINYINT(\s*\(\d+\))?(\s*UNSIGNED)?)/$
+                    }
+                }
+            }
+            generate {
+                relations = true
+                deprecated = false
+                records = true
+                pojos = true
+                jpaAnnotations = true
+                springAnnotations = true
+                javaTimeTypes = true
+            }
+            target {
+                packageName = 'minvakt.datamodel'
+                directory = 'src/main/java'
+            }
+        }
+    }
 }
