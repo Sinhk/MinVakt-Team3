@@ -25,6 +25,7 @@ $(document).ready(function () {
         })
     }
 
+    // Å returne i success og error funker ikke
     function newUser(first_name, last_name, email, phone, positionPercentage, categoryId) {
         $.ajax({
             url: "/users/"+categoryId,
@@ -40,6 +41,7 @@ $(document).ready(function () {
             success: function (data) {
                 console.log("Success");
                 window.alert(JSON.stringify(data));
+                console.log(JSON.stringify(data));
                 return data;
             },
             error: function (data) {

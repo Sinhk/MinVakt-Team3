@@ -91,11 +91,11 @@ $(document).ready(function(){
 
     var shifts = getAllSuitableShifts();
 
-    console.log(shifts);
+    //console.log(shifts);
 
     var fullCalendarEvents = [];
 
-    for(var i = 0; i<shifts.length; i++){
+    for(var i = 0; i < /*shifts.length*/60; i++){
 
         fullCalendarEvents.push(toFullCalendarEvent(shifts[i]));
 
