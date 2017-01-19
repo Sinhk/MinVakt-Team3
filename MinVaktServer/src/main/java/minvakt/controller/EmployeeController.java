@@ -64,9 +64,10 @@ public class EmployeeController {
         return employeeRepo.findAll();
     }
 
+    // TODO: 19-Jan-17 endre
     @PostMapping("/{category_id}")
     @Secured({"ROLE_ADMIN"})
-    public String addEmployee(@RequestBody Employee employee,@PathVariable int category_id) {
+    public String addEmployee(@RequestBody Employee employee, @PathVariable int category_id) {
 
         EmployeeCategory cat = catRepo.getOne(category_id);
         employee.setCategory(cat);
@@ -83,8 +84,8 @@ public class EmployeeController {
     }
 
     @DeleteMapping
-    public Response removeEmployee(@RequestBody String email) {
-        Employee byEmail = employeeRepo.findByEmail(email);
+    public Response removeEmployee(@RequestBody int user_id) {
+        Employee byEmail = employeeRepo.findOne(user_id);
 
         if (byEmail != null){
             employeeRepo.delete(byEmail);
@@ -94,13 +95,13 @@ public class EmployeeController {
         return Response.noContent().build();
     }
 
-    @RequestMapping(value = "{email}", method = RequestMethod.GET)
+    /*@RequestMapping(value = "{email}", method = RequestMethod.GET)
     public Employee findUser(@PathVariable String email) {
         System.out.println("Finding user on email: "+ email);
         return employeeRepo.findByEmail(email);
-    }
+    }*/
 
-    @RequestMapping(value = "/{user_id}/changepassword", method = RequestMethod.PUT)
+    @PutMapping("/{user_id}/changePassword")
     public Response changePasswordForUser(@PathVariable int user_id, @RequestBody ChangePasswordInfo info){
         String oldPass = info.getOldPassAttempt();
         String newPass = info.getNewPassAttempt();
@@ -119,8 +120,8 @@ public class EmployeeController {
     }
 
 
-    @RequestMapping(value = "/{user_id}/shifts", method = RequestMethod.GET)
-    public Collection<Shift> getShiftsForUser(@PathVariable(value="user_id") int userId){
+    @GetMapping(value = "/{user_id}/shifts")
+    public Collection<Shift> getShiftsForUser(@PathVariable int userId){
 
         Employee employee = employeeRepo.findOne(userId);
 
@@ -153,7 +154,7 @@ public class EmployeeController {
         return shiftList;
     }
 
-    @Transactional
+   /* @Transactional
     @PostMapping
     @RequestMapping(value = "/{user_id}/shifts/{shift_id}", method = RequestMethod.POST)
     public Response addShiftToUser(@PathVariable(value = "user_id") int userId, @PathVariable(value = "shift_id") int shiftId){
@@ -170,9 +171,9 @@ public class EmployeeController {
 
 
         return Response.noContent().build();
-    }
+    }*/
 
-    @Transactional
+    /*@Transactional
     @DeleteMapping
     @RequestMapping(value = "/{user_id}/shifts/{shift_id}", method = RequestMethod.DELETE)
     public Response removeShiftFromUser (@PathVariable(value = "user_id") String userId, @PathVariable(value = "shift_id") String shiftId) {
@@ -191,9 +192,10 @@ public class EmployeeController {
         employeeRepo.save(employee);
 
         return Response.noContent().build();
-    }
+    }*/
 
 
+    // TODO: 19-Jan-17 fix
     @GetMapping
     @RequestMapping("/scheduled")
     public List<Shift> getScheduledShiftsForUser(){
@@ -238,9 +240,9 @@ public class EmployeeController {
     }
 
 
-    @Transactional
-    @PostMapping
-    @RequestMapping(value = "/{email1}/changeCategory", method = RequestMethod.POST)
+    // TODO: 19-Jan-17 flytt
+    /*@Transactional
+    @PostMapping(value = "/{email1}/changeCategory")
     public void changeCategory(@PathVariable(value = "email1") String email1, @PathVariable(value = "EmployeeCategory") EmployeeCategory category){
 
         Employee employee = employeeRepo.findByEmail(email1);
@@ -249,9 +251,9 @@ public class EmployeeController {
 
         employeeRepo.save(employee);
 
-    }
+    }*/
 
-    @GetMapping
+    /*@GetMapping
     @RequestMapping(value = "/{email}/getCategory", method = RequestMethod.GET)
     public EmployeeCategory getCategory(@PathVariable(value = "email") String email){
 
@@ -259,7 +261,7 @@ public class EmployeeController {
 
 
         return employee.getCategory();
-    }
+    }*/
 
     @GetMapping(value = "/{user_id}/getHoursThisWeek")
     public int getHoursThisWeekForUser(@PathVariable(value = "user_id") int user_id){
@@ -291,7 +293,5 @@ public class EmployeeController {
         employee.setPositionPercentage(positionPercentage);
 
         employeeRepo.save(employee);
-
     }
-
 }

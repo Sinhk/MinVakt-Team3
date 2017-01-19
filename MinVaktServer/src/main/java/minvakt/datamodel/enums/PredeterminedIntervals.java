@@ -7,9 +7,9 @@ import java.time.LocalTime;
  */
 public enum PredeterminedIntervals {
 
-    MORNING(LocalTime.of(7, 30), LocalTime.of(15, 30)),
-    DAYTIME(LocalTime.of(15, 0), LocalTime.of(22, 30)),
-    NIGHT(LocalTime.of(22, 0), LocalTime.of(8, 0));
+    MORNING(LocalTime.of(6, 0), LocalTime.of(14, 0)),
+    DAYTIME(LocalTime.of(14, 0), LocalTime.of(22, 0)),
+    NIGHT(LocalTime.of(22, 0), LocalTime.of(6, 0));
 
 
     private final LocalTime startTime;

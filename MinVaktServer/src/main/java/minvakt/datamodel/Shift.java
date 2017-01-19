@@ -32,6 +32,9 @@ public class Shift {
     @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     private List<ShiftAssignment> shiftAssignments;
 
+    @ManyToOne
+    private Employee responsibleUser;
+
     public Shift() {
     }
 
@@ -90,6 +93,14 @@ public class Shift {
 
     public void setShiftAssignments(List<ShiftAssignment> shiftAssignments) {
         this.shiftAssignments = shiftAssignments;
+    }
+
+    public Employee getResponsibleUser() {
+        return responsibleUser;
+    }
+
+    public void setResponsibleUser(Employee responsibleUser) {
+        this.responsibleUser = responsibleUser;
     }
 
     @Override
