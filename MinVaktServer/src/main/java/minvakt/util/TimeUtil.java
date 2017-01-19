@@ -37,20 +37,5 @@ public class TimeUtil {
 
     }
 
-    /**
-     * Takes badly formated time and makes it into localtime by magic
-     */
-    public static LocalDate parseBadlyFormattedTime(String date){
-
-
-        //Format YYYY-MM-DD
-
-        date = date.replaceAll(" ","");
-
-        return LocalDate.parse(date);
-
-
-    }
-
 
 }

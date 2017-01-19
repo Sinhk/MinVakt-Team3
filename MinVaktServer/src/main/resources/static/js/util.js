@@ -30,27 +30,23 @@ function toFullCalendarEvent(event) {
 }*/
 
 
-function getAllSuitableShifts() {
-
-    var shifts;
+function getAllSuitableShifts(callback) {
 
     $.ajax({
-        async: false,
         url: "/shifts/suitable",
         type: "GET",
         contentType: "Application/JSON",
 
         success: function (data) {
-            console.log("Success: /shifts.GET");
 
-            shifts = data;
+            callback(data);
+
         },
         error: function (data) {
             console.log("Error: "+data);
         }
     });
 
-    return shifts;
 
 }
 
@@ -136,13 +132,10 @@ function listToFullCalendarEventList(events, resourceList) {
     return list;
 }
 
-function getEventViaID(id) {
-
-    var event;
+function getEventViaID(id, callback) {
 
     $.ajax({
 
-        async: false,
             url: "/shifts/"+id,
             type: "GET",
             contentType: "Application/JSON",
@@ -150,24 +143,20 @@ function getEventViaID(id) {
             success: function (data) {
             //console.log("Success: /shifts/id.GET"+data);
 
-            event = data;
+            callback(data);
         },
         error: function (data) {
             console.log("Error: "+data);
         }
 
     })
-    return event;
 
 }
 
-function getAllEmployees() {
-
-    var users;
+function getAllEmployees(callback) {
 
     $.ajax({
 
-        async: false,
         url: "/users/",
         type: "GET",
         contentType: "Application/JSON",
@@ -175,15 +164,13 @@ function getAllEmployees() {
         success: function (data) {
             //console.log("Success: /users.GET");
 
-            users = data;
+            callback(data);
         },
         error: function (data) {
             console.log("Error: "+data);
         }
 
     });
-
-    return users;
 }
 
 function userListToResourceList(userlist) {
@@ -198,6 +185,7 @@ function userListToResourceList(userlist) {
     return resourceList;
 
 }
+
 
 function getShiftsByEmployee(userlist) {
 

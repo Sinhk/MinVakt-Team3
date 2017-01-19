@@ -33,6 +33,7 @@ public class Shift {
     private List<ShiftAssignment> shiftAssignments;
 
     @ManyToOne
+    @JoinColumn(name = "responsible_user_employee_id")
     private Employee responsibleUser;
 
     public Shift() {
