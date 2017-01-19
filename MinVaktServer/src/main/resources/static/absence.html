@@ -28,19 +28,26 @@
         </table>
     </div>
 
-    <div class="input-field col s5">
-        <select class="browser-default white">
-            <option value="" disabled selected>Status</option>
-            <option value="1">Satt opp på ekstravakt</option>
-            <option value="2">Fullført ekstravakt</option>
-            <option value="3">Tilgjengelig</option>
-            <option value="4">Satt opp på vakt</option>
-            <option value="5">Ikke fullført skift</option>
-            <option value="6">Forespørsel om vaktbytte</option>
-            <option value="7">Godta foresløprsel om vaktbytte</option>
-        </select>
+    <div class="row">
+        <div class="input-field col s5">
+            <i class="material-icons prefix">mode_edit</i>
+            <textarea id="icon_prefix2" class="materialize-textarea"></textarea>
+            <label for="icon_prefix2">Kommentar</label>
+        </div>
     </div>
+
+
 </div>
+
+<script src="//cdn.jsdelivr.net/alertifyjs/1.8.0/alertify.min.js"></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js' integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.js'></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
+<script th:src="@{js/common.js}"></script>
+<script th:src="@{js/util.js}"></script>
+<script th:src="@{js/shiftManager.js}"></script>
+<script th:src="@{js/absence.js}"></script>
 
 </body>
 </html>
