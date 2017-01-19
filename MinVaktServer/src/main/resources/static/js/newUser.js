@@ -11,6 +11,14 @@ $(document).ready(function () {
         var category = $("#category-box").val();
 
         newUser(first_name1, last_name1, email, phone1, positionPercentage, category);
+
+        swal({
+            title: "Fullført!",
+            text: "Bruker er opprettet.",
+            type: "success",
+            confirmButtonText: "Ok"
+        });
+
     });
 });
 
