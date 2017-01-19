@@ -62,6 +62,8 @@ function toFullCalendarEventWithResource(event, resource) {
     var dateStart = new Date(start);
     var dateEnd = new Date(end);
     var responsible = getResponsibleUserForShift(event.shiftId);
+    var available = eventIsAvailable(event.shiftId);
+
     console.log("responsible: "+JSON.stringify(responsible));
     return {
         id: event.shiftId || 0,
@@ -70,12 +72,16 @@ function toFullCalendarEventWithResource(event, resource) {
         end: dateEnd,
         resourceId: resource.id,
         backgroundColor: responsible != undefined && responsible.employeeId == resource.id ? "#9B0300" : "#3E9B85",
-        isResponsible: is
+        isResponsible: responsible,
+        available: available
 
     };
 }
 
 function toFullCalendarEvent(event) {
+
+    console.log(event)
+
 
     var start = event.startDateTime;
     var end = event.endDateTime;
@@ -83,8 +89,8 @@ function toFullCalendarEvent(event) {
     var dateStart = new Date(start);
     var dateEnd = new Date(end);
 
-    var is = eventIsAvailable(event.shiftId);
 
+    var available = eventIsAvailable(event.shiftId);
 
 
     return {
@@ -93,8 +99,8 @@ function toFullCalendarEvent(event) {
         start: dateStart,
         end: dateEnd,
         status: event.status,
-        backgroundColor: is ? "#9B0300":"#3E9B85",
-        isResponsible: is
+        backgroundColor: available ? "#9B0300":"#3E9B85",
+        available: available
     };
 }
 

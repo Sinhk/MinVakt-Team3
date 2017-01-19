@@ -10,7 +10,7 @@ function addShiftToUser(shiftId, userId) {
 
 function getAllScheduledShiftsForUser() {
 
-    var list;
+    var list ;
 
     $.ajax({
         async: false,
@@ -22,6 +22,7 @@ function getAllScheduledShiftsForUser() {
             console.log("Success: /users/scheduled.GET "+data);
 
             list = data;
+
         },
         error: function (data) {
             console.log("Error: "+data);
@@ -247,4 +248,43 @@ function getShiftsWithRequestChange() {
     });
 
     return list;
+}
+
+function requestChange(shift_id, user1_id, user2_id) {
+
+    $.ajax({
+        async: false,
+        url: "/"+shift_id+"/users/"+user1_id+"/requestchange/"+user2_id,
+        type: "POST",
+
+        success: function (data) {
+            console.log("Success: "+JSON.stringify(data));
+        },
+
+        error: function (data) {
+            console.log("Error: "+JSON.stringify(data));
+        }
+    });
+
+}
+function getAvaiableShifts() {
+
+    var list;
+
+    $.ajax({
+        async: false,
+        url: "/shifts/available",
+        type: "GET",
+
+        success: function (data) {
+            console.log("Success: "+JSON.stringify(data));
+            list = data;
+        },
+
+        error: function (data) {
+            console.log("Error: "+JSON.stringify(data));
+        }
+    });
+    return list;
+
 }

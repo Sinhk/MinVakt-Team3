@@ -5,9 +5,9 @@ $(document).ready(function(){
 
     var shifts1 = getAllScheduledShiftsForUser();
 
-    var requestChangeShifts = getShiftsWithRequestChange();
+    var availableShifts = getAvaiableShifts();
 
-    var shifts = shifts1.concat(requestChangeShifts);
+    var shifts = shifts1.concat(availableShifts);
 
     console.log(shifts);
 
@@ -68,18 +68,17 @@ $(document).ready(function(){
         eventMouseout: function(calEvent, jsEvent) {
             $(this).css('z-index', 8);
             $('.tooltipevent').remove();
-        }
-
-
-        /*eventClick: function(calEvent,jsEvent) {
-            xOffset = 10;
-            yOffset = 30;
-            $("body").append(calEvent.tooltip);
-            $("#tooltip")
-                .css("top",(jsEvent.clientY - xOffset) + "px")
-                .css("left",(jsEvent.clientX + yOffset) + "px")
         },
-    eventMouseout: function(calEvent,jsEvent) {
+
+
+        eventClick: function(event,jsEvent) {
+            var eventId = event.id;
+
+            var eventDB = getEventViaID(eventId);
+
+            console.log(eventDB);
+        },
+    /*eventMouseout: function(calEvent,jsEvent) {
             $("#tooltip").remove();
         }
 

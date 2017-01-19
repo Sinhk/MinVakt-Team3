@@ -1,7 +1,6 @@
 package minvakt.controller;
 
 import minvakt.controller.data.DateWrapper;
-import minvakt.controller.data.ThreeIntsData;
 import minvakt.controller.data.TwoIntData;
 import minvakt.datamodel.ChangeRequest;
 import minvakt.datamodel.Employee;
@@ -302,14 +301,11 @@ public class ShiftController {
         Employee fromUser = employeeRepo.findOne(user_id);
         Employee toUser = employeeRepo.findOne(user2_id);
 
-
-    }
-
-    void getChangeRequests(){
-
+        changeRequestRepository.save(new ChangeRequest(shift, fromUser, toUser));
 
 
     }
+
 
     @GetMapping(value = "/byday")
     public List<Shift> getShiftsByDay(@RequestBody String day){
@@ -335,7 +331,7 @@ public class ShiftController {
                 .findAll()
                 .stream()
                 .filter(shiftAssignment -> shiftAssignment.getShift().getShiftId() == shift_id)
-                .filter(shiftAssignment -> shiftAssignment.getStatus() == ShiftStatus.REQUESTCHANGE)
+                .filter(shiftAssignment -> shiftAssignment.getStatus() == ShiftStatus.AVAILABLE)
                 .map(ShiftAssignment::getShift)
                 .collect(Collectors.toList())
                 .contains(shiftRepo.findOne(shift_id));
@@ -352,7 +348,17 @@ public class ShiftController {
                 .collect(Collectors.toList());
     }
 
-    @Transactional
+    @GetMapping(value = "/available")
+    public List<Shift> getAvailableShifts(){
+        return new ArrayList<>( shiftAssignmentRepo
+                .findAll()
+                .stream()
+                .filter(shiftAssignment -> shiftAssignment.getStatus() == ShiftStatus.AVAILABLE)
+                .map(ShiftAssignment::getShift)
+                .collect(Collectors.toList()));
+    }
+
+    /*@Transactional
     @PostMapping(value = "/requestchange")
     public void requestChange(@RequestBody ThreeIntsData data){
 
@@ -365,5 +371,5 @@ public class ShiftController {
         changeRequestRepository.save(changeRequest);
 
 
-    }
+    }*/
 }

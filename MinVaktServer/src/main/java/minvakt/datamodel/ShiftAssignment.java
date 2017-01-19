@@ -25,7 +25,7 @@ public class ShiftAssignment implements Serializable{
     private Employee employee;
     private boolean responsible;
     @Column(nullable = false, name = "status_id")
-    private ShiftStatus status = ShiftStatus.AVAILABLE;
+    private ShiftStatus status = ShiftStatus.SCHEDULED;
 
     public ShiftAssignment() {
     }

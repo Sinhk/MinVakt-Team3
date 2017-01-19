@@ -10,5 +10,6 @@ public enum ShiftStatus {
     SCHEDULED,
     ERROR,
     REQUESTCHANGE,
-    REQUESTCHANGE_OFFER
+    REQUESTCHANGE_OFFER,
+    SICKNESS
 }

@@ -209,7 +209,7 @@ public class EmployeeController {
 
                     System.out.println(shiftAssignment.getStatus());
 
-                    return shiftAssignment.getStatus() == ShiftStatus.SCHEDULED || shiftAssignment.getStatus() == ShiftStatus.AVAILABLE;
+                    return shiftAssignment.getStatus() == ShiftStatus.SCHEDULED;
                 }
 
         ).map(ShiftAssignment::getShift).collect(Collectors.toList());
