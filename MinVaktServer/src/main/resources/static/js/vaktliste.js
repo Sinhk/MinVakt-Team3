@@ -1,16 +1,10 @@
 $(function() { // document ready
 
-    var employees = /*util.*/getAllEmployees();
-
-    var events = /*util.*/getShiftsByEmployee(employees);
-
-
-    console.log(events);
-
-    var resourceList = userListToResourceList(employees);
-
-    //console.log("Responsible users: "+getResponsibleUsersForShifts(events));
-
+    $.getJSON("/shifts/between", function (shifts) {
+        var ev = toFullCalendarEventsWithResource(shifts);
+        $('#calendar').fullCalendar('addEventSource', ev);
+    });
+ 
 
     $('#calendar').fullCalendar({
         schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
@@ -48,9 +42,11 @@ $(function() { // document ready
             list:     'Liste'
         },
         resourceLabelText: 'Ansatte',
-        resources: resourceList,
-
-        events: listToFullCalendarEventList(events, resourceList),
+        resources: function (callback) {
+            $.getJSON("/users/resource", function (res) {
+                callback(res)
+            });
+        },
 
         eventClick: function( event, jsEvent, view ) {
 

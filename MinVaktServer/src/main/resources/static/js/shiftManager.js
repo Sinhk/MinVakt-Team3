@@ -4,32 +4,22 @@
 
 function addShiftToUser(shiftId, userId) {
 
-
-
 }
 
-function getAllScheduledShiftsForUser() {
-
-    var list ;
-
+function getAllScheduledShiftsForUser(callback) {
     $.ajax({
-        async: false,
         url: "users/scheduled",
         type: "GET",
         contentType: "Application/JSON",
 
         success: function (data) {
             console.log("Success: /users/scheduled.GET "+data);
-
-            list = data;
-
+            callback(data);
         },
         error: function (data) {
             console.log("Error: "+data);
         }
     });
-
-    return list;
 }
 
 function getStatusForShiftAndUser(shift_id, user_id) {
@@ -211,43 +201,34 @@ function eventIsAvailable(event_id) {
     var is;
 
     $.ajax({
-        async: false,
         url: "shifts/"+event_id+"/isAvailable",
+        type: "GET",
         type: "GET",
 
         success: function (data) {
-            console.log("Success: "+JSON.stringify(data));
             is = data;
         },
 
         error: function (data) {
-            console.log("Error: "+JSON.stringify(data));
+            console.log("Error: eventIsAvailable");
         }
     });
     return is;
-
-
 }
-function getShiftsWithRequestChange() {
-
-
-    var list = [];
+function getShiftsWithRequestChange(callback) {
     $.ajax({
-        async: false,
         url: "shifts/requestchange",
         type: "GET",
 
         success: function (data) {
             console.log("Success: "+JSON.stringify(data));
-            list = data;
+            callback(data);
         },
 
         error: function (data) {
             console.log("Error: "+JSON.stringify(data));
         }
     });
-
-    return list;
 }
 
 function requestChange(shift_id, user1_id, user2_id) {

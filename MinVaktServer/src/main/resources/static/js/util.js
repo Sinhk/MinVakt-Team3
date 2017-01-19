@@ -53,14 +53,35 @@ function getAllSuitableShifts() {
     return shifts;
 
 }
+function toFullCalendarEventsWithResource(events) {
 
+    return events.map(function (e) {
+        var start = e.startDateTime;
+        var end = e.endDateTime;
+
+        var dateStart = new Date(start);
+        var dateEnd = new Date(end);
+        var rids = e.shiftAssignments.map(function (a) {
+            return a.employee.employeeId;
+        });
+        return {
+            id: event.shiftId || 0,
+            title: start.split("T")[1].substr(0,3) + " -> " + end.split("T")[1].substr(0,3),
+            start: dateStart,
+            end: dateEnd,
+            resourceIds: rids,
+            backgroundColor: e.shiftAssignments != undefined ? "#9B0300" : "#3E9B85"
+        };
+        }
+    );
+}
 function toFullCalendarEventWithResource(event, resource) {
-
     var start = event.startDateTime;
     var end = event.endDateTime;
 
     var dateStart = new Date(start);
     var dateEnd = new Date(end);
+    var available = eventIsAvailable(event.shiftId);
     var responsible = getResponsibleUserForShift(event.shiftId);
     var available = eventIsAvailable(event.shiftId);
     console.log()
@@ -76,13 +97,11 @@ function toFullCalendarEventWithResource(event, resource) {
         isResponsible: responsible,
         available: available
 
+        backgroundColor: event.responsible != undefined && event.responsible.employeeId == resource.id ? "#9B0300" : "#3E9B85"
     };
 }
 
 function toFullCalendarEvent(event) {
-
-    //console.log(event)
-
 
     var start = event.startDateTime;
     var end = event.endDateTime;
@@ -94,15 +113,19 @@ function toFullCalendarEvent(event) {
     var available = eventIsAvailable(event.shiftId);
     var responsible = getResponsibleUserForShift(event.shiftId);
 
-
-    //console.log("Avdeling: "+event.comments);
+    var is;
+    /*event.shiftAssignments.forEach(function (as) {
+        if (as.responsible) {
+            is = as.employee;
+        }
+    });*/
 
     return {
         id: event.shiftId,
         title: start.split("T")[1].substr(0,3) + " -> " + end.split("T")[1].substr(0,3),
         start: dateStart,
         end: dateEnd,
-        status: event.status,
+        status: event.shiftAssignments.status,
         backgroundColor: available ? "#9B0300":"#3E9B85",
         available: available,
         avdeling: event.comments,
@@ -141,49 +164,40 @@ function getEventViaID(id) {
     var event;
 
     $.ajax({
-
         async: false,
-            url: "/shifts/"+id,
-            type: "GET",
-            contentType: "Application/JSON",
+        url: "/shifts/" + id,
+        type: "GET",
+        contentType: "Application/JSON",
 
-            success: function (data) {
-            //console.log("Success: /shifts/id.GET"+data);
+        success: function (data) {
+            //console.log("Success: /shifts/id.GET" + data);
 
             event = data;
         },
         error: function (data) {
-            console.log("Error: "+data);
+            console.log("Error: " + data);
         }
 
-    })
+    });
     return event;
 
 }
 
-function getAllEmployees() {
-
-    var users;
+function getAllEmployees(callback) {
 
     $.ajax({
-
-        async: false,
         url: "/users/",
         type: "GET",
         contentType: "Application/JSON",
 
         success: function (data) {
-            //console.log("Success: /users.GET");
-
-            users = data;
+            console.log("Success: /users.GET");
+            callback(data);
         },
         error: function (data) {
             console.log("Error: "+data);
         }
-
     });
-
-    return users;
 }
 
 function userListToResourceList(userlist) {
@@ -200,14 +214,11 @@ function userListToResourceList(userlist) {
 }
 
 function getShiftsByEmployee(userlist) {
-
-
     var shiftList = [];
 
     for(var i = 0; i<userlist.length; i++){
 
         $.ajax({
-
             async: false,
             url: "/users/"+userlist[i].employeeId+"/shifts",
             type: "GET",

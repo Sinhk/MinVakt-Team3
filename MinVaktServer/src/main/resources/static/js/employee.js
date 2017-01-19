@@ -1,31 +1,28 @@
 $(document).ready(function(){
 
 
-    var employees = /*util.*/getAllEmployees();
-
-    for(var i = 0; i<employees.length; i++){
-
-        var employee = employees[i];
-
-        var category = getCategory(employee.email);
-
-
+    getAllEmployees(function (employees) {
         var div = document.getElementById('employeeBody');
+        for (var i = 0; i < employees.length; i++) {
 
-        var hours = getHourThisWeek(employee.employeeId);
+            var employee = employees[i];
 
-        div.innerHTML +=
-        "<tr>"+
-            "<td>"+employee.firstName+"</td>"+
-            "<td>"+employee.lastName+"</td>"+
-            "<td>"+category.categoryName+"</td>"+
-            "<td>"+employee.positionPercentage+"%</td>"+
-            "<td>"+employee.phone+"</td>"+
-            "<td>"+hours+" time(r)</td>"+
-            "<td>"+employee.email+"</td>"+
-        "</tr>"
+            getHourThisWeek(employee, function (employee, hours) {
+                div.innerHTML +=
+                    "<tr>" +
+                    "<td>" + employee.firstName + "</td>" +
+                    "<td>" + employee.lastName + "</td>" +
+                    "<td>" + employee.category.categoryName + "</td>" +
+                    "<td>" + employee.positionPercentage + "%</td>" +
+                    "<td>" + employee.phone + "</td>" +
+                    "<td>" + hours + " time(r)</td>" +
+                    "<td>" + employee.email + "</td>" +
+                    "</tr>"
+            });
+        }
+    });
 
-    }
+
 
     $("#myTable").tablesorter();
     $("#myTable").tablesorter( {sortList: [[0,0], [1,0]]} );

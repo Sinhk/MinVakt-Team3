@@ -14,6 +14,7 @@ import minvakt.repos.ShiftRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Transactional;
@@ -55,11 +56,18 @@ public class ShiftController {
         return shiftRepo.findAll();
     }
 
+    @GetMapping("/between")
+    public Iterable<Shift> getShiftsBetween() {
+        return shiftRepo.findByStartDateTimeBetween(LocalDateTime.now(), LocalDateTime.now().plusWeeks(5));
+    }
+
     @RequestMapping("/{shift_id}")
     @GetMapping
+    @Transactional
     public Shift getShift(@PathVariable int shift_id){
-
-        return shiftRepo.findOne(shift_id);
+        Shift shift = shiftRepo.findOne(shift_id);
+        shift.getShiftAssignments().size();
+        return shift;
 
     }
 
@@ -191,17 +199,14 @@ public class ShiftController {
 
     @GetMapping
     @RequestMapping(value = "/{shift_id}/responsible")
-    public Employee getResponsibleEmployeeForShift(@PathVariable int shift_id){
+    public ResponseEntity<?> getResponsibleEmployeeForShift(@PathVariable int shift_id) {
 
-        return shiftAssignmentRepo
-                .findAll()
-                .stream()
-                .filter(shiftAssignment -> shiftAssignment.getShift().getShiftId() == shift_id)
-                .filter(ShiftAssignment::isResponsible)
-                .map(ShiftAssignment::getEmployee)
-                .findFirst()
-                .get();
-
+        Optional<Employee> employee = employeeRepo.findByShiftAssignments_ShiftAndShiftAssignments_ResponsibleTrue(shiftRepo.getOne(shift_id));
+        if (employee.isPresent()) {
+            return ResponseEntity.ok(employee.get());
+        } else {
+            return ResponseEntity.noContent().build();
+        }
     }
 
     @GetMapping(value = "/{shift_id}/{employee_id}/status")

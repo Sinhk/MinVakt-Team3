@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
+@NamedEntityGraph(name = "Shift.assignments", attributeNodes = @NamedAttributeNode(value = "shiftAssignments"))
 public class Shift {
 
     @Id

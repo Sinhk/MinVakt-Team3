@@ -63,7 +63,6 @@ dependencies {
     compile "org.thymeleaf.extras:thymeleaf-extras-java8time:3.0.+"
 
     compile("org.springframework.boot:spring-boot-devtools")
-
     //Auth
     compile 'io.jsonwebtoken:jjwt:0.7.+'
     compile 'org.jasypt:jasypt:1.9.+'

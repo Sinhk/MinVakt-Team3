@@ -89,18 +89,6 @@ $(document).ready(function(){
      );*/
 
 
-    var shifts = getAllSuitableShifts();
-
-    //console.log(shifts);
-
-    var fullCalendarEvents = [];
-
-    for(var i = 0; i < /*shifts.length*/60; i++){
-
-        fullCalendarEvents.push(toFullCalendarEvent(shifts[i]));
-
-    }
-
     $('#calendar').fullCalendar({
 
         locale: "no",
@@ -126,7 +114,6 @@ $(document).ready(function(){
         dayClick:function (data ) {
             console.log("You clicked: "+data);
         },
-        events: fullCalendarEvents,
 
         eventClick: function( event, jsEvent, view ) {
 
@@ -141,4 +128,22 @@ $(document).ready(function(){
      $('#calendar').fullCalendar( 'renderEvent', fullCalendarEvents[i], true);
 
      }*/
+
+    $.getJSON("/shifts/between", function (data) {
+        var newdata = $.map(data, function (value) {
+            return toFullCalendarEvent(value)
+        });
+
+        console.log(newdata);
+        $('#calendar').fullCalendar('addEventSource', newdata);
+        /*reduce((promiseChain, item) => {
+         return promiseChain.then(() => new Promise((resolve) => {
+         toFullCalendarEvent(item, resolve);
+         }));
+         },
+         Promise.resolve());*/
+
+    });
+    //requests.then((data)=>
+
 });

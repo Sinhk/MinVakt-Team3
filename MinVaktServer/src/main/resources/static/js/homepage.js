@@ -3,21 +3,15 @@ $(document).ready(function(){
     $('.modal-trigger').modal();
      // $(".side-nav").css("margin-top", $(".nav-wrapper").height());
 
-    var shifts1 = getAllScheduledShiftsForUser();
 
-    var availableShifts = getAvaiableShifts();
-
-    var shifts = shifts1.concat(availableShifts);
-
-    console.log(shifts);
-
-    var fullCalendarEvents = [];
-
-    for(var i = 0; i<shifts.length; i++){
-
-        fullCalendarEvents.push(toFullCalendarEvent(shifts[i]));
-
-    }
+    getAllScheduledShiftsForUser(function (shifts1) {
+        getShiftsWithRequestChange(function (ch) {
+            var shifts = shifts1.concat(ch);
+            var availableShifts = getAvaiableShifts();
+            var ev = shifts.map(toFullCalendarEvent);
+            $('#calendar').fullCalendar('addEventSource',ev);
+        });
+    });
 
     $('#calendar').fullCalendar({
 
@@ -51,7 +45,6 @@ $(document).ready(function(){
         /*dayClick:function (data ) {
             console.log("You clicked: "+data);
         },*/
-        events: fullCalendarEvents,
 
         eventMouseover: function(calEvent, jsEvent) {
             var tooltip = '<div class="tooltipevent" style="width:150px;height:70px;background:#e3f2fd;border-style:solid;border-color:#212121;border-width:1px;position:absolute;z-index:10001;">' + ' ' + ' Tidspunkt: ' + calEvent.title + '<br> Avdeling: ' +calEvent.avdeling+ '<br>  Ansvar: '+calEvent.isResponsible+'</div>';

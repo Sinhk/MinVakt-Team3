@@ -1,5 +1,6 @@
 package minvakt.controller;
 
+import minvakt.controller.data.CalenderResource;
 import minvakt.controller.data.ChangePasswordInfo;
 import minvakt.controller.data.TwoStringsData;
 import minvakt.datamodel.Employee;
@@ -48,7 +49,6 @@ public class EmployeeController {
     private ShiftController shiftController = new ShiftController(shiftRepo, employeeRepo, shiftAssignmentRepo, changeRequestRepository);
 
 
-
     @Autowired
     public EmployeeController(EmployeeRepository employeeRepo, ShiftRepository shiftRepo, UserDetailsManager userDetailsManager, ShiftAssignmentRepository shiftAssignmentRepo, ChangeRequestRepository changeRequestRepository, CategoryRepository catRepo) {
         this.employeeRepo = employeeRepo;
@@ -64,9 +64,17 @@ public class EmployeeController {
         return employeeRepo.findAll();
     }
 
+    @GetMapping("/resource")
+    public List<CalenderResource> getAsResource() {
+        List<CalenderResource> resources = new ArrayList<>();
+        employeeRepo.findAll().forEach(e -> resources.add(new CalenderResource(e.getEmployeeId(), e.getFirstName() + " " + e.getLastName())));
+        return resources;
+    }
+
     @PostMapping("/{category_id}")
     @Secured({"ROLE_ADMIN"})
-    public String addEmployee(@RequestBody Employee employee,@PathVariable int category_id) {
+
+    public String addEmployee(@RequestBody Employee employee, @PathVariable int category_id) {
 
         EmployeeCategory cat = catRepo.getOne(category_id);
         employee.setCategory(cat);
@@ -80,13 +88,17 @@ public class EmployeeController {
         }});
         userDetailsManager.updateUser(user);
         return password;
+        /*URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest().path("/{id}")
+                .buildAndExpand(employee.getEmail()).toUri();
+        return ResponseEntity.created(location).build();*/
     }
 
     @DeleteMapping
     public Response removeEmployee(@RequestBody String email) {
         Employee byEmail = employeeRepo.findByEmail(email);
 
-        if (byEmail != null){
+        if (byEmail != null) {
             employeeRepo.delete(byEmail);
             return Response.ok().build();
         }
@@ -96,12 +108,12 @@ public class EmployeeController {
 
     @RequestMapping(value = "{email}", method = RequestMethod.GET)
     public Employee findUser(@PathVariable String email) {
-        System.out.println("Finding user on email: "+ email);
+        System.out.println("Finding user on email: " + email);
         return employeeRepo.findByEmail(email);
     }
 
     @RequestMapping(value = "/{user_id}/changepassword", method = RequestMethod.PUT)
-    public Response changePasswordForUser(@PathVariable int user_id, @RequestBody ChangePasswordInfo info){
+    public Response changePasswordForUser(@PathVariable int user_id, @RequestBody ChangePasswordInfo info) {
         String oldPass = info.getOldPassAttempt();
         String newPass = info.getNewPassAttempt();
 
@@ -120,7 +132,7 @@ public class EmployeeController {
 
 
     @RequestMapping(value = "/{user_id}/shifts", method = RequestMethod.GET)
-    public Collection<Shift> getShiftsForUser(@PathVariable(value="user_id") int userId){
+    public Collection<Shift> getShiftsForUser(@PathVariable(value = "user_id") int userId) {
 
         Employee employee = employeeRepo.findOne(userId);
 
@@ -131,7 +143,7 @@ public class EmployeeController {
     // FIXME: 15.01.2017
     @RequestMapping("/{user_id}/shifts/inrange")
     @GetMapping
-    public Collection<Shift> getShiftsForUserInRange(@PathVariable int user_id, @RequestBody TwoStringsData stringsData){
+    public Collection<Shift> getShiftsForUserInRange(@PathVariable int user_id, @RequestBody TwoStringsData stringsData) {
 
         String startDate = stringsData.getString1();
         String endDate = stringsData.getString2();
@@ -156,7 +168,7 @@ public class EmployeeController {
     @Transactional
     @PostMapping
     @RequestMapping(value = "/{user_id}/shifts/{shift_id}", method = RequestMethod.POST)
-    public Response addShiftToUser(@PathVariable(value = "user_id") int userId, @PathVariable(value = "shift_id") int shiftId){
+    public Response addShiftToUser(@PathVariable(value = "user_id") int userId, @PathVariable(value = "shift_id") int shiftId) {
 
         Employee employee = employeeRepo.findOne(userId);
 
@@ -168,14 +180,13 @@ public class EmployeeController {
 
         employeeRepo.save(employee);
 
-
         return Response.noContent().build();
     }
 
     @Transactional
     @DeleteMapping
     @RequestMapping(value = "/{user_id}/shifts/{shift_id}", method = RequestMethod.DELETE)
-    public Response removeShiftFromUser (@PathVariable(value = "user_id") String userId, @PathVariable(value = "shift_id") String shiftId) {
+    public Response removeShiftFromUser(@PathVariable(value = "user_id") String userId, @PathVariable(value = "shift_id") String shiftId) {
 
         Employee employee = employeeRepo.findOne(Integer.valueOf(userId));
 
@@ -196,7 +207,8 @@ public class EmployeeController {
 
     @GetMapping
     @RequestMapping("/scheduled")
-    public List<Shift> getScheduledShiftsForUser(){
+    @Transactional
+    public List<Shift> getScheduledShiftsForUser() {
 
         UserDetails details = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
@@ -207,28 +219,28 @@ public class EmployeeController {
                 .stream()
                 .filter(shiftAssignment -> shiftAssignment.getEmployee().getEmployeeId() == user.getEmployeeId()).filter(shiftAssignment -> {
 
-                    System.out.println(shiftAssignment.getStatus());
+                            System.out.println(shiftAssignment.getStatus());
 
                     return shiftAssignment.getStatus() == ShiftStatus.SCHEDULED;
                 }
 
-        ).map(ShiftAssignment::getShift).collect(Collectors.toList());
+                ).map(ShiftAssignment::getShift).collect(Collectors.toList());
 
         System.out.println(collect);
-
+        collect.forEach(shift -> shift.getShiftAssignments().size());
         return collect;
     }
 
 
     @GetMapping(value = "/canberesponsible/{shift_id}")
-    public List<Employee> getEmployeesThatCanBeResponsible(@PathVariable int shift_id){
+    public List<Employee> getEmployeesThatCanBeResponsible(@PathVariable int shift_id) {
 
 
         Shift shift = shiftRepo.findOne(shift_id);
 
         List<Employee> all = employeeRepo.findAll();
 
-        return  all
+        return all
                 .stream()
                 .filter(employee -> EmployeeType.of(employee.getCategory()) == EmployeeType.NURSE)
                 .filter(employee -> shiftController.getUsersForShift(shift_id).contains(employee))
@@ -241,7 +253,7 @@ public class EmployeeController {
     @Transactional
     @PostMapping
     @RequestMapping(value = "/{email1}/changeCategory", method = RequestMethod.POST)
-    public void changeCategory(@PathVariable(value = "email1") String email1, @PathVariable(value = "EmployeeCategory") EmployeeCategory category){
+    public void changeCategory(@PathVariable(value = "email1") String email1, @PathVariable(value = "EmployeeCategory") EmployeeCategory category) {
 
         Employee employee = employeeRepo.findByEmail(email1);
 
@@ -253,7 +265,7 @@ public class EmployeeController {
 
     @GetMapping
     @RequestMapping(value = "/{email}/getCategory", method = RequestMethod.GET)
-    public EmployeeCategory getCategory(@PathVariable(value = "email") String email){
+    public EmployeeCategory getCategory(@PathVariable(value = "email") String email) {
 
         Employee employee = employeeRepo.findByEmail(email);
 
@@ -262,29 +274,23 @@ public class EmployeeController {
     }
 
     @GetMapping(value = "/{user_id}/getHoursThisWeek")
-    public int getHoursThisWeekForUser(@PathVariable(value = "user_id") int user_id){
+    public int getHoursThisWeekForUser(@PathVariable(value = "user_id") int user_id) {
 
-        Employee user = employeeRepo.findOne(user_id);
-
-        Collection<Shift> shiftsForUser = getShiftsForUser(user_id);
+        Employee employee = employeeRepo.getOne(user_id);
+        LocalDate now = LocalDate.now();
+        WeekDateInterval interval = WeekDateInterval.of(now);
+        Collection<Shift> shiftsForUser = shiftRepo.findBetweenDates(employee, interval.getStart().atStartOfDay(), interval.getEnd().plusDays(1).atStartOfDay());
 
         return shiftsForUser
                 .stream()
-                .filter(shift -> {
-
-                    WeekDateInterval of = WeekDateInterval.of(shift.getStartDateTime().toLocalDate());
-
-
-                    return TimeUtil.isInDateInterval(of.getStart(), of.getEnd(),shift.getStartDateTime().toLocalDate());
-                })
-                .mapToInt(shift -> (int)ChronoUnit.HOURS.between(shift.getStartDateTime(), shift.getEndDateTime()))
+                .mapToInt(shift -> (int) ChronoUnit.HOURS.between(shift.getStartDateTime(), shift.getEndDateTime()))
                 .sum();
 
     }
 
     @Transactional
     @PutMapping(value = "/{user_id}/changePositionPercentage", consumes = "text/plain")
-    public void changePositionPercentage(@PathVariable(value = "user_id") int user_id, @RequestBody int positionPercentage){
+    public void changePositionPercentage(@PathVariable(value = "user_id") int user_id, @RequestBody int positionPercentage) {
 
         Employee employee = employeeRepo.findOne(user_id);
 
