@@ -171,6 +171,7 @@ public class SpringWebConfig
         registry.addViewController("/teststuff").setViewName("index");
         registry.addViewController("/tilgjengelighet").setViewName("availability");
         registry.addViewController("/changeShift").setViewName("changeShift");
+        registry.addViewController("/absence").setViewName("absence");
         registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
     }
 

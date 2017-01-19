@@ -1,7 +1,10 @@
 #myTable1 {
-    margin-top: -10px;
+    margin-top: 25px;
+    margin-left: 5px;
 }
 
-.tablesorter {
-    margin-top: 10px;
+
+#button {
+    margin-top: 25px;
+    margin-left: 40px;
 }
