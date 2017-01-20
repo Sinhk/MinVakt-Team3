@@ -89,7 +89,6 @@ function getStatusForShiftAndUser(shift_id, user_id) {
         contentType: "Application/JSON",
 
         success: function (data) {
-            console.log("Success: /users/scheduled.GET: "+data);
 
             status = data;
         },

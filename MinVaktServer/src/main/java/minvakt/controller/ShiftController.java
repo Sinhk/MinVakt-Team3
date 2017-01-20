@@ -4,6 +4,11 @@ import minvakt.datamodel.tables.pojos.ChangeRequest;
 import minvakt.datamodel.tables.pojos.Employee;
 import minvakt.datamodel.tables.pojos.Shift;
 import minvakt.datamodel.tables.pojos.ShiftAssignment;
+import minvakt.datamodel.enums.ShiftStatus;
+import minvakt.datamodel.tables.pojos.ChangeRequest;
+import minvakt.datamodel.tables.pojos.Employee;
+import minvakt.datamodel.tables.pojos.Shift;
+import minvakt.datamodel.tables.pojos.ShiftAssignment;
 import minvakt.repos.ChangeRequestRepository;
 import minvakt.repos.EmployeeRepository;
 import minvakt.repos.ShiftAssignmentRepository;
@@ -116,8 +121,8 @@ public class ShiftController {
         List<Shift> changeRequestShifts = shiftAssignmentRepo
                 .findAll()
                 .stream()
-                .filter(s -> s.getStatus().equals(ShiftStatus.REQUESTCHANGE))
-                .map(ShiftAssignment::getShift)
+                //.filter(s -> s.getStatus().equals(ShiftStatus.REQUESTCHANGE)) // FIXME: 20-Jan-17
+                .map(shiftAssignment -> shiftRepo.findOne(shiftAssignment.getShiftId()))
                 .collect(Collectors.toList());
         //
 
@@ -137,9 +142,9 @@ public class ShiftController {
 
         List<Shift> shiftsThatRequiresEmployees = new ArrayList<>();
 
-        shiftsWithEmployeeCountMap.forEach((shift, integer) -> {
+        /*shiftsWithEmployeeCountMap.forEach((shift, integer) -> {
             if (integer < shift.getRequiredEmployees()) shiftsThatRequiresEmployees.add(shift);
-        });
+        });*/
         //
         // Shifts that belong to the user
         List<Shift> allShiftsForUser = shiftAssignmentRepo
@@ -306,6 +311,17 @@ public class ShiftController {
                 .findAvailable();
                 //.filter(shiftAssignment -> shiftAssignment.getStatus() == ShiftStatus.AVAILABLE)
                 //.map(ShiftAssignment::getShift)
+    }
+
+    // TODO: 19-Jan-17 fix
+    @GetMapping(value = "/available")
+    public List<Shift> getAvailableShifts(){
+        return new ArrayList<>( shiftAssignmentRepo
+                .findAll()
+                .stream()
+                //.filter(shiftAssignment -> shiftAssignment.getStatus() == ShiftStatus.AVAILABLE)
+                .map(ShiftAssignment::getShift)
+                .collect(Collectors.toList()));
     }
 
     // TODO: 19-Jan-17 Fix

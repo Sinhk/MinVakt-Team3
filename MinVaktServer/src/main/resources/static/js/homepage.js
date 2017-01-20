@@ -3,7 +3,6 @@ $(document).ready(function(){
     $('.modal-trigger').modal();
      // $(".side-nav").css("margin-top", $(".nav-wrapper").height());
 
-
     getAllScheduledShiftsForUser(function (shifts1) {
         getShiftsWithRequestChange(function (ch) {
             var shifts = shifts1.concat(ch);
@@ -13,33 +12,33 @@ $(document).ready(function(){
         });
     });
 
-    $('#calendar').fullCalendar({
+            $('#calendar').fullCalendar({
 
-        displayEventTime: false,
-        locale: "no",
-        timezone: "UTC",
-        selectable: true,
-        header: {
-            left:'prev, today',
-            center:'title',
-            right:'next'
-        },
-        firstDay: 1,
-        weekNumbers: true,
-        dayNamesShort: ['Søndag', 'Mandag', 'Tirsdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lørdag'],
-        monthNames: ['Januar', 'Februar', 'Mars', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Desember'],
-        weekNumberTitle: 'Uke',
-        buttonText: {
-            today:    'I dag',
-            month:    'Måned',
-            week:     'Uke',
-            day:      'Dag',
-            list:     'Liste'
-        },
-        select: function (start, end, jsEvent, view) {
+                displayEventTime: false,
+                locale: "no",
+                timezone: "UTC",
+                selectable: true,
+                header: {
+                    left:'prev, today',
+                    center:'title',
+                    right:'next'
+                },
+                firstDay: 1,
+                weekNumbers: true,
+                dayNamesShort: ['Søndag', 'Mandag', 'Tirsdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lørdag'],
+                monthNames: ['Januar', 'Februar', 'Mars', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Desember'],
+                weekNumberTitle: 'Uke',
+                buttonText: {
+                    today:    'I dag',
+                    month:    'Måned',
+                    week:     'Uke',
+                    day:      'Dag',
+                    list:     'Liste'
+                },
+                select: function (start, end, jsEvent, view) {
 
-            console.log("Start date: " + moment(start).format()+
-            "\nEnd date: " + moment(end).format());
+                    console.log("Start date: " + moment(start).format()+
+                        "\nEnd date: " + moment(end).format());
 
         },
         /*dayClick:function (data ) {
@@ -64,26 +63,33 @@ $(document).ready(function(){
         },
 
 
-        eventClick: function(event,jsEvent) {
-            var eventId = event.id;
+                eventClick: function(event,jsEvent) {
+                    var eventId = event.id;
 
-            getEventViaID(eventId, function (data) {
+                    getShiftWithId(eventId, function (data) {
 
-                console.log(data);
+                        console.log(data);
 
+                    });
+
+                },
+                /*eventMouseout: function(calEvent,jsEvent) {
+                 $("#tooltip").remove();
+                 }
+
+                 var eventId = event.id;
+
+                 var eventDB = getEventViaID(eventId);
+
+                 console.log(eventDB);
+
+                 }*/
             });
+        })
 
-        },
-    /*eventMouseout: function(calEvent,jsEvent) {
-            $("#tooltip").remove();
-        }
 
-            var eventId = event.id;
-
-            var eventDB = getEventViaID(eventId);
-
-            console.log(eventDB);
-
-        }*/
     });
+
+
+
 });

@@ -166,6 +166,8 @@ function userListToResourceList(userlist) {
 
 function getShiftsByEmployee(userlist) {
 
+function getShiftsByEmployee(userlist) { // TODO sync
+
     var shiftList = [];
 
     for(var i = 0; i<userlist.length; i++){

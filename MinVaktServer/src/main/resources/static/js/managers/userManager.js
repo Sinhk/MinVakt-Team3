@@ -91,7 +91,7 @@ function getShiftsInRangeForUser(user_id, startDate, endDate, callback) {
     $.getJSON("/users/"+user_id+"/shifts/inrange?startDate="+startDate+"&endDate="+endDate, callback(data));
 
 }
-function getScheduledShiftsForCurrentUser() {
+function getScheduledShiftsForCurrentUser(callback) {
 
     $.getJSON("/users/scheduled", callback(data));
 

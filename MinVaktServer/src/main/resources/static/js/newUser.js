@@ -29,7 +29,7 @@ $(document).ready(function () {
 });
 
     function addCategories() {
-        $.getJSON("/category",function (data) {
+        $.getJSON("/category", function (data) {
             var $box = $("#category-box");
             $box.empty();
             $box.append($("<option disabled selected></option>").attr("value",'').text('Velg stilling'))
@@ -62,13 +62,10 @@ $(document).ready(function () {
         });
     }
 
-function getCategory(email) {
+function getCategory(email, callback) {
 
-
-    var c;
 
     $.ajax({
-        async: false,
         url: "/users/"+email+"/getCategory",
         type: "GET",
         contentType: "Application/JSON",
@@ -77,13 +74,11 @@ function getCategory(email) {
 
         }),
         success: function (data) {
-            console.log("Success");
+            callback(data);
 
-            c = data;
         },
         error: function (data) {
             console.log("Error: "+data);
         }
     });
-    return c;
 }

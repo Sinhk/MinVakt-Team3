@@ -1,9 +1,8 @@
 $(document).ready(function(){
 
+    getAllUsers(function (employees) {
 
-    getAllEmployees(function (employees) {
-        var div = document.getElementById('employeeBody');
-        for (var i = 0; i < employees.length; i++) {
+        for(var i = 0; i<employees.length; i++){
 
             var employee = employees[i];
 
