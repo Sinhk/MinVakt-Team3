@@ -39,14 +39,15 @@ function getUsersForShift(shift_id, callback) {
 function addUserToShift(user_id, shift_id, callback) {
 
     $.ajax({
-        url: "/shifts/"+shift_id,
+        url: "/shifts/"+shift_id+"/users",
         type: "POST",
+        contentType: "text/plain",
         data: user_id,
         success: function (data) {
             callback(data);
         },
         error: function (data) {
-            console.log("Error: " + data);
+            console.log("Error: " + JSON.stringify(data));
         }
     });
 
@@ -257,7 +258,6 @@ function eventIsAvailable(event_id) {
 
     $.ajax({
         url: "shifts/"+event_id+"/isAvailable",
-        type: "GET",
         type: "GET",
 
         success: function (data) {

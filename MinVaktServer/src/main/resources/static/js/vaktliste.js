@@ -2,9 +2,10 @@ $(document).ready(function() { // document ready
 
     getAllEmployees(function (employees) {
 
-        var events = getShiftsByEmployee(employees);
-        var resourceList = userListToResourceList(employees);
+        /*var events = getShiftsByEmployee(employees);
+        var resourceList = userListToResourceList(employees);*/
 
+/*
         $('#calendar').fullCalendar({
             schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
             displayEventTime: false,
@@ -48,6 +49,7 @@ $(document).ready(function() { // document ready
         var ev = toFullCalendarEventsWithResource(shifts);
         $('#calendar').fullCalendar('addEventSource', ev);
     });
+*/
 
 
     $('#calendar').fullCalendar({

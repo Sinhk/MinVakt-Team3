@@ -3,7 +3,7 @@
  */
 function getAllUsers(callback) {
 
-    $.getJSON("/users",callback(data));
+    $.getJSON("/users", callback(data));
 
 }
 function addUser(jsonUser, category_id, callback) {
@@ -92,8 +92,11 @@ function getShiftsInRangeForUser(user_id, startDate, endDate, callback) {
 
 }
 function getScheduledShiftsForCurrentUser(callback) {
-
-    $.getJSON("/users/scheduled", callback(data));
+    $.getJSON("/users/scheduled", function (data) {
+        console.log(data);
+        callback(data);
+    });
+    //$.getJSON("/users/scheduled", callback(data));
 
 }
 

@@ -17,7 +17,27 @@
 <script src="https://code.jquery.com/jquery-3.1.0.js" integrity="sha256-slogkvB1K3VOkzAI8QITxV3VzpOnkeNVsKvtkYLMjfk="
         crossorigin="anonymous"></script>
 <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
-<script src="js/tests/addUserToShift.js" language="JavaScript"></script>
+<script src="js/managers/shiftManager.js"></script>
+<script language="JavaScript">
+
+    $("#addShiftToUser").click(function () {
+
+        var int1 = $("#shift_id").val();
+        var int2 = $("#user_id").val();
+
+
+        console.log(int1+" - "+int2);
+
+        addUserToShift(int2, int1,function (data) {
+
+            console.log(JSON.stringify(data))
+
+
+        })
+
+    });
+
+</script>
 </body>
 
 </html>

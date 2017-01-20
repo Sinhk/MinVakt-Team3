@@ -50,7 +50,7 @@ function toFullCalendarEventWithResource(event, resource) {
         resourceId: resource.id,
         backgroundColor: responsible != undefined && responsible.employeeId == resource.id ? "#9B0300" : available ? "#3E9B85" : "#3F7F9B",
         isResponsible: responsible,
-        available: available
+        available: available,
 
         backgroundColor: event.responsible != undefined && event.responsible.employeeId == resource.id ? "#9B0300" : "#3E9B85"
     };
@@ -166,34 +166,34 @@ function userListToResourceList(userlist) {
 
 function getShiftsByEmployee(userlist) {
 
-function getShiftsByEmployee(userlist) { // TODO sync
+    function getShiftsByEmployee(userlist) { // TODO sync
 
-    var shiftList = [];
+        var shiftList = [];
 
-    for(var i = 0; i<userlist.length; i++){
+        for (var i = 0; i < userlist.length; i++) {
 
-        $.ajax({
-            async: false,
-            url: "/users/"+userlist[i].employeeId+"/shifts",
-            type: "GET",
-            contentType: "Application/JSON",
+            $.ajax({
+                async: false,
+                url: "/users/" + userlist[i].employeeId + "/shifts",
+                type: "GET",
+                contentType: "Application/JSON",
 
-            success: function (data) {
-                //console.log("Success: /users.GET");
-                shiftList.push(data);
+                success: function (data) {
+                    //console.log("Success: /users.GET");
+                    shiftList.push(data);
 
-            },
-            error: function (data) {
-                console.log("Error: "+data);
-            }
+                },
+                error: function (data) {
+                    console.log("Error: " + data);
+                }
 
-        })
+            })
+        }
+        return shiftList;
+
     }
-    return shiftList;
 
 }
-
-
 
 function userListToResourceList(userlist) {
 
@@ -201,7 +201,7 @@ function userListToResourceList(userlist) {
 
     for(var i = 0; i<userlist.length; i++){
 
-        resourceList.push({id:userlist[i].employeeId,title:userlist[i].firstName +" "+ userlist[i].lastName})
+        resourceList.push({id:userlist[i].employeeId,title:userlist[i].firstName +" "+ userlist[i].lastName});
 
     }
     return resourceList;

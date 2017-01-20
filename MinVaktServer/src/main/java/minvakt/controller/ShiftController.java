@@ -4,11 +4,6 @@ import minvakt.datamodel.tables.pojos.ChangeRequest;
 import minvakt.datamodel.tables.pojos.Employee;
 import minvakt.datamodel.tables.pojos.Shift;
 import minvakt.datamodel.tables.pojos.ShiftAssignment;
-import minvakt.datamodel.enums.ShiftStatus;
-import minvakt.datamodel.tables.pojos.ChangeRequest;
-import minvakt.datamodel.tables.pojos.Employee;
-import minvakt.datamodel.tables.pojos.Shift;
-import minvakt.datamodel.tables.pojos.ShiftAssignment;
 import minvakt.repos.ChangeRequestRepository;
 import minvakt.repos.EmployeeRepository;
 import minvakt.repos.ShiftAssignmentRepository;
@@ -16,9 +11,6 @@ import minvakt.repos.ShiftRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -147,7 +139,7 @@ public class ShiftController {
         });*/
         //
         // Shifts that belong to the user
-        List<Shift> allShiftsForUser = shiftAssignmentRepo
+        /*List<Shift> allShiftsForUser = shiftAssignmentRepo
                 .findAll()
                 .stream()
                 .filter(shiftAssignment -> shiftAssignment.getEmployee() != user)
@@ -163,7 +155,7 @@ public class ShiftController {
 
         // looks through all the all the shifts, all their assignments, filters the ones not
         // connected to the user
-       *//* List<List<ShiftAssignment>> collect1 = shiftList
+       List<List<ShiftAssignment>> collect1 = shiftList
                 .stream()
                 .map(Shift::getShiftAssignments)
                 .filter(shiftAssignments -> shiftAssignments
@@ -176,7 +168,6 @@ public class ShiftController {
                 .forEach(shiftAssignments -> shiftAssignments
                         .forEach(shiftAssignment -> changeRequestShifts.add(shiftAssignment.getShift())));
 
-*//*
 
        // removes duplicates, just a bit of a hack
         HashSet<Shift> shifts = new HashSet<>(changeRequestShifts);
@@ -313,7 +304,7 @@ public class ShiftController {
                 //.map(ShiftAssignment::getShift)
     }
 
-    // TODO: 19-Jan-17 fix
+    /*// TODO: 19-Jan-17 fix
     @GetMapping(value = "/available")
     public List<Shift> getAvailableShifts(){
         return new ArrayList<>( shiftAssignmentRepo
@@ -322,7 +313,18 @@ public class ShiftController {
                 //.filter(shiftAssignment -> shiftAssignment.getStatus() == ShiftStatus.AVAILABLE)
                 .map(ShiftAssignment::getShift)
                 .collect(Collectors.toList()));
-    }
+    }*/
+
+    /*// TODO: 19-Jan-17 fix
+    @GetMapping(value = "/available")
+    public List<Shift> getAvailableShifts(){
+        return new ArrayList<>( shiftAssignmentRepo
+                .findAll()
+                .stream()
+                //.filter(shiftAssignment -> shiftAssignment.getStatus() == ShiftStatus.AVAILABLE)
+                .map(ShiftAssignment::getShift)
+                .collect(Collectors.toList()));
+    }*/
 
     // TODO: 19-Jan-17 Fix
     @GetMapping(value = "/{shift_id}/available")
