@@ -4,7 +4,7 @@
 
 function getAllShifts(callback) {
 
-    $.getJSON("/shifts",callback(data))
+    $.getJSON("/shifts", function(data){callback(data)})
 
 }
 
@@ -32,7 +32,7 @@ function addShift(dateinfo, callback) {
 
 function getUsersForShift(shift_id, callback) {
 
-    $.getJSON("shifts/"+shift_id+"/users", callback(data));
+    $.getJSON("shifts/"+shift_id+"/users", function(data){callback(data)});
 
 }
 
@@ -55,7 +55,7 @@ function addUserToShift(user_id, shift_id, callback) {
 
 function getShiftAssignmentsForShift(shift_id, callback) {
 
-    $.getJSON("shifts/"+shift_id+"/details", callback(data));
+    $.getJSON("shifts/"+shift_id+"/details", function(data){callback(data)});
 
 }
 
@@ -75,7 +75,7 @@ function shiftIsAvailable(shift_id, callback) {
 
 function getAvailableShifts(callback) {
 
-    $.getJSON("/shifts/available",callback(data));
+    $.getJSON("/shifts/available", function(data){callback(data)});
 
 }
 
@@ -328,6 +328,16 @@ function getAvaiableShifts() {
 
 function getAllSuitableShifts(callback) {
 
-    $.getJSON("/shifts/suitable", callback(data));
+    $.getJSON("/shifts/suitable", function(data){callback(data)});
+
+}
+
+function getAllShiftForCurrentUser(callback) {
+
+
+    $.getJSON("/shifts/currentUser", function (data) {
+        callback(data);
+    })
+
 
 }

@@ -3,9 +3,37 @@
  */
 
 $(document).ready(function(){
+
+    var body = document.getElementById("table1");
+
+    var shifts1;
+
+    getAllShiftForCurrentUser(function (shifts) {
+
+        shifts1 = shifts;
+
+        for(var i = 0; i<shifts.length; i++) {
+
+            var shift = shifts[i];
+
+            body.innerHTML += "<tr>" +
+                "<td><input type='checkbox' id='indeterminate-checkbox' />" +
+                "<label for='indeterminate-checkbox'></label></td>" +
+                "<td>"+shift.fromTime.split('T')[0]+"</td>" +
+                "<td>"+shift.fromTime.split('T')[1].substr(0,5)+"</td>" +
+                "</tr>";
+        }
+
+    });
+
     $("#button").click(function () {
 
-        swal({   title: "Årsak til fravær",
+        var selected = table1.getElementsByClassName('selected');
+
+        console.log(selected);
+
+
+        swal({  title: "Årsak til fravær",
                 text: "Skriv inn årsaken til ditt fravær under",
                 type: "input",   showCancelButton: true,
                 closeOnConfirm: false,

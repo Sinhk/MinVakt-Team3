@@ -61,7 +61,6 @@ public class EmployeeController {
     }
 
     // TODO: 19-Jan-17 endre
-    @PostMapping
     @GetMapping("/resource")
     public List<CalenderResource> getAsResource() {
         List<CalenderResource> resources = new ArrayList<>();

@@ -3,7 +3,7 @@
  */
 function getAllUsers(callback) {
 
-    $.getJSON("/users", callback(data));
+    $.getJSON("/users", function(data){callback(data)});
 
 }
 function addUser(jsonUser, category_id, callback) {
@@ -82,7 +82,7 @@ function changePassword(user_id, oldPass, newPass, callback) {
 }
 function getShiftsForUser(user_id, callback) {
 
-    $.getJSON("/users/"+user_id+"/shifts", callback(data))
+    $.getJSON("/users/"+user_id+"/shifts", function(data){callback(data)})
 
 }
 
@@ -102,12 +102,12 @@ function getScheduledShiftsForCurrentUser(callback) {
 
 function getUsersThatCanBeResponsibleForShift(shift_id, callback) {
 
-    $.getJSON("users/"+shift_id+"/responsible", callback(data));
+    $.getJSON("users/"+shift_id+"/responsible", function(data){callback(data)});
 
 }
 
 function getHoursThisWeekForUser(user_id, callback) {
 
-    $.getJSON("users/"+user_id+"/getHoursThisWeek", callback(data));
+    $.getJSON("users/"+user_id+"/getHoursThisWeek", function(data){callback(data)});
 
 }

@@ -11,6 +11,8 @@ import minvakt.repos.ShiftRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -73,6 +75,15 @@ public class ShiftController {
         return employeeRepo.findByShiftAssignments_Shift(shift);
     }
 
+    @GetMapping("/currentUser")
+    public List<Shift> getAllShiftsForCurrentUser(){
+
+        UserDetails details = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Employee user = employeeRepo.findByEmail(details.getUsername());
+
+        return shiftRepo.findByShiftAssignments_Employee_id(user.getEmployeeId());
+    }
+
     @PostMapping(value="/{shift_id}/users")
     @Transactional
     public void addUserToShift(@PathVariable int shift_id , @RequestBody String user_id) { // shift id and user id
@@ -106,7 +117,7 @@ public class ShiftController {
     public Iterable<Shift> getSuitableShiftsForUser(){
 
         // Details for logged in user
-        UserDetails details = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        UserDetails details = (UserDetails) SeityContextHolder.getContext().getAuthentication().getPrincipal();
 
         Employee user = employeeRepo.findByEmail(details.getUsername());
 

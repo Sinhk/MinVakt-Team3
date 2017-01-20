@@ -38,7 +38,6 @@ function toFullCalendarEventWithResource(event, resource) {
     var dateEnd = new Date(end);
     var available = eventIsAvailable(event.shiftId);
     var responsible = getResponsibleUserForShift(event.shiftId);
-    var available = eventIsAvailable(event.shiftId);
     console.log();
     //console.log("responsible: "+JSON.stringify(responsible));
     //console.log("Avdeling: "+event.comments);
