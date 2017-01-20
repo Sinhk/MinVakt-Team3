@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script src="https://code.jquery.com/jquery-3.1.0.js" integrity="sha256-slogkvB1K3VOkzAI8QITxV3VzpOnkeNVsKvtkYLMjfk=" crossorigin="anonymous"></script>
+    <script src="js/tests/shiftManager.js"></script>
+    <link href="css/temp.css" rel="stylesheet">
+
+
+</head>
+<body>
+
+<div>
+
+    <input id="userIdInput">user_id<br>
+    <input id="shiftIdInput">shift_id<br>
+
+    <button id="sendButton">get</button>
+
+</div>
+
+<script language="JavaScript">
+
+    $("#sendButton").click(function() {
+
+        var user_id = $("#userIdInput").val();
+        var shift_id = $("#shiftIdInput").val();
+
+        var status = userIsResponsibleForShift(shift_id, user_id);
+
+        console.log(status);
+
+
+    });
+
+</script>
+
+</body>
+</html>

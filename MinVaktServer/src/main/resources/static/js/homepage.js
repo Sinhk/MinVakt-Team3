@@ -1,17 +1,89 @@
 $(document).ready(function(){
+
+    $('.modal-trigger').modal();
+     // $(".side-nav").css("margin-top", $(".nav-wrapper").height());
+
+
+    getAllScheduledShiftsForUser(function (shifts1) {
+        getShiftsWithRequestChange(function (ch) {
+            var shifts = shifts1.concat(ch);
+            var availableShifts = getAvaiableShifts();
+            var ev = shifts.map(toFullCalendarEvent);
+            $('#calendar').fullCalendar('addEventSource',ev);
+        });
+    });
+
     $('#calendar').fullCalendar({
+
+        displayEventTime: false,
+        locale: "no",
+        timezone: "UTC",
+        selectable: true,
         header: {
-            left:'prev',
+            left:'prev, today',
             center:'title',
             right:'next'
         },
-        columnFormat: 'dd',
-        eventLimit: 2,
-        eventClick: function(calEvent, jsEvent, view) {
-            $(this).html('<img src="'+calEvent.image+'" />');
+        firstDay: 1,
+        weekNumbers: true,
+        dayNamesShort: ['Søndag', 'Mandag', 'Tirsdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lørdag'],
+        monthNames: ['Januar', 'Februar', 'Mars', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Desember'],
+        weekNumberTitle: 'Uke',
+        buttonText: {
+            today:    'I dag',
+            month:    'Måned',
+            week:     'Uke',
+            day:      'Dag',
+            list:     'Liste'
+        },
+        select: function (start, end, jsEvent, view) {
+
+            console.log("Start date: " + moment(start).format()+
+            "\nEnd date: " + moment(end).format());
+
+        },
+        /*dayClick:function (data ) {
+            console.log("You clicked: "+data);
+        },*/
+
+        eventMouseover: function(calEvent, jsEvent) {
+            var tooltip = '<div class="tooltipevent" style="width:150px;height:70px;background:#e3f2fd;border-style:solid;border-color:#212121;border-width:1px;position:absolute;z-index:10001;">' + ' ' + ' Tidspunkt: ' + calEvent.title + '<br> Avdeling: ' +calEvent.avdeling+ '<br>  Ansvar: '+calEvent.isResponsible+'</div>';
+            var $tool = $(tooltip).appendTo('body');
+            $(this).mouseover(function(e) {
+                $(this).css('z-index', 10000);
+                $tool.fadeIn('500');
+                $tool.fadeTo('10', 1.9);
+            }).mousemove(function(e) {
+                $tool.css('top', e.pageY + 10);
+                $tool.css('left', e.pageX + 20);
+            });
+        },
+        eventMouseout: function(calEvent, jsEvent) {
+            $(this).css('z-index', 8);
+            $('.tooltipevent').remove();
+        },
+
+
+        eventClick: function(event,jsEvent) {
+            var eventId = event.id;
+
+            getEventViaID(eventId, function (data) {
+
+                console.log(data);
+
+            });
+
+        },
+    /*eventMouseout: function(calEvent,jsEvent) {
+            $("#tooltip").remove();
         }
+
+            var eventId = event.id;
+
+            var eventDB = getEventViaID(eventId);
+
+            console.log(eventDB);
+
+        }*/
     });
-    $('#calendar').fullCalendar('renderEvent', { title: 'Test Event 1', start: '2016-11-05', end: '2016-11-09', image: 'https://s-media-cache-ak0.pinimg.com/236x/38/cb/d0/38cbd0f6b73df4414c6831806b65a070.jpg' }, true);
-    $('#calendar').fullCalendar('renderEvent', { title: 'Test Event 2', start: '2016-11-07', end: '2016-11-12', image: 'https://s-media-cache-ak0.pinimg.com/236x/38/cb/d0/38cbd0f6b73df4414c6831806b65a070.jpg' }, true);
-    $('#calendar').fullCalendar('renderEvent', { title: 'Test Event 3', start: '2016-11-09', image: 'https://s-media-cache-ak0.pinimg.com/236x/38/cb/d0/38cbd0f6b73df4414c6831806b65a070.jpg' }, true);
 });

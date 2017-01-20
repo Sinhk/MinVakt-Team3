@@ -1,5 +1,6 @@
 package minvakt.config;
 
+import minvakt.managers.AUserDetailsManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,6 +11,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
+import org.springframework.security.web.csrf.CsrfFilter;
+import org.springframework.web.filter.CharacterEncodingFilter;
 
 import javax.sql.DataSource;
 
@@ -23,7 +26,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     // TODO: 15.01.2017 Set query to match database
     public JdbcUserDetailsManager userDetailsManager() {
-        JdbcUserDetailsManager manager = new JdbcUserDetailsManager();
+        JdbcUserDetailsManager manager = new AUserDetailsManager();
         manager.setDataSource(dataSource);
         manager.setUsersByUsernameQuery(
                 "select email,passwd,enabled from employee where email=?");
@@ -59,22 +62,29 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }*/
 
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-                .antMatchers("/css/**", "/js/**", "/images/**").permitAll()
-                .antMatchers("/admin/**").hasRole("ADMIN")
-                .anyRequest().authenticated()
-                .and()
-                .formLogin()
-                .loginPage("/login")
-                .permitAll()
-                .usernameParameter("email")
-                .passwordParameter("password")
-                .and()
-                .logout()
-                .permitAll()
-                .logoutUrl("/do_logout")
-                .logoutSuccessUrl("/login?logout")
-                .and().csrf().disable();
+        CharacterEncodingFilter filter = new CharacterEncodingFilter();
+        filter.setEncoding("UTF-8");
+        filter.setForceEncoding(true);
+
+        http
+            .addFilterBefore(filter,CsrfFilter.class)
+            .authorizeRequests()
+            .antMatchers("/css/**", "/js/**", "/images/**").permitAll()
+            .antMatchers("/admin/**").hasRole("ADMIN")
+            .anyRequest().authenticated()
+            .and()
+            .formLogin()
+            .loginPage("/login")
+            .permitAll()
+            .usernameParameter("email")
+            .passwordParameter("password")
+            .and()
+            .logout()
+            .permitAll()
+            .logoutUrl("/do_logout")
+            .logoutSuccessUrl("/login?logout")
+            .and()
+            .csrf().disable();
     }
 
     @Bean

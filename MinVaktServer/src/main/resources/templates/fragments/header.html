@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    ...
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Ansatte</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+
+</head>
+<body>
+<header th:fragment="header">
+    <div class="navbar-fixed">
+        <nav>
+            <div class="nav-wrapper blue lighten-2 z-depth-3">
+                <a th:href="@{/}" class="brand-logo"><i class="material-icons">home</i>MinVakt</a>
+
+                <!--<a href="#" class="large material-icons">home</a>-->
+                <a href="#" data-activates="slide-out" class="button-collapse right"><i class="material-icons">menu</i></a>
+                <ul class="right hide-on-med-and-down">
+                    <li><a th:href="@{/changeShift}">Vaktbytte</a></li>
+                    <li><a th:href="@{/absence}">Fravær</a></li>
+                    <li><a th:href="@{/vaktliste}">Vaktliste</a></li>
+                    <li><a th:href="@{/tilgjengelighet}">Tilgjengelighet</a></li>
+                    <li><a th:href="@{/vakter}">Ledige vakter</a></li>
+                    <li><a th:href="@{/ansatte}">Ansatte</a></li>
+                    <a><i class="small material-icons">help_outline</i></a>
+
+                </ul>
+                <!--<ul class="side-nav" id="sideNav">
+                    <li><a th:href="@{/vaktliste}">Vaktliste</a></li>
+                    <li><a th:href="@{/tilgjengelighet}">Tilgjengelighet</a></li>
+                    <li><a th:href="@{/vakter}">Ledige vakter</a></li>
+                    <li><a th:href="@{/ansatte}">Ansatte</a></li>
+                    <a><i class="small material-icons">help_outline</i></a>
+                </ul>-->
+            </div>
+        </nav>
+    </div>
+
+    <ul id="slide-out" class="side-nav fixed grey lighten-2 z-depth-3 hide">
+        <div>
+            <form>
+                <div class="center-align">
+                    <div class="section"></div>
+                    <i class="large material-icons">face</i>
+                </div>
+                <div class="firstname row center">
+                    <span sec:authentication="principal.username"></span>
+                    <!--<span sec:authentication="principal.lastName"></span>-->
+                </div>
+
+                <!-- Modal Trigger -->
+                <a class="modal-trigger waves-effect blue lighten-2 btn" href="#modal1">Rediger</a>
+
+                <a class="waves-effect blue lighten-2 btn">Endre passord</a>
+                <hr/>
+            </form>
+            <div class="row">
+                <div class="col s12 center">
+                    <form name="logout_form" id="logout_form" method="post" th:action="@{/do_logout}">
+                        <button type="submit" class="btn waves-effect waves-light blue lighten-2">Logg ut</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </ul>
+    <!-- Modal Structure -->
+    <div id="modal1" class="modal modal-fixed-footer">
+        <div class="modal-content">
+            <h4>Rediger informasjon</h4>
+            <div class="firstname row">
+                <div class="input-field col s11">
+                    <input id="first_name" type="text" class="validate">
+                    <label for="first_name">Fornavn</label>
+                </div>
+            </div>
+
+            <div class="lastname row">
+                <div class="input-field col s11">
+                    <input id="last_name" type="text" class="validate">
+                    <label for="last_name">Etternavn</label>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="input-field col s11">
+                    <input id="email" type="text" class="validate">
+                    <label for="email">E-postadresse</label>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="input-field col s11">
+                    <input id="phone" type="text" class="validate">
+                    <label for="phone">Telefon</label>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col s12">
+                    <a class="waves-effect blue lighten-2 btn">Endre passord</a>
+                </div>
+            </div>
+
+            <hr/>
+            <div class="center-align red-text">
+                <h6>Viktig info.:</h6>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a href="#!"
+               class="modal-action modal-close waves-effect waves-green btn-flat ">Oppdater</a>
+        </div>
+    </div>
+
+    <!--<a href="#" data-activates="slide-out" class="button-collapse show-on-large"><i class="material-icons">menu</i></a>-->
+</header>
+<div th:fragment="sidebar">
+    <aside>
+        <!-- Sidebar-->
+
+    </aside>
+</div>
+
+<script language="JavaScript">
+    $(document).ready(function() {
+        $('.modal-trigger').leanModal();
+    });
+</script>
+
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js' integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.28.4/js/jquery.tablesorter.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
+<script src="/js/userManager.js"></script>
+<script src="/js/util.js"></script>
+<script src="/js/newUser.js"></script>
+<script th:src="@{js/common.js}"></script>
+
+</body>
+</html>

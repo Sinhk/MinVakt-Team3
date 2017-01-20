@@ -1,12 +1,12 @@
 package minvakt.repos;
 
-import minvakt.datamodel.EmployeeCategory;
-import org.springframework.data.repository.CrudRepository;
+import minvakt.datamodel.tables.pojos.EmployeeCategory;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
  * MinVakt-Team3
  * 15.01.2017
  */
-public interface CategoryRepository extends CrudRepository<EmployeeCategory, Integer> {
+public interface CategoryRepository extends JpaRepository<EmployeeCategory, Integer> {
 
 }

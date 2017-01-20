@@ -1,8 +1,9 @@
 package minvakt.util;
 
-import minvakt.datamodel.Shift;
+import minvakt.datamodel.tables.pojos.Shift;
 
-import java.time.*;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -34,21 +35,6 @@ public class TimeUtil {
     public static boolean isInDateInterval(LocalDate fromInc, LocalDate toEx, LocalDate toCheck){
 
         return toCheck.isAfter(fromInc) || toCheck.isEqual(fromInc) && toCheck.isBefore(toEx);
-
-    }
-
-    /**
-     * Takes badly formated time and makes it into localtime by magic
-     */
-    public static LocalDate parseBadlyFormattedTime(String date){
-
-
-        //Format YYYY-MM-DD
-
-        date = date.replaceAll(" ","");
-
-        return LocalDate.parse(date);
-
 
     }
 

@@ -1,37 +1,89 @@
-/**
- * Created by OlavH on 16-Jan-17.
- */
+$(document).ready(function () {
+    addCategories();
 
-$("#addUser").click(function () {
+    $("#button").click(function () {
+        var first_name = $("#first_name1").val();
+        var last_name = $("#last_name1").val();
+        var email = $("#email1").val();
+        var phone = $("#phone1").val();
+        var positionPercentage = $("#positionPercentage").val();
+        var category = $("#category-box").val();
 
-    var firstname = $("#first_name");
-    var lastname= $("#lastname");
+        addUser(JSON.stringify({
+            "firstName": first_name,
+            "lastName": last_name,
+            "email": email,
+            "phone": phone,
+            "positionPercentage": positionPercentage
+        }), category, function (data) {
 
-    var email = $("#email").val();
-    var tlf = $("#phone").val();
-    var prcnt = $("#positionPercentage").val();
+            swal({
+                title: "Fullført!",
+                text: "Bruker er opprettet.",
+                type: "success",
+                confirmButtonText: "Ok"
+            });
+
+        })
+    });
+});
+
+    function addCategories() {
+        $.getJSON("/category",function (data) {
+            var $box = $("#category-box");
+            $box.empty();
+            $box.append($("<option disabled selected></option>").attr("value",'').text('Velg stilling'))
+            $.each(data,function (key, value) {
+                $box.append($("<option></option>").val(value.categoryId).text(value.categoryName));
+            })
+        })
+    }
+
+    function changeCategory(email1, category) {
 
     $.ajax({
-        url: "/users",
+        async: false,
+        url: "/users/"+email1+"/changeCategory",
         type: "POST",
-        contentType: "application/JSON",
+        contentType: "Application/JSON",
         data: JSON.stringify({
-            "firstName":firstname,
-            "lastName":lastname,
-            "email": email,
-            "phone":tlf,
-            "positionPercentage":prcnt
-        }),
-        /*beforeSend: function(x) {
-         x.setRequestHeader('Authorization', 'Bearer ' );
-         },*/
+            "email1":email1,
+            "categry":category
 
+            }),
+            success: function (data) {
+                console.log("Success");
+                return true;
+            },
+            error: function (data) {
+                console.log("Error: " + data);
+                return false;
+            }
+        });
+    }
+
+function getCategory(email) {
+
+
+    var c;
+
+    $.ajax({
+        async: false,
+        url: "/users/"+email+"/getCategory",
+        type: "GET",
+        contentType: "Application/JSON",
+        data: JSON.stringify({
+            "email":email,
+
+        }),
         success: function (data) {
-            console.log("You added a user - "+JSON.stringify(data));
+            console.log("Success");
+
+            c = data;
         },
         error: function (data) {
-            alert("Failed! " + JSON.stringify(data));
+            console.log("Error: "+data);
         }
     });
-
-});
+    return c;
+}

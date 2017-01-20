@@ -1,0 +1,50 @@
+#search-bar {
+     border-bottom: 1.5px solid #64b5f6;
+ }
+
+.search-container{
+    width: 300px;
+    margin-left: 68%;
+    margin-right:15%;
+    margin-top: 3%;
+}
+
+#icon{
+    position: relative;
+    float: right;
+    width: 75px;
+    height: 75px;
+    top: -50px;
+    right: -45px;
+}
+
+.table {
+    margin-top: -23%;
+}
+
+
+#myTable {
+    width: 96.5%;
+    margin-left:2%;
+    margin-right:17%;
+    vertical-align: top;
+    margin-top: 8%;
+}
+
+#myButton {
+    position: relative;
+    float: left;
+    width: 40px;
+    height: 40px;
+    top: 20px;
+    margin-left: 60%;
+}
+
+#home {
+    position: relative;
+    float: left;
+    top: 5px;
+
+}
+
+

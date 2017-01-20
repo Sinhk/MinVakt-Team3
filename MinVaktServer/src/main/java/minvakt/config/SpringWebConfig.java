@@ -7,12 +7,14 @@ import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
+import org.springframework.core.env.Environment;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -27,6 +29,7 @@ import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.UrlTemplateResolver;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Configuration
@@ -35,11 +38,15 @@ import java.util.List;
 public class SpringWebConfig
         extends WebMvcConfigurerAdapter implements ApplicationContextAware {
 
+    private final Environment environment;
+
     private ApplicationContext applicationContext;
 
 
-    public SpringWebConfig() {
+    @Autowired
+    public SpringWebConfig(Environment environment) {
         super();
+        this.environment = environment;
     }
 
 
@@ -79,7 +86,7 @@ public class SpringWebConfig
         registry.addResourceHandler("/images/**").addResourceLocations("/static/images/");
         registry.addResourceHandler("/css/**").addResourceLocations("/static/css/");
         registry.addResourceHandler("/js/**").addResourceLocations("/static/js/");
-        registry.addResourceHandler("/test/**").addResourceLocations("/static/test/");
+        registry.addResourceHandler("/**").addResourceLocations("/static/");
     }
 
     /*
@@ -127,6 +134,7 @@ public class SpringWebConfig
         templateResolver.setApplicationContext(this.applicationContext);
         templateResolver.setPrefix("/templates/");
         templateResolver.setSuffix(".html");
+        templateResolver.setCharacterEncoding("UTF-8");
         // HTML is the default value, added here for the sake of clarity.
         templateResolver.setTemplateMode(TemplateMode.HTML);
         // Template cache is true by default. Set to false if you want
@@ -158,14 +166,25 @@ public class SpringWebConfig
         ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
         viewResolver.setTemplateEngine(templateEngine());
         viewResolver.setCharacterEncoding("UTF-8");
+        if (Arrays.stream(environment.getActiveProfiles()).anyMatch(
+                env -> (env.equalsIgnoreCase("dev")))) {
+            viewResolver.setCache(false);
+        }
+
+        System.out.println(viewResolver.isCache());
         return viewResolver;
     }
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/login").setViewName("login");
-        registry.addViewController("/employee").setViewName("employee");
-        registry.addViewController("/timeSheet").setViewName("timeSheet");
+        registry.addViewController("/ansatte").setViewName("employee");
+        registry.addViewController("/ansatte/ny").setViewName("newUser");
+        registry.addViewController("/vaktliste").setViewName("vaktliste");
+        registry.addViewController("/teststuff").setViewName("index");
+        registry.addViewController("/tilgjengelighet").setViewName("availability");
+        registry.addViewController("/changeShift").setViewName("changeShift");
+        registry.addViewController("/absence").setViewName("absence");
         registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
     }
 

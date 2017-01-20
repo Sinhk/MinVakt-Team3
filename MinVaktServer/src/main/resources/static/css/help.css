@@ -1,0 +1,46 @@
+#shiftchange{
+    margin-left: 35%;
+}
+
+#text_shift{
+    margin-left: 10%;
+}
+
+aside
+{
+    position: fixed;
+    margin-left: 77%;
+    padding:0;
+    width: 300px;
+    top: 4em;
+    left: 0;
+}
+
+.first_row{
+    margin-left: 2%;
+    margin-top:2%;
+}
+
+.second_row{
+    margin-left: 2%;
+}
+/*
+.shift_card{
+    width: 23%;
+    height: 30%;
+}
+
+.card2{
+    width: 23%;
+    height: 30%;
+}
+
+.card3{
+    width: 23%;
+    height: 30%;
+}
+
+.card4{
+    width: 23%;
+    height: 30%;
+}*/

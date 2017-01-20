@@ -21,12 +21,9 @@ public class HomeController {
     String index(Model model) {
         model.addAttribute("now", LocalDateTime.now());
         UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        log.info("UserDetail type: {}", principal.getClass());
 
-        //SecurityContextHolder.getContext().getAuthentication().get
-
-        log.info("Username: {} Password: {} Auths: {}", principal.getUsername(), principal.getPassword(), principal.getAuthorities());
+        log.info("Username: {}, Auths: {}", principal.getUsername(), principal.getAuthorities());
         log.info("Creds: {}", SecurityContextHolder.getContext().getAuthentication().getCredentials());
-        return "index";
+        return "homepage";
     }
 }

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Fravær</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css">
+
+    <link rel="stylesheet" type="text/css" th:href="@{/css/common.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/absence.css}">
+</head>
+<body>
+<div id="nav" th:replace="fragments/header :: header"></div>
+
+<div class="row">
+    <div class="col s2">
+        <table id="myTable1" class="tablesorter highlight ">
+            <thead>
+            <tr>
+                <th><b>Dine vakter</b></th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr>
+                <td>19.01.17</td>
+                <td>14-22</td>
+            </tr>
+            <tr>
+                <td>21.01.17</td>
+                <td>06-14</td>
+            </tr>
+            <tr>
+                <td>22.01.17</td>
+                <td>14-22</td>
+            </tr>
+            <tr>
+                <td>23.01.17</td>
+                <td>22-06</td>
+            </tr>
+            </tbody>
+
+
+
+        </table>
+    </div>
+
+    <div class="left-align col s5">
+        <button id="button" class="btn waves-effect waves-light blue lighten-2" type="submit" name="action">Legg til kommentar</button>
+    </div>
+
+
+
+
+</div>
+
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js' integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.28.4/js/jquery.tablesorter.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
+
+<script th:src="@{js/common.js}"></script>
+<script th:src="@{js/absence.js}"></script>
+
+</body>
+</html>

@@ -5,38 +5,43 @@
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
+    <title>Logg inn</title>
+
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
+
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css">
     <link rel="stylesheet" type="text/css" href="css/login.css">
 </head>
 
 <body>
-<div class="valign-wrapper">
+
+
+<div class="valign-wrapper" style="width:100%;height:100%;position: absolute;">
+    <div class="valign" style="width:100%;">
+        <div class="container">
     <div class="row">
-        <div class="col l20">
+        <div class="col s12 m6 offset-m3">
             <div class="card grey lighten-4">
                 <div class="card blue lighten-2">
                     <div class="card-content white-text">
                         <h4>Trondheim kommune</h4>
                     </div>
                 </div>
+                <div class="card-content">
 
-
+                <div th:if="${param.error}" class="red-text valign-center center-align">
+                    <i class="material-icons">error</i>
+                    <span>Feil e-postadresse eller passord</span>
+                </div>
+                <div th:if="${param.logout}" class="green-text center-align">
+                    Du ble logget ut
+                </div>
                 <form name="f" th:action="@{/login}" method="post">
-                    <fieldset>
-                        <!--<input type="hidden"
-                               th:name="${_csrf.parameterName}"
-                               th:value="${_csrf.token}" />-->
-                        <div th:if="${param.error}" class="alert alert-error">
-                            Invalid username and password.
-                        </div>
-                        <div th:if="${param.logout}" class="alert alert-success">
-                            You have been logged out.
-                        </div>
                         <div class="row">
                             <div class="input-field col s12">
                                 <input id="emailInput" type="email" name="email" class="validate">
-                                <label for="emailInput">E-post</label>
+                                <label for="emailInput" data-error="Ikke en e-postadresse">E-post</label>
                             </div>
                         </div>
                         <div class="row">
@@ -45,20 +50,41 @@
                                 <label for="passwordInput">Passord</label>
                             </div>
                         </div>
-                        <div class="form-actions center-align card-action">
+
+                        <div class="form-actions center-align">
                             <button type="submit" class="btn waves-effect waves-light blue lighten-2">Logg inn <i
                                     class="material-icons right">send</i></button>
                         </div>
-                    </fieldset>
+
                 </form>
+                    <br>
+                    <label style='float: right;'>
+                        <a class='grey-text' href="#modal1"><h8>Glemt passord?</h8></a>
+                        <div id="modal1" class="modal">
+                            <div class="modal-content">
+                                <h5>Glemt passord?</h5>
+                                <p>Skriv inn din e-post-adresse og vi sender deg ditt passord.</p>
+                                <input placeholder="Din e-postadresse" id="email_input" name="email" type="text" class="validate">
+                                <label for="email_input"></label>
+                                <a id="newpw" class="waves-effect waves-light btn">Send</a>
+                            </div>
+                        </div>
+                    </label>
+                </div>
             </div>
         </div>
     </div>
 </div>
+    </div>
+</div>
 
-<script src="https://code.jquery.com/jquery-3.1.0.js" integrity="sha256-slogkvB1K3VOkzAI8QITxV3VzpOnkeNVsKvtkYLMjfk="
-        crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.1.0.js" integrity="sha256-slogkvB1K3VOkzAI8QITxV3VzpOnkeNVsKvtkYLMjfk=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+
+
+<script src="/js/login.js"></script>
 
 </body>
 </html>
