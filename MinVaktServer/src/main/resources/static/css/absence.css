@@ -5,6 +5,28 @@
 
 
 #button {
-    margin-top: 25px;
+    margin-top: 80px;
     margin-left: 40px;
+}
+
+.selected {
+    background-color: #64b5f6;
+    color: white;
+}
+
+#table1 {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#table1 td:hover {
+    background: #eee;
+}
+
+#table1 td {
+    border: 1px solid #eee;
+}
+
+#table1 {
+    background: white;
 }

@@ -22,14 +22,29 @@ $(document).ready(function(){
 
     });
 
-    $("#table tr").click(function(){
-        $(this).addClass('selected').siblings().removeClass('selected');
-        var value=$(this).find('td:first').html();
-        alert(value);
+    function highlight(e) {
+        if (selected[0]) selected[0].className = '';
+        e.target.parentNode.className = 'selected';
+    }
+
+    var table1 = document.getElementById('table1'),
+        selected = table1.getElementsByClassName('selected');
+    table1.onclick = highlight;
+
+
+
+
+    $("#table1 tr").click(function (event) {
+        if (event.target.type !== 'checkbox') {
+            $(':checkbox', this).trigger('click');
+        }
     });
 
-    $('.ok').on('click', function(e){
-        alert($("#table tr.selected td:first").html());
+    $("input[type='checkbox']").change(function (e) {
+        if ($(this).is(":checked")) {
+            $(this).closest('tr').addClass("highlight_row");
+        } else {
+            $(this).closest('tr').removeClass("highlight_row");
+        }
     });
-
 });
