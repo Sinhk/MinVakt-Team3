@@ -22,6 +22,8 @@ server:
 spring:
   profiles:
     active: dev
+#  datasource:
+#    url: jdbc:h2:~/test
 logging:
   level:
     org:
@@ -43,4 +45,4 @@ logging:
       hibernate: WARN
       springframework: WARN
       apache: WARN
-    minvakt: WARN
+    minvakt: INFO

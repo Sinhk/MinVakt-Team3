@@ -1,6 +1,6 @@
 package minvakt.repos;
 
-import minvakt.datamodel.EmployeeCategory;
+import minvakt.datamodel.tables.pojos.EmployeeCategory;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**

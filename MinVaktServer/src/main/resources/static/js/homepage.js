@@ -67,9 +67,12 @@ $(document).ready(function(){
         eventClick: function(event,jsEvent) {
             var eventId = event.id;
 
-            var eventDB = getEventViaID(eventId);
+            getEventViaID(eventId, function (data) {
 
-            console.log(eventDB);
+                console.log(data);
+
+            });
+
         },
     /*eventMouseout: function(calEvent,jsEvent) {
             $("#tooltip").remove();

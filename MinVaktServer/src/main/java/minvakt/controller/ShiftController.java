@@ -1,12 +1,9 @@
 package minvakt.controller;
 
-import minvakt.controller.data.DateWrapper;
-import minvakt.controller.data.TwoIntData;
-import minvakt.datamodel.ChangeRequest;
-import minvakt.datamodel.Employee;
-import minvakt.datamodel.Shift;
-import minvakt.datamodel.ShiftAssignment;
-import minvakt.datamodel.enums.ShiftStatus;
+import minvakt.datamodel.tables.pojos.ChangeRequest;
+import minvakt.datamodel.tables.pojos.Employee;
+import minvakt.datamodel.tables.pojos.Shift;
+import minvakt.datamodel.tables.pojos.ShiftAssignment;
 import minvakt.repos.ChangeRequestRepository;
 import minvakt.repos.EmployeeRepository;
 import minvakt.repos.ShiftAssignmentRepository;
@@ -20,10 +17,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import javax.ws.rs.core.Response;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -53,65 +48,59 @@ public class ShiftController {
 
     @GetMapping
     public Iterable<Shift> getShifts(){
+
         return shiftRepo.findAll();
     }
 
-    @GetMapping("/between")
-    public Iterable<Shift> getShiftsBetween() {
-        return shiftRepo.findByStartDateTimeBetween(LocalDateTime.now(), LocalDateTime.now().plusWeeks(5));
-    }
-
-    @RequestMapping("/{shift_id}")
-    @GetMapping
-    @Transactional
-    public Shift getShift(@PathVariable int shift_id){
-        Shift shift = shiftRepo.findOne(shift_id);
-        shift.getShiftAssignments().size();
-        return shift;
-
-    }
-
+    // TODO: 19.01.2017 do this automagically
     @PostMapping
-    public void addShift(@RequestBody DateWrapper shift){
-
-        shiftRepo.save(shift.toShift());
-
-    }
-
-
-    @RequestMapping(value = "/{shift_id}", method = RequestMethod.PUT)
-    @Transactional
-    public Response addUserToShift(@RequestBody TwoIntData intData) { // shift id and user id
-
-        Shift shift = shiftRepo.findOne(intData.getInt1());
-
-        Employee employee = employeeRepo.findOne(intData.getInt2());
-
-        ShiftAssignment shiftAssignment = new ShiftAssignment(shift, employee);
-
-        shift.getShiftAssignments().add(shiftAssignment);
-
+    public void addShift(@RequestBody Shift shift) {
         shiftRepo.save(shift);
-        return Response.ok().build();
     }
 
-    @RequestMapping(value = "/{shift_id}/users", method = RequestMethod.GET)
+    @GetMapping(value = "/{shift_id}")
+    public Shift getShift(@PathVariable int shift_id){
+
+        return shiftRepo.findOne(shift_id);
+
+    }
+
+
+
+    @GetMapping(value = "/{shift_id}/users")
     @Transactional
     public List<Employee> getUsersForShift(@PathVariable int shift_id) {
 
         Shift shift = shiftRepo.findOne(shift_id);
 
         return employeeRepo.findByShiftAssignments_Shift(shift);
-        /*List<User> users = new ArrayList<>();
-        for (ShiftAssignment assignment : shift.getShiftAssignments()) {
-            users.add(assignment.getUser());
-        }
-        return users;*/
+    }
+
+    @PostMapping(value="/{shift_id}/users")
+    @Transactional
+    public void addUserToShift(@PathVariable int shift_id , @RequestBody int user_id) { // shift id and user id
+
+        ShiftAssignment assignment = new ShiftAssignment();
+        assignment.setEmployeeId(user_id);
+        assignment.setShiftId(shift_id);
+        shiftAssignmentRepo.save(assignment);
+    }
+
+    @GetMapping(value = "/{shift_id}/details") // TODO: 19-Jan-17 query
+    public List<ShiftAssignment> getShiftAssignmentsForShift(@PathVariable int shift_id){
+
+        return shiftAssignmentRepo
+                .findAll()
+                .stream()
+                .filter(shiftAssignment -> shiftAssignment.getShiftId() == shift_id)
+                .collect(Collectors.toList());
+
     }
 
     /**
      * Lord forgive me
      */
+    /*// TODO: 19-Jan-17 fix/refractor
     @GetMapping
     @RequestMapping(value = "/suitable", method = RequestMethod.GET)
     public Iterable<Shift> getSuitableShiftsForUser(){
@@ -169,7 +158,7 @@ public class ShiftController {
 
         // looks through all the all the shifts, all their assignments, filters the ones not
         // connected to the user
-       /* List<List<ShiftAssignment>> collect1 = shiftList
+       *//* List<List<ShiftAssignment>> collect1 = shiftList
                 .stream()
                 .map(Shift::getShiftAssignments)
                 .filter(shiftAssignments -> shiftAssignments
@@ -182,22 +171,22 @@ public class ShiftController {
                 .forEach(shiftAssignments -> shiftAssignments
                         .forEach(shiftAssignment -> changeRequestShifts.add(shiftAssignment.getShift())));
 
-*/
+*//*
 
        // removes duplicates, just a bit of a hack
         HashSet<Shift> shifts = new HashSet<>(changeRequestShifts);
         ArrayList<Shift> shifts1 = new ArrayList<>(shifts);
         return shifts1.stream().filter(shift -> shift.getStartDateTime().isAfter(LocalDateTime.now())).collect(Collectors.toList());
 
-    }
+    }*/
 
     int getEmployeesOnShift(int shiftId){
 
-        return (int) shiftAssignmentRepo.findAll().stream().filter(shiftAssignment -> shiftAssignment.getShift().getShiftId() == shiftId).count();
+        return (int) shiftAssignmentRepo.findAll().stream().filter(shiftAssignment -> shiftAssignment.getShiftId() == shiftId).count();
 
     }
 
-    @GetMapping
+    /*@GetMapping
     @RequestMapping(value = "/{shift_id}/responsible")
     public ResponseEntity<?> getResponsibleEmployeeForShift(@PathVariable int shift_id) {
 
@@ -209,20 +198,20 @@ public class ShiftController {
         }
     }
 
-    @GetMapping(value = "/{shift_id}/{employee_id}/status")
-    public ShiftStatus getShiftStatusForUserAndShift(@PathVariable int shift_id, @PathVariable int employee_id) {
+    /*@GetMapping(value = "/{shift_id}/users/{user_id}/status")
+    public ShiftStatus getShiftStatusForUserAndShift(@PathVariable int shift_id, @PathVariable int user_id) {
 
         return shiftAssignmentRepo
                 .findAll()
                 .stream()
                 .filter(shiftAssignment -> shiftAssignment.getShift().getShiftId() == shift_id)
-                .filter(shiftAssignment -> shiftAssignment.getEmployee().getEmployeeId() == employee_id)
+                .filter(shiftAssignment -> shiftAssignment.getEmployee().getEmployeeId() == user_id)
                 .map(ShiftAssignment::getStatus)
                 .findFirst()
                 .get();
-    }
+    }*/
 
-    @PutMapping(value = "/{shift_id}/{employee_id}/status")
+    /*@PutMapping(value = "/{shift_id}/users/{user_id}/status")
     @Transactional
     public void setShiftStatusForUserAndShift(@PathVariable int shift_id, @PathVariable int employee_id, @RequestBody String status) {
 
@@ -238,9 +227,9 @@ public class ShiftController {
 
         //shiftAssignmentRepo.save(shiftAssign);
 
-    }
+    }*/
 
-    @GetMapping(value = "/{shift_id}/{employee_id}/responsible")
+    /*@GetMapping(value = "/{shift_id}/users/{employee_id}/responsible")
     public boolean userIsResponsibleForShift(@PathVariable int shift_id, @PathVariable int employee_id) {
 
         return shiftAssignmentRepo
@@ -251,68 +240,50 @@ public class ShiftController {
                 .map(ShiftAssignment::isResponsible)
                 .findFirst()
                 .get();
-    }
+    }*/
 
-    @PutMapping(value = "/{shift_id}/{employee_id}/responsible")
+    @PutMapping(value = "/{shift_id}/responsible")
     @Transactional
-    public void setUserIsResponsibleForShift(@PathVariable int shift_id, @PathVariable int employee_id, @RequestBody boolean resp) {
-
-         ShiftAssignment shiftAssign = shiftAssignmentRepo
-                .findAll()
-                .stream()
-                .filter(shiftAssignment -> shiftAssignment.getShift().getShiftId() == shift_id)
-                .filter(shiftAssignment -> shiftAssignment.getEmployee().getEmployeeId() == employee_id)
-                .findFirst()
-                .get();
-
-         shiftAssign.setResponsible(resp);
-
-         shiftAssignmentRepo.save(shiftAssign);
-    }
-
-    @Transactional
-    @PutMapping(value = "/{shift_id}/changeUser")
-    public void changeShiftFromUserToUser(@PathVariable int shift_id, @RequestBody TwoIntData userIds){
+    public void setUserIsResponsibleForShift(@PathVariable int shift_id, @RequestBody int employee_id) {
 
         Shift shift = shiftRepo.findOne(shift_id);
 
-        Employee fromUser = employeeRepo.findOne(userIds.getInt1());
-        Employee toUser = employeeRepo.findOne(userIds.getInt2());
+        shift.setResponsibleEmployeeId(employee_id);
 
-        //ShiftAssignment shiftAssignment = shiftAssignmentRepo.findOne(new ShiftAssignmentPK(shift.getShiftId(), fromUser.getEmployeeId()));
-
-        Optional<ShiftAssignment> first = shiftAssignmentRepo
-                .findAll()
-                .stream()
-                .filter(shiftAssignment -> shiftAssignment.getEmployee().getEmployeeId() == fromUser.getEmployeeId())
-                .filter(shiftAssignment ->  shiftAssignment.getShift().getShiftId() == shift_id)
-                .findFirst();
-
-        if (first.isPresent()){
-
-            fromUser.getShiftAssignments().remove(first.get());
-
-            toUser.getShiftAssignments().add(new ShiftAssignment(shift, toUser));
-
-            //first.get().setEmployee(toUser); // Kan ikke endre PK
-        }
+        shiftRepo.save(shift);
+    }
+    @GetMapping(value = "/{shift_id}/responsible")
+    @Transactional
+    public Employee getResponsibleUserForShift(@PathVariable int shift_id) {
+        return employeeRepo.findResponsibleForShift(shift_id);
     }
 
+    @Transactional
+    @PutMapping(value = "/{shift_id}/users/{user_id}")
+    public void changeShiftFromUserToUser(@PathVariable int shift_id, @PathVariable int user_id, @RequestBody int toUser_id){
+
+        Optional<ShiftAssignment> assignment = shiftAssignmentRepo.getByShiftIdAndEmployeeId(shift_id, user_id);
+        assignment.ifPresent(a -> {
+            a.setEmployeeId(toUser_id);
+            shiftAssignmentRepo.save(a);
+        });
+    }
+
+    // TODO: 19-Jan-17 Flytt til requestchangecontroller
     @Transactional
     @PostMapping(value = "/{shift_id}/users/{user_id}/requestchange/{user2_id}")
     void requestChangeForShift(@PathVariable int shift_id, @PathVariable int user_id, @PathVariable int user2_id){
 
-        Shift shift = shiftRepo.findOne(shift_id);
-        Employee fromUser = employeeRepo.findOne(user_id);
-        Employee toUser = employeeRepo.findOne(user2_id);
+        ChangeRequest request = new ChangeRequest();
+        request.setShiftId(shift_id);
+        request.setOldEmployeeId(user_id);
+        request.setNewEmployeeId(user2_id);
+        changeRequestRepository.save(request);
 
-        changeRequestRepository.save(new ChangeRequest(shift, fromUser, toUser));
-
-
+        // TODO: 19.01.2017 Send mail
     }
 
-
-    @GetMapping(value = "/byday")
+    /*@GetMapping(value = "/byday")
     public List<Shift> getShiftsByDay(@RequestBody String day){
 
         LocalDate date = LocalDate.parse(day);
@@ -326,24 +297,31 @@ public class ShiftController {
                 .filter(shift -> shift.getStartDateTime().toLocalDate().isEqual(date))
                 .collect(Collectors.toList());
 
+    }*/
+
+    // TODO: 19-Jan-17 fix
+    @GetMapping(value = "/available")
+    public List<Shift> getAvailableShifts(){
+        return shiftRepo
+                .findAvailable();
+                //.filter(shiftAssignment -> shiftAssignment.getStatus() == ShiftStatus.AVAILABLE)
+                //.map(ShiftAssignment::getShift)
     }
 
-
-    @GetMapping(value = "/{shift_id}/isAvailable")
+    // TODO: 19-Jan-17 Fix
+    @GetMapping(value = "/{shift_id}/available")
     public boolean shiftIsAvailable(@PathVariable int shift_id){
 
-        return shiftAssignmentRepo
-                .findAll()
+        return shiftAssignmentRepo.findByShiftId(shift_id)
                 .stream()
-                .filter(shiftAssignment -> shiftAssignment.getShift().getShiftId() == shift_id)
-                .filter(shiftAssignment -> shiftAssignment.getStatus() == ShiftStatus.AVAILABLE)
-                .map(ShiftAssignment::getShift)
+                //.filter(shiftAssignment -> shiftAssignment.getStatus() == ShiftStatus.AVAILABLE)
+                //.map(ShiftAssignment::getShift)
                 .collect(Collectors.toList())
-                .contains(shiftRepo.findOne(shift_id));
+                .contains(shiftAssignmentRepo.getOne(shift_id));
 
     }
-
-    @GetMapping(value = "/requestchange")
+    //// TODO: 19-Jan-17 flytt and repo thing
+    /*@GetMapping(value = "/requestchange")
     public List<Shift> getShiftsWithRequestChangeStatus(){
 
         return new ArrayList<ChangeRequest>((Collection<? extends ChangeRequest>) changeRequestRepository
@@ -351,17 +329,7 @@ public class ShiftController {
                 .stream()
                 .map(ChangeRequest::getShift)
                 .collect(Collectors.toList());
-    }
-
-    @GetMapping(value = "/available")
-    public List<Shift> getAvailableShifts(){
-        return new ArrayList<>( shiftAssignmentRepo
-                .findAll()
-                .stream()
-                .filter(shiftAssignment -> shiftAssignment.getStatus() == ShiftStatus.AVAILABLE)
-                .map(ShiftAssignment::getShift)
-                .collect(Collectors.toList()));
-    }
+    }*/
 
     /*@Transactional
     @PostMapping(value = "/requestchange")
