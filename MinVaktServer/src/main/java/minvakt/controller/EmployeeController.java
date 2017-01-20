@@ -3,6 +3,7 @@ package minvakt.controller;
 import minvakt.controller.data.CalenderResource;
 import minvakt.controller.data.TwoStringsData;
 import minvakt.datamodel.tables.pojos.Employee;
+import minvakt.datamodel.tables.pojos.EmployeeCategory;
 import minvakt.datamodel.tables.pojos.Shift;
 import minvakt.repos.*;
 import minvakt.util.RandomString;
@@ -271,15 +272,15 @@ public class EmployeeController {
 
     }*/
 
-    /*@GetMapping
-    @RequestMapping(value = "/{email}/getCategory", method = RequestMethod.GET)
+    @GetMapping
+    @RequestMapping(value = "/{email}/category", method = RequestMethod.GET)
     public EmployeeCategory getCategory(@PathVariable(value = "email") String email) {
 
         Employee employee = employeeRepo.findByEmail(email);
 
 
-        return employee.getCategory();
-    }*/
+        return catRepo.findOne(employee.getCategoryId());
+    }
 
     @GetMapping("/{user_id}/hours")
     public int getHoursThisWeekForUser(@PathVariable int user_id){

@@ -6,17 +6,28 @@ $(document).ready(function(){
 
             var employee = employees[i];
 
-            getHourThisWeek(employee, function (employee, hours) {
-                div.innerHTML +=
-                    "<tr>" +
-                    "<td>" + employee.firstName + "</td>" +
-                    "<td>" + employee.lastName + "</td>" +
-                    "<td>" + employee.category.categoryName + "</td>" +
-                    "<td>" + employee.positionPercentage + "%</td>" +
-                    "<td>" + employee.phone + "</td>" +
-                    "<td>" + hours + " time(r)</td>" +
-                    "<td>" + employee.email + "</td>" +
-                    "</tr>"
+            console.log(employee);
+
+            console.log(employee.email);
+
+            getHoursThisWeekForUser(employee.employeeId, function (hours) {
+
+                getCategory(employee.email, function (category) {
+
+                    var div = document.getElementById("employeeBody");
+
+                    div.innerHTML +=
+                        "<tr>" +
+                        "<td>" + employee.firstName + "</td>" +
+                        "<td>" + employee.lastName + "</td>" +
+                        "<td>" + category.categoryName+ "</td>" +
+                        "<td>" + employee.positionPercentage + "%</td>" +
+                        "<td>" + employee.phone + "</td>" +
+                        "<td>" + hours + " timer</td>" +
+                        "<td>" + employee.email + "</td>" +
+                        "</tr>"
+
+                })
             });
         }
     });

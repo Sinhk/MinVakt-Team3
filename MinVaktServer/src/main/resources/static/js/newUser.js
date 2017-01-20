@@ -64,21 +64,16 @@ $(document).ready(function () {
 
 function getCategory(email, callback) {
 
-
     $.ajax({
-        url: "/users/"+email+"/getCategory",
+        url: "/users/"+email+"/category",
         type: "GET",
-        contentType: "Application/JSON",
-        data: JSON.stringify({
-            "email":email,
 
-        }),
         success: function (data) {
             callback(data);
 
         },
         error: function (data) {
-            console.log("Error: "+data);
+            console.log("Error: "+JSON.stringify(data));
         }
     });
 }

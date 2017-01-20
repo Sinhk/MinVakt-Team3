@@ -108,6 +108,16 @@ function getUsersThatCanBeResponsibleForShift(shift_id, callback) {
 
 function getHoursThisWeekForUser(user_id, callback) {
 
-    $.getJSON("users/"+user_id+"/getHoursThisWeek", function(data){callback(data)});
+
+    $.ajax({
+        url: "users/"+user_id+"/hours",
+        type: "GET",
+        success: function (data) {
+            callback(data);
+        },
+        error: function (data) {
+            console.log("Error: " + JSON.stringify(data));
+        }
+    });
 
 }
