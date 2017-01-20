@@ -29,8 +29,8 @@ public class ShiftAssignment implements Serializable {
     private Integer id;
     private Integer shiftId;
     private Integer employeeId;
-    private Boolean absent;
-    private String  commentForAbsence;
+    private Boolean absent = false;
+    private String  commentForAbsence = "";
 
     public ShiftAssignment() {}
 

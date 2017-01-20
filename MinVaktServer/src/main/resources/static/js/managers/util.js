@@ -58,30 +58,36 @@ function toFullCalendarEventWithResource(event, resource) {
 
 function toFullCalendarEvent(event) {
 
-    var start = event.startDateTime;
-    var end = event.endDateTime;
-
-    var dateStart = new Date(start);
-    var dateEnd = new Date(end);
+    console.log(event);
+    if (event != undefined) {
 
 
-    var available = eventIsAvailable(event.shiftId);
-    var responsible = getResponsibleUserForShift(event.shiftId);
+        var start = event.fromTime;
+        var end = event.toTime;
+
+        var dateStart = new Date(start);
+        var dateEnd = new Date(end);
 
 
-    //console.log("Avdeling: "+event.comments);
+        var available = eventIsAvailable(event.shiftId);
+        var responsible = getResponsibleUserForShift(event.shiftId);
 
-    return {
-        id: event.shiftId,
-        title: start.split("T")[1].substr(0,3) + " -> " + end.split("T")[1].substr(0,3),
-        start: dateStart,
-        end: dateEnd,
-        status: event.status,
-        backgroundColor: available ? "#9B0300":"#3E9B85",
-        available: available,
-        avdeling: event.comments,
-        isResponsible: responsible != undefined ? responsible.firstName +" "+responsible.lastName : ""
-    };
+        console.log(start+" - "+end+" - "+dateStart+" - "+dateEnd+" - "+available+" - "+responsible)
+
+        //console.log("Avdeling: "+event.comments);
+
+        return {
+            id: event.shiftId,
+            title: start.split("T")[1].substr(0, 3) + " -> " + end.split("T")[1].substr(0, 3),
+            start: dateStart,
+            end: dateEnd,
+            status: event.status,
+            backgroundColor: available ? "#9B0300" : "#3E9B85",
+            available: available,
+            avdeling: event.comments,
+            isResponsible: responsible != undefined ? responsible.firstName + " " + responsible.lastName : ""
+        };
+    }
 }
 
 

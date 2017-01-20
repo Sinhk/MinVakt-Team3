@@ -61,7 +61,7 @@ public class ShiftAssignment extends TableImpl<ShiftAssignmentRecord> {
     /**
      * The column <code>g_scrum03.shift_assignment.absent</code>.
      */
-    public final TableField<ShiftAssignmentRecord, Boolean> ABSENT = createField("absent", org.jooq.impl.SQLDataType.BOOLEAN.nullable(false).defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.BOOLEAN)), this, "");
+    public final TableField<ShiftAssignmentRecord, Boolean> ABSENT = createField("absent", org.jooq.impl.SQLDataType.BOOLEAN.nullable(true).defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.BOOLEAN)), this, "");
 
     /**
      * The column <code>g_scrum03.shift_assignment.comment_for_absence</code>.

@@ -8,8 +8,8 @@
 <body>
 
 <div>
-    <p>user_id</p><input id="user_id" name="user_id">
-    <p>shift_id</p><input id="shift_id" name="shift_id">
+    <p>user_id</p><input id="user_id">
+    <p>shift_id</p><input id="shift_id">
 
     <button id="addShiftToUser">Add shift to user</button>
 </div>
@@ -25,10 +25,9 @@
         var int1 = $("#shift_id").val();
         var int2 = $("#user_id").val();
 
-
         console.log(int1+" - "+int2);
 
-        addUserToShift(int2, int1,function (data) {
+        addUserToShift(int2, int1, function (data) {
 
             console.log(JSON.stringify(data))
 

@@ -10,7 +10,7 @@ function getAllShifts(callback) {
 
 function getShiftWithId(id, callback) {
 
-    $.getJSON("/shifts/"+id, callback(data));
+    $.getJSON("/shifts/"+id, function(data){callback(data)});
 
 }
 
@@ -257,7 +257,7 @@ function eventIsAvailable(event_id) {
     var is;
 
     $.ajax({
-        url: "shifts/"+event_id+"/isAvailable",
+        url: "shifts/"+event_id+"/available",
         type: "GET",
 
         success: function (data) {
