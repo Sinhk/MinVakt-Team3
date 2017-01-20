@@ -22,6 +22,8 @@ server:
 spring:
   profiles:
     active: dev
+#  datasource:
+#    url: jdbc:h2:~/test
 logging:
   level:
     org:

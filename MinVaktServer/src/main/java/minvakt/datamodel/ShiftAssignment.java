@@ -1,7 +1,6 @@
 package minvakt.datamodel;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import minvakt.datamodel.enums.ShiftStatus;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -23,9 +22,9 @@ public class ShiftAssignment implements Serializable{
     @ManyToOne
     @JoinColumn(name = "employee_id", nullable = false)
     private Employee employee;
-    private boolean responsible;
-    @Column(nullable = false, name = "status_id")
-    private ShiftStatus status = ShiftStatus.SCHEDULED;
+
+    @Column(nullable = false)
+    private boolean absent;
 
     public ShiftAssignment() {
     }
@@ -33,7 +32,7 @@ public class ShiftAssignment implements Serializable{
     public ShiftAssignment(Shift shift, Employee employee) {
         this.shift = shift;
         this.employee = employee;
-        this.responsible = false;
+        absent = false;
     }
 
     public Employee getEmployee() {
@@ -42,14 +41,6 @@ public class ShiftAssignment implements Serializable{
 
     public void setEmployee(Employee employee) {
         this.employee = employee;
-    }
-
-    public boolean isResponsible() {
-        return responsible;
-    }
-
-    public void setResponsible(boolean responsible) {
-        this.responsible = responsible;
     }
 
     public Shift getShift() {
@@ -64,37 +55,17 @@ public class ShiftAssignment implements Serializable{
     @Override
     public String toString() {
         return "ShiftAssignment{" +
-                "responsible=" + responsible +
+                "absent=" + absent +
                 ", shift=" + shift +
                 ", employee=" + employee +
                 '}';
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        ShiftAssignment that = (ShiftAssignment) o;
-
-        if (responsible != that.responsible) return false;
-        if (!shift.equals(that.shift)) return false;
-        return employee.equals(that.employee);
+    public boolean isAbsent() {
+        return absent;
     }
 
-    @Override
-    public int hashCode() {
-        int result = shift.hashCode();
-        result = 31 * result + employee.hashCode();
-        result = 31 * result + (responsible ? 1 : 0);
-        return result;
-    }
-
-    public ShiftStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(ShiftStatus status) {
-        this.status = status;
+    public void setAbsent(boolean absent) {
+        this.absent = absent;
     }
 }
