@@ -4,11 +4,9 @@ $(document).ready(function(){
 
         for(var i = 0; i<employees.length; i++){
 
-            var employee = employees[i];
+            const employee = employees[i]; // Uten const faile alt
 
             console.log(employee);
-
-            console.log(employee.email);
 
             getHoursThisWeekForUser(employee.employeeId, function (hours) {
 
@@ -31,8 +29,6 @@ $(document).ready(function(){
             });
         }
     });
-
-
 
     $("#myTable").tablesorter();
     $("#myTable").tablesorter( {sortList: [[0,0], [1,0]]} );
