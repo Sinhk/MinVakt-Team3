@@ -1,10 +1,7 @@
 package minvakt.controller;
 
-import minvakt.datamodel.Shift;
-import minvakt.datamodel.Employee;
 import minvakt.controller.data.TwoIntData;
 
-import minvakt.datamodel.enums.PredeterminedIntervals;
 import minvakt.repos.EmployeeRepository;
 import minvakt.repos.ShiftRepository;
 import org.junit.Before;
@@ -26,6 +23,10 @@ import static org.mockito.Mockito.*;
 /**
  * Created by magnu on 11.01.2017.
  */
+
+import minvakt.datamodel.tables.pojos.Employee;
+import minvakt.datamodel.tables.pojos.Shift;
+
 @RunWith(MockitoJUnitRunner.class)
 public class ShiftControllerTest {
 
@@ -51,8 +52,8 @@ public class ShiftControllerTest {
         MockitoAnnotations.initMocks(this);
 
         // Setup of users for tests
-        employee1 = new Employee("Bob", "Bobsen", "bob@bob.bob", 12345678, 100);
-        employee2 = new Employee("Per", "Persson", "per@sverige.se", 11223344, 50);
+        employee1 = new Employee(1, 1, "Bob", "Bobsen", 12345678, "bob@bob.bob", (short) 100, "123", true, false);
+        employee2 = new Employee(2, 2, "Per", "Persson", 11223344, "per@sverige.se", (short) 50, "potet", true, false);
 
         // Assign employeeID to test-employees (needed for tests)
         employee1.setEmployeeId(1);
@@ -62,12 +63,8 @@ public class ShiftControllerTest {
         LocalDateTime date1 = LocalDateTime.of(2017, 1, 10, 10, 0, 0);
         LocalDateTime date2 = LocalDateTime.of(2017, 1, 10, 14, 0, 0);
 
-        shift1 = new Shift(date1, date2);
-        shift2 = new Shift(date1.toLocalDate(), PredeterminedIntervals.DAYTIME);
-
-        // Assign ID to shifts, needed for tests
-        shift1.setShiftId(1);
-        shift2.setShiftId(2);
+        shift1 = new Shift(1, 1, date1, date2);
+        shift2 = new Shift(2, 2, date1, date2);
 
         // TwoIntData objects for use with addUserToShift
         twoIntThing1 = new TwoIntData(); twoIntThing2 = new TwoIntData();
@@ -78,7 +75,7 @@ public class ShiftControllerTest {
         twoIntThing2.setInt2(1);
 
         // Add a shift to employee2 for tests
-        shiftController.addUserToShift(twoIntThing1);
+        shiftController.addUserToShift(1, 1);
 
         // Stubbing methods
         /*
@@ -151,10 +148,10 @@ public class ShiftControllerTest {
         when(empRepo.findOne(twoIntThing2.getInt2())).thenReturn(employee1);
 
         // Attempt to add user to shift
-        shiftController.addUserToShift(twoIntThing2);
+        shiftController.addUserToShift(1, 1);
 
         // Verify method use
-        verify(shiftController, atLeastOnce()).addUserToShift(twoIntThing2);
+        verify(shiftController, atLeastOnce()).addUserToShift(1, 1);
 
         // Compare response with expected response (can't directly compare Response)
         /*
