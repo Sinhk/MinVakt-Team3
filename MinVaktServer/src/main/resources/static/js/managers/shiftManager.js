@@ -2,34 +2,80 @@
  * Created by OlavH on 17-Jan-17.
  */
 
-function addShiftToUser(shiftId, userId) {
+function getAllShifts(callback) {
 
-
+    $.getJSON("/shifts",callback(data))
 
 }
 
-function getAllScheduledShiftsForUser() {
+function getShiftWithId(id, callback) {
 
-    var list ;
+    $.getJSON("/shifts/"+id, callback(data));
+
+}
+
+function addShift(dateinfo, callback) {
 
     $.ajax({
-        async: false,
-        url: "users/scheduled",
-        type: "GET",
-        contentType: "Application/JSON",
-
+        url: "/shifts",
+        type: "POST",
+        data: dateinfo,
         success: function (data) {
-            console.log("Success: /users/scheduled.GET "+data);
-
-            list = data;
-
+            callback(data);
         },
         error: function (data) {
-            console.log("Error: "+data);
+            console.log("Error: " + data);
         }
     });
 
-    return list;
+}
+
+function getUsersForShift(shift_id, callback) {
+
+    $.getJSON("shifts/"+shift_id+"/users", callback(data));
+
+}
+
+function addUserToShift(user_id, shift_id, callback) {
+
+    $.ajax({
+        url: "/shifts/"+shift_id,
+        type: "POST",
+        data: user_id,
+        success: function (data) {
+            callback(data);
+        },
+        error: function (data) {
+            console.log("Error: " + data);
+        }
+    });
+
+}
+
+function getShiftAssignmentsForShift(shift_id, callback) {
+
+    $.getJSON("shifts/"+shift_id+"/details", callback(data));
+
+}
+
+function shiftIsAvailable(shift_id, callback) {
+
+    $.ajax({
+        url: "/shifts/"+shift_id+"/available",
+        type: "GET",
+        success: function (data) {
+            callback(data);
+        },
+        error: function (data) {
+            console.log("Error: " + data);
+        }
+    });
+}
+
+function getAvailableShifts(callback) {
+
+    $.getJSON("/shifts/available",callback(data));
+
 }
 
 function getStatusForShiftAndUser(shift_id, user_id) {
@@ -286,5 +332,12 @@ function getAvaiableShifts() {
         }
     });
     return list;
+
+}
+
+
+function getAllSuitableShifts(callback) {
+
+    $.getJSON("/shifts/suitable", callback(data));
 
 }

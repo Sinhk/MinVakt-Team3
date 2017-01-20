@@ -1,6 +1,6 @@
 package minvakt.controller;
 
-import minvakt.controller.data.ChangePasswordInfo;
+import minvakt.controller.data.TwoStringsData;
 import minvakt.datamodel.tables.pojos.Employee;
 import minvakt.datamodel.tables.pojos.Shift;
 import minvakt.repos.*;
@@ -109,9 +109,10 @@ public class EmployeeController {
     }
 
     @PutMapping("/{user_id}/password")
-    public Response changePasswordForUser(@PathVariable int user_id, @RequestBody ChangePasswordInfo info){
-        String oldPass = info.getOldPassAttempt();
-        String newPass = info.getNewPassAttempt();
+    public Response changePasswordForUser(@PathVariable int user_id, @RequestBody TwoStringsData info){
+
+        String oldPass = info.getString1();
+        String newPass = info.getString2();
 
         try {
             userDetailsManager.changePassword(oldPass, newPass);
@@ -206,9 +207,9 @@ public class EmployeeController {
     }
 
 
-    // TODO: 19-Jan-17 EmployeeCategory
-    @GetMapping("/canberesponsible/")
-    public List<Employee> getEmployeesThatCanBeResponsible(@RequestParam int shift_id){
+    // TODO: 19-Jan-17 EmployeeCategory, todo filtre ordentlig
+    @GetMapping("/{shift_id}/responsible/")
+    public List<Employee> getEmployeesThatCanBeResponsible(@PathVariable int shift_id){
 
         return collect;
     }*/
