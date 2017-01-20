@@ -8,6 +8,12 @@ function getAllShifts(callback) {
 
 }
 
+function getShiftWithId(id, callback) {
+
+    $.getJSON("/shifts/"+id, callback(data));
+
+}
+
 function addShift(dateinfo, callback) {
 
     $.ajax({
@@ -326,5 +332,12 @@ function getAvaiableShifts() {
         }
     });
     return list;
+
+}
+
+
+function getAllSuitableShifts(callback) {
+
+    $.getJSON("/shifts/suitable", callback(data));
 
 }

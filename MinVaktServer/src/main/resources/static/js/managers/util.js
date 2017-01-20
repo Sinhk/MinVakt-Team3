@@ -30,26 +30,6 @@ function toFullCalendarEvent(event) {
 }*/
 
 
-function getAllSuitableShifts(callback) {
-
-    $.ajax({
-        url: "/shifts/suitable",
-        type: "GET",
-        contentType: "Application/JSON",
-
-        success: function (data) {
-
-            callback(data);
-
-        },
-        error: function (data) {
-            console.log("Error: "+data);
-        }
-    });
-
-
-}
-
 function toFullCalendarEventWithResource(event, resource) {
 
     var start = event.startDateTime;
@@ -59,7 +39,7 @@ function toFullCalendarEventWithResource(event, resource) {
     var dateEnd = new Date(end);
     var responsible = getResponsibleUserForShift(event.shiftId);
     var available = eventIsAvailable(event.shiftId);
-    console.log()
+    console.log();
     //console.log("responsible: "+JSON.stringify(responsible));
     //console.log("Avdeling: "+event.comments);
     return {
@@ -132,63 +112,7 @@ function listToFullCalendarEventList(events, resourceList) {
     return list;
 }
 
-function getEventViaID(id, callback) {
-
-    $.ajax({
-
-            url: "/shifts/"+id,
-            type: "GET",
-            contentType: "Application/JSON",
-
-            success: function (data) {
-            //console.log("Success: /shifts/id.GET"+data);
-
-            callback(data);
-        },
-        error: function (data) {
-            console.log("Error: "+data);
-        }
-
-    })
-
-}
-
-function getAllEmployees(callback) {
-
-    $.ajax({
-
-        url: "/users/",
-        type: "GET",
-        contentType: "Application/JSON",
-
-        success: function (data) {
-            //console.log("Success: /users.GET");
-
-            callback(data);
-        },
-        error: function (data) {
-            console.log("Error: "+data);
-        }
-
-    });
-}
-
-function userListToResourceList(userlist) {
-
-    var resourceList = [];
-
-    for(var i = 0; i<userlist.length; i++){
-
-        resourceList.push({id:userlist[i].employeeId,title:userlist[i].firstName +" "+ userlist[i].lastName})
-
-    }
-    return resourceList;
-
-}
-
-
 function getShiftsByEmployee(userlist) {
-
 
     var shiftList = [];
 
@@ -213,5 +137,20 @@ function getShiftsByEmployee(userlist) {
         })
     }
     return shiftList;
+
+}
+
+
+
+function userListToResourceList(userlist) {
+
+    var resourceList = [];
+
+    for(var i = 0; i<userlist.length; i++){
+
+        resourceList.push({id:userlist[i].employeeId,title:userlist[i].firstName +" "+ userlist[i].lastName})
+
+    }
+    return resourceList;
 
 }
