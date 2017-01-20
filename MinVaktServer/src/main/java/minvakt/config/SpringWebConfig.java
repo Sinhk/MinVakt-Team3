@@ -7,12 +7,14 @@ import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
+import org.springframework.core.env.Environment;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -27,6 +29,7 @@ import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.UrlTemplateResolver;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Configuration
@@ -35,11 +38,15 @@ import java.util.List;
 public class SpringWebConfig
         extends WebMvcConfigurerAdapter implements ApplicationContextAware {
 
+    private final Environment environment;
+
     private ApplicationContext applicationContext;
 
 
-    public SpringWebConfig() {
+    @Autowired
+    public SpringWebConfig(Environment environment) {
         super();
+        this.environment = environment;
     }
 
 
@@ -159,6 +166,12 @@ public class SpringWebConfig
         ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
         viewResolver.setTemplateEngine(templateEngine());
         viewResolver.setCharacterEncoding("UTF-8");
+        if (Arrays.stream(environment.getActiveProfiles()).anyMatch(
+                env -> (env.equalsIgnoreCase("dev")))) {
+            viewResolver.setCache(false);
+        }
+
+        System.out.println(viewResolver.isCache());
         return viewResolver;
     }
 
