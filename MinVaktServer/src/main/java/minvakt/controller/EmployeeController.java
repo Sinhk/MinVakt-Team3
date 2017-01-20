@@ -40,10 +40,17 @@ public class EmployeeController {
     private ShiftAssignmentRepository shiftAssignmentRepo;
     private ChangeRequestRepository changeRequestRepository;
     private CategoryRepository catRepo;
+  //  private SendMailTLS sendMail;
 
     private final UserDetailsManager userDetailsManager;
 
     private ShiftController shiftController = new ShiftController(shiftRepo, employeeRepo, shiftAssignmentRepo, changeRequestRepository);
+
+
+    private String createPassword() {
+        return new RandomString(8).nextString();
+
+    }
 
     @Autowired
     public EmployeeController(EmployeeRepository employeeRepo, ShiftRepository shiftRepo, UserDetailsManager userDetailsManager, ShiftAssignmentRepository shiftAssignmentRepo, ChangeRequestRepository changeRequestRepository, CategoryRepository catRepo) {
@@ -73,9 +80,12 @@ public class EmployeeController {
     public String addEmployee(@RequestBody Employee employee, @RequestBody int category_id) {
 
         employee.setCategoryId(category_id);
-        String password = new RandomString(8).nextString();
+        String password = createPassword();
         log.info("Generated password: {}", password);
         // TODO: 16-Jan-17 send email
+        /*
+        sendMail.sendPassword(employee.getEmail(),password);
+        */
 
         employeeRepo.saveAndFlush(employee);
         User user = new User(employee.getEmail(), password, new ArrayList<SimpleGrantedAuthority>() {{
@@ -291,5 +301,17 @@ public class EmployeeController {
                 .mapToInt(shift -> (int) ChronoUnit.HOURS.between(shift.getFromTime(), shift.getToTime()))
                 .sum();
 
+    }
+    @RequestMapping(value = "/{email}/getNewPassword", method = RequestMethod.PUT)
+    public void sendNewPassword(@PathVariable(value = "email") String email) {
+        String password = createPassword();
+        /// TODO: 20.01.2017 SendMail
+        /*
+        sendMail.sendPassword(email,password);
+         */
+        User user = new User(email, password, new ArrayList<SimpleGrantedAuthority>() {{
+            add(new SimpleGrantedAuthority("ROLE_USER"));
+        }});
+        userDetailsManager.updateUser(user);
     }
 }
