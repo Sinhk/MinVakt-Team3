@@ -4,7 +4,7 @@
 $(document).ready(function() {
     $('.modal').modal();
 
-    $('.btn').click(function() {
+    $('#newpw').click(function() {
         swal({
             title: "Passord sendt!",
             type: "success",

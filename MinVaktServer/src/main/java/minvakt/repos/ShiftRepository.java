@@ -1,10 +1,10 @@
 package minvakt.repos;
 
 import minvakt.datamodel.tables.pojos.Shift;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 //import minvakt.datamodel.enums.PredeterminedIntervals;
@@ -19,8 +19,8 @@ public interface ShiftRepository extends JpaRepository<Shift, Integer> {
     @Query("SELECT s FROM Shift s ")
     List<Shift> findAvailable();
 
-    @Query("select s from Shift s join ShiftAssignment a on s.shiftId = a.shift where a.employee = ?1 and (s.startDateTime between ?2 and ?3)")
-    List<Shift> findBetweenDates(Employee employee, LocalDateTime start, LocalDateTime end);
+    //@Query("select s from Shift s join ShiftAssignment a on s.shiftId = a.shift where a.employee = ?1 and (s.startDateTime between ?2 and ?3)")
+    //List<Shift> findBetweenDates(Employee employee, LocalDateTime start, LocalDateTime end);
     //boolean exsistsByShiftAssignmentStatusAndShiftId(ShiftStatus status,int shift_id);
 
     // TODO: 16-Jan-17

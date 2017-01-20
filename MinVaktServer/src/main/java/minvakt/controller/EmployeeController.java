@@ -1,7 +1,6 @@
 package minvakt.controller;
 
 import minvakt.controller.data.CalenderResource;
-import minvakt.controller.data.ChangePasswordInfo;
 import minvakt.controller.data.TwoStringsData;
 import minvakt.datamodel.tables.pojos.Employee;
 import minvakt.datamodel.tables.pojos.Shift;
