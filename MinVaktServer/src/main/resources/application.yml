@@ -45,4 +45,4 @@ logging:
       hibernate: WARN
       springframework: WARN
       apache: WARN
-    minvakt: WARN
+    minvakt: INFO

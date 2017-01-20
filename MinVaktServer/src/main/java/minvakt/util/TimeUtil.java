@@ -1,8 +1,9 @@
 package minvakt.util;
 
-import minvakt.datamodel.Shift;
+import minvakt.datamodel.tables.pojos.Shift;
 
-import java.time.*;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.List;
 
 /**

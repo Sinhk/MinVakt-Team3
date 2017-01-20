@@ -1,6 +1,6 @@
 package minvakt.util;
 
-import minvakt.datamodel.Shift;
+import minvakt.datamodel.tables.pojos.Shift;
 
 import java.io.Serializable;
 import java.time.DayOfWeek;
@@ -101,7 +101,7 @@ public class TimeInterval implements Serializable{
         return false;
     }
     public static TimeInterval of(Shift event){
-        return new TimeInterval(event.getEndDateTime(), event.getEndDateTime());
+        return new TimeInterval(event.getToTime(), event.getFromTime());
     }
 
     public String toString() {

@@ -1,10 +1,8 @@
 package minvakt.controller;
 
 import minvakt.controller.data.ChangePasswordInfo;
-import minvakt.datamodel.Employee;
-import minvakt.datamodel.EmployeeCategory;
-import minvakt.datamodel.Shift;
-import minvakt.datamodel.enums.EmployeeType;
+import minvakt.datamodel.tables.pojos.Employee;
+import minvakt.datamodel.tables.pojos.Shift;
 import minvakt.repos.*;
 import minvakt.util.RandomString;
 import minvakt.util.TimeUtil;
@@ -25,7 +23,6 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -64,8 +61,7 @@ public class EmployeeController {
     @Secured({"ROLE_ADMIN"})
     public String addEmployee(@RequestBody Employee employee, @RequestBody int category_id) {
 
-        EmployeeCategory cat = catRepo.getOne(category_id);
-        employee.setCategory(cat);
+        employee.setCategoryId(category_id);
         String password = new RandomString(8).nextString();
         log.info("Generated password: {}", password);
         // TODO: 16-Jan-17 send email
@@ -133,11 +129,7 @@ public class EmployeeController {
 
     @GetMapping(value = "/{user_id}/shifts")
     public Collection<Shift> getShiftsForUser(@PathVariable int userId){
-
-        Employee employee = employeeRepo.findOne(userId);
-
-        return (employee != null) ? shiftRepo.findByShiftAssignments_Employee(employee) : Collections.emptyList();
-
+        return shiftRepo.findByShiftAssignments_Employee_id(userId);
     }
 
     // FIXME: 15.01.2017
@@ -148,15 +140,13 @@ public class EmployeeController {
         LocalDate start = LocalDate.parse(startDate);
         LocalDate end = LocalDate.parse(endDate);
 
-        Employee employee = employeeRepo.findOne(user_id);
-
-        List<Shift> byShiftAssignments_user = shiftRepo.findByShiftAssignments_Employee(employee);
+        List<Shift> byShiftAssignments_user = shiftRepo.findByShiftAssignments_Employee_id(user_id);
 
         List<Shift> shiftList = byShiftAssignments_user
                 .stream()
                 .filter(
-                        shift -> shift.getStartDateTime().isAfter(start.atStartOfDay())
-                                && shift.getEndDateTime().isBefore(end.atTime(23, 59)))
+                        shift -> shift.getFromTime().isAfter(start.atStartOfDay())
+                                && shift.getToTime().isBefore(end.atTime(23, 59)))
                 .collect(Collectors.toList());
 
         return shiftList;
@@ -220,13 +210,22 @@ public class EmployeeController {
     @GetMapping("/canberesponsible/")
     public List<Employee> getEmployeesThatCanBeResponsible(@RequestParam int shift_id){
 
+        return collect;
+    }*/
+
+
+    // TODO: 19.01.2017 Repo metode
+    @GetMapping(value = "/canberesponsible/{shift_id}")
+    public List<Employee> getEmployeesThatCanBeResponsible(@PathVariable int shift_id) {
+
+
         //Shift shift = shiftRepo.findOne(shift_id);
 
         List<Employee> all = employeeRepo.findAll();
 
         return  all
                 .stream()
-                .filter(employee -> EmployeeType.of(employee.getCategory()) == EmployeeType.NURSE)
+                .filter(employee -> (employee.getCategoryId()) == 2)
                 .filter(employee -> shiftController.getUsersForShift(shift_id).contains(employee))
                 .collect(Collectors.toList());
 
@@ -268,12 +267,12 @@ public class EmployeeController {
                 .stream()
                 .filter(shift -> {
 
-                    WeekDateInterval of = WeekDateInterval.of(shift.getStartDateTime().toLocalDate());
+                    WeekDateInterval of = WeekDateInterval.of(shift.getFromTime().toLocalDate());
 
 
-                    return TimeUtil.isInDateInterval(of.getStart(), of.getEnd(),shift.getStartDateTime().toLocalDate());
+                    return TimeUtil.isInDateInterval(of.getStart(), of.getEnd(), shift.getToTime().toLocalDate());
                 })
-                .mapToInt(shift -> (int)ChronoUnit.HOURS.between(shift.getStartDateTime(), shift.getEndDateTime()))
+                .mapToInt(shift -> (int) ChronoUnit.HOURS.between(shift.getFromTime(), shift.getToTime()))
                 .sum();
 
     }

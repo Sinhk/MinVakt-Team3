@@ -1,13 +1,5 @@
 package minvakt.datamodel;
 
-import minvakt.managers.UserManager;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
-import static org.mockito.Mockito.mock;
-
-
 /**
  * Created by magnu on 09.01.2017.
  */
