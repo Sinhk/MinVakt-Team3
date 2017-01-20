@@ -14,6 +14,9 @@ public interface ShiftRepository extends CrudRepository<Shift, Integer> {
     @Query("SELECT s from Shift s LEFT JOIN ShiftAssignment a on s.shiftId = a.shiftId where a.employeeId = ?1")
     List<Shift> findByShiftAssignments_Employee_id(int employee);
 
+    @Query("SELECT s FROM Shift s ")
+    List<Shift> findAvailable();
+
     // TODO: 16-Jan-17  
     //List<Shift> findShiftsInRange(User user, LocalDate start, LocalDate end);
 }
