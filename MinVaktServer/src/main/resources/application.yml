@@ -22,6 +22,9 @@ server:
 spring:
   profiles:
     active: dev
+  thymeleaf:
+    cache: false
+
 #  datasource:
 #    url: jdbc:h2:~/test
 logging:

@@ -1,6 +1,6 @@
 $(document).ready(function() { // document ready
 
-    getAllEmployees(function (employees) {
+    getAllUsers(function (employees) {
 
         /*var events = getShiftsByEmployee(employees);
         var resourceList = userListToResourceList(employees);*/
@@ -118,17 +118,5 @@ $(document).ready(function() { // document ready
     });
 
     })
-
-
-
-
-
-    //console.log(events);
-
-
-    //console.log("Responsible users: "+getResponsibleUsersForShifts(events));
-
-
-
 
 });
