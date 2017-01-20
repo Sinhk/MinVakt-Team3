@@ -47,10 +47,12 @@ $(document).ready(function() { // document ready
             events: listToFullCalendarEventList(events, resourceList),
     $.getJSON("/shifts/between", function (shifts) {
         var ev = toFullCalendarEventsWithResource(shifts);
-        $('#calendar').fullCalendar('addEventSource', ev);
+
     });
 */
     getAllShifts(function (events) {
+        $('#calendar').fullCalendar('addEventSource', listToFullCalendarEventList(events, $('#calendar').fullCalendar().resources));
+    });
 
         $('#calendar').fullCalendar({
             schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
@@ -93,8 +95,6 @@ $(document).ready(function() { // document ready
                     callback(res)
                 });
             },
-            events: listToFullCalendarEventList(events,$('#calendar').fullCalendar().resources),
-
 
             eventClick: function( event, jsEvent, view ) {
 
@@ -110,13 +110,7 @@ $(document).ready(function() { // document ready
 
                 console.log("Start date: " + moment(start).format()+
                     "\nEnd date: " + moment(end).format());
-
             }
-
-        });
-
-    });
-
+        })
     })
-
 });
