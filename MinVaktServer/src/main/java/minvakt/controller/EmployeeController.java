@@ -203,7 +203,7 @@ public class EmployeeController {
         Employee user = employeeRepo.findByEmail(details.getUsername());
 
         return shiftRepo.findByShiftAssignments_Employee(user);
-    }*/
+    }
 
 
     // TODO: 19-Jan-17 EmployeeCategory

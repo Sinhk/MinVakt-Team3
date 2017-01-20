@@ -4,6 +4,8 @@
 package minvakt.datamodel.tables.pojos;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.annotation.Generated;
 import javax.persistence.*;
 import java.io.Serializable;
@@ -33,8 +35,11 @@ public class Employee implements Serializable {
     private Integer phone;
     private String  email;
     private Short   positionPercentage;
+    @JsonIgnore
     private String  passwd;
+    @JsonIgnore
     private Boolean enabled;
+    @JsonIgnore
     private Boolean changePwOnLogon;
 
     public Employee() {}

@@ -31,8 +31,7 @@ public class DepartmentRequiredPerShift implements Serializable {
     private Integer shiftId;
     private Integer amount;
 
-    public DepartmentRequiredPerShift() {
-    }
+    public DepartmentRequiredPerShift() {}
 
     public DepartmentRequiredPerShift(DepartmentRequiredPerShift value) {
         this.id = value.id;
