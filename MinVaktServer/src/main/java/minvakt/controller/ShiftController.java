@@ -306,8 +306,12 @@ public class ShiftController {
     @PutMapping(value = "/{shift_id}/users/{user_id}")
     public void changeShiftFromUserToUser(@PathVariable int shift_id, @PathVariable int user_id, @RequestBody int toUser_id){
 
+        System.out.println("Changing shift: "+shift_id+" from "+user_id+" to "+toUser_id);
+
         Optional<ShiftAssignment> assignment = shiftAssignmentRepo.findByShiftIdAndEmployeeId(shift_id, user_id);
         assignment.ifPresent(a -> {
+
+            System.out.println(assignment+" - "+a);
             a.setEmployeeId(toUser_id);
             shiftAssignmentRepo.save(a);
         });
@@ -322,6 +326,7 @@ public class ShiftController {
         request.setShiftId(shift_id);
         request.setOldEmployeeId(user_id);
         request.setNewEmployeeId(user2_id);
+
         changeRequestRepository.save(request);
 
         // TODO: 19.01.2017 Send mail

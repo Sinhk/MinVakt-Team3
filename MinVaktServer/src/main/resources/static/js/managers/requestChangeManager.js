@@ -2,15 +2,35 @@
  * Created by OlavH on 20-Jan-17.
  */
 
-function requestChangeForShift(shift_id, user1_id, user2_id, callback) {
+function getAllChangeRequests(callback) {
 
-    // TODO ny controller
+    $.getJSON("/requestchange", function (data) {
+        callback(data);
+    })
+
+}
+
+function acceptChangeRequest(change_id) {
+
     $.ajax({
-        url: "/requestchange/",
+        url: "requestchange/"+change_id,
+        type: "PUT",
+        contentType: "Application/JSON",
+
+        error: function (data) {
+            console.log("Error: " + JSON.stringify(data));
+        }
+    });
+
+}
+
+function requestChangeForShift(shift_id, user1_id, user2_id, callback) {
+    
+    $.ajax({
+        url: "shifts/"+shift_id+"/users/"+user1_id+"/requestchange/"+user2_id,
         type: "POST",
         contentType: "Application/JSON",
-        data: jsonUser,
-        data2: category_id,
+
         success: function (data) {
 
             callback(data);

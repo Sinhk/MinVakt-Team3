@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <link href="css/temp.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.1.0.js" integrity="sha256-slogkvB1K3VOkzAI8QITxV3VzpOnkeNVsKvtkYLMjfk=" crossorigin="anonymous"></script>
+
+
+</head>
+<body>
+
+<div>
+
+
+        <input id="changeRequestId">RequestId<br>
+
+        <button id="sendButton">Accept</button>
+
+
+</div>
+
+<!--For testing only-->
+
+<script src="js/managers/requestChangeManager.js"></script>
+<script>
+
+    $(document).ready(function () {
+
+
+        getAllChangeRequests(function (data) {
+
+            console.log(data);
+
+        })
+
+
+
+        $("#sendButton").click(function () {
+
+            var request = $("#changeRequestId").val();
+
+            console.log(request);
+
+            acceptChangeRequest(request);
+
+        })
+
+
+    })
+
+
+</script>
+
+</body>
+</html>
+
+</body>
+</html>

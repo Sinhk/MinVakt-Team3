@@ -4,7 +4,7 @@ $(document).ready(function(){
 
         for(var i = 0; i<employees.length; i++){
 
-            const employee = employees[i]; // Uten const faile alt
+            let employee = employees[i]; // Uten const faile alt
 
             console.log(employee);
 
@@ -30,8 +30,7 @@ $(document).ready(function(){
         }
     });
 
-    $("#myTable").tablesorter();
-    $("#myTable").tablesorter( {sortList: [[0,0], [1,0]]} );
+
 
     function myFunction() {
         var input, filter, table, tr, td, i;
@@ -51,4 +50,6 @@ $(document).ready(function(){
             }
         }
     }
+    $("#myTable").tablesorter();
+    $("#myTable").tablesorter( {sortList: [[0,0], [1,0]]} );
 });
