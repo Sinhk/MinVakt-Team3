@@ -57,11 +57,10 @@ function toFullCalendarEventWithResource(event, resource) {
 
 }
 
-function toFullCalendarEvent(event) {
+function toFullCalendarEvent(event, callback) {
 
     console.log(event);
     if (event != undefined) {
-
 
         var start = event.fromTime;
         var end = event.toTime;
@@ -69,25 +68,26 @@ function toFullCalendarEvent(event) {
         var dateStart = new Date(start);
         var dateEnd = new Date(end);
 
+        shiftIsAvailable(event.shiftId, function (available) {
 
-        var available = eventIsAvailable(event.shiftId);
-        getResponsibleUserForShift(event.shiftId, function (responsible) {
+            getResponsibleUserForShift(event.shiftId, function (responsible) {
 
-            console.log(start+" - "+end+" - "+dateStart+" - "+dateEnd+" - "+available+" - "+responsible)
+                console.log(start+" - "+end+" - "+dateStart+" - "+dateEnd+" - "+available+" - "+responsible)
 
-            //console.log("Avdeling: "+event.comments);
+                //console.log("Avdeling: "+event.comments);
 
-            return {
-                id: event.shiftId,
-                title: start.split("T")[1].substr(0, 3) + " -> " + end.split("T")[1].substr(0, 3),
-                start: dateStart,
-                end: dateEnd,
-                status: event.status,
-                backgroundColor: available ? "#9B0300" : "#3E9B85",
-                available: available,
-                avdeling: event.comments,
-                isResponsible: responsible != undefined ? responsible.firstName + " " + responsible.lastName : ""
-            };
+                callback( {
+                    id: event.shiftId,
+                    title: start.split("T")[1].substr(0, 3) + " -> " + end.split("T")[1].substr(0, 3),
+                    start: dateStart,
+                    end: dateEnd,
+                    //backgroundColor: available ? "#9B0300" : "#3E9B85",
+                    available: available,
+                    avdeling: "TODO",
+                    isResponsible: responsible != undefined ? responsible.firstName + " " + responsible.lastName : "Ingen"
+                });
+
+            });
         });
     }
 }

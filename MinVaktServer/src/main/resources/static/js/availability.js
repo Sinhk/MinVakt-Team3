@@ -3,7 +3,7 @@
  */
 $(document).ready(function(){
 
-    for(var i = 0; i<330; i++){
+    /*for(var i = 0; i<330; i++){
 
         var day = (17+i)%29;
         var date = (day+1) >= 10 ? (day+1) : "0"+(day+1)
@@ -72,7 +72,7 @@ $(document).ready(function(){
             }
         });
 
-    }
+    }*/
 
 
     // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered

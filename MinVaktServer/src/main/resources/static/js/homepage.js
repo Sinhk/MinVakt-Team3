@@ -3,21 +3,6 @@ $(document).ready(function () {
     $('.modal-trigger').modal();
     // $(".side-nav").css("margin-top", $(".nav-wrapper").height());
 
-    getScheduledShiftsForCurrentUser(function (shifts1) {
-
-        /*  getShiftsWithRequestChange(function (ch) {
-
-         var shifts = shifts1.concat(ch);
-
-         getAvailableShifts(function (availableshifts) {
-
-         availableshifts.concat(shifts);*/
-        var ev = shifts1.map(toFullCalendarEvent);
-        $('#calendar').fullCalendar('addEventSource', ev);
-        /* });
-         });*/
-    });
-
     $('#calendar').fullCalendar({
 
         displayEventTime: false,
@@ -90,6 +75,33 @@ $(document).ready(function () {
          console.log(eventDB);
 
          }*/
+    });
+    getScheduledShiftsForCurrentUser(function (shifts) {
+
+        console.log(shifts);
+
+        for (var i = 0; i<shifts.length; i++){
+
+            const shift = shifts[i];
+
+            toFullCalendarEvent(shift, function (fullCalendarEvent) {
+
+                $('#calendar').fullCalendar('renderEvent', fullCalendarEvent, /*sticky*/true);
+
+            })
+
+        }
+        /*  getShiftsWithRequestChange(function (ch) {
+
+         var shifts = shifts1.concat(ch);
+
+         getAvailableShifts(function (availableshifts) {
+
+         availableshifts.concat(shifts);*/
+        /*var ev = shifts.map(toFullCalendarEvent);
+         $('#calendar').fullCalendar('addEventSource', ev);*/
+        /* });
+         });*/
     });
 });
 
