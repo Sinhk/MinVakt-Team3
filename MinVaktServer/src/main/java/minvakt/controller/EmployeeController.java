@@ -13,6 +13,8 @@ import minvakt.util.WeekDateInterval;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -144,7 +146,7 @@ public class EmployeeController {
     }
 
     @PutMapping("/{user_id}/password")
-    public Response changePasswordForUser(@PathVariable int user_id, @RequestBody TwoStringsData info){
+    public ResponseEntity changePasswordForUser(@PathVariable int user_id, @RequestBody TwoStringsData info) {
 
         String oldPass = info.getString1();
         String newPass = info.getString2();
@@ -153,13 +155,13 @@ public class EmployeeController {
             userDetailsManager.changePassword(oldPass, newPass);
         } catch (AccessDeniedException ade) {
             //Not signed in
-            return Response.status(403).build();
+            return ResponseEntity.status(403).build();
         } catch (BadCredentialsException bce) {
             //Wrong oldPass
-            return Response.notModified("Wrong password").build();
+            return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).body("Wrong password");
         }
 
-        return Response.ok().build();
+        return ResponseEntity.ok().build();
     }
 
 

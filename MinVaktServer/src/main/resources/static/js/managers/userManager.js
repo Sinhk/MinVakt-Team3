@@ -90,8 +90,9 @@ function changePassword(user_id, oldPass, newPass, callback) {
         success: function (data) {
             callback(data);
         },
-        error: function (data) {
+        error: function (error) {
             console.log("Error: " + data);
+            callback(error);
         }
     });
 }

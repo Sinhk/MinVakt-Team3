@@ -1,36 +1,48 @@
 /**
  * Created by Stine on 23.01.17.
  */
-$(document).ready(function() {
 
-    $("#changePasswordButton").click(function () {
+var password = document.getElementById("new_psw")
+    , confirm_password = document.getElementById("new_psw_confirm");
 
-        getCurrentUserId(function(id) {
+function validatePassword() {
+    if (password.value != confirm_password.value) {
+        confirm_password.setCustomValidity("Passordene er forskjellige");
+    } else {
+        confirm_password.setCustomValidity('');
+    }
+}
 
+password.onchange = validatePassword;
+confirm_password.onkeyup = validatePassword;
+
+function submitPwChange() {
+    getCurrentUserId(function (id) {
+
+        if ($('#pwChangeForm')[0].checkValidity()) {
             const oldPsw = $("#old_psw").val();
             const newPsw = $("#new_psw").val();
 
-            changePassword(id, oldPsw, newPsw, function(data){
-
-                var regex = /(?=.*[!@#$%^&*_=+-])(?=.*[a-z])(?=.*[A-Z]).{8,}/;
-
-                if (regex.test(oldPsw) == true){
+            changePassword(id, oldPsw, newPsw, (data) => {
+                console.log(data);
+                console.log(data.status);
+                if (data.status == 200) {
                     swal({
                         title: "Oppdatert!",
-                        text: "Ditt passord er oppdatert.",
+                        text: "Ditt passord er endret.",
                         type: "success",
                         confirmButtonText: "Ok"
                     });
-                } else {
+                } else { //if (data.status == 304) 
                     swal({
-                        title: "Noe gikk galt!",
-                        text: "Ditt passord ble ikke oppdatert, prøv igjen",
-                        type: "error",
+                        title: "418 I'm a teapot",
+                        text: "Gammelt passord er feil",
+                        //type: "error",
+                        imageUrl: "images/teapot.jpg",
                         confirmButtonText: "Ok"
                     });
-                    return false;
                 }
-            })
-        })
+            });
+        }
     })
-});
+}
