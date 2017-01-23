@@ -92,6 +92,7 @@ function getAvailableShifts(callback) {
 
 }
 
+
 function getStatusForShiftAndUser(shift_id, user_id) {
 
     var status;
