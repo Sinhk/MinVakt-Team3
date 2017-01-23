@@ -165,8 +165,9 @@ public class EmployeeController {
 
 
     @GetMapping(value = "/{user_id}/shifts")
-    public Collection<Shift> getShiftsForUser(@PathVariable int userId){
-        return shiftRepo.findByShiftAssignments_Employee_id(userId);
+    public Collection<Shift> getShiftsForUser(@PathVariable int user_id){
+
+        return shiftRepo.findByShiftAssignments_Employee_id(user_id);
     }
 
     // FIXME: 15.01.2017

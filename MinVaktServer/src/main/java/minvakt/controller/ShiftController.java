@@ -64,9 +64,9 @@ public class ShiftController {
     }
 
     @GetMapping(value = "/assigned")
-    public List<Shift> getAllAssignedShifts(){
+    public List<ShiftAssignment> getAllAssignedShifts(){
 
-        return shiftAssignmentRepo.findByAssignedTrue().stream().map(shiftAssignment -> shiftRepo.findOne(shiftAssignment.getShiftId())).collect(Collectors.toList());
+        return shiftAssignmentRepo.findByAssignedTrue();
 
     }
 

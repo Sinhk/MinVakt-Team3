@@ -86,6 +86,7 @@ function changePassword(user_id, oldPass, newPass, callback) {
     $.ajax({
         url: "/users/"+user_id+"/password",
         type: "PUT",
+        contentType: "Application/JSON",
         data: JSON.stringify({
             string1: oldPass,
             string2: newPass

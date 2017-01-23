@@ -22,7 +22,7 @@ $(document).ready(function(){
                         "<td>" + employee.positionPercentage + "%</td>" +
                         "<td>" + employee.phone + "</td>" +
                         "<td>" + hours + " timer</td>" +
-                        "<td>" + employee.email + "</td>" +
+                        /*"<td>" + employee.email + "</td>" +*/
                         "</tr>"
 
                 })
