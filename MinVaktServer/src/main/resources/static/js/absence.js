@@ -46,7 +46,8 @@ $(document).ready(function(){
                     return false
                 }
                 swal("Kommentar sendt", "Du skrev: " + inputValue, "success");
-            });
+            }
+        );
 
     });
 
