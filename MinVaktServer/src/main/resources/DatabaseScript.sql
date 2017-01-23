@@ -43,6 +43,7 @@ CREATE TABLE IF NOT EXISTS shift_assignment (
   shift_id            INT                 NOT NULL,
   employee_id         INT                 NOT NULL,
   absent              BOOL                NOT NULL,
+  assigned            BOOL                NOT NULL DEFAULT FALSE,
   comment_for_absence VARCHAR(100),
   CONSTRAINT shift_assignment_pk PRIMARY KEY (employee_id, shift_id),
   CONSTRAINT shift_assignment_employee_id_fk FOREIGN KEY (employee_id) REFERENCES employee (employee_id),
