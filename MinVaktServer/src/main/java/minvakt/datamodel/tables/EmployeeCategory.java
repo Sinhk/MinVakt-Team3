@@ -28,7 +28,7 @@ import java.util.List;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class EmployeeCategory extends TableImpl<EmployeeCategoryRecord> {
 
-    private static final long serialVersionUID = -2144132168;
+    private static final long serialVersionUID = -774183160;
 
     /**
      * The reference instance of <code>g_scrum03.employee_category</code>
@@ -46,7 +46,7 @@ public class EmployeeCategory extends TableImpl<EmployeeCategoryRecord> {
     /**
      * The column <code>g_scrum03.employee_category.category_id</code>.
      */
-    public final TableField<EmployeeCategoryRecord, Integer> CATEGORY_ID = createField("category_id", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+    public final TableField<EmployeeCategoryRecord, Short> CATEGORY_ID = createField("category_id", org.jooq.impl.SQLDataType.SMALLINT.nullable(false), this, "");
 
     /**
      * The column <code>g_scrum03.employee_category.category_name</code>.
@@ -57,6 +57,11 @@ public class EmployeeCategory extends TableImpl<EmployeeCategoryRecord> {
      * The column <code>g_scrum03.employee_category.admin</code>.
      */
     public final TableField<EmployeeCategoryRecord, Boolean> ADMIN = createField("admin", org.jooq.impl.SQLDataType.BOOLEAN.defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.BOOLEAN)), this, "");
+
+    /**
+     * The column <code>g_scrum03.employee_category.required_per_shift</code>.
+     */
+    public final TableField<EmployeeCategoryRecord, Short> REQUIRED_PER_SHIFT = createField("required_per_shift", org.jooq.impl.SQLDataType.SMALLINT.defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.SMALLINT)), this, "");
 
     /**
      * The column <code>g_scrum03.employee_category.available_for_shifts</code>.
@@ -97,7 +102,7 @@ public class EmployeeCategory extends TableImpl<EmployeeCategoryRecord> {
      * {@inheritDoc}
      */
     @Override
-    public Identity<EmployeeCategoryRecord, Integer> getIdentity() {
+    public Identity<EmployeeCategoryRecord, Short> getIdentity() {
         return Keys.IDENTITY_EMPLOYEE_CATEGORY;
     }
 

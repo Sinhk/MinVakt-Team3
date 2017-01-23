@@ -24,12 +24,12 @@ import java.io.Serializable;
 @Table(name = "department_required_per_shift", schema = "g_scrum03")
 public class DepartmentRequiredPerShift implements Serializable {
 
-    private static final long serialVersionUID = -979009012;
+    private static final long serialVersionUID = 1083879400;
 
     private Integer id;
-    private Integer departmentId;
+    private Short   departmentId;
     private Integer shiftId;
-    private Integer amount;
+    private Short   amount;
 
     public DepartmentRequiredPerShift() {}
 
@@ -42,9 +42,9 @@ public class DepartmentRequiredPerShift implements Serializable {
 
     public DepartmentRequiredPerShift(
         Integer id,
-        Integer departmentId,
+        Short   departmentId,
         Integer shiftId,
-        Integer amount
+        Short   amount
     ) {
         this.id = id;
         this.departmentId = departmentId;
@@ -63,12 +63,12 @@ public class DepartmentRequiredPerShift implements Serializable {
         this.id = id;
     }
 
-    @Column(name = "department_id", nullable = false, precision = 10)
-    public Integer getDepartmentId() {
+    @Column(name = "department_id", nullable = false, precision = 5)
+    public Short getDepartmentId() {
         return this.departmentId;
     }
 
-    public void setDepartmentId(Integer departmentId) {
+    public void setDepartmentId(Short departmentId) {
         this.departmentId = departmentId;
     }
 
@@ -81,12 +81,12 @@ public class DepartmentRequiredPerShift implements Serializable {
         this.shiftId = shiftId;
     }
 
-    @Column(name = "amount", nullable = false, precision = 7)
-    public Integer getAmount() {
+    @Column(name = "amount", nullable = false, precision = 5)
+    public Short getAmount() {
         return this.amount;
     }
 
-    public void setAmount(Integer amount) {
+    public void setAmount(Short amount) {
         this.amount = amount;
     }
 

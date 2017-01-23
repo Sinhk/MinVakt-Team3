@@ -28,9 +28,9 @@ import javax.persistence.*;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 @Entity
 @Table(name = "department_required_per_shift", schema = "g_scrum03")
-public class DepartmentRequiredPerShiftRecord extends UpdatableRecordImpl<DepartmentRequiredPerShiftRecord> implements Record4<Integer, Integer, Integer, Integer> {
+public class DepartmentRequiredPerShiftRecord extends UpdatableRecordImpl<DepartmentRequiredPerShiftRecord> implements Record4<Integer, Short, Integer, Short> {
 
-    private static final long serialVersionUID = -1339675255;
+    private static final long serialVersionUID = -70697527;
 
     /**
      * Setter for <code>g_scrum03.department_required_per_shift.id</code>.
@@ -52,16 +52,16 @@ public class DepartmentRequiredPerShiftRecord extends UpdatableRecordImpl<Depart
     /**
      * Setter for <code>g_scrum03.department_required_per_shift.department_id</code>.
      */
-    public void setDepartmentId(Integer value) {
+    public void setDepartmentId(Short value) {
         set(1, value);
     }
 
     /**
      * Getter for <code>g_scrum03.department_required_per_shift.department_id</code>.
      */
-    @Column(name = "department_id", nullable = false, precision = 10)
-    public Integer getDepartmentId() {
-        return (Integer) get(1);
+    @Column(name = "department_id", nullable = false, precision = 5)
+    public Short getDepartmentId() {
+        return (Short) get(1);
     }
 
     /**
@@ -82,16 +82,16 @@ public class DepartmentRequiredPerShiftRecord extends UpdatableRecordImpl<Depart
     /**
      * Setter for <code>g_scrum03.department_required_per_shift.amount</code>.
      */
-    public void setAmount(Integer value) {
+    public void setAmount(Short value) {
         set(3, value);
     }
 
     /**
      * Getter for <code>g_scrum03.department_required_per_shift.amount</code>.
      */
-    @Column(name = "amount", nullable = false, precision = 7)
-    public Integer getAmount() {
-        return (Integer) get(3);
+    @Column(name = "amount", nullable = false, precision = 5)
+    public Short getAmount() {
+        return (Short) get(3);
     }
 
     // -------------------------------------------------------------------------
@@ -114,7 +114,7 @@ public class DepartmentRequiredPerShiftRecord extends UpdatableRecordImpl<Depart
      * {@inheritDoc}
      */
     @Override
-    public Row4<Integer, Integer, Integer, Integer> fieldsRow() {
+    public Row4<Integer, Short, Integer, Short> fieldsRow() {
         return (Row4) super.fieldsRow();
     }
 
@@ -122,7 +122,7 @@ public class DepartmentRequiredPerShiftRecord extends UpdatableRecordImpl<Depart
      * {@inheritDoc}
      */
     @Override
-    public Row4<Integer, Integer, Integer, Integer> valuesRow() {
+    public Row4<Integer, Short, Integer, Short> valuesRow() {
         return (Row4) super.valuesRow();
     }
 
@@ -138,7 +138,7 @@ public class DepartmentRequiredPerShiftRecord extends UpdatableRecordImpl<Depart
      * {@inheritDoc}
      */
     @Override
-    public Field<Integer> field2() {
+    public Field<Short> field2() {
         return DepartmentRequiredPerShift.DEPARTMENT_REQUIRED_PER_SHIFT.DEPARTMENT_ID;
     }
 
@@ -154,7 +154,7 @@ public class DepartmentRequiredPerShiftRecord extends UpdatableRecordImpl<Depart
      * {@inheritDoc}
      */
     @Override
-    public Field<Integer> field4() {
+    public Field<Short> field4() {
         return DepartmentRequiredPerShift.DEPARTMENT_REQUIRED_PER_SHIFT.AMOUNT;
     }
 
@@ -170,7 +170,7 @@ public class DepartmentRequiredPerShiftRecord extends UpdatableRecordImpl<Depart
      * {@inheritDoc}
      */
     @Override
-    public Integer value2() {
+    public Short value2() {
         return getDepartmentId();
     }
 
@@ -186,7 +186,7 @@ public class DepartmentRequiredPerShiftRecord extends UpdatableRecordImpl<Depart
      * {@inheritDoc}
      */
     @Override
-    public Integer value4() {
+    public Short value4() {
         return getAmount();
     }
 
@@ -203,7 +203,7 @@ public class DepartmentRequiredPerShiftRecord extends UpdatableRecordImpl<Depart
      * {@inheritDoc}
      */
     @Override
-    public DepartmentRequiredPerShiftRecord value2(Integer value) {
+    public DepartmentRequiredPerShiftRecord value2(Short value) {
         setDepartmentId(value);
         return this;
     }
@@ -221,7 +221,7 @@ public class DepartmentRequiredPerShiftRecord extends UpdatableRecordImpl<Depart
      * {@inheritDoc}
      */
     @Override
-    public DepartmentRequiredPerShiftRecord value4(Integer value) {
+    public DepartmentRequiredPerShiftRecord value4(Short value) {
         setAmount(value);
         return this;
     }
@@ -230,7 +230,7 @@ public class DepartmentRequiredPerShiftRecord extends UpdatableRecordImpl<Depart
      * {@inheritDoc}
      */
     @Override
-    public DepartmentRequiredPerShiftRecord values(Integer value1, Integer value2, Integer value3, Integer value4) {
+    public DepartmentRequiredPerShiftRecord values(Integer value1, Short value2, Integer value3, Short value4) {
         value1(value1);
         value2(value2);
         value3(value3);
@@ -252,7 +252,7 @@ public class DepartmentRequiredPerShiftRecord extends UpdatableRecordImpl<Depart
     /**
      * Create a detached, initialised DepartmentRequiredPerShiftRecord
      */
-    public DepartmentRequiredPerShiftRecord(Integer id, Integer departmentId, Integer shiftId, Integer amount) {
+    public DepartmentRequiredPerShiftRecord(Integer id, Short departmentId, Integer shiftId, Short amount) {
         super(DepartmentRequiredPerShift.DEPARTMENT_REQUIRED_PER_SHIFT);
 
         set(0, id);

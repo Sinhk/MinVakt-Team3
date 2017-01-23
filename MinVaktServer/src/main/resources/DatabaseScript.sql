@@ -10,21 +10,21 @@ DROP TABLE IF EXISTS employee_category;
 DROP TABLE IF EXISTS department;
 
 CREATE TABLE IF NOT EXISTS employee_category (
-  category_id          TINYINT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  category_id          SMALLINT PRIMARY KEY NOT NULL AUTO_INCREMENT,
   category_name        VARCHAR(30)     NOT NULL,
   admin                BOOL                     DEFAULT FALSE,
-  required_per_shift   TINYINT                  DEFAULT 0,
+  required_per_shift   SMALLINT                  DEFAULT 0,
   available_for_shifts BOOL                     DEFAULT TRUE
 );
 
 CREATE TABLE IF NOT EXISTS employee (
   employee_id         INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-  category_id         TINYINT         NOT NULL,
+  category_id         SMALLINT        NOT NULL,
   first_name          VARCHAR(30)     NOT NULL,
   last_name           VARCHAR(30)     NOT NULL,
   phone               INT             NOT NULL,
   email               VARCHAR(50)     NOT NULL UNIQUE,
-  position_percentage TINYINT         NOT NULL,
+  position_percentage SMALLINT        NOT NULL,
   passwd              VARCHAR(60),
   enabled             BOOL                     DEFAULT TRUE,
   change_pw_on_logon  BOOL            NOT NULL DEFAULT TRUE,
@@ -40,23 +40,23 @@ CREATE TABLE IF NOT EXISTS shift (
 );
 
 CREATE TABLE IF NOT EXISTS shift_assignment (
-  shift_id            INT                 NOT NULL,
-  employee_id         INT                 NOT NULL,
-  absent              BOOL                NOT NULL DEFAULT FALSE,
-  assigned            BOOL                NOT NULL DEFAULT FALSE,
+  id                  INT           AUTO_INCREMENT PRIMARY KEY,
+  shift_id            INT  NOT NULL,
+  employee_id         INT  NOT NULL,
+  absent              BOOL NOT NULL DEFAULT FALSE,
+  assigned            BOOL NOT NULL DEFAULT FALSE,
   comment_for_absence VARCHAR(100),
-  CONSTRAINT shift_assignment_pk PRIMARY KEY (employee_id, shift_id),
   CONSTRAINT shift_assignment_employee_id_fk FOREIGN KEY (employee_id) REFERENCES employee (employee_id),
-  CONSTRAINT shift_assignment_shift_id_fk FOREIGN KEY (shift_id) REFERENCES shift (shift_id) ON DELETE CASCADE
-#   CONSTRAINT shift_assignment_status_id_fk FOREIGN KEY (status_id) REFERENCES shift_status (status_id)
+  CONSTRAINT shift_assignment_shift_id_fk FOREIGN KEY (shift_id) REFERENCES shift (shift_id)
+    ON DELETE CASCADE
+  #   CONSTRAINT shift_assignment_status_id_fk FOREIGN KEY (status_id) REFERENCES shift_status (status_id)
 );
 
 CREATE TABLE IF NOT EXISTS shift_overtime (
-  shift_id      INT         NOT NULL,
-  employee_id   INT         NOT NULL,
+  id                  INT           AUTO_INCREMENT PRIMARY KEY,
+  shift_assignment_id      INT         NOT NULL,
   minutes       MEDIUMINT   NOT NULL,
-  CONSTRAINT shift_overtime_pk PRIMARY KEY (shift_id, employee_id),
-  CONSTRAINT shift_overtime_fk FOREIGN KEY (shift_id, employee_id) REFERENCES shift_assignment (shift_id, employee_id) ON DELETE CASCADE
+  CONSTRAINT shift_overtime_fk FOREIGN KEY (shift_assignment_id) REFERENCES shift_assignment (id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS change_request (
@@ -70,7 +70,7 @@ CREATE TABLE IF NOT EXISTS change_request (
 );
 
 CREATE TABLE IF NOT EXISTS department (
-  department_id   TINYINT         NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  department_id   SMALLINT         NOT NULL PRIMARY KEY AUTO_INCREMENT,
   department_name VARCHAR(30)     NOT NULL
 );
 
@@ -85,19 +85,19 @@ CREATE TABLE IF NOT EXISTS shift_department (
 */
 
 CREATE TABLE IF NOT EXISTS department_required_employees_per_category (
-  department_id   TINYINT       NOT NULL,
-  category_id     TINYINT       NOT NULL,
-  amount          MEDIUMINT     NOT NULL,
-  CONSTRAINT department_required_employees_pk PRIMARY KEY (department_id, category_id),
+  id                  INT           AUTO_INCREMENT PRIMARY KEY,
+  department_id   SMALLINT       NOT NULL,
+  category_id     SMALLINT       NOT NULL,
+  amount          SMALLINT     NOT NULL,
   CONSTRAINT department_required_employees_department_id_fk FOREIGN KEY (department_id) REFERENCES department (department_id),
   CONSTRAINT department_required_employees_category_id_fk FOREIGN KEY (category_id) REFERENCES employee_category (category_id)
 );
 
 CREATE TABLE IF NOT EXISTS department_required_per_shift (
-  department_id   TINYINT       NOT NULL,
+  id                  INT           AUTO_INCREMENT PRIMARY KEY,
+  department_id   SMALLINT       NOT NULL,
   shift_id        INT           NOT NULL,
-  amount          MEDIUMINT     NOT NULL,
-  CONSTRAINT department_required_per_shift PRIMARY KEY (department_id, shift_id),
+  amount          SMALLINT     NOT NULL,
   CONSTRAINT department_required_per_shift_department_id_fk FOREIGN KEY (department_id) REFERENCES department (department_id),
   CONSTRAINT department_required_per_shift_shift_id_fk FOREIGN KEY (shift_id) REFERENCES shift (shift_id)
 );
@@ -161,8 +161,8 @@ INSERT INTO shift_department (shift_id, department_id) VALUES (5, 3);
 INSERT INTO shift_department (shift_id, department_id) VALUES (6, 3);
 */
 
-INSERT INTO shift_overtime (shift_id, employee_id, minutes) VALUES (1, 3, 60);
-INSERT INTO shift_overtime (shift_id, employee_id, minutes) VALUES (2, 5, 75);
+INSERT INTO shift_overtime (shift_assignment_id, minutes) VALUES (2, 60);
+INSERT INTO shift_overtime (shift_assignment_id, minutes) VALUES (4, 75);
 
 INSERT INTO change_request (shift_id, old_employee_id, new_employee_id) VALUES (2, 3, 4);
 

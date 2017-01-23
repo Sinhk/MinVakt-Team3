@@ -28,14 +28,14 @@ import javax.persistence.*;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 @Entity
 @Table(name = "department", schema = "g_scrum03")
-public class DepartmentRecord extends UpdatableRecordImpl<DepartmentRecord> implements Record2<Integer, String> {
+public class DepartmentRecord extends UpdatableRecordImpl<DepartmentRecord> implements Record2<Short, String> {
 
-    private static final long serialVersionUID = -345681946;
+    private static final long serialVersionUID = 1284113850;
 
     /**
      * Setter for <code>g_scrum03.department.department_id</code>.
      */
-    public void setDepartmentId(Integer value) {
+    public void setDepartmentId(Short value) {
         set(0, value);
     }
 
@@ -44,9 +44,9 @@ public class DepartmentRecord extends UpdatableRecordImpl<DepartmentRecord> impl
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "department_id", unique = true, nullable = false, precision = 10)
-    public Integer getDepartmentId() {
-        return (Integer) get(0);
+    @Column(name = "department_id", unique = true, nullable = false, precision = 5)
+    public Short getDepartmentId() {
+        return (Short) get(0);
     }
 
     /**
@@ -72,7 +72,7 @@ public class DepartmentRecord extends UpdatableRecordImpl<DepartmentRecord> impl
      * {@inheritDoc}
      */
     @Override
-    public Record1<Integer> key() {
+    public Record1<Short> key() {
         return (Record1) super.key();
     }
 
@@ -84,7 +84,7 @@ public class DepartmentRecord extends UpdatableRecordImpl<DepartmentRecord> impl
      * {@inheritDoc}
      */
     @Override
-    public Row2<Integer, String> fieldsRow() {
+    public Row2<Short, String> fieldsRow() {
         return (Row2) super.fieldsRow();
     }
 
@@ -92,7 +92,7 @@ public class DepartmentRecord extends UpdatableRecordImpl<DepartmentRecord> impl
      * {@inheritDoc}
      */
     @Override
-    public Row2<Integer, String> valuesRow() {
+    public Row2<Short, String> valuesRow() {
         return (Row2) super.valuesRow();
     }
 
@@ -100,7 +100,7 @@ public class DepartmentRecord extends UpdatableRecordImpl<DepartmentRecord> impl
      * {@inheritDoc}
      */
     @Override
-    public Field<Integer> field1() {
+    public Field<Short> field1() {
         return Department.DEPARTMENT.DEPARTMENT_ID;
     }
 
@@ -116,7 +116,7 @@ public class DepartmentRecord extends UpdatableRecordImpl<DepartmentRecord> impl
      * {@inheritDoc}
      */
     @Override
-    public Integer value1() {
+    public Short value1() {
         return getDepartmentId();
     }
 
@@ -132,7 +132,7 @@ public class DepartmentRecord extends UpdatableRecordImpl<DepartmentRecord> impl
      * {@inheritDoc}
      */
     @Override
-    public DepartmentRecord value1(Integer value) {
+    public DepartmentRecord value1(Short value) {
         setDepartmentId(value);
         return this;
     }
@@ -150,7 +150,7 @@ public class DepartmentRecord extends UpdatableRecordImpl<DepartmentRecord> impl
      * {@inheritDoc}
      */
     @Override
-    public DepartmentRecord values(Integer value1, String value2) {
+    public DepartmentRecord values(Short value1, String value2) {
         value1(value1);
         value2(value2);
         return this;
@@ -170,7 +170,7 @@ public class DepartmentRecord extends UpdatableRecordImpl<DepartmentRecord> impl
     /**
      * Create a detached, initialised DepartmentRecord
      */
-    public DepartmentRecord(Integer departmentId, String departmentName) {
+    public DepartmentRecord(Short departmentId, String departmentName) {
         super(Department.DEPARTMENT);
 
         set(0, departmentId);

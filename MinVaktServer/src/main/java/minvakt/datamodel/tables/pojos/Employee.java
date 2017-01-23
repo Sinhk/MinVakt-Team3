@@ -26,10 +26,10 @@ import java.io.Serializable;
 @Table(name = "employee", schema = "g_scrum03")
 public class Employee implements Serializable {
 
-    private static final long serialVersionUID = -1478820150;
+    private static final long serialVersionUID = -250030484;
 
     private Integer employeeId;
-    private Integer categoryId;
+    private Short   categoryId;
     private String  firstName;
     private String  lastName;
     private Integer phone;
@@ -59,7 +59,7 @@ public class Employee implements Serializable {
 
     public Employee(
         Integer employeeId,
-        Integer categoryId,
+        Short   categoryId,
         String  firstName,
         String  lastName,
         Integer phone,
@@ -92,12 +92,12 @@ public class Employee implements Serializable {
         this.employeeId = employeeId;
     }
 
-    @Column(name = "category_id", nullable = false, precision = 10)
-    public Integer getCategoryId() {
+    @Column(name = "category_id", nullable = false, precision = 5)
+    public Short getCategoryId() {
         return this.categoryId;
     }
 
-    public void setCategoryId(Integer categoryId) {
+    public void setCategoryId(Short categoryId) {
         this.categoryId = categoryId;
     }
 

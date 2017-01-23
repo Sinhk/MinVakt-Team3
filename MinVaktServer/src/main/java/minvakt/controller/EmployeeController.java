@@ -80,7 +80,7 @@ public class EmployeeController {
     @Secured({"ROLE_ADMIN"})
     public String addEmployee(@RequestBody Employee employee, @RequestBody int category_id) {
 
-        employee.setCategoryId(category_id);
+        employee.setCategoryId((short) category_id);
         String password = createPassword();
         log.info("Generated password: {}", password);
         // TODO: 16-Jan-17 send email

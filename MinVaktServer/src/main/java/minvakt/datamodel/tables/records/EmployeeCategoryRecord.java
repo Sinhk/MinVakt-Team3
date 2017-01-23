@@ -7,8 +7,8 @@ package minvakt.datamodel.tables.records;
 import minvakt.datamodel.tables.EmployeeCategory;
 import org.jooq.Field;
 import org.jooq.Record1;
-import org.jooq.Record4;
-import org.jooq.Row4;
+import org.jooq.Record5;
+import org.jooq.Row5;
 import org.jooq.impl.UpdatableRecordImpl;
 
 import javax.annotation.Generated;
@@ -28,14 +28,14 @@ import javax.persistence.*;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 @Entity
 @Table(name = "employee_category", schema = "g_scrum03")
-public class EmployeeCategoryRecord extends UpdatableRecordImpl<EmployeeCategoryRecord> implements Record4<Integer, String, Boolean, Boolean> {
+public class EmployeeCategoryRecord extends UpdatableRecordImpl<EmployeeCategoryRecord> implements Record5<Short, String, Boolean, Short, Boolean> {
 
-    private static final long serialVersionUID = -1293011176;
+    private static final long serialVersionUID = -288527588;
 
     /**
      * Setter for <code>g_scrum03.employee_category.category_id</code>.
      */
-    public void setCategoryId(Integer value) {
+    public void setCategoryId(Short value) {
         set(0, value);
     }
 
@@ -44,9 +44,9 @@ public class EmployeeCategoryRecord extends UpdatableRecordImpl<EmployeeCategory
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "category_id", unique = true, nullable = false, precision = 10)
-    public Integer getCategoryId() {
-        return (Integer) get(0);
+    @Column(name = "category_id", unique = true, nullable = false, precision = 5)
+    public Short getCategoryId() {
+        return (Short) get(0);
     }
 
     /**
@@ -80,10 +80,25 @@ public class EmployeeCategoryRecord extends UpdatableRecordImpl<EmployeeCategory
     }
 
     /**
+     * Setter for <code>g_scrum03.employee_category.required_per_shift</code>.
+     */
+    public void setRequiredPerShift(Short value) {
+        set(3, value);
+    }
+
+    /**
+     * Getter for <code>g_scrum03.employee_category.required_per_shift</code>.
+     */
+    @Column(name = "required_per_shift", precision = 5)
+    public Short getRequiredPerShift() {
+        return (Short) get(3);
+    }
+
+    /**
      * Setter for <code>g_scrum03.employee_category.available_for_shifts</code>.
      */
     public void setAvailableForShifts(Boolean value) {
-        set(3, value);
+        set(4, value);
     }
 
     /**
@@ -91,7 +106,7 @@ public class EmployeeCategoryRecord extends UpdatableRecordImpl<EmployeeCategory
      */
     @Column(name = "available_for_shifts")
     public Boolean getAvailableForShifts() {
-        return (Boolean) get(3);
+        return (Boolean) get(4);
     }
 
     // -------------------------------------------------------------------------
@@ -102,35 +117,35 @@ public class EmployeeCategoryRecord extends UpdatableRecordImpl<EmployeeCategory
      * {@inheritDoc}
      */
     @Override
-    public Record1<Integer> key() {
+    public Record1<Short> key() {
         return (Record1) super.key();
     }
 
     // -------------------------------------------------------------------------
-    // Record4 type implementation
+    // Record5 type implementation
     // -------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Row4<Integer, String, Boolean, Boolean> fieldsRow() {
-        return (Row4) super.fieldsRow();
+    public Row5<Short, String, Boolean, Short, Boolean> fieldsRow() {
+        return (Row5) super.fieldsRow();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Row4<Integer, String, Boolean, Boolean> valuesRow() {
-        return (Row4) super.valuesRow();
+    public Row5<Short, String, Boolean, Short, Boolean> valuesRow() {
+        return (Row5) super.valuesRow();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Field<Integer> field1() {
+    public Field<Short> field1() {
         return EmployeeCategory.EMPLOYEE_CATEGORY.CATEGORY_ID;
     }
 
@@ -154,7 +169,15 @@ public class EmployeeCategoryRecord extends UpdatableRecordImpl<EmployeeCategory
      * {@inheritDoc}
      */
     @Override
-    public Field<Boolean> field4() {
+    public Field<Short> field4() {
+        return EmployeeCategory.EMPLOYEE_CATEGORY.REQUIRED_PER_SHIFT;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Field<Boolean> field5() {
         return EmployeeCategory.EMPLOYEE_CATEGORY.AVAILABLE_FOR_SHIFTS;
     }
 
@@ -162,7 +185,7 @@ public class EmployeeCategoryRecord extends UpdatableRecordImpl<EmployeeCategory
      * {@inheritDoc}
      */
     @Override
-    public Integer value1() {
+    public Short value1() {
         return getCategoryId();
     }
 
@@ -186,7 +209,15 @@ public class EmployeeCategoryRecord extends UpdatableRecordImpl<EmployeeCategory
      * {@inheritDoc}
      */
     @Override
-    public Boolean value4() {
+    public Short value4() {
+        return getRequiredPerShift();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Boolean value5() {
         return getAvailableForShifts();
     }
 
@@ -194,7 +225,7 @@ public class EmployeeCategoryRecord extends UpdatableRecordImpl<EmployeeCategory
      * {@inheritDoc}
      */
     @Override
-    public EmployeeCategoryRecord value1(Integer value) {
+    public EmployeeCategoryRecord value1(Short value) {
         setCategoryId(value);
         return this;
     }
@@ -221,7 +252,16 @@ public class EmployeeCategoryRecord extends UpdatableRecordImpl<EmployeeCategory
      * {@inheritDoc}
      */
     @Override
-    public EmployeeCategoryRecord value4(Boolean value) {
+    public EmployeeCategoryRecord value4(Short value) {
+        setRequiredPerShift(value);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public EmployeeCategoryRecord value5(Boolean value) {
         setAvailableForShifts(value);
         return this;
     }
@@ -230,11 +270,12 @@ public class EmployeeCategoryRecord extends UpdatableRecordImpl<EmployeeCategory
      * {@inheritDoc}
      */
     @Override
-    public EmployeeCategoryRecord values(Integer value1, String value2, Boolean value3, Boolean value4) {
+    public EmployeeCategoryRecord values(Short value1, String value2, Boolean value3, Short value4, Boolean value5) {
         value1(value1);
         value2(value2);
         value3(value3);
         value4(value4);
+        value5(value5);
         return this;
     }
 
@@ -252,12 +293,13 @@ public class EmployeeCategoryRecord extends UpdatableRecordImpl<EmployeeCategory
     /**
      * Create a detached, initialised EmployeeCategoryRecord
      */
-    public EmployeeCategoryRecord(Integer categoryId, String categoryName, Boolean admin, Boolean availableForShifts) {
+    public EmployeeCategoryRecord(Short categoryId, String categoryName, Boolean admin, Short requiredPerShift, Boolean availableForShifts) {
         super(EmployeeCategory.EMPLOYEE_CATEGORY);
 
         set(0, categoryId);
         set(1, categoryName);
         set(2, admin);
-        set(3, availableForShifts);
+        set(3, requiredPerShift);
+        set(4, availableForShifts);
     }
 }

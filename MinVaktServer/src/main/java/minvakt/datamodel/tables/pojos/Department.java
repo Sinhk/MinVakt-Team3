@@ -24,10 +24,10 @@ import java.io.Serializable;
 @Table(name = "department", schema = "g_scrum03")
 public class Department implements Serializable {
 
-    private static final long serialVersionUID = -2117598437;
+    private static final long serialVersionUID = -701733457;
 
-    private Integer departmentId;
-    private String  departmentName;
+    private Short  departmentId;
+    private String departmentName;
 
     public Department() {}
 
@@ -37,8 +37,8 @@ public class Department implements Serializable {
     }
 
     public Department(
-        Integer departmentId,
-        String  departmentName
+        Short  departmentId,
+        String departmentName
     ) {
         this.departmentId = departmentId;
         this.departmentName = departmentName;
@@ -46,12 +46,12 @@ public class Department implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "department_id", unique = true, nullable = false, precision = 10)
-    public Integer getDepartmentId() {
+    @Column(name = "department_id", unique = true, nullable = false, precision = 5)
+    public Short getDepartmentId() {
         return this.departmentId;
     }
 
-    public void setDepartmentId(Integer departmentId) {
+    public void setDepartmentId(Short departmentId) {
         this.departmentId = departmentId;
     }
 

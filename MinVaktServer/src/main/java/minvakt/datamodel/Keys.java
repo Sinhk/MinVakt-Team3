@@ -33,11 +33,11 @@ public class Keys {
     // -------------------------------------------------------------------------
 
     public static final Identity<ChangeRequestRecord, Integer> IDENTITY_CHANGE_REQUEST = Identities0.IDENTITY_CHANGE_REQUEST;
-    public static final Identity<DepartmentRecord, Integer> IDENTITY_DEPARTMENT = Identities0.IDENTITY_DEPARTMENT;
+    public static final Identity<DepartmentRecord, Short> IDENTITY_DEPARTMENT = Identities0.IDENTITY_DEPARTMENT;
     public static final Identity<DepartmentRequiredEmployeesPerCategoryRecord, Integer> IDENTITY_DEPARTMENT_REQUIRED_EMPLOYEES_PER_CATEGORY = Identities0.IDENTITY_DEPARTMENT_REQUIRED_EMPLOYEES_PER_CATEGORY;
     public static final Identity<DepartmentRequiredPerShiftRecord, Integer> IDENTITY_DEPARTMENT_REQUIRED_PER_SHIFT = Identities0.IDENTITY_DEPARTMENT_REQUIRED_PER_SHIFT;
     public static final Identity<EmployeeRecord, Integer> IDENTITY_EMPLOYEE = Identities0.IDENTITY_EMPLOYEE;
-    public static final Identity<EmployeeCategoryRecord, Integer> IDENTITY_EMPLOYEE_CATEGORY = Identities0.IDENTITY_EMPLOYEE_CATEGORY;
+    public static final Identity<EmployeeCategoryRecord, Short> IDENTITY_EMPLOYEE_CATEGORY = Identities0.IDENTITY_EMPLOYEE_CATEGORY;
     public static final Identity<ShiftRecord, Integer> IDENTITY_SHIFT = Identities0.IDENTITY_SHIFT;
     public static final Identity<ShiftAssignmentRecord, Integer> IDENTITY_SHIFT_ASSIGNMENT = Identities0.IDENTITY_SHIFT_ASSIGNMENT;
     public static final Identity<ShiftOvertimeRecord, Integer> IDENTITY_SHIFT_OVERTIME = Identities0.IDENTITY_SHIFT_OVERTIME;
@@ -80,11 +80,11 @@ public class Keys {
 
     private static class Identities0 extends AbstractKeys {
         public static Identity<ChangeRequestRecord, Integer> IDENTITY_CHANGE_REQUEST = createIdentity(ChangeRequest.CHANGE_REQUEST, ChangeRequest.CHANGE_REQUEST.REQUEST_ID);
-        public static Identity<DepartmentRecord, Integer> IDENTITY_DEPARTMENT = createIdentity(Department.DEPARTMENT, Department.DEPARTMENT.DEPARTMENT_ID);
+        public static Identity<DepartmentRecord, Short> IDENTITY_DEPARTMENT = createIdentity(Department.DEPARTMENT, Department.DEPARTMENT.DEPARTMENT_ID);
         public static Identity<DepartmentRequiredEmployeesPerCategoryRecord, Integer> IDENTITY_DEPARTMENT_REQUIRED_EMPLOYEES_PER_CATEGORY = createIdentity(DepartmentRequiredEmployeesPerCategory.DEPARTMENT_REQUIRED_EMPLOYEES_PER_CATEGORY, DepartmentRequiredEmployeesPerCategory.DEPARTMENT_REQUIRED_EMPLOYEES_PER_CATEGORY.ID);
         public static Identity<DepartmentRequiredPerShiftRecord, Integer> IDENTITY_DEPARTMENT_REQUIRED_PER_SHIFT = createIdentity(DepartmentRequiredPerShift.DEPARTMENT_REQUIRED_PER_SHIFT, DepartmentRequiredPerShift.DEPARTMENT_REQUIRED_PER_SHIFT.ID);
         public static Identity<EmployeeRecord, Integer> IDENTITY_EMPLOYEE = createIdentity(Employee.EMPLOYEE, Employee.EMPLOYEE.EMPLOYEE_ID);
-        public static Identity<EmployeeCategoryRecord, Integer> IDENTITY_EMPLOYEE_CATEGORY = createIdentity(EmployeeCategory.EMPLOYEE_CATEGORY, EmployeeCategory.EMPLOYEE_CATEGORY.CATEGORY_ID);
+        public static Identity<EmployeeCategoryRecord, Short> IDENTITY_EMPLOYEE_CATEGORY = createIdentity(EmployeeCategory.EMPLOYEE_CATEGORY, EmployeeCategory.EMPLOYEE_CATEGORY.CATEGORY_ID);
         public static Identity<ShiftRecord, Integer> IDENTITY_SHIFT = createIdentity(Shift.SHIFT, Shift.SHIFT.SHIFT_ID);
         public static Identity<ShiftAssignmentRecord, Integer> IDENTITY_SHIFT_ASSIGNMENT = createIdentity(ShiftAssignment.SHIFT_ASSIGNMENT, ShiftAssignment.SHIFT_ASSIGNMENT.ID);
         public static Identity<ShiftOvertimeRecord, Integer> IDENTITY_SHIFT_OVERTIME = createIdentity(ShiftOvertime.SHIFT_OVERTIME, ShiftOvertime.SHIFT_OVERTIME.ID);
