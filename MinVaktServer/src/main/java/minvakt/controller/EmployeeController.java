@@ -45,7 +45,7 @@ public class EmployeeController {
 
     private final UserDetailsManager userDetailsManager;
 
-    private ShiftController shiftController = new ShiftController(shiftRepo, employeeRepo, shiftAssignmentRepo, changeRequestRepository);
+    private ShiftController shiftController;
 
 
     private String createPassword() {
@@ -54,13 +54,14 @@ public class EmployeeController {
     }
 
     @Autowired
-    public EmployeeController(EmployeeRepository employeeRepo, ShiftRepository shiftRepo, UserDetailsManager userDetailsManager, ShiftAssignmentRepository shiftAssignmentRepo, ChangeRequestRepository changeRequestRepository, CategoryRepository catRepo) {
+    public EmployeeController(EmployeeRepository employeeRepo, ShiftRepository shiftRepo, UserDetailsManager userDetailsManager, ShiftAssignmentRepository shiftAssignmentRepo, ChangeRequestRepository changeRequestRepository, CategoryRepository catRepo, ShiftController shiftController) {
         this.employeeRepo = employeeRepo;
         this.shiftRepo = shiftRepo;
         this.shiftAssignmentRepo = shiftAssignmentRepo;
         this.userDetailsManager = userDetailsManager;
         this.changeRequestRepository = changeRequestRepository;
         this.catRepo = catRepo;
+        this.shiftController = shiftController;
     }
 
     @GetMapping("/current")

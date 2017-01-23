@@ -3,10 +3,7 @@ package minvakt.controller;
 import minvakt.datamodel.tables.pojos.Employee;
 import minvakt.datamodel.tables.pojos.Shift;
 import minvakt.datamodel.tables.pojos.ShiftAssignment;
-import minvakt.repos.ChangeRequestRepository;
-import minvakt.repos.EmployeeRepository;
-import minvakt.repos.ShiftAssignmentRepository;
-import minvakt.repos.ShiftRepository;
+import minvakt.repos.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +27,7 @@ public class ShiftController {
     private EmployeeRepository employeeRepo;
     private ShiftAssignmentRepository shiftAssignmentRepo;
     private ChangeRequestRepository changeRequestRepository;
+    private JooqRepository jooqRepo;
 
 
     @Autowired
@@ -37,18 +35,23 @@ public class ShiftController {
             ShiftRepository shiftRepo,
             EmployeeRepository employeeRepository,
             ShiftAssignmentRepository shiftAssignmentRepo,
-            ChangeRequestRepository changeRequestRepository) {
+            ChangeRequestRepository changeRequestRepository,
+            JooqRepository jooqRepo) {
         this.shiftRepo = shiftRepo;
         this.employeeRepo = employeeRepository;
         this.shiftAssignmentRepo = shiftAssignmentRepo;
         this.changeRequestRepository = changeRequestRepository;
+        this.jooqRepo = jooqRepo;
     }
 
     @GetMapping
-    public Iterable<Shift> getShifts(){
-
+    public Iterable<?> getShifts(@RequestParam(defaultValue = "false") boolean detailed){
+        if(detailed){
+         return jooqRepo.getShiftDetailed();
+        }
         return shiftRepo.findAll();
     }
+
 
     // TODO: 19.01.2017 do this automagically
     @PostMapping
@@ -60,7 +63,6 @@ public class ShiftController {
     public Shift getShift(@PathVariable int shift_id){
 
         return shiftRepo.findOne(shift_id);
-
     }
 
     @GetMapping(value = "/assigned")
@@ -81,9 +83,7 @@ public class ShiftController {
     @Transactional
     public List<Employee> getUsersForShift(@PathVariable int shift_id) {
 
-        Shift shift = shiftRepo.findOne(shift_id);
-
-        return employeeRepo.findByShiftAssignments_Shift(shift);
+        return employeeRepo.findByShiftAssignments_Shift(shift_id);
     }
 
     @PostMapping(value="/{shift_id}/users")
