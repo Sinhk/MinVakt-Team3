@@ -1,8 +1,6 @@
 package minvakt.controller;
 
-import minvakt.datamodel.Employee;
-import minvakt.datamodel.Shift;
-import minvakt.datamodel.enums.PredeterminedIntervals;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,11 +23,13 @@ public class EmployeeControllerTest {
     private EmployeeController mockedEmpCont;
 
     // Employees and Shifts for tests
+    /*
     private Employee emp1, emp2;
     private Shift shift1, shift2;
-
+    */
     @Before
     public void setUp() throws Exception {
+        /*
         // Initialization of Employee objects
         emp1 = new Employee("Bob", "Bobsen", "bob@bob.bob", 12345678, 100);
         emp2 = new Employee("Per", "Persson", "per@sverige.se", 11223344, 50);
@@ -49,6 +49,7 @@ public class EmployeeControllerTest {
         // Assign ID to shifts, needed for tests
         shift1.setShiftId(1);
         shift2.setShiftId(2);
+        */
     }
 
     @After

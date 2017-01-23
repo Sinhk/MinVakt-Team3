@@ -1,8 +1,13 @@
 package minvakt.controller;
 
+import minvakt.datamodel.tables.pojos.Employee;
+import minvakt.datamodel.tables.pojos.Shift;
+
 import minvakt.controller.data.TwoIntData;
 
+import minvakt.repos.ChangeRequestRepository;
 import minvakt.repos.EmployeeRepository;
+import minvakt.repos.ShiftAssignmentRepository;
 import minvakt.repos.ShiftRepository;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,21 +29,20 @@ import static org.mockito.Mockito.*;
  * Created by magnu on 11.01.2017.
  */
 
-import minvakt.datamodel.tables.pojos.Employee;
-import minvakt.datamodel.tables.pojos.Shift;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ShiftControllerTest {
 
-    @InjectMocks
-    private ShiftController shiftController = mock(ShiftController.class);
-
+    private ShiftController shiftController;
 
     @Mock
     private ShiftRepository shiftRepo;
     @Mock
     private EmployeeRepository empRepo;
-
+    @Mock
+    private ShiftAssignmentRepository shiftAssignmentRepo;
+    @Mock
+    private ChangeRequestRepository changeRequestRepository;
 
     // Objects for use in tests
     private Employee employee1, employee2;
@@ -48,8 +52,10 @@ public class ShiftControllerTest {
 
     @Before
     public void setUp() throws Exception {
+        shiftController = new ShiftController(shiftRepo, empRepo, shiftAssignmentRepo, changeRequestRepository);
+
         // Init Mocks
-        MockitoAnnotations.initMocks(this);
+        //MockitoAnnotations.initMocks(this);
 
         // Setup of users for tests
         employee1 = new Employee(1, 1, "Bob", "Bobsen", 12345678, "bob@bob.bob", (short) 100, "123", true, false);
@@ -103,7 +109,7 @@ public class ShiftControllerTest {
         verify(shiftController, atLeastOnce()).getShifts();
 
 
-        /*
+
         // Test if shifts are equal
         assertEquals(shift1, allShifts.get(0));
         assertEquals(shift2, allShifts.get(1));
@@ -114,10 +120,10 @@ public class ShiftControllerTest {
         assertNotEquals(shift2.getShiftId(), allShifts.get(0).getShiftId());
 
         // Test start times and end times
-        assertEquals(shift1.getStartDateTime(), allShifts.get(0).getStartDateTime());
-        assertNotEquals(shift1.getEndDateTime(), allShifts.get(1).getEndDateTime());
+        assertEquals(shift1.getFromTime(), allShifts.get(0).getFromTime());
+        assertNotEquals(shift1.getToTime(), allShifts.get(1).getToTime());
 
-        */
+
     }
 
     @Test
@@ -129,10 +135,10 @@ public class ShiftControllerTest {
         Shift testShift = shiftController.getShift(twoIntThing1.getInt1());
 
         // Verify method use
-        verify(shiftController, atLeastOnce()).getShift(twoIntThing1.getInt1());
+        verify(shiftRepo, atLeastOnce()).findOne(twoIntThing1.getInt1());
 
         // Compare
-        //assertEquals(shift2, testShift);
+        assertEquals(shift2, testShift);
 
     }
 
@@ -144,14 +150,15 @@ public class ShiftControllerTest {
     @Test
     public void addUserToShift() throws Exception {
         // Stubbing methods
-        when(shiftRepo.findOne(twoIntThing2.getInt1())).thenReturn(shift1);
-        when(empRepo.findOne(twoIntThing2.getInt2())).thenReturn(employee1);
+        when(shiftRepo.findOne(1)).thenReturn(shift1);
+        when(empRepo.findOne(1)).thenReturn(employee1);
 
         // Attempt to add user to shift
         shiftController.addUserToShift(1, 1);
 
         // Verify method use
-        verify(shiftController, atLeastOnce()).addUserToShift(1, 1);
+        verify(shiftRepo, atLeastOnce()).findOne(1);
+        verify(empRepo, atLeastOnce()).findOne(1);
 
         // Compare response with expected response (can't directly compare Response)
         /*
