@@ -8,6 +8,18 @@ function getAllShifts(callback) {
 
 }
 
+function getAllAssignedShifts(callback) {
+
+    $.getJSON("/shifts/assigned", function (data) {callback(data)});
+
+}
+
+function getAllNonAssignedShifts(callback) {
+
+    $.getJSON("/shifts/nonassigned", function (data) {callback(data)});
+
+}
+
 function getShiftWithId(id, callback) {
 
     $.getJSON("/shifts/"+id, function(data){callback(data)});

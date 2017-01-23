@@ -67,7 +67,14 @@ public class ShiftController {
     @GetMapping(value = "/assigned")
     public List<Shift> getAllAssignedShifts(){
 
-        return shiftAssignmentRepo.findByAssigned().stream().map(shiftAssignment -> shiftRepo.findOne(shiftAssignment.getShiftId())).collect(Collectors.toList());
+        return shiftAssignmentRepo.findByAssignedTrue().stream().map(shiftAssignment -> shiftRepo.findOne(shiftAssignment.getShiftId())).collect(Collectors.toList());
+
+    }
+
+    @GetMapping(value = "/nonassigned")
+    public List<Shift> getAllNonAssignedShifts(){
+
+        return shiftAssignmentRepo.findByAssignedFalse().stream().map(shiftAssignment -> shiftRepo.findOne(shiftAssignment.getShiftId())).collect(Collectors.toList());
 
     }
 
@@ -78,15 +85,6 @@ public class ShiftController {
         Shift shift = shiftRepo.findOne(shift_id);
 
         return employeeRepo.findByShiftAssignments_Shift(shift);
-    }
-
-    @GetMapping("/currentUser")
-    public List<Shift> getAllShiftsForCurrentUser(){
-
-        UserDetails details = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Employee user = employeeRepo.findByEmail(details.getUsername());
-
-        return shiftRepo.findByShiftAssignments_Employee_id(user.getEmployeeId());
     }
 
     @PostMapping(value="/{shift_id}/users")
@@ -100,6 +98,37 @@ public class ShiftController {
         assignment.setShiftId(shift_id);
         assignment.setAbsent(false);
         shiftAssignmentRepo.save(assignment);
+    }
+
+    @GetMapping(value = "/{shift_id}/users/{user_id}/assigned")
+    @Transactional
+    public boolean getUserIsAssignedForShift(@PathVariable int shift_id, @PathVariable int user_id) {
+
+        return shiftAssignmentRepo.findByShiftIdAndEmployeeId(shift_id, user_id).filter(ShiftAssignment::getAssigned).isPresent();
+
+    }
+
+    @PutMapping(value = "/{shift_id}/users/{user_id}/assigned")
+    @Transactional
+    public boolean setUserAssignedForShift(@PathVariable int shift_id, @PathVariable int user_id) {
+
+        Optional<ShiftAssignment> byShiftIdAndEmployeeId = shiftAssignmentRepo.findByShiftIdAndEmployeeId(shift_id, user_id);
+
+        if (byShiftIdAndEmployeeId.isPresent()) {
+
+            byShiftIdAndEmployeeId.get().setAssigned(true);
+            return true;
+        }
+        return false;
+    }
+
+    @GetMapping("/currentUser")
+    public List<Shift> getAllShiftsForCurrentUser(){
+
+        UserDetails details = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Employee user = employeeRepo.findByEmail(details.getUsername());
+
+        return shiftRepo.findByShiftAssignments_Employee_id(user.getEmployeeId());
     }
 
     @GetMapping(value = "/{shift_id}/details") // TODO: 19-Jan-17 query
@@ -277,7 +306,7 @@ public class ShiftController {
     @PutMapping(value = "/{shift_id}/users/{user_id}")
     public void changeShiftFromUserToUser(@PathVariable int shift_id, @PathVariable int user_id, @RequestBody int toUser_id){
 
-        Optional<ShiftAssignment> assignment = shiftAssignmentRepo.getByShiftIdAndEmployeeId(shift_id, user_id);
+        Optional<ShiftAssignment> assignment = shiftAssignmentRepo.findByShiftIdAndEmployeeId(shift_id, user_id);
         assignment.ifPresent(a -> {
             a.setEmployeeId(toUser_id);
             shiftAssignmentRepo.save(a);

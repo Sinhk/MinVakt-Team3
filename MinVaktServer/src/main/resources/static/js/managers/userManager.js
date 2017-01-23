@@ -39,7 +39,6 @@ function removeUser(user_id, callback) {
             console.log("Error: " + data);
         }
     });
-
 }
 
 function getUserById(user_id, callback) {

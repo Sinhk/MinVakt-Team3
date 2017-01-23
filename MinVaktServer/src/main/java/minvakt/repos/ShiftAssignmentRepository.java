@@ -8,9 +8,11 @@ import java.util.Optional;
 
 public interface ShiftAssignmentRepository extends JpaRepository<ShiftAssignment, Integer> {
 
-    Optional<ShiftAssignment> getByShiftIdAndEmployeeId(int shift_id, int user_id);
+    Optional<ShiftAssignment> findByShiftIdAndEmployeeId(int shift_id, int user_id);
 
     List<ShiftAssignment> findByShiftId(int shift_id);
 
-    List<ShiftAssignment> findByAssigned();
+    List<ShiftAssignment> findByAssignedTrue();
+
+    List<ShiftAssignment> findByAssignedFalse();
 }
