@@ -126,6 +126,14 @@ function getShiftsInRangeForUser(user_id, startDate, endDate, callback) {
     $.getJSON("/users/"+user_id+"/shifts/inrange?startDate="+startDate+"&endDate="+endDate, function(){callback(data)});
 
 }
+
+function getAssignedShiftsForUser(user_id, callback) {
+
+    $.getJSON("/users/"+user_id+"/shifts/assigned", function (data) {
+        callback(data);
+    });
+
+}
 function getScheduledShiftsForCurrentUser(callback) {
     $.getJSON("/users/scheduled", function (data) {
         console.log(data);
@@ -140,6 +148,7 @@ function getUsersThatCanBeResponsibleForShift(shift_id, callback) {
     $.getJSON("users/"+shift_id+"/responsible", function(data){callback(data)});
 
 }
+
 
 function getHoursThisWeekForUser(user_id, callback) {
 

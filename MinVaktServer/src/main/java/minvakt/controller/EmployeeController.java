@@ -170,6 +170,13 @@ public class EmployeeController {
         return shiftRepo.findByShiftAssignments_Employee_id(user_id);
     }
 
+    @GetMapping(value = "/{user_id}/shifts/assigned")
+    public Collection<Shift> getAssignedShiftsForUser(@PathVariable int user_id){
+
+        return shiftAssignmentRepo.findByAssignedTrue().stream().filter(shiftAssignment -> shiftAssignment.getEmployeeId() == user_id).map(shiftAssignment -> shiftRepo.findOne(shiftAssignment.getShiftId())).collect(Collectors.toList());
+
+    }
+
     // FIXME: 15.01.2017
     @RequestMapping("/{user_id}/shifts/inrange/")
     @GetMapping

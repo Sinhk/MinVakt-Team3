@@ -36,10 +36,10 @@ $(document).ready(function () { // document ready
             list: 'Liste'
         },
         resourceLabelText: 'Ansatte',
-        resources: function (callback) {
-            $.getJSON("/users/resource", function (res) {
-                callback(res)
-            });
+        resources: function(callback){
+            getUsersAndCreateResourceList(function (data) {
+                callback(data);
+            })
         },
 
         eventClick: function (event, jsEvent, view) {
@@ -65,16 +65,10 @@ $(document).ready(function () { // document ready
         for (var i = 0; i < users.length; i++) {
 
             const user = users[i];
-            console.log(user)
-            var resource = {
-                id: user.employeeId,
-                title: user.firstName + " " + user.lastName,
-            }
 
             //$('#calendar').fullCalendar('addResource', resource)
 
-            getShiftsForUser(user.employeeId, function (shiftsForUser) {
-
+            getAssignedShiftsForUser(user.employeeId, function (shiftsForUser) {
 
                 for (var i = 0; i < shiftsForUser.length; i++) {
 
@@ -82,19 +76,27 @@ $(document).ready(function () { // document ready
 
                     console.log(shift);
 
-                    const event = {
+                    userIsResponsibleForShift(shift.shiftId, user.employeeId, function (responsible) {
 
-                        id: shift.shiftId,
-                        resourceId: user.employeeId,
-                        start: shift.fromTime.split("T")[0],
-                        end: shift.toTime.split("T")[0],
-                        title: shift.fromTime.split("T")[1].substr(0, 5) + " - " + shift.toTime.split("T")[1].substr(0, 5),
 
-                        stick: true
+                        const event = {
 
-                    }
+                            id: shift.shiftId,
+                            resourceId: user.employeeId,
+                            start: shift.fromTime.split("T")[0],
+                            end: shift.toTime.split("T")[0],
+                            title: shift.fromTime.split("T")[1].substr(0, 5) + " - " + shift.toTime.split("T")[1].substr(0, 5),
 
-                    $('#calendar').fullCalendar('renderEvent', event, true);
+                            backgroundColor: responsible ? "#03a9f4" : "#4caf50",
+
+                            stick: true
+
+                        }
+
+                        $('#calendar').fullCalendar('renderEvent', event, true);
+                    })
+
+
                 }
 
 
@@ -149,4 +151,28 @@ $(document).ready(function () { // document ready
         }
     })*/
 });
+
+function getUsersAndCreateResourceList(callback) {
+
+    const res = [];
+
+    getAllUsers(function (users) {
+
+        for (var i = 0; i < users.length; i++) {
+
+            const user = users[i];
+
+            res.push({
+                id: user.employeeId,
+                title: user.firstName + " " + user.lastName,
+            })
+
+        }
+        callback(res);
+
+
+    })
+
+}
+
 

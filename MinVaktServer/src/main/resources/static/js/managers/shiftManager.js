@@ -133,48 +133,33 @@ function setStatusForShiftAndUser(shift_id, user_id, status) {
 
 }
 
-function userIsResponsibleForShift(shift_id, user_id) {
+function userIsResponsibleForShift(shift_id, user_id, callback) {
 
-    var isResponsible;
+    getResponsibleUserForShift(shift_id, function (res) {
 
-    $.ajax({
-        async: false,
-        url: "shifts/"+shift_id+"/"+user_id+"/responsible",
-        type: "GET",
-        contentType: "Application/JSON",
+        callback(res.employeeId == user_id);
 
-        success: function (data) {
+    })
 
-            isResponsible = data;
-        },
-        error: function (data) {
-            console.log("Error: "+data);
-        }
-    });
-    return isResponsible;
 
 }
 
-function getResponsibleUserForShift(shift_id) {
+function getResponsibleUserForShift(shift_id, callback) {
 
-
-    var isResponsible;
 
     $.ajax({
-        async: false,
         url: "shifts/"+shift_id+"/responsible",
         type: "GET",
         contentType: "Application/JSON",
 
         success: function (data) {
 
-            isResponsible = data;
+            callback(data)
         },
         error: function (data) {
             console.log("Error: "+data);
         }
     });
-    return isResponsible;
 
 }
 
