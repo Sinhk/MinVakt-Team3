@@ -4,8 +4,8 @@ DROP TABLE IF EXISTS shift_assignment;
 DROP TABLE IF EXISTS department_required_employees_per_category;
 DROP TABLE IF EXISTS department_required_per_shift;
 DROP TABLE IF EXISTS change_request;
-DROP TABLE IF EXISTS employee;
 DROP TABLE IF EXISTS shift;
+DROP TABLE IF EXISTS employee;
 DROP TABLE IF EXISTS employee_category;
 DROP TABLE IF EXISTS department;
 
@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS shift (
 CREATE TABLE IF NOT EXISTS shift_assignment (
   shift_id            INT                 NOT NULL,
   employee_id         INT                 NOT NULL,
-  absent              BOOL                NOT NULL,
+  absent              BOOL                NOT NULL DEFAULT FALSE,
   assigned            BOOL                NOT NULL DEFAULT FALSE,
   comment_for_absence VARCHAR(100),
   CONSTRAINT shift_assignment_pk PRIMARY KEY (employee_id, shift_id),
@@ -70,8 +70,8 @@ CREATE TABLE IF NOT EXISTS change_request (
 );
 
 CREATE TABLE IF NOT EXISTS department (
-  department_id   INT         NOT NULL PRIMARY KEY AUTO_INCREMENT,
-  department_name VARCHAR(30) NOT NULL
+  department_id   TINYINT         NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  department_name VARCHAR(30)     NOT NULL
 );
 
 /*
@@ -85,12 +85,12 @@ CREATE TABLE IF NOT EXISTS shift_department (
 */
 
 CREATE TABLE IF NOT EXISTS department_required_employees_per_category (
-  department_id   TINYINT     NOT NULL,
-  category_id     TINYINT     NOT NULL,
+  department_id   TINYINT       NOT NULL,
+  category_id     TINYINT       NOT NULL,
   amount          MEDIUMINT     NOT NULL,
   CONSTRAINT department_required_employees_pk PRIMARY KEY (department_id, category_id),
   CONSTRAINT department_required_employees_department_id_fk FOREIGN KEY (department_id) REFERENCES department (department_id),
-  CONSTRAINT department_required_employees_category_id_fk FOREIGN KEY (category_id) REFERENCES category (category_id)
+  CONSTRAINT department_required_employees_category_id_fk FOREIGN KEY (category_id) REFERENCES employee_category (category_id)
 );
 
 CREATE TABLE IF NOT EXISTS department_required_per_shift (
@@ -143,10 +143,10 @@ INSERT INTO shift (responsible_employee_id, from_time, to_time) VALUES (5, '2017
 INSERT INTO shift (responsible_employee_id, from_time, to_time) VALUES (4, '2017-01-18 14:00', '2017-01-18 22:00');
 INSERT INTO shift (responsible_employee_id, from_time, to_time) VALUES (6, '2017-01-18 22:00', '2017-01-19 06:00');
 
-INSERT INTO shift_assignment (shift_id, employee_id, responsible) VALUES (1, 2, FALSE);
-INSERT INTO shift_assignment (shift_id, employee_id, responsible) VALUES (1, 3, FALSE);
-INSERT INTO shift_assignment (shift_id, employee_id, responsible) VALUES (2, 4, FALSE);
-INSERT INTO shift_assignment (shift_id, employee_id, responsible) VALUES (2, 5, FALSE);
+INSERT INTO shift_assignment (shift_id, employee_id) VALUES (1, 2);
+INSERT INTO shift_assignment (shift_id, employee_id) VALUES (1, 3);
+INSERT INTO shift_assignment (shift_id, employee_id) VALUES (2, 4);
+INSERT INTO shift_assignment (shift_id, employee_id) VALUES (2, 5);
 
 INSERT INTO department (department_name) VALUES ('etg1');
 INSERT INTO department (department_name) VALUES ('etg2');
@@ -162,13 +162,13 @@ INSERT INTO shift_department (shift_id, department_id) VALUES (6, 3);
 */
 
 INSERT INTO shift_overtime (shift_id, employee_id, minutes) VALUES (1, 3, 60);
-INSERT INTO shift_overtime (shift_id, employee_id, minutes) VALUES (4, 5, 75);
+INSERT INTO shift_overtime (shift_id, employee_id, minutes) VALUES (2, 5, 75);
 
 INSERT INTO change_request (shift_id, old_employee_id, new_employee_id) VALUES (2, 3, 4);
 
 INSERT INTO department_required_employees_per_category (department_id, category_id, amount) VALUES (1, 2, 3);
 INSERT INTO department_required_employees_per_category (department_id, category_id, amount) VALUES (2, 2, 3);
-INSERT INTO department_required_employees_per_category (department_id, category_id, amount) VALUES (2, 2, 3);
+INSERT INTO department_required_employees_per_category (department_id, category_id, amount) VALUES (3, 2, 3);
 
 INSERT INTO department_required_per_shift (department_id, shift_id, amount) VALUES (1, 1, 10);
 INSERT INTO department_required_per_shift (department_id, shift_id, amount) VALUES (2, 1, 10);
