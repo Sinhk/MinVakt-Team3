@@ -8,7 +8,7 @@ $(document).ready(function() {
         swal({
             title: "Passord sendt!",
             type: "success",
-            closeOnConfirm:true,
+            closeOnConfirm: true,
             animation: "slide-from-top",
             confirmButtonText: "Ok"
         });

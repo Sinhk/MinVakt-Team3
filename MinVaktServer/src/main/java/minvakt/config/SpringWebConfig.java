@@ -184,6 +184,8 @@ public class SpringWebConfig
         registry.addViewController("/tilgjengelighet").setViewName("availability");
         registry.addViewController("/changeShift").setViewName("changeShift");
         registry.addViewController("/absence").setViewName("absence");
+        registry.addViewController("/endreBruker").setViewName("changeUser");
+        registry.addViewController("/endrePassord").setViewName("changePassword");
         registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
     }
 

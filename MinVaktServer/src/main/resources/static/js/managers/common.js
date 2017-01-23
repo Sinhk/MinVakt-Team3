@@ -4,4 +4,5 @@ $(document).ready(function () {
         edge: 'right'
     }, $("#slide-out").removeClass('hide'));
 
+
 });
