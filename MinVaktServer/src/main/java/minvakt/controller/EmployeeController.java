@@ -177,8 +177,7 @@ public class EmployeeController {
     }
 
     // FIXME: 15.01.2017
-    @RequestMapping("/{user_id}/shifts/inrange/")
-    @GetMapping
+    @GetMapping("/{user_id}/shifts/inrange/")
     public Collection<Shift> getShiftsForUserInRange(@PathVariable int user_id, @RequestParam String startDate, @RequestParam String endDate){
 
         LocalDate start = LocalDate.parse(startDate);
@@ -195,45 +194,6 @@ public class EmployeeController {
 
         return shiftList;
     }
-
-   /* @Transactional
-    @PostMapping
-    @RequestMapping(value = "/{user_id}/shifts/{shift_id}", method = RequestMethod.POST)
-    public Response addShiftToUser(@PathVariable(value = "user_id") int userId, @PathVariable(value = "shift_id") int shiftId) {
-
-        Employee employee = employeeRepo.findOne(userId);
-
-        Shift shift = shiftRepo.findOne(shiftId);
-
-        ShiftAssignment shiftAssignment = new ShiftAssignment(shift, employee);
-
-        employee.getShiftAssignments().add(shiftAssignment);
-
-        employeeRepo.save(employee);
-
-        return Response.noContent().build();
-    }*/
-
-    /*@Transactional
-    @DeleteMapping
-    @RequestMapping(value = "/{user_id}/shifts/{shift_id}", method = RequestMethod.DELETE)
-    public Response removeShiftFromUser(@PathVariable(value = "user_id") String userId, @PathVariable(value = "shift_id") String shiftId) {
-
-        Employee employee = employeeRepo.findOne(Integer.valueOf(userId));
-
-        Shift shift = shiftRepo.findOne(Integer.valueOf(shiftId));
-
-        Optional<ShiftAssignment> first = employee.getShiftAssignments()
-                .stream()
-                .filter(shiftAssignment -> shiftAssignment.getShift() == shift)
-                .findFirst();
-
-        first.ifPresent(employee.getShiftAssignments()::remove);
-
-        employeeRepo.save(employee);
-
-        return Response.noContent().build();
-    }*/
 
 
     /*// TODO: 19-Jan-17 EmployeeCategory, todo filtre ordentlig
@@ -275,12 +235,10 @@ public class EmployeeController {
 
     }*/
 
-    @GetMapping
-    @RequestMapping(value = "/{email}/category", method = RequestMethod.GET)
+    @GetMapping(value = "/{email}/category")
     public EmployeeCategory getCategory(@PathVariable(value = "email") String email) {
 
         Employee employee = employeeRepo.findByEmail(email);
-
 
         return catRepo.findOne(employee.getCategoryId());
     }
@@ -306,7 +264,7 @@ public class EmployeeController {
                 .sum();
 
     }
-    @RequestMapping(value = "/{email}/getNewPassword", method = RequestMethod.PUT)
+    @PutMapping(value = "/{email}/getNewPassword")
     public void sendNewPassword(@PathVariable(value = "email") String email) {
         String password = createPassword();
         /// TODO: 20.01.2017 SendMail
