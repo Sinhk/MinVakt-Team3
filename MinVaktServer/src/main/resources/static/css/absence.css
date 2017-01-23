@@ -10,8 +10,7 @@
 }
 
 .selected {
-    background-color: #64b5f6;
-    color: white;
+    color: black;
 }
 
 #table1 {
@@ -20,7 +19,7 @@
 }
 
 #table1 td:hover {
-    background: #eee;
+
 }
 
 #table1 td {
