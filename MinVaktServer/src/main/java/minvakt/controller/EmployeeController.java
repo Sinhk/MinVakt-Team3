@@ -20,7 +20,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.provisioning.UserDetailsManager;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.ws.rs.core.Response;
@@ -235,20 +234,6 @@ public class EmployeeController {
 
         return Response.noContent().build();
     }*/
-
-
-    // TODO: 19-Jan-17 fix
-    @GetMapping
-    @RequestMapping("/scheduled")
-    @Transactional
-    public List<Shift> getScheduledShiftsForUser() {
-
-        UserDetails details = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        Employee user = employeeRepo.findByEmail(details.getUsername());
-
-        return shiftRepo.findByShiftAssignments_Employee_id(user.getEmployeeId());
-    }
 
 
     /*// TODO: 19-Jan-17 EmployeeCategory, todo filtre ordentlig

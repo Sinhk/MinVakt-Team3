@@ -93,45 +93,6 @@ function getAvailableShifts(callback) {
 }
 
 
-function getStatusForShiftAndUser(shift_id, user_id) {
-
-    var status;
-
-    $.ajax({
-        async:false,
-        url: "shifts/"+shift_id+"/"+user_id+"/status",
-        type: "GET",
-        contentType: "Application/JSON",
-
-        success: function (data) {
-
-            status = data;
-        },
-        error: function (data) {
-            console.log("Error: "+data);
-        }
-    });
-    return status;
-
-}
-function setStatusForShiftAndUser(shift_id, user_id, status) {
-
-
-    $.ajax({
-        url: "shifts/"+shift_id+"/"+user_id+"/status",
-        type: "PUT",
-        contentType: "text/plain",
-        data: status,
-
-        success: function (data) {
-            console.log("Success: "+data);
-        },
-        error: function (data) {
-            console.log("Error: "+data);
-        }
-    });
-
-}
 
 function userIsResponsibleForShift(shift_id, user_id, callback) {
 
@@ -171,9 +132,10 @@ function getResponsibleUsersForShifts(shifts) {
 
         var employeeShifts = shifts[i];
 
-        for(var i = 0; i < employeeShifts.length; i++) {
-            list.push(getResponsibleUserForShift(employeeShifts[i].shiftId));
-            console.log(employeeShifts[i]);
+        for(var j = 0; j < employeeShifts.length; j++) {
+            getResponsibleUserForShift(employeeShifts[j].shiftId, function (user) {
+                list.push(user);
+            });
         }
 
     }
@@ -182,7 +144,6 @@ function getResponsibleUsersForShifts(shifts) {
 }
 
 function setResponsibleUserForShift(shift_id, user_id, boolean) {
-
 
     $.ajax({
         async: false,
@@ -269,39 +230,7 @@ function eventIsAvailable(event_id) {
     });
     return is;
 }
-function getShiftsWithRequestChange(callback) {
-    $.ajax({
-        url: "shifts/requestchange",
-        type: "GET",
 
-        success: function (data) {
-            console.log("Success: "+JSON.stringify(data));
-            callback(data);
-        },
-
-        error: function (data) {
-            console.log("Error: "+JSON.stringify(data));
-        }
-    });
-}
-
-function requestChange(shift_id, user1_id, user2_id) {
-
-    $.ajax({
-        async: false,
-        url: "/"+shift_id+"/users/"+user1_id+"/requestchange/"+user2_id,
-        type: "POST",
-
-        success: function (data) {
-            console.log("Success: "+JSON.stringify(data));
-        },
-
-        error: function (data) {
-            console.log("Error: "+JSON.stringify(data));
-        }
-    });
-
-}
 function getAvaiableShifts() {
 
     var list;
@@ -333,10 +262,12 @@ function getAllSuitableShifts(callback) {
 
 function getAllShiftForCurrentUser(callback) {
 
+    getCurrentUserId(function (id) {
 
-    $.getJSON("/shifts/currentUser", function (data) {
-        callback(data);
+        getShiftsForUser(id, function (shifts) {
+
+            callback(shifts);
+
+        })
     })
-
-
 }

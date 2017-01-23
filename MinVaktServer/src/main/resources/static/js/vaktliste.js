@@ -46,10 +46,14 @@ $(document).ready(function () { // document ready
 
             var eventId = event.id;
 
-            var eventDB = getEventViaID(eventId);
+            getShiftWithId(eventId, function (shift) {
 
-            console.log(eventDB);
-            console.log(event);
+                console.log(shift);
+                console.log(event);
+
+            })
+
+
 
         },
 

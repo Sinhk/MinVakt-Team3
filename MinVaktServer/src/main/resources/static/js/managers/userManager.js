@@ -17,8 +17,6 @@ function getCurrentUserId(callback) {
             console.log("Error: " + data);
         }
     });
-
-
 }
 
 function getAllUsers(callback) {
@@ -62,7 +60,6 @@ function removeUser(user_id, callback) {
 function getUserById(user_id, callback) {
 
     $.getJSON("/users/"+user_id, function(data){callback(data)});
-
 
 }
 
@@ -135,11 +132,15 @@ function getAssignedShiftsForUser(user_id, callback) {
 
 }
 function getScheduledShiftsForCurrentUser(callback) {
-    $.getJSON("/users/scheduled", function (data) {
-        console.log(data);
-        callback(data);
-    });
-    //$.getJSON("/users/scheduled", callback(data));
+
+    getCurrentUserId(function (id) {
+
+        getAssignedShiftsForUser(id, function (assignedShifts) {
+
+            callback(assignedShifts);
+
+        })
+    })
 
 }
 

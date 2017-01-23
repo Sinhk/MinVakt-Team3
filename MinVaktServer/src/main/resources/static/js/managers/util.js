@@ -37,22 +37,24 @@ function toFullCalendarEventWithResource(event, resource) {
     var dateStart = new Date(start);
     var dateEnd = new Date(end);
     var available = eventIsAvailable(event.shiftId);
-    var responsible = getResponsibleUserForShift(event.shiftId);
-    console.log();
-    //console.log("responsible: "+JSON.stringify(responsible));
-    //console.log("Avdeling: "+event.comments);
-    return {
-        id: event.shiftId || 0,
-        title: start.split("T")[1].substr(0,3) + " -> " + end.split("T")[1].substr(0,3),
-        start: dateStart,
-        end: dateEnd,
-        resourceId: resource.id,
-        backgroundColor: responsible != undefined && responsible.employeeId == resource.id ? "#9B0300" : available ? "#3E9B85" : "#3F7F9B",
-        isResponsible: responsible,
-        available: available,
+    getResponsibleUserForShift(event.shiftId, function (responsible) {
+        console.log();
+        //console.log("responsible: "+JSON.stringify(responsible));
+        //console.log("Avdeling: "+event.comments);
+        return {
+            id: event.shiftId || 0,
+            title: start.split("T")[1].substr(0,3) + " -> " + end.split("T")[1].substr(0,3),
+            start: dateStart,
+            end: dateEnd,
+            resourceId: resource.id,
+            backgroundColor: responsible != undefined && responsible.employeeId == resource.id ? "#9B0300" : available ? "#3E9B85" : "#3F7F9B",
+            isResponsible: responsible,
+            available: available,
 
-        //backgroundColor: event.responsible != undefined && event.responsible.employeeId == resource.id ? "#9B0300" : "#3E9B85"
-    };
+            //backgroundColor: event.responsible != undefined && event.responsible.employeeId == resource.id ? "#9B0300" : "#3E9B85"
+        };
+    });
+
 }
 
 function toFullCalendarEvent(event) {
@@ -69,23 +71,24 @@ function toFullCalendarEvent(event) {
 
 
         var available = eventIsAvailable(event.shiftId);
-        var responsible = getResponsibleUserForShift(event.shiftId);
+        getResponsibleUserForShift(event.shiftId, function (responsible) {
 
-        console.log(start+" - "+end+" - "+dateStart+" - "+dateEnd+" - "+available+" - "+responsible)
+            console.log(start+" - "+end+" - "+dateStart+" - "+dateEnd+" - "+available+" - "+responsible)
 
-        //console.log("Avdeling: "+event.comments);
+            //console.log("Avdeling: "+event.comments);
 
-        return {
-            id: event.shiftId,
-            title: start.split("T")[1].substr(0, 3) + " -> " + end.split("T")[1].substr(0, 3),
-            start: dateStart,
-            end: dateEnd,
-            status: event.status,
-            backgroundColor: available ? "#9B0300" : "#3E9B85",
-            available: available,
-            avdeling: event.comments,
-            isResponsible: responsible != undefined ? responsible.firstName + " " + responsible.lastName : ""
-        };
+            return {
+                id: event.shiftId,
+                title: start.split("T")[1].substr(0, 3) + " -> " + end.split("T")[1].substr(0, 3),
+                start: dateStart,
+                end: dateEnd,
+                status: event.status,
+                backgroundColor: available ? "#9B0300" : "#3E9B85",
+                available: available,
+                avdeling: event.comments,
+                isResponsible: responsible != undefined ? responsible.firstName + " " + responsible.lastName : ""
+            };
+        });
     }
 }
 
@@ -115,47 +118,6 @@ function listToFullCalendarEventList(events, resourceList) {
     }
 
     return list;
-}
-
-function getEventViaID(id) {
-
-    var event;
-
-    $.ajax({
-        async: false,
-        url: "/shifts/" + id,
-        type: "GET",
-        contentType: "Application/JSON",
-
-        success: function (data) {
-            //console.log("Success: /shifts/id.GET" + data);
-
-            event = data;
-        },
-        error: function (data) {
-            console.log("Error: " + data);
-        }
-
-    });
-    return event;
-
-}
-
-function getAllEmployees(callback) {
-
-    $.ajax({
-        url: "/users/",
-        type: "GET",
-        contentType: "Application/JSON",
-
-        success: function (data) {
-            console.log("Success: /users.GET");
-            callback(data);
-        },
-        error: function (data) {
-            console.log("Error: "+data);
-        }
-    });
 }
 
 function userListToResourceList(userlist) {
