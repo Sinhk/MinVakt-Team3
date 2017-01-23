@@ -42,7 +42,7 @@ $(document).ready(function(){
             function(inputValue){
                 if (inputValue === false) return false;
                 if (inputValue === "") {
-                    swal.showInputError("Du må skrive noe :(");
+                    swal.showInputError("Du må skrive noe");
                     return false
                 }
                 swal("Kommentar sendt", "Du skrev: " + inputValue, "success");

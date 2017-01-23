@@ -18,7 +18,7 @@ $(document).ready(function(){
                         "<tr>" +
                         "<td>" + employee.firstName + "</td>" +
                         "<td>" + employee.lastName + "</td>" +
-                        "<td>" + category.categoryName+ "</td>" +
+                        "<td>" + category.categoryName + "</td>" +
                         "<td>" + employee.positionPercentage + "%</td>" +
                         "<td>" + employee.phone + "</td>" +
                         "<td>" + hours + " timer</td>" +

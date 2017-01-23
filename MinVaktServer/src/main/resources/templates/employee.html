@@ -15,15 +15,12 @@
 
 <div id="nav" th:replace="fragments/header :: header"></div>
 <main>
-    <div>
-        <a th:href="@{/ansatte/ny}" class="btn-flat btn-small white waves-effect waves-light" id="myButton"><i class="material-icons" >person_add</i></a>
-    </div>
-
     <div id="search">
         <form class="search-container">
             <input type="text" id="search-bar" onkeyup="myFunction()" placeholder="Søk"><i class="material-icons" id="icon">search</i>
         </form>
     </div>
+
 
     <table id="myTable" class="tablesorter">
         <thead>
@@ -43,6 +40,11 @@
 
         </tbody>
     </table>
+
+    <div>
+        <a th:href="@{/ansatte/ny}" class="waves-effect waves-light btn blue lighten-2" id="myButton">Legg til bruker</a>
+    </div>
+
 </main>
 
 <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js' integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
