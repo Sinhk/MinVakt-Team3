@@ -26,14 +26,13 @@ function getAllUsers(callback) {
     $.getJSON("/users", function(data){callback(data)});
 
 }
-function addUser(jsonUser, category_id, callback) {
+function addUser(jsonUser, callback) {
 
     $.ajax({
         url: "/users",
         type: "POST",
         contentType: "Application/JSON",
         data: jsonUser,
-        data2: category_id,
         success: function (data) {
 
             callback(data);

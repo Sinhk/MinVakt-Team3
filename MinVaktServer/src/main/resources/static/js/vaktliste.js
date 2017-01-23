@@ -36,11 +36,11 @@ $(document).ready(function () { // document ready
             list: 'Liste'
         },
         resourceLabelText: 'Ansatte',
-        /*resources: function (callback) {
+        resources: function (callback) {
             $.getJSON("/users/resource", function (res) {
                 callback(res)
             });
-        },*/
+        },
 
         eventClick: function (event, jsEvent, view) {
 
@@ -60,7 +60,6 @@ $(document).ready(function () { // document ready
         }
     });
 
-
     getAllUsers(function (users) {
 
         for (var i = 0; i < users.length; i++) {
@@ -72,7 +71,7 @@ $(document).ready(function () { // document ready
                 title: user.firstName + " " + user.lastName,
             }
 
-            $('#calendar').fullCalendar('addResource', resource)
+            //$('#calendar').fullCalendar('addResource', resource)
 
             getShiftsForUser(user.employeeId, function (shiftsForUser) {
 

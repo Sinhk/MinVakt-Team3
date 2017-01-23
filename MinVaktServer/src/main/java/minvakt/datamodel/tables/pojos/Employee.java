@@ -38,9 +38,9 @@ public class Employee implements Serializable {
     @JsonIgnore
     private String  passwd;
     @JsonIgnore
-    private Boolean enabled;
+    private Boolean enabled = true;
     @JsonIgnore
-    private Boolean changePwOnLogon;
+    private Boolean changePwOnLogon = false;
 
     public Employee() {}
 

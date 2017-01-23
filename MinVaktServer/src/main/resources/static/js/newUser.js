@@ -9,13 +9,18 @@ $(document).ready(function () {
         var positionPercentage = $("#positionPercentage").val();
         var category = $("#category-box").val();
 
+        console.log(category);
+
         addUser(JSON.stringify({
             "firstName": first_name,
             "lastName": last_name,
             "email": email,
             "phone": phone,
-            "positionPercentage": positionPercentage
-        }), category, function (data) {
+            "positionPercentage": positionPercentage,
+            "categoryId": category
+        }), function (data) {
+
+            console.log(data);
 
             swal({
                 title: "Fullført!",

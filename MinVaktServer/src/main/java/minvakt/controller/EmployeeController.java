@@ -14,7 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -88,10 +87,9 @@ public class EmployeeController {
     }
 
     @PostMapping()
-    @Secured({"ROLE_ADMIN"})
-    public String addEmployee(@RequestBody Employee employee, @RequestBody int category_id) {
-        System.out.println(employee+" |- "+category_id);
-        employee.setCategoryId((short) category_id);
+    //@Secured({"ROLE_ADMIN"})
+    public String addEmployee(@RequestBody Employee employee) {
+
         String password = createPassword();
         log.info("Generated password: {}", password);
         // TODO: 16-Jan-17 send email
