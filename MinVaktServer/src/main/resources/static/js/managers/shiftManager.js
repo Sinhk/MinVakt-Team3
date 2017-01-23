@@ -19,6 +19,7 @@ function addShift(dateinfo, callback) {
     $.ajax({
         url: "/shifts",
         type: "POST",
+        contentType: "Application/JSON",
         data: dateinfo,
         success: function (data) {
             callback(data);

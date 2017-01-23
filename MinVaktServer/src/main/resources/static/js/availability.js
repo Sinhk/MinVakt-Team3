@@ -3,11 +3,14 @@
  */
 $(document).ready(function(){
 
-    /*for(var i = 0; i<330; i++){
+    for(var i = 0; i<330; i++){
 
         var day = (17+i)%29;
         var date = (day+1) >= 10 ? (day+1) : "0"+(day+1)
+
+        addShift()
         $.ajax({
+
             url: "/shifts",
             type: "POST",
             contentType: "application/json",
@@ -24,7 +27,7 @@ $(document).ready(function(){
                 "endMin": "00",
             }),
             success: function () {
-                console.log("Added shif");
+                console.log("Added shift");
             }
         });
 
@@ -45,7 +48,7 @@ $(document).ready(function(){
                 "endMin": "00",
             }),
             success: function () {
-                console.log("Added shif");
+                console.log("Added shift");
             }
         });
         $.ajax({
@@ -65,11 +68,11 @@ $(document).ready(function(){
                 "endMin": "00"
             }),
             success: function () {
-                console.log("Added shif");
+                console.log("Added shift");
             }
         });
 
-    }*/
+    }
 
 
     // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered

@@ -1,6 +1,6 @@
 $(document).ready(function() { // document ready
 
-    getAllUsers(function (employees) {
+    /*getAllUsers(function (employees) {*/
 
         /*var events = getShiftsByEmployee(employees);
         var resourceList = userListToResourceList(employees);*/
@@ -50,9 +50,7 @@ $(document).ready(function() { // document ready
 
     });
 */
-    getAllShifts(function (events) {
-        $('#calendar').fullCalendar('addEventSource', listToFullCalendarEventList(events, $('#calendar').fullCalendar().resources));
-    });
+
 
         $('#calendar').fullCalendar({
             schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
@@ -96,6 +94,13 @@ $(document).ready(function() { // document ready
                 });
             },
 
+            events: function(callback) {
+                getAllShifts(function (events) {
+                    callback(listToFullCalendarEventList(events, $('#calendar').fullCalendar().resources));
+                });
+            },
+
+
             eventClick: function( event, jsEvent, view ) {
 
                 var eventId = event.id;
@@ -112,5 +117,8 @@ $(document).ready(function() { // document ready
                     "\nEnd date: " + moment(end).format());
             }
         })
+
     })
+/*
 });
+*/

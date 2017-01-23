@@ -30,6 +30,7 @@ public class ShiftAssignment implements Serializable {
     private Integer shiftId;
     private Integer employeeId;
     private Boolean absent = false;
+    private Boolean assigned = false;
     private String  commentForAbsence = "";
 
     public ShiftAssignment() {}
@@ -101,6 +102,15 @@ public class ShiftAssignment implements Serializable {
 
     public void setCommentForAbsence(String commentForAbsence) {
         this.commentForAbsence = commentForAbsence;
+    }
+
+    @Column(name = "assigned")
+    public Boolean getAssigned() {
+        return assigned;
+    }
+
+    public void setAssigned(Boolean assigned) {
+        this.assigned = assigned;
     }
 
     @Override

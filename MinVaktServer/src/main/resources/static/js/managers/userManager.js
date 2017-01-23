@@ -44,7 +44,7 @@ function removeUser(user_id, callback) {
 
 function getUserById(user_id, callback) {
 
-    $.getJSON("/users/"+user_id, callback(data));
+    $.getJSON("/users/"+user_id, function(){callback(data)});
 
 
 }
@@ -88,7 +88,7 @@ function getShiftsForUser(user_id, callback) {
 
 function getShiftsInRangeForUser(user_id, startDate, endDate, callback) {
 
-    $.getJSON("/users/"+user_id+"/shifts/inrange?startDate="+startDate+"&endDate="+endDate, callback(data));
+    $.getJSON("/users/"+user_id+"/shifts/inrange?startDate="+startDate+"&endDate="+endDate, function(){callback(data)});
 
 }
 function getScheduledShiftsForCurrentUser(callback) {

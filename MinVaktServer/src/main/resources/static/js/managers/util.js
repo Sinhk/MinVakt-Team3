@@ -51,7 +51,7 @@ function toFullCalendarEventWithResource(event, resource) {
         isResponsible: responsible,
         available: available,
 
-        backgroundColor: event.responsible != undefined && event.responsible.employeeId == resource.id ? "#9B0300" : "#3E9B85"
+        //backgroundColor: event.responsible != undefined && event.responsible.employeeId == resource.id ? "#9B0300" : "#3E9B85"
     };
 }
 
@@ -100,6 +100,8 @@ function listToFullCalendarEventList(events, resourceList) {
 
         var theEvents = events[i]; // dobbeliste av en eller annen grunn
         var resource = resourceList[i];
+
+        if(theEvents == undefined || theEvents == null) continue;
 
         for(var j = 0; j<theEvents.length; j++){
 

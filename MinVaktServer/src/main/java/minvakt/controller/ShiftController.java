@@ -64,7 +64,12 @@ public class ShiftController {
 
     }
 
+    @GetMapping(value = "/assigned")
+    public List<Shift> getAllAssignedShifts(){
 
+        return shiftAssignmentRepo.findByAssigned().stream().map(shiftAssignment -> shiftRepo.findOne(shiftAssignment.getShiftId())).collect(Collectors.toList());
+
+    }
 
     @GetMapping(value = "/{shift_id}/users")
     @Transactional
