@@ -39,7 +39,7 @@ function addUser(jsonUser, category_id, callback) {
             callback(data);
         },
         error: function (data) {
-            console.log("Error: " + data);
+            console.log("Error: " + JSON.stringify(data));
         }
     });
 
@@ -50,10 +50,10 @@ function removeUser(user_id, callback) {
     $.ajax({
         url: "/users/"+user_id,
         type: "DELETE",
+
         success: function (data) {
 
-            callback(data);
-        },
+                },
         error: function (data) {
             console.log("Error: " + data);
         }
@@ -99,6 +99,23 @@ function changePassword(user_id, oldPass, newPass, callback) {
         }
     });
 }
+
+function sendNewPassword(email, callback) {
+
+    $.ajax({
+        url: "/users/"+email+"/getNewPassword",
+        type: "PUT",
+        success: function (data) {
+            callback(data);
+        },
+        error: function (data) {
+            console.log("Error: " + data);
+        }
+    });
+}
+
+
+
 function getShiftsForUser(user_id, callback) {
 
     $.getJSON("/users/"+user_id+"/shifts", function(data){callback(data)})
@@ -138,5 +155,8 @@ function getHoursThisWeekForUser(user_id, callback) {
             console.log("Error: " + JSON.stringify(data));
         }
     });
+
+
+
 
 }

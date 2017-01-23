@@ -1,5 +1,4 @@
 $(document).ready(function(){
-
     getAllUsers(function (employees) {
 
         for(var i = 0; i<employees.length; i++){
@@ -14,8 +13,11 @@ $(document).ready(function(){
 
                     var div = document.getElementById("employeeBody");
 
+
+
+
                     div.innerHTML +=
-                        "<tr>" +
+                        "<tr id="+employee.employeeId+">" +
                         "<td>" + employee.firstName + "</td>" +
                         "<td>" + employee.lastName + "</td>" +
                         "<td>" + category.categoryName + "</td>" +
@@ -24,7 +26,6 @@ $(document).ready(function(){
                         "<td>" + hours + " timer</td>" +
                         /*"<td>" + employee.email + "</td>" +*/
                         "</tr>"
-
                 })
             });
         }

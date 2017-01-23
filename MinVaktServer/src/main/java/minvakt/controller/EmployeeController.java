@@ -7,6 +7,7 @@ import minvakt.datamodel.tables.pojos.EmployeeCategory;
 import minvakt.datamodel.tables.pojos.Shift;
 import minvakt.repos.*;
 import minvakt.util.RandomString;
+import minvakt.util.SendMailTLS;
 import minvakt.util.TimeUtil;
 import minvakt.util.WeekDateInterval;
 import org.slf4j.Logger;
@@ -41,7 +42,7 @@ public class EmployeeController {
     private ShiftAssignmentRepository shiftAssignmentRepo;
     private ChangeRequestRepository changeRequestRepository;
     private CategoryRepository catRepo;
-  //  private SendMailTLS sendMail;
+    private SendMailTLS sendMail;
 
     private final UserDetailsManager userDetailsManager;
 
@@ -86,10 +87,10 @@ public class EmployeeController {
         return resources;
     }
 
-    @PostMapping("/{category_id}")
+    @PostMapping()
     @Secured({"ROLE_ADMIN"})
     public String addEmployee(@RequestBody Employee employee, @RequestBody int category_id) {
-
+        System.out.println(employee+" |- "+category_id);
         employee.setCategoryId((short) category_id);
         String password = createPassword();
         log.info("Generated password: {}", password);
@@ -113,9 +114,9 @@ public class EmployeeController {
     @DeleteMapping("/{user_id}")
     public Response removeEmployee(@PathVariable int user_id) {
         Employee user = employeeRepo.findOne(user_id);
-
+        user.setEnabled(false);
         if (user != null){
-            employeeRepo.delete(user);
+            employeeRepo.save(user);
             return Response.ok().build();
         }
 
@@ -318,9 +319,9 @@ public class EmployeeController {
     public void sendNewPassword(@PathVariable(value = "email") String email) {
         String password = createPassword();
         /// TODO: 20.01.2017 SendMail
-        /*
-        sendMail.sendPassword(email,password);
-         */
+
+        sendMail.sendPassword("k.l.k08394@gmail.com",password);
+        System.out.println("fuck yeah");
         User user = new User(email, password, new ArrayList<SimpleGrantedAuthority>() {{
             add(new SimpleGrantedAuthority("ROLE_USER"));
         }});
