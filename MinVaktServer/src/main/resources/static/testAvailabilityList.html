@@ -64,7 +64,7 @@
 
             for(var i=0 ;i<nonAssignedShifts.length; i++){
 
-                const nonAssignedShift = nonAssignedShifts[0];
+                const nonAssignedShift = nonAssignedShifts[i];
 
                 //console.log(nonAssignedShift);
 
@@ -73,59 +73,69 @@
                     getShiftWithId(nonAssignedShift.shiftId, function (shift) {
 
 
-                        console.log(user);
-                        console.log(shift);
+                        //console.log(user);
+                        //console.log(shift);
 
-                        resourceList.push({
-                            id: user.employeeId
-                        })
+                        var resource = {
+                            id: user.employeeId,
+                            title: user.firstName +" "+user.lastName,
+                        }
 
-                        eventList.push({
+                        $('#calendar').fullCalendar( 'addResource', resource)
+
+
+                        var event  = {
 
                             id: shift.shiftId,
                             resourceId: user.employeeId,
                             start: shift.fromTime.split("T")[0],
-                            end: shift.fromTime.split("T")[1],
-                            title: shift.fromTime.split("T")[1].substr(0,5)+" - "+shift.toTime.split("T")[1].substr(0,5)
+                            end: shift.toTime.split("T")[0],
+                            title: shift.fromTime.split("T")[1].substr(0,5)+" - "+shift.toTime.split("T")[1].substr(0,5),
 
+                            stick: true
 
-                        })
+                        }
 
+                        $('#calendar').fullCalendar('renderEvent', event, true);
 
+                        resourceList.push(resource)
+                        eventList.push(event)
 
 
                     })
-
                 })
-
-
-
             }
 
 
+            $('.modal-trigger').modal();
 
-        $('.modal-trigger').modal();
+            $('#calendar').fullCalendar({
+                header: {
+                    left:'prev, today',
+                    center:'title',
+                    right:'next'
+                },
+                firstDay: 1,
+                weekNumbers: true,
+                dayNamesShort: ['Søndag', 'Mandag', 'Tirsdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lørdag'],
+                monthNames: ['Januar', 'Februar', 'Mars', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Desember'],
+                weekNumberTitle: 'Uke',
+                buttonText: {
+                    today:    'I dag',
+                    month:    'Måned',
+                    week:     'Uke',
+                    day:      'Dag',
+                    list:     'Liste'
+                },
+                resources: resourceList,
+                events: eventList,
 
-        $('#calendar').fullCalendar({
-            header: {
-                left:'prev, today',
-                center:'title',
-                right:'next'
-            },
-            firstDay: 1,
-            weekNumbers: true,
-            dayNamesShort: ['Søndag', 'Mandag', 'Tirsdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lørdag'],
-            monthNames: ['Januar', 'Februar', 'Mars', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Desember'],
-            weekNumberTitle: 'Uke',
-            buttonText: {
-                today:    'I dag',
-                month:    'Måned',
-                week:     'Uke',
-                day:      'Dag',
-                list:     'Liste'
-            },
-            resource: resourceList,
-            events: eventList,
+                eventClick: function( event, jsEvent, view ) {
+
+                    console.log(event);
+                    //alert("*Insert CSS stuff here*\n[SETT SOM TILGJENGELIG]");
+
+                }
         })
     });
 
