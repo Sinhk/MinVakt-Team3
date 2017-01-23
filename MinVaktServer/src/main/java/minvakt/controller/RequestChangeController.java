@@ -8,6 +8,7 @@ import minvakt.repos.ShiftRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -44,6 +45,20 @@ public class RequestChangeController {
         return (List<ChangeRequest>) changeRequestRepository.findAll();
 
 
+    }
+
+    @Transactional
+    @PostMapping
+    void requestChangeForShift(@RequestParam int shift_id, @RequestParam int user1_id, @RequestParam int user2_id){
+
+        ChangeRequest request = new ChangeRequest();
+        request.setShiftId(shift_id);
+        request.setOldEmployeeId(user1_id);
+        request.setNewEmployeeId(user2_id);
+
+        changeRequestRepository.save(request);
+
+        // TODO: 19.01.2017 Send mail
     }
 
     @PutMapping("/{request_id}")

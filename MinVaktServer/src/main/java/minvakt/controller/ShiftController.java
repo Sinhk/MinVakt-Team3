@@ -318,20 +318,7 @@ public class ShiftController {
         });
     }
 
-    // TODO: 19-Jan-17 Flytt til requestchangecontroller
-    @Transactional
-    @PostMapping(value = "/{shift_id}/users/{user_id}/requestchange/{user2_id}")
-    void requestChangeForShift(@PathVariable int shift_id, @PathVariable int user_id, @PathVariable int user2_id){
 
-        ChangeRequest request = new ChangeRequest();
-        request.setShiftId(shift_id);
-        request.setOldEmployeeId(user_id);
-        request.setNewEmployeeId(user2_id);
-
-        changeRequestRepository.save(request);
-
-        // TODO: 19.01.2017 Send mail
-    }
 
     /*@GetMapping(value = "/byday")
     public List<Shift> getShiftsByDay(@RequestBody String day){

@@ -27,7 +27,7 @@ function acceptChangeRequest(change_id) {
 function requestChangeForShift(shift_id, user1_id, user2_id, callback) {
     
     $.ajax({
-        url: "shifts/"+shift_id+"/users/"+user1_id+"/requestchange/"+user2_id,
+        url: "requestchange/?shift_id="+shift_id+"&user1_id="+user1_id+"&user2_id="+user2_id,
         type: "POST",
         contentType: "Application/JSON",
 
