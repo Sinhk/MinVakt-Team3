@@ -9,6 +9,10 @@ import java.util.List;
 
 public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
 
+    @Override
+    @Query("SELECT e FROM Employee e WHERE enabled = true ")
+    List<Employee> findAll();
+
     Employee findByFirstName(String name);
 
     Employee findByEmail(String email);
