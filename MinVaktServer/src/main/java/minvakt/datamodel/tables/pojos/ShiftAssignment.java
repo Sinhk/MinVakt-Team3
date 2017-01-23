@@ -24,13 +24,14 @@ import java.io.Serializable;
 @Table(name = "shift_assignment", schema = "g_scrum03")
 public class ShiftAssignment implements Serializable {
 
-    private static final long serialVersionUID = 184209016;
+    private static final long serialVersionUID = -1768720562;
 
     private Integer id;
     private Integer shiftId;
     private Integer employeeId;
-    private Boolean absent;
-    private String  commentForAbsence;
+    private Boolean absent = false;
+    private Boolean assigned = false;
+    private String  commentForAbsence = "";
 
     public ShiftAssignment() {}
 
@@ -39,6 +40,7 @@ public class ShiftAssignment implements Serializable {
         this.shiftId = value.shiftId;
         this.employeeId = value.employeeId;
         this.absent = value.absent;
+        this.assigned = value.assigned;
         this.commentForAbsence = value.commentForAbsence;
     }
 
@@ -47,12 +49,14 @@ public class ShiftAssignment implements Serializable {
         Integer shiftId,
         Integer employeeId,
         Boolean absent,
+        Boolean assigned,
         String  commentForAbsence
     ) {
         this.id = id;
         this.shiftId = shiftId;
         this.employeeId = employeeId;
         this.absent = absent;
+        this.assigned = assigned;
         this.commentForAbsence = commentForAbsence;
     }
 
@@ -94,6 +98,15 @@ public class ShiftAssignment implements Serializable {
         this.absent = absent;
     }
 
+    @Column(name = "assigned", nullable = false)
+    public Boolean getAssigned() {
+        return this.assigned;
+    }
+
+    public void setAssigned(Boolean assigned) {
+        this.assigned = assigned;
+    }
+
     @Column(name = "comment_for_absence", length = 100)
     public String getCommentForAbsence() {
         return this.commentForAbsence;
@@ -111,6 +124,7 @@ public class ShiftAssignment implements Serializable {
         sb.append(", ").append(shiftId);
         sb.append(", ").append(employeeId);
         sb.append(", ").append(absent);
+        sb.append(", ").append(assigned);
         sb.append(", ").append(commentForAbsence);
 
         sb.append(")");

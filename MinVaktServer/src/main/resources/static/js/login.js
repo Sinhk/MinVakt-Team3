@@ -8,7 +8,10 @@ $(document).ready(function() {
         swal({
             title: "Passord sendt!",
             type: "success",
+            closeOnConfirm:true,
+            animation: "slide-from-top",
             confirmButtonText: "Ok"
         });
     });
+
 });

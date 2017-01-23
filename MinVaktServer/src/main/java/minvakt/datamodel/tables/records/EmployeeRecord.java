@@ -28,9 +28,9 @@ import javax.persistence.*;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 @Entity
 @Table(name = "employee", schema = "g_scrum03")
-public class EmployeeRecord extends UpdatableRecordImpl<EmployeeRecord> implements Record10<Integer, Integer, String, String, Integer, String, Short, String, Boolean, Boolean> {
+public class EmployeeRecord extends UpdatableRecordImpl<EmployeeRecord> implements Record10<Integer, Short, String, String, Integer, String, Short, String, Boolean, Boolean> {
 
-    private static final long serialVersionUID = 1655128340;
+    private static final long serialVersionUID = 330729794;
 
     /**
      * Setter for <code>g_scrum03.employee.employee_id</code>.
@@ -52,16 +52,16 @@ public class EmployeeRecord extends UpdatableRecordImpl<EmployeeRecord> implemen
     /**
      * Setter for <code>g_scrum03.employee.category_id</code>.
      */
-    public void setCategoryId(Integer value) {
+    public void setCategoryId(Short value) {
         set(1, value);
     }
 
     /**
      * Getter for <code>g_scrum03.employee.category_id</code>.
      */
-    @Column(name = "category_id", nullable = false, precision = 10)
-    public Integer getCategoryId() {
-        return (Integer) get(1);
+    @Column(name = "category_id", nullable = false, precision = 5)
+    public Short getCategoryId() {
+        return (Short) get(1);
     }
 
     /**
@@ -204,7 +204,7 @@ public class EmployeeRecord extends UpdatableRecordImpl<EmployeeRecord> implemen
      * {@inheritDoc}
      */
     @Override
-    public Row10<Integer, Integer, String, String, Integer, String, Short, String, Boolean, Boolean> fieldsRow() {
+    public Row10<Integer, Short, String, String, Integer, String, Short, String, Boolean, Boolean> fieldsRow() {
         return (Row10) super.fieldsRow();
     }
 
@@ -212,7 +212,7 @@ public class EmployeeRecord extends UpdatableRecordImpl<EmployeeRecord> implemen
      * {@inheritDoc}
      */
     @Override
-    public Row10<Integer, Integer, String, String, Integer, String, Short, String, Boolean, Boolean> valuesRow() {
+    public Row10<Integer, Short, String, String, Integer, String, Short, String, Boolean, Boolean> valuesRow() {
         return (Row10) super.valuesRow();
     }
 
@@ -228,7 +228,7 @@ public class EmployeeRecord extends UpdatableRecordImpl<EmployeeRecord> implemen
      * {@inheritDoc}
      */
     @Override
-    public Field<Integer> field2() {
+    public Field<Short> field2() {
         return Employee.EMPLOYEE.CATEGORY_ID;
     }
 
@@ -308,7 +308,7 @@ public class EmployeeRecord extends UpdatableRecordImpl<EmployeeRecord> implemen
      * {@inheritDoc}
      */
     @Override
-    public Integer value2() {
+    public Short value2() {
         return getCategoryId();
     }
 
@@ -389,7 +389,7 @@ public class EmployeeRecord extends UpdatableRecordImpl<EmployeeRecord> implemen
      * {@inheritDoc}
      */
     @Override
-    public EmployeeRecord value2(Integer value) {
+    public EmployeeRecord value2(Short value) {
         setCategoryId(value);
         return this;
     }
@@ -470,7 +470,7 @@ public class EmployeeRecord extends UpdatableRecordImpl<EmployeeRecord> implemen
      * {@inheritDoc}
      */
     @Override
-    public EmployeeRecord values(Integer value1, Integer value2, String value3, String value4, Integer value5, String value6, Short value7, String value8, Boolean value9, Boolean value10) {
+    public EmployeeRecord values(Integer value1, Short value2, String value3, String value4, Integer value5, String value6, Short value7, String value8, Boolean value9, Boolean value10) {
         value1(value1);
         value2(value2);
         value3(value3);
@@ -498,7 +498,7 @@ public class EmployeeRecord extends UpdatableRecordImpl<EmployeeRecord> implemen
     /**
      * Create a detached, initialised EmployeeRecord
      */
-    public EmployeeRecord(Integer employeeId, Integer categoryId, String firstName, String lastName, Integer phone, String email, Short positionPercentage, String passwd, Boolean enabled, Boolean changePwOnLogon) {
+    public EmployeeRecord(Integer employeeId, Short categoryId, String firstName, String lastName, Integer phone, String email, Short positionPercentage, String passwd, Boolean enabled, Boolean changePwOnLogon) {
         super(Employee.EMPLOYEE);
 
         set(0, employeeId);

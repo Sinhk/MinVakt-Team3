@@ -137,9 +137,10 @@ public class SpringWebConfig
         templateResolver.setCharacterEncoding("UTF-8");
         // HTML is the default value, added here for the sake of clarity.
         templateResolver.setTemplateMode(TemplateMode.HTML);
-        // Template cache is true by default. Set to false if you want
-        // templates to be automatically updated when modified.
-        templateResolver.setCacheable(true);
+        if (Arrays.stream(environment.getActiveProfiles()).anyMatch(
+                env -> (env.equalsIgnoreCase("dev")))) {
+            templateResolver.setCacheable(false);
+        }
         return templateResolver;
     }
 
@@ -170,8 +171,6 @@ public class SpringWebConfig
                 env -> (env.equalsIgnoreCase("dev")))) {
             viewResolver.setCache(false);
         }
-
-        System.out.println(viewResolver.isCache());
         return viewResolver;
     }
 

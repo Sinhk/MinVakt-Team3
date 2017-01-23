@@ -28,7 +28,7 @@ import java.util.List;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Employee extends TableImpl<EmployeeRecord> {
 
-    private static final long serialVersionUID = 1147930751;
+    private static final long serialVersionUID = -556015551;
 
     /**
      * The reference instance of <code>g_scrum03.employee</code>
@@ -51,7 +51,7 @@ public class Employee extends TableImpl<EmployeeRecord> {
     /**
      * The column <code>g_scrum03.employee.category_id</code>.
      */
-    public final TableField<EmployeeRecord, Integer> CATEGORY_ID = createField("category_id", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+    public final TableField<EmployeeRecord, Short> CATEGORY_ID = createField("category_id", org.jooq.impl.SQLDataType.SMALLINT.nullable(false), this, "");
 
     /**
      * The column <code>g_scrum03.employee.first_name</code>.

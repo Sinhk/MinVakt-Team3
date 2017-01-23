@@ -3,6 +3,7 @@ package minvakt.controller;
 import minvakt.controller.data.CalenderResource;
 import minvakt.controller.data.TwoStringsData;
 import minvakt.datamodel.tables.pojos.Employee;
+import minvakt.datamodel.tables.pojos.EmployeeCategory;
 import minvakt.datamodel.tables.pojos.Shift;
 import minvakt.repos.*;
 import minvakt.util.RandomString;
@@ -15,8 +16,11 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.provisioning.UserDetailsManager;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.ws.rs.core.Response;
@@ -37,10 +41,17 @@ public class EmployeeController {
     private ShiftAssignmentRepository shiftAssignmentRepo;
     private ChangeRequestRepository changeRequestRepository;
     private CategoryRepository catRepo;
+  //  private SendMailTLS sendMail;
 
     private final UserDetailsManager userDetailsManager;
 
     private ShiftController shiftController = new ShiftController(shiftRepo, employeeRepo, shiftAssignmentRepo, changeRequestRepository);
+
+
+    private String createPassword() {
+        return new RandomString(8).nextString();
+
+    }
 
     @Autowired
     public EmployeeController(EmployeeRepository employeeRepo, ShiftRepository shiftRepo, UserDetailsManager userDetailsManager, ShiftAssignmentRepository shiftAssignmentRepo, ChangeRequestRepository changeRequestRepository, CategoryRepository catRepo) {
@@ -58,7 +69,6 @@ public class EmployeeController {
     }
 
     // TODO: 19-Jan-17 endre
-    @PostMapping
     @GetMapping("/resource")
     public List<CalenderResource> getAsResource() {
         List<CalenderResource> resources = new ArrayList<>();
@@ -70,10 +80,13 @@ public class EmployeeController {
     @Secured({"ROLE_ADMIN"})
     public String addEmployee(@RequestBody Employee employee, @RequestBody int category_id) {
 
-        employee.setCategoryId(category_id);
-        String password = new RandomString(8).nextString();
+        employee.setCategoryId((short) category_id);
+        String password = createPassword();
         log.info("Generated password: {}", password);
         // TODO: 16-Jan-17 send email
+        /*
+        sendMail.sendPassword(employee.getEmail(),password);
+        */
 
         employeeRepo.saveAndFlush(employee);
         User user = new User(employee.getEmail(), password, new ArrayList<SimpleGrantedAuthority>() {{
@@ -207,7 +220,7 @@ public class EmployeeController {
 
 
     // TODO: 19-Jan-17 fix
-    /*@GetMapping
+    @GetMapping
     @RequestMapping("/scheduled")
     @Transactional
     public List<Shift> getScheduledShiftsForUser() {
@@ -216,11 +229,11 @@ public class EmployeeController {
 
         Employee user = employeeRepo.findByEmail(details.getUsername());
 
-        return shiftRepo.findByShiftAssignments_Employee(user);
+        return shiftRepo.findByShiftAssignments_Employee_id(user.getEmployeeId());
     }
 
 
-    // TODO: 19-Jan-17 EmployeeCategory, todo filtre ordentlig
+    /*// TODO: 19-Jan-17 EmployeeCategory, todo filtre ordentlig
     @GetMapping("/{shift_id}/responsible/")
     public List<Employee> getEmployeesThatCanBeResponsible(@PathVariable int shift_id){
 
@@ -259,15 +272,15 @@ public class EmployeeController {
 
     }*/
 
-    /*@GetMapping
-    @RequestMapping(value = "/{email}/getCategory", method = RequestMethod.GET)
+    @GetMapping
+    @RequestMapping(value = "/{email}/category", method = RequestMethod.GET)
     public EmployeeCategory getCategory(@PathVariable(value = "email") String email) {
 
         Employee employee = employeeRepo.findByEmail(email);
 
 
-        return employee.getCategory();
-    }*/
+        return catRepo.findOne(employee.getCategoryId());
+    }
 
     @GetMapping("/{user_id}/hours")
     public int getHoursThisWeekForUser(@PathVariable int user_id){
@@ -289,5 +302,17 @@ public class EmployeeController {
                 .mapToInt(shift -> (int) ChronoUnit.HOURS.between(shift.getFromTime(), shift.getToTime()))
                 .sum();
 
+    }
+    @RequestMapping(value = "/{email}/getNewPassword", method = RequestMethod.PUT)
+    public void sendNewPassword(@PathVariable(value = "email") String email) {
+        String password = createPassword();
+        /// TODO: 20.01.2017 SendMail
+        /*
+        sendMail.sendPassword(email,password);
+         */
+        User user = new User(email, password, new ArrayList<SimpleGrantedAuthority>() {{
+            add(new SimpleGrantedAuthority("ROLE_USER"));
+        }});
+        userDetailsManager.updateUser(user);
     }
 }

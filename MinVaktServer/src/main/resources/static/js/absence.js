@@ -3,9 +3,37 @@
  */
 
 $(document).ready(function(){
+
+    var body = document.getElementById("table1");
+
+    var shifts1;
+
+    getAllShiftForCurrentUser(function (shifts) {
+
+        shifts1 = shifts;
+
+        for(var i = 0; i<shifts.length; i++) {
+
+            var shift = shifts[i];
+
+            body.innerHTML += "<tr>" +
+                "<td><input type='checkbox' id='indeterminate-checkbox' />" +
+                "<label for='indeterminate-checkbox'></label></td>" +
+                "<td>"+shift.fromTime.split('T')[0]+"</td>" +
+                "<td>"+shift.fromTime.split('T')[1].substr(0,5)+"</td>" +
+                "</tr>";
+        }
+
+    });
+
     $("#button").click(function () {
 
-        swal({   title: "Årsak til fravær",
+        var selected = table1.getElementsByClassName('selected');
+
+        console.log(selected);
+
+
+        swal({  title: "Årsak til fravær",
                 text: "Skriv inn årsaken til ditt fravær under",
                 type: "input",   showCancelButton: true,
                 closeOnConfirm: false,
@@ -18,18 +46,34 @@ $(document).ready(function(){
                     return false
                 }
                 swal("Kommentar sendt", "Du skrev: " + inputValue, "success");
-            });
+            }
+        );
 
     });
 
-    $("#table tr").click(function(){
-        $(this).addClass('selected').siblings().removeClass('selected');
-        var value=$(this).find('td:first').html();
-        alert(value);
+    function highlight(e) {
+        if (selected[0]) selected[0].className = '';
+        e.target.parentNode.className = 'selected';
+    }
+
+    var table1 = document.getElementById('table1'),
+        selected = table1.getElementsByClassName('selected');
+    table1.onclick = highlight;
+
+
+
+
+    $("#table1 tr").click(function (event) {
+        if (event.target.type !== 'checkbox') {
+            $(':checkbox', this).trigger('click');
+        }
     });
 
-    $('.ok').on('click', function(e){
-        alert($("#table tr.selected td:first").html());
+    $("input[type='checkbox']").change(function (e) {
+        if ($(this).is(":checked")) {
+            $(this).closest('tr').addClass("highlight_row");
+        } else {
+            $(this).closest('tr').removeClass("highlight_row");
+        }
     });
-
 });

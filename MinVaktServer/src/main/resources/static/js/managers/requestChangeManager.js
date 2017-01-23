@@ -2,7 +2,7 @@
  * Created by OlavH on 20-Jan-17.
  */
 
-function requestChangeForShift(shift_id, user1_id, user2_id) {
+function requestChangeForShift(shift_id, user1_id, user2_id, callback) {
 
     // TODO ny controller
     $.ajax({

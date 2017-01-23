@@ -7,8 +7,8 @@ package minvakt.datamodel.tables.records;
 import minvakt.datamodel.tables.ShiftAssignment;
 import org.jooq.Field;
 import org.jooq.Record1;
-import org.jooq.Record5;
-import org.jooq.Row5;
+import org.jooq.Record6;
+import org.jooq.Row6;
 import org.jooq.impl.UpdatableRecordImpl;
 
 import javax.annotation.Generated;
@@ -28,9 +28,9 @@ import javax.persistence.*;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 @Entity
 @Table(name = "shift_assignment", schema = "g_scrum03")
-public class ShiftAssignmentRecord extends UpdatableRecordImpl<ShiftAssignmentRecord> implements Record5<Integer, Integer, Integer, Boolean, String> {
+public class ShiftAssignmentRecord extends UpdatableRecordImpl<ShiftAssignmentRecord> implements Record6<Integer, Integer, Integer, Boolean, Boolean, String> {
 
-    private static final long serialVersionUID = -1742038;
+    private static final long serialVersionUID = 197501241;
 
     /**
      * Setter for <code>g_scrum03.shift_assignment.id</code>.
@@ -95,10 +95,25 @@ public class ShiftAssignmentRecord extends UpdatableRecordImpl<ShiftAssignmentRe
     }
 
     /**
+     * Setter for <code>g_scrum03.shift_assignment.assigned</code>.
+     */
+    public void setAssigned(Boolean value) {
+        set(4, value);
+    }
+
+    /**
+     * Getter for <code>g_scrum03.shift_assignment.assigned</code>.
+     */
+    @Column(name = "assigned", nullable = false)
+    public Boolean getAssigned() {
+        return (Boolean) get(4);
+    }
+
+    /**
      * Setter for <code>g_scrum03.shift_assignment.comment_for_absence</code>.
      */
     public void setCommentForAbsence(String value) {
-        set(4, value);
+        set(5, value);
     }
 
     /**
@@ -106,7 +121,7 @@ public class ShiftAssignmentRecord extends UpdatableRecordImpl<ShiftAssignmentRe
      */
     @Column(name = "comment_for_absence", length = 100)
     public String getCommentForAbsence() {
-        return (String) get(4);
+        return (String) get(5);
     }
 
     // -------------------------------------------------------------------------
@@ -122,23 +137,23 @@ public class ShiftAssignmentRecord extends UpdatableRecordImpl<ShiftAssignmentRe
     }
 
     // -------------------------------------------------------------------------
-    // Record5 type implementation
+    // Record6 type implementation
     // -------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Row5<Integer, Integer, Integer, Boolean, String> fieldsRow() {
-        return (Row5) super.fieldsRow();
+    public Row6<Integer, Integer, Integer, Boolean, Boolean, String> fieldsRow() {
+        return (Row6) super.fieldsRow();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Row5<Integer, Integer, Integer, Boolean, String> valuesRow() {
-        return (Row5) super.valuesRow();
+    public Row6<Integer, Integer, Integer, Boolean, Boolean, String> valuesRow() {
+        return (Row6) super.valuesRow();
     }
 
     /**
@@ -177,7 +192,15 @@ public class ShiftAssignmentRecord extends UpdatableRecordImpl<ShiftAssignmentRe
      * {@inheritDoc}
      */
     @Override
-    public Field<String> field5() {
+    public Field<Boolean> field5() {
+        return ShiftAssignment.SHIFT_ASSIGNMENT.ASSIGNED;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Field<String> field6() {
         return ShiftAssignment.SHIFT_ASSIGNMENT.COMMENT_FOR_ABSENCE;
     }
 
@@ -217,7 +240,15 @@ public class ShiftAssignmentRecord extends UpdatableRecordImpl<ShiftAssignmentRe
      * {@inheritDoc}
      */
     @Override
-    public String value5() {
+    public Boolean value5() {
+        return getAssigned();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String value6() {
         return getCommentForAbsence();
     }
 
@@ -261,7 +292,16 @@ public class ShiftAssignmentRecord extends UpdatableRecordImpl<ShiftAssignmentRe
      * {@inheritDoc}
      */
     @Override
-    public ShiftAssignmentRecord value5(String value) {
+    public ShiftAssignmentRecord value5(Boolean value) {
+        setAssigned(value);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ShiftAssignmentRecord value6(String value) {
         setCommentForAbsence(value);
         return this;
     }
@@ -270,12 +310,13 @@ public class ShiftAssignmentRecord extends UpdatableRecordImpl<ShiftAssignmentRe
      * {@inheritDoc}
      */
     @Override
-    public ShiftAssignmentRecord values(Integer value1, Integer value2, Integer value3, Boolean value4, String value5) {
+    public ShiftAssignmentRecord values(Integer value1, Integer value2, Integer value3, Boolean value4, Boolean value5, String value6) {
         value1(value1);
         value2(value2);
         value3(value3);
         value4(value4);
         value5(value5);
+        value6(value6);
         return this;
     }
 
@@ -293,13 +334,14 @@ public class ShiftAssignmentRecord extends UpdatableRecordImpl<ShiftAssignmentRe
     /**
      * Create a detached, initialised ShiftAssignmentRecord
      */
-    public ShiftAssignmentRecord(Integer id, Integer shiftId, Integer employeeId, Boolean absent, String commentForAbsence) {
+    public ShiftAssignmentRecord(Integer id, Integer shiftId, Integer employeeId, Boolean absent, Boolean assigned, String commentForAbsence) {
         super(ShiftAssignment.SHIFT_ASSIGNMENT);
 
         set(0, id);
         set(1, shiftId);
         set(2, employeeId);
         set(3, absent);
-        set(4, commentForAbsence);
+        set(4, assigned);
+        set(5, commentForAbsence);
     }
 }

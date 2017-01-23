@@ -28,9 +28,9 @@ import javax.persistence.*;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 @Entity
 @Table(name = "department_required_employees_per_category", schema = "g_scrum03")
-public class DepartmentRequiredEmployeesPerCategoryRecord extends UpdatableRecordImpl<DepartmentRequiredEmployeesPerCategoryRecord> implements Record4<Integer, Integer, Integer, Integer> {
+public class DepartmentRequiredEmployeesPerCategoryRecord extends UpdatableRecordImpl<DepartmentRequiredEmployeesPerCategoryRecord> implements Record4<Integer, Short, Short, Short> {
 
-    private static final long serialVersionUID = 2023808451;
+    private static final long serialVersionUID = -251652793;
 
     /**
      * Setter for <code>g_scrum03.department_required_employees_per_category.id</code>.
@@ -52,46 +52,46 @@ public class DepartmentRequiredEmployeesPerCategoryRecord extends UpdatableRecor
     /**
      * Setter for <code>g_scrum03.department_required_employees_per_category.department_id</code>.
      */
-    public void setDepartmentId(Integer value) {
+    public void setDepartmentId(Short value) {
         set(1, value);
     }
 
     /**
      * Getter for <code>g_scrum03.department_required_employees_per_category.department_id</code>.
      */
-    @Column(name = "department_id", nullable = false, precision = 10)
-    public Integer getDepartmentId() {
-        return (Integer) get(1);
+    @Column(name = "department_id", nullable = false, precision = 5)
+    public Short getDepartmentId() {
+        return (Short) get(1);
     }
 
     /**
      * Setter for <code>g_scrum03.department_required_employees_per_category.category_id</code>.
      */
-    public void setCategoryId(Integer value) {
+    public void setCategoryId(Short value) {
         set(2, value);
     }
 
     /**
      * Getter for <code>g_scrum03.department_required_employees_per_category.category_id</code>.
      */
-    @Column(name = "category_id", nullable = false, precision = 10)
-    public Integer getCategoryId() {
-        return (Integer) get(2);
+    @Column(name = "category_id", nullable = false, precision = 5)
+    public Short getCategoryId() {
+        return (Short) get(2);
     }
 
     /**
      * Setter for <code>g_scrum03.department_required_employees_per_category.amount</code>.
      */
-    public void setAmount(Integer value) {
+    public void setAmount(Short value) {
         set(3, value);
     }
 
     /**
      * Getter for <code>g_scrum03.department_required_employees_per_category.amount</code>.
      */
-    @Column(name = "amount", nullable = false, precision = 7)
-    public Integer getAmount() {
-        return (Integer) get(3);
+    @Column(name = "amount", nullable = false, precision = 5)
+    public Short getAmount() {
+        return (Short) get(3);
     }
 
     // -------------------------------------------------------------------------
@@ -114,7 +114,7 @@ public class DepartmentRequiredEmployeesPerCategoryRecord extends UpdatableRecor
      * {@inheritDoc}
      */
     @Override
-    public Row4<Integer, Integer, Integer, Integer> fieldsRow() {
+    public Row4<Integer, Short, Short, Short> fieldsRow() {
         return (Row4) super.fieldsRow();
     }
 
@@ -122,7 +122,7 @@ public class DepartmentRequiredEmployeesPerCategoryRecord extends UpdatableRecor
      * {@inheritDoc}
      */
     @Override
-    public Row4<Integer, Integer, Integer, Integer> valuesRow() {
+    public Row4<Integer, Short, Short, Short> valuesRow() {
         return (Row4) super.valuesRow();
     }
 
@@ -138,7 +138,7 @@ public class DepartmentRequiredEmployeesPerCategoryRecord extends UpdatableRecor
      * {@inheritDoc}
      */
     @Override
-    public Field<Integer> field2() {
+    public Field<Short> field2() {
         return DepartmentRequiredEmployeesPerCategory.DEPARTMENT_REQUIRED_EMPLOYEES_PER_CATEGORY.DEPARTMENT_ID;
     }
 
@@ -146,7 +146,7 @@ public class DepartmentRequiredEmployeesPerCategoryRecord extends UpdatableRecor
      * {@inheritDoc}
      */
     @Override
-    public Field<Integer> field3() {
+    public Field<Short> field3() {
         return DepartmentRequiredEmployeesPerCategory.DEPARTMENT_REQUIRED_EMPLOYEES_PER_CATEGORY.CATEGORY_ID;
     }
 
@@ -154,7 +154,7 @@ public class DepartmentRequiredEmployeesPerCategoryRecord extends UpdatableRecor
      * {@inheritDoc}
      */
     @Override
-    public Field<Integer> field4() {
+    public Field<Short> field4() {
         return DepartmentRequiredEmployeesPerCategory.DEPARTMENT_REQUIRED_EMPLOYEES_PER_CATEGORY.AMOUNT;
     }
 
@@ -170,7 +170,7 @@ public class DepartmentRequiredEmployeesPerCategoryRecord extends UpdatableRecor
      * {@inheritDoc}
      */
     @Override
-    public Integer value2() {
+    public Short value2() {
         return getDepartmentId();
     }
 
@@ -178,7 +178,7 @@ public class DepartmentRequiredEmployeesPerCategoryRecord extends UpdatableRecor
      * {@inheritDoc}
      */
     @Override
-    public Integer value3() {
+    public Short value3() {
         return getCategoryId();
     }
 
@@ -186,7 +186,7 @@ public class DepartmentRequiredEmployeesPerCategoryRecord extends UpdatableRecor
      * {@inheritDoc}
      */
     @Override
-    public Integer value4() {
+    public Short value4() {
         return getAmount();
     }
 
@@ -203,7 +203,7 @@ public class DepartmentRequiredEmployeesPerCategoryRecord extends UpdatableRecor
      * {@inheritDoc}
      */
     @Override
-    public DepartmentRequiredEmployeesPerCategoryRecord value2(Integer value) {
+    public DepartmentRequiredEmployeesPerCategoryRecord value2(Short value) {
         setDepartmentId(value);
         return this;
     }
@@ -212,7 +212,7 @@ public class DepartmentRequiredEmployeesPerCategoryRecord extends UpdatableRecor
      * {@inheritDoc}
      */
     @Override
-    public DepartmentRequiredEmployeesPerCategoryRecord value3(Integer value) {
+    public DepartmentRequiredEmployeesPerCategoryRecord value3(Short value) {
         setCategoryId(value);
         return this;
     }
@@ -221,7 +221,7 @@ public class DepartmentRequiredEmployeesPerCategoryRecord extends UpdatableRecor
      * {@inheritDoc}
      */
     @Override
-    public DepartmentRequiredEmployeesPerCategoryRecord value4(Integer value) {
+    public DepartmentRequiredEmployeesPerCategoryRecord value4(Short value) {
         setAmount(value);
         return this;
     }
@@ -230,7 +230,7 @@ public class DepartmentRequiredEmployeesPerCategoryRecord extends UpdatableRecor
      * {@inheritDoc}
      */
     @Override
-    public DepartmentRequiredEmployeesPerCategoryRecord values(Integer value1, Integer value2, Integer value3, Integer value4) {
+    public DepartmentRequiredEmployeesPerCategoryRecord values(Integer value1, Short value2, Short value3, Short value4) {
         value1(value1);
         value2(value2);
         value3(value3);
@@ -252,7 +252,7 @@ public class DepartmentRequiredEmployeesPerCategoryRecord extends UpdatableRecor
     /**
      * Create a detached, initialised DepartmentRequiredEmployeesPerCategoryRecord
      */
-    public DepartmentRequiredEmployeesPerCategoryRecord(Integer id, Integer departmentId, Integer categoryId, Integer amount) {
+    public DepartmentRequiredEmployeesPerCategoryRecord(Integer id, Short departmentId, Short categoryId, Short amount) {
         super(DepartmentRequiredEmployeesPerCategory.DEPARTMENT_REQUIRED_EMPLOYEES_PER_CATEGORY);
 
         set(0, id);

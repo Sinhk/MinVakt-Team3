@@ -3,7 +3,7 @@
  */
 function getAllUsers(callback) {
 
-    $.getJSON("/users",callback(data));
+    $.getJSON("/users", function(data){callback(data)});
 
 }
 function addUser(jsonUser, category_id, callback) {
@@ -39,12 +39,11 @@ function removeUser(user_id, callback) {
             console.log("Error: " + data);
         }
     });
-
 }
 
 function getUserById(user_id, callback) {
 
-    $.getJSON("/users/"+user_id, callback(data));
+    $.getJSON("/users/"+user_id, function(){callback(data)});
 
 
 }
@@ -82,29 +81,42 @@ function changePassword(user_id, oldPass, newPass, callback) {
 }
 function getShiftsForUser(user_id, callback) {
 
-    $.getJSON("/users/"+user_id+"/shifts", callback(data))
+    $.getJSON("/users/"+user_id+"/shifts", function(data){callback(data)})
 
 }
 
 function getShiftsInRangeForUser(user_id, startDate, endDate, callback) {
 
-    $.getJSON("/users/"+user_id+"/shifts/inrange?startDate="+startDate+"&endDate="+endDate, callback(data));
+    $.getJSON("/users/"+user_id+"/shifts/inrange?startDate="+startDate+"&endDate="+endDate, function(){callback(data)});
 
 }
-function getScheduledShiftsForCurrentUser() {
-
-    $.getJSON("/users/scheduled", callback(data));
+function getScheduledShiftsForCurrentUser(callback) {
+    $.getJSON("/users/scheduled", function (data) {
+        console.log(data);
+        callback(data);
+    });
+    //$.getJSON("/users/scheduled", callback(data));
 
 }
 
 function getUsersThatCanBeResponsibleForShift(shift_id, callback) {
 
-    $.getJSON("users/"+shift_id+"/responsible", callback(data));
+    $.getJSON("users/"+shift_id+"/responsible", function(data){callback(data)});
 
 }
 
 function getHoursThisWeekForUser(user_id, callback) {
 
-    $.getJSON("users/"+user_id+"/getHoursThisWeek", callback(data));
+
+    $.ajax({
+        url: "users/"+user_id+"/hours",
+        type: "GET",
+        success: function (data) {
+            callback(data);
+        },
+        error: function (data) {
+            console.log("Error: " + JSON.stringify(data));
+        }
+    });
 
 }

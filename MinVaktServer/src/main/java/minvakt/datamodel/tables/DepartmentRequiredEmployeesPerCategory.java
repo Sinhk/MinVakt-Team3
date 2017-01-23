@@ -28,7 +28,7 @@ import java.util.List;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class DepartmentRequiredEmployeesPerCategory extends TableImpl<DepartmentRequiredEmployeesPerCategoryRecord> {
 
-    private static final long serialVersionUID = 962544852;
+    private static final long serialVersionUID = -1734259450;
 
     /**
      * The reference instance of <code>g_scrum03.department_required_employees_per_category</code>
@@ -51,17 +51,17 @@ public class DepartmentRequiredEmployeesPerCategory extends TableImpl<Department
     /**
      * The column <code>g_scrum03.department_required_employees_per_category.department_id</code>.
      */
-    public final TableField<DepartmentRequiredEmployeesPerCategoryRecord, Integer> DEPARTMENT_ID = createField("department_id", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+    public final TableField<DepartmentRequiredEmployeesPerCategoryRecord, Short> DEPARTMENT_ID = createField("department_id", org.jooq.impl.SQLDataType.SMALLINT.nullable(false), this, "");
 
     /**
      * The column <code>g_scrum03.department_required_employees_per_category.category_id</code>.
      */
-    public final TableField<DepartmentRequiredEmployeesPerCategoryRecord, Integer> CATEGORY_ID = createField("category_id", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+    public final TableField<DepartmentRequiredEmployeesPerCategoryRecord, Short> CATEGORY_ID = createField("category_id", org.jooq.impl.SQLDataType.SMALLINT.nullable(false), this, "");
 
     /**
      * The column <code>g_scrum03.department_required_employees_per_category.amount</code>.
      */
-    public final TableField<DepartmentRequiredEmployeesPerCategoryRecord, Integer> AMOUNT = createField("amount", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+    public final TableField<DepartmentRequiredEmployeesPerCategoryRecord, Short> AMOUNT = createField("amount", org.jooq.impl.SQLDataType.SMALLINT.nullable(false), this, "");
 
     /**
      * Create a <code>g_scrum03.department_required_employees_per_category</code> table reference

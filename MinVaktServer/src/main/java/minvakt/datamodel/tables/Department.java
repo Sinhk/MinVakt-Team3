@@ -28,7 +28,7 @@ import java.util.List;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Department extends TableImpl<DepartmentRecord> {
 
-    private static final long serialVersionUID = -51344008;
+    private static final long serialVersionUID = -311959472;
 
     /**
      * The reference instance of <code>g_scrum03.department</code>
@@ -46,7 +46,7 @@ public class Department extends TableImpl<DepartmentRecord> {
     /**
      * The column <code>g_scrum03.department.department_id</code>.
      */
-    public final TableField<DepartmentRecord, Integer> DEPARTMENT_ID = createField("department_id", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+    public final TableField<DepartmentRecord, Short> DEPARTMENT_ID = createField("department_id", org.jooq.impl.SQLDataType.SMALLINT.nullable(false), this, "");
 
     /**
      * The column <code>g_scrum03.department.department_name</code>.
@@ -87,7 +87,7 @@ public class Department extends TableImpl<DepartmentRecord> {
      * {@inheritDoc}
      */
     @Override
-    public Identity<DepartmentRecord, Integer> getIdentity() {
+    public Identity<DepartmentRecord, Short> getIdentity() {
         return Keys.IDENTITY_DEPARTMENT;
     }
 

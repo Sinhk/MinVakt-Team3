@@ -24,12 +24,12 @@ import java.io.Serializable;
 @Table(name = "department_required_employees_per_category", schema = "g_scrum03")
 public class DepartmentRequiredEmployeesPerCategory implements Serializable {
 
-    private static final long serialVersionUID = -1646818370;
+    private static final long serialVersionUID = -615314058;
 
     private Integer id;
-    private Integer departmentId;
-    private Integer categoryId;
-    private Integer amount;
+    private Short   departmentId;
+    private Short   categoryId;
+    private Short   amount;
 
     public DepartmentRequiredEmployeesPerCategory() {}
 
@@ -42,9 +42,9 @@ public class DepartmentRequiredEmployeesPerCategory implements Serializable {
 
     public DepartmentRequiredEmployeesPerCategory(
         Integer id,
-        Integer departmentId,
-        Integer categoryId,
-        Integer amount
+        Short   departmentId,
+        Short   categoryId,
+        Short   amount
     ) {
         this.id = id;
         this.departmentId = departmentId;
@@ -63,30 +63,30 @@ public class DepartmentRequiredEmployeesPerCategory implements Serializable {
         this.id = id;
     }
 
-    @Column(name = "department_id", nullable = false, precision = 10)
-    public Integer getDepartmentId() {
+    @Column(name = "department_id", nullable = false, precision = 5)
+    public Short getDepartmentId() {
         return this.departmentId;
     }
 
-    public void setDepartmentId(Integer departmentId) {
+    public void setDepartmentId(Short departmentId) {
         this.departmentId = departmentId;
     }
 
-    @Column(name = "category_id", nullable = false, precision = 10)
-    public Integer getCategoryId() {
+    @Column(name = "category_id", nullable = false, precision = 5)
+    public Short getCategoryId() {
         return this.categoryId;
     }
 
-    public void setCategoryId(Integer categoryId) {
+    public void setCategoryId(Short categoryId) {
         this.categoryId = categoryId;
     }
 
-    @Column(name = "amount", nullable = false, precision = 7)
-    public Integer getAmount() {
+    @Column(name = "amount", nullable = false, precision = 5)
+    public Short getAmount() {
         return this.amount;
     }
 
-    public void setAmount(Integer amount) {
+    public void setAmount(Short amount) {
         this.amount = amount;
     }
 

@@ -4,13 +4,25 @@
 
 function getAllShifts(callback) {
 
-    $.getJSON("/shifts",callback(data))
+    $.getJSON("/shifts", function(data){callback(data)})
+
+}
+
+function getAllAssignedShifts(callback) {
+
+    $.getJSON("/shifts/assigned", function (data) {callback(data)});
+
+}
+
+function getAllNonAssignedShifts(callback) {
+
+    $.getJSON("/shifts/nonassigned", function (data) {callback(data)});
 
 }
 
 function getShiftWithId(id, callback) {
 
-    $.getJSON("/shifts/"+id, callback(data));
+    $.getJSON("/shifts/"+id, function(data){callback(data)});
 
 }
 
@@ -19,6 +31,7 @@ function addShift(dateinfo, callback) {
     $.ajax({
         url: "/shifts",
         type: "POST",
+        contentType: "Application/JSON",
         data: dateinfo,
         success: function (data) {
             callback(data);
@@ -32,21 +45,22 @@ function addShift(dateinfo, callback) {
 
 function getUsersForShift(shift_id, callback) {
 
-    $.getJSON("shifts/"+shift_id+"/users", callback(data));
+    $.getJSON("shifts/"+shift_id+"/users", function(data){callback(data)});
 
 }
 
 function addUserToShift(user_id, shift_id, callback) {
 
     $.ajax({
-        url: "/shifts/"+shift_id,
+        url: "/shifts/"+shift_id+"/users",
         type: "POST",
+        contentType: "text/plain",
         data: user_id,
         success: function (data) {
             callback(data);
         },
         error: function (data) {
-            console.log("Error: " + data);
+            console.log("Error: " + JSON.stringify(data));
         }
     });
 
@@ -54,7 +68,7 @@ function addUserToShift(user_id, shift_id, callback) {
 
 function getShiftAssignmentsForShift(shift_id, callback) {
 
-    $.getJSON("shifts/"+shift_id+"/details", callback(data));
+    $.getJSON("shifts/"+shift_id+"/details", function(data){callback(data)});
 
 }
 
@@ -74,7 +88,7 @@ function shiftIsAvailable(shift_id, callback) {
 
 function getAvailableShifts(callback) {
 
-    $.getJSON("/shifts/available",callback(data));
+    $.getJSON("/shifts/available", function(data){callback(data)});
 
 }
 
@@ -89,7 +103,6 @@ function getStatusForShiftAndUser(shift_id, user_id) {
         contentType: "Application/JSON",
 
         success: function (data) {
-            console.log("Success: /users/scheduled.GET: "+data);
 
             status = data;
         },
@@ -257,8 +270,7 @@ function eventIsAvailable(event_id) {
     var is;
 
     $.ajax({
-        url: "shifts/"+event_id+"/isAvailable",
-        type: "GET",
+        url: "shifts/"+event_id+"/available",
         type: "GET",
 
         success: function (data) {
@@ -329,6 +341,16 @@ function getAvaiableShifts() {
 
 function getAllSuitableShifts(callback) {
 
-    $.getJSON("/shifts/suitable", callback(data));
+    $.getJSON("/shifts/suitable", function(data){callback(data)});
+
+}
+
+function getAllShiftForCurrentUser(callback) {
+
+
+    $.getJSON("/shifts/currentUser", function (data) {
+        callback(data);
+    })
+
 
 }

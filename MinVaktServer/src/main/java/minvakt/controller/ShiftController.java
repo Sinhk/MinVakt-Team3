@@ -11,7 +11,6 @@ import minvakt.repos.ShiftRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Transactional;
@@ -65,7 +64,19 @@ public class ShiftController {
 
     }
 
+    @GetMapping(value = "/assigned")
+    public List<Shift> getAllAssignedShifts(){
 
+        return shiftAssignmentRepo.findByAssignedTrue().stream().map(shiftAssignment -> shiftRepo.findOne(shiftAssignment.getShiftId())).collect(Collectors.toList());
+
+    }
+
+    @GetMapping(value = "/nonassigned")
+    public List<Shift> getAllNonAssignedShifts(){
+
+        return shiftAssignmentRepo.findByAssignedFalse().stream().map(shiftAssignment -> shiftRepo.findOne(shiftAssignment.getShiftId())).collect(Collectors.toList());
+
+    }
 
     @GetMapping(value = "/{shift_id}/users")
     @Transactional
@@ -78,12 +89,46 @@ public class ShiftController {
 
     @PostMapping(value="/{shift_id}/users")
     @Transactional
-    public void addUserToShift(@PathVariable int shift_id , @RequestBody int user_id) { // shift id and user id
+    public void addUserToShift(@PathVariable int shift_id , @RequestBody String user_id) { // shift id and user id
+
+        System.out.println(shift_id+" . "+user_id);
 
         ShiftAssignment assignment = new ShiftAssignment();
-        assignment.setEmployeeId(user_id);
+        assignment.setEmployeeId(Integer.valueOf(user_id));
         assignment.setShiftId(shift_id);
+        assignment.setAbsent(false);
         shiftAssignmentRepo.save(assignment);
+    }
+
+    @GetMapping(value = "/{shift_id}/users/{user_id}/assigned")
+    @Transactional
+    public boolean getUserIsAssignedForShift(@PathVariable int shift_id, @PathVariable int user_id) {
+
+        return shiftAssignmentRepo.findByShiftIdAndEmployeeId(shift_id, user_id).filter(ShiftAssignment::getAssigned).isPresent();
+
+    }
+
+    @PutMapping(value = "/{shift_id}/users/{user_id}/assigned")
+    @Transactional
+    public boolean setUserAssignedForShift(@PathVariable int shift_id, @PathVariable int user_id) {
+
+        Optional<ShiftAssignment> byShiftIdAndEmployeeId = shiftAssignmentRepo.findByShiftIdAndEmployeeId(shift_id, user_id);
+
+        if (byShiftIdAndEmployeeId.isPresent()) {
+
+            byShiftIdAndEmployeeId.get().setAssigned(true);
+            return true;
+        }
+        return false;
+    }
+
+    @GetMapping("/currentUser")
+    public List<Shift> getAllShiftsForCurrentUser(){
+
+        UserDetails details = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Employee user = employeeRepo.findByEmail(details.getUsername());
+
+        return shiftRepo.findByShiftAssignments_Employee_id(user.getEmployeeId());
     }
 
     @GetMapping(value = "/{shift_id}/details") // TODO: 19-Jan-17 query
@@ -106,7 +151,7 @@ public class ShiftController {
     public Iterable<Shift> getSuitableShiftsForUser(){
 
         // Details for logged in user
-        UserDetails details = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        UserDetails details = (UserDetails) SeityContextHolder.getContext().getAuthentication().getPrincipal();
 
         Employee user = employeeRepo.findByEmail(details.getUsername());
 
@@ -116,8 +161,8 @@ public class ShiftController {
         List<Shift> changeRequestShifts = shiftAssignmentRepo
                 .findAll()
                 .stream()
-                .filter(s -> s.getStatus().equals(ShiftStatus.REQUESTCHANGE))
-                .map(ShiftAssignment::getShift)
+                //.filter(s -> s.getStatus().equals(ShiftStatus.REQUESTCHANGE)) // FIXME: 20-Jan-17
+                .map(shiftAssignment -> shiftRepo.findOne(shiftAssignment.getShiftId()))
                 .collect(Collectors.toList());
         //
 
@@ -137,12 +182,12 @@ public class ShiftController {
 
         List<Shift> shiftsThatRequiresEmployees = new ArrayList<>();
 
-        shiftsWithEmployeeCountMap.forEach((shift, integer) -> {
+        /*shiftsWithEmployeeCountMap.forEach((shift, integer) -> {
             if (integer < shift.getRequiredEmployees()) shiftsThatRequiresEmployees.add(shift);
-        });
+        });*/
         //
         // Shifts that belong to the user
-        List<Shift> allShiftsForUser = shiftAssignmentRepo
+        /*List<Shift> allShiftsForUser = shiftAssignmentRepo
                 .findAll()
                 .stream()
                 .filter(shiftAssignment -> shiftAssignment.getEmployee() != user)
@@ -158,7 +203,7 @@ public class ShiftController {
 
         // looks through all the all the shifts, all their assignments, filters the ones not
         // connected to the user
-       *//* List<List<ShiftAssignment>> collect1 = shiftList
+       List<List<ShiftAssignment>> collect1 = shiftList
                 .stream()
                 .map(Shift::getShiftAssignments)
                 .filter(shiftAssignments -> shiftAssignments
@@ -171,7 +216,6 @@ public class ShiftController {
                 .forEach(shiftAssignments -> shiftAssignments
                         .forEach(shiftAssignment -> changeRequestShifts.add(shiftAssignment.getShift())));
 
-*//*
 
        // removes duplicates, just a bit of a hack
         HashSet<Shift> shifts = new HashSet<>(changeRequestShifts);
@@ -262,7 +306,7 @@ public class ShiftController {
     @PutMapping(value = "/{shift_id}/users/{user_id}")
     public void changeShiftFromUserToUser(@PathVariable int shift_id, @PathVariable int user_id, @RequestBody int toUser_id){
 
-        Optional<ShiftAssignment> assignment = shiftAssignmentRepo.getByShiftIdAndEmployeeId(shift_id, user_id);
+        Optional<ShiftAssignment> assignment = shiftAssignmentRepo.findByShiftIdAndEmployeeId(shift_id, user_id);
         assignment.ifPresent(a -> {
             a.setEmployeeId(toUser_id);
             shiftAssignmentRepo.save(a);
@@ -307,6 +351,28 @@ public class ShiftController {
                 //.filter(shiftAssignment -> shiftAssignment.getStatus() == ShiftStatus.AVAILABLE)
                 //.map(ShiftAssignment::getShift)
     }
+
+    /*// TODO: 19-Jan-17 fix
+    @GetMapping(value = "/available")
+    public List<Shift> getAvailableShifts(){
+        return new ArrayList<>( shiftAssignmentRepo
+                .findAll()
+                .stream()
+                //.filter(shiftAssignment -> shiftAssignment.getStatus() == ShiftStatus.AVAILABLE)
+                .map(ShiftAssignment::getShift)
+                .collect(Collectors.toList()));
+    }*/
+
+    /*// TODO: 19-Jan-17 fix
+    @GetMapping(value = "/available")
+    public List<Shift> getAvailableShifts(){
+        return new ArrayList<>( shiftAssignmentRepo
+                .findAll()
+                .stream()
+                //.filter(shiftAssignment -> shiftAssignment.getStatus() == ShiftStatus.AVAILABLE)
+                .map(ShiftAssignment::getShift)
+                .collect(Collectors.toList()));
+    }*/
 
     // TODO: 19-Jan-17 Fix
     @GetMapping(value = "/{shift_id}/available")

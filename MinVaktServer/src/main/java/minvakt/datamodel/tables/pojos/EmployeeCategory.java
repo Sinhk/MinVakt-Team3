@@ -24,11 +24,12 @@ import java.io.Serializable;
 @Table(name = "employee_category", schema = "g_scrum03")
 public class EmployeeCategory implements Serializable {
 
-    private static final long serialVersionUID = -604345584;
+    private static final long serialVersionUID = -990278417;
 
-    private Integer categoryId;
+    private Short   categoryId;
     private String  categoryName;
     private Boolean admin;
+    private Short   requiredPerShift;
     private Boolean availableForShifts;
 
     public EmployeeCategory() {}
@@ -37,29 +38,32 @@ public class EmployeeCategory implements Serializable {
         this.categoryId = value.categoryId;
         this.categoryName = value.categoryName;
         this.admin = value.admin;
+        this.requiredPerShift = value.requiredPerShift;
         this.availableForShifts = value.availableForShifts;
     }
 
     public EmployeeCategory(
-        Integer categoryId,
+        Short   categoryId,
         String  categoryName,
         Boolean admin,
+        Short   requiredPerShift,
         Boolean availableForShifts
     ) {
         this.categoryId = categoryId;
         this.categoryName = categoryName;
         this.admin = admin;
+        this.requiredPerShift = requiredPerShift;
         this.availableForShifts = availableForShifts;
     }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "category_id", unique = true, nullable = false, precision = 10)
-    public Integer getCategoryId() {
+    @Column(name = "category_id", unique = true, nullable = false, precision = 5)
+    public Short getCategoryId() {
         return this.categoryId;
     }
 
-    public void setCategoryId(Integer categoryId) {
+    public void setCategoryId(Short categoryId) {
         this.categoryId = categoryId;
     }
 
@@ -81,6 +85,15 @@ public class EmployeeCategory implements Serializable {
         this.admin = admin;
     }
 
+    @Column(name = "required_per_shift", precision = 5)
+    public Short getRequiredPerShift() {
+        return this.requiredPerShift;
+    }
+
+    public void setRequiredPerShift(Short requiredPerShift) {
+        this.requiredPerShift = requiredPerShift;
+    }
+
     @Column(name = "available_for_shifts")
     public Boolean getAvailableForShifts() {
         return this.availableForShifts;
@@ -97,6 +110,7 @@ public class EmployeeCategory implements Serializable {
         sb.append(categoryId);
         sb.append(", ").append(categoryName);
         sb.append(", ").append(admin);
+        sb.append(", ").append(requiredPerShift);
         sb.append(", ").append(availableForShifts);
 
         sb.append(")");
