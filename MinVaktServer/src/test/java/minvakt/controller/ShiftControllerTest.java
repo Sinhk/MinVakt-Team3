@@ -1,37 +1,32 @@
 package minvakt.controller;
 
-import minvakt.datamodel.tables.pojos.Employee;
 import minvakt.datamodel.tables.pojos.Shift;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
-
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.List;
-import javax.ws.rs.core.Response;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
-/**
- * Created by magnu on 11.01.2017.
- */
-@DataJpaTest
-@RunWith(SpringJUnit4ClassRunner.class)
+
+@RunWith(SpringRunner.class)
+//@ContextConfiguration(classes = TestConfig.class)
+//@SpringBootTest(classes = SpringApp.class)
+//@PropertySource("classpath:application.properties")
+//@ActiveProfiles("test")
+//@ComponentScan(basePackages = {"minvakt.repos", "minvakt.controller"})//,"minvakt.managers"})
+//@ComponentScan("minvakt")
+@SpringBootTest
 public class ShiftControllerTest {
 
-    private EmbeddedDatabase db;
+    //private EmbeddedDatabase db;
 
     @Autowired
     private ShiftController shiftController;
@@ -41,29 +36,29 @@ public class ShiftControllerTest {
     @Before
     public void setUp() throws Exception {
         // Setup embedded database
-        db = new EmbeddedDatabaseBuilder()
+        /*db = new EmbeddedDatabaseBuilder()
                 .setType(EmbeddedDatabaseType.H2)
                 .addScript("db.sql")
-                .build();
+                .build();*/
 
         // Setup LocalDateTimes for shifts
         LocalDateTime fromTime1 = LocalDateTime.of(2017, 1, 17, 6, 0), toTime1 = LocalDateTime.of(2017, 1, 17, 14, 0), toTime2 = LocalDateTime.of(2017, 1, 17, 22, 0, 0);
 
         // Setup shifts based on data from database script
-        Shift shift1 = new Shift(1, 4, fromTime1, toTime1);
-        Shift shift2 = new Shift(2, 5, toTime1, toTime2);
+        shift1 = new Shift(1, 4, fromTime1, toTime1);
+        shift2 = new Shift(2, 5, toTime1, toTime2);
     }
 
     @After
     public void tearDown() throws Exception {
         // Shutdown Embedded database
-        db.shutdown();
+        //db.shutdown();
     }
 
     @Test
     public void getShifts() throws Exception {
-         // Get all shifts
-        List<Shift> allShifts = (List) shiftController.getShifts();
+        // Get all shifts
+        List<Shift> allShifts = (List<Shift>) shiftController.getShifts();
 
         // Test if shifts are equal
         assertEquals(shift1, allShifts.get(0));

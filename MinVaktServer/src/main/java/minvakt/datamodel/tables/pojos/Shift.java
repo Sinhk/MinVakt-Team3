@@ -103,4 +103,28 @@ public class Shift implements Serializable {
         sb.append(")");
         return sb.toString();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Shift shift = (Shift) o;
+
+        if (!shiftId.equals(shift.shiftId)) return false;
+        if (!responsibleEmployeeId.equals(shift.responsibleEmployeeId)) return false;
+        if (!fromTime.equals(shift.fromTime)) return false;
+        if (!toTime.equals(shift.toTime)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = shiftId.hashCode();
+        result = 31 * result + responsibleEmployeeId.hashCode();
+        result = 31 * result + fromTime.hashCode();
+        result = 31 * result + toTime.hashCode();
+        return result;
+    }
 }
