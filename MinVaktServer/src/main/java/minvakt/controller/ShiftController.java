@@ -312,6 +312,7 @@ public class ShiftController {
         assignment.ifPresent(a -> {
 
             System.out.println(assignment+" - "+a);
+            a.setAssigned(true);
             a.setEmployeeId(toUser_id);
             shiftAssignmentRepo.save(a);
         });
