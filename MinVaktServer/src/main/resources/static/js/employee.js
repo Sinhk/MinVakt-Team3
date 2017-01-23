@@ -1,34 +1,31 @@
 $(document).ready(function(){
-    getAllUsers(function (employees) {
+    $.getJSON("/category").then((cat) => {
+        let categories = new Map();
+        cat.forEach((cate) => {
+            categories.set(cate.categoryId, cate);
+        });
+        getAllUsers(function (employees) {
 
         for(var i = 0; i<employees.length; i++){
 
             let employee = employees[i]; // Uten const faile alt
 
-            console.log(employee);
-
             getHoursThisWeekForUser(employee.employeeId, function (hours) {
 
-                getCategory(employee.email, function (category) {
-
                     var div = document.getElementById("employeeBody");
-
-
-
-
                     div.innerHTML +=
-                        "<tr id="+employee.employeeId+">" +
+                        "<tr>" +
                         "<td>" + employee.firstName + "</td>" +
                         "<td>" + employee.lastName + "</td>" +
-                        "<td>" + category.categoryName + "</td>" +
+                        "<td>" + categories.get(employee.categoryId).categoryName + "</td>" +
                         "<td>" + employee.positionPercentage + "%</td>" +
                         "<td>" + employee.phone + "</td>" +
                         "<td>" + hours + " timer</td>" +
-                        /*"<td>" + employee.email + "</td>" +*/
-                        "</tr>"
-                })
+                        "<td>" + employee.email + "</td>" +
+                        "</tr>";
             });
         }
+        });
     });
 
 

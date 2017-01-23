@@ -31,8 +31,8 @@ function toFullCalendarEvent(event) {
 
 
 function toFullCalendarEventWithResource(event, resource) {
-    var start = event.startDateTime;
-    var end = event.endDateTime;
+    var start = event.fromTime;
+    var end = event.toTime;
 
     var dateStart = new Date(start);
     var dateEnd = new Date(end);
@@ -72,7 +72,7 @@ function toFullCalendarEvent(event, callback) {
 
             getResponsibleUserForShift(event.shiftId, function (responsible) {
 
-                console.log(start+" - "+end+" - "+dateStart+" - "+dateEnd+" - "+available+" - "+responsible)
+                console.log(start + " - " + end + " - " + dateStart + " - " + dateEnd + " - " + available + " - " + responsible)
 
                 //console.log("Avdeling: "+event.comments);
 
@@ -99,22 +99,13 @@ function listToFullCalendarEventList(events, resourceList) {
 
     //console.log("events: "+events);
 
-    for(var i = 0; i<events.length; i++){
+    for (var i = 0; i < events.length; i++) {
 
-        var theEvents = events[i]; // dobbeliste av en eller annen grunn
+        var event = events[i]; // dobbeliste av en eller annen grunn
         var resource = resourceList[i];
 
-        if(theEvents == undefined || theEvents == null) continue;
-
-        for(var j = 0; j<theEvents.length; j++){
-
-            list.push(toFullCalendarEventWithResource(theEvents[j], resource));
-
-        }
-
+        list.push(toFullCalendarEventWithResource(event, resource));
         //if(event != undefined) list.push(toFullCalendarEvent(event, resource));
-
-
     }
 
     return list;
@@ -124,9 +115,9 @@ function userListToResourceList(userlist) {
 
     var resourceList = [];
 
-    for(var i = 0; i<userlist.length; i++){
+    for (var i = 0; i < userlist.length; i++) {
 
-        resourceList.push({id:userlist[i].employeeId,title:userlist[i].firstName +" "+ userlist[i].lastName})
+        resourceList.push({id: userlist[i].employeeId, title: userlist[i].firstName + " " + userlist[i].lastName})
 
     }
     return resourceList;
@@ -168,9 +159,9 @@ function userListToResourceList(userlist) {
 
     var resourceList = [];
 
-    for(var i = 0; i<userlist.length; i++){
+    for (var i = 0; i < userlist.length; i++) {
 
-        resourceList.push({id:userlist[i].employeeId,title:userlist[i].firstName +" "+ userlist[i].lastName});
+        resourceList.push({id: userlist[i].employeeId, title: userlist[i].firstName + " " + userlist[i].lastName});
 
     }
     return resourceList;

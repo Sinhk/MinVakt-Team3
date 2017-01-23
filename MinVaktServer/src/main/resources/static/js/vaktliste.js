@@ -154,6 +154,9 @@ $(document).ready(function () { // document ready
             })
         }
     })*/
+    /*getAllShifts(function (events) {
+        calendar.fullCalendar('addEventSource', listToFullCalendarEventList(events, calendar.fullCalendar('getResources')));
+    });*/
 });
 
 function getUsersAndCreateResourceList(callback) {
