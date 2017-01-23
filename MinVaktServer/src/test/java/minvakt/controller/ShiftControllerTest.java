@@ -3,19 +3,19 @@ package minvakt.controller;
 import minvakt.datamodel.tables.pojos.Employee;
 import minvakt.datamodel.tables.pojos.Shift;
 
-import minvakt.controller.data.TwoIntData;
-
-import minvakt.repos.ChangeRequestRepository;
-import minvakt.repos.EmployeeRepository;
-import minvakt.repos.ShiftAssignmentRepository;
-import minvakt.repos.ShiftRepository;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.junit.MockitoJUnitRunner;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
+
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -23,92 +23,47 @@ import java.util.List;
 import javax.ws.rs.core.Response;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
 
 /**
  * Created by magnu on 11.01.2017.
  */
-
-
-@RunWith(MockitoJUnitRunner.class)
+@DataJpaTest
+@RunWith(SpringJUnit4ClassRunner.class)
 public class ShiftControllerTest {
 
+    private EmbeddedDatabase db;
+
+    @Autowired
     private ShiftController shiftController;
 
-    @Mock
-    private ShiftRepository shiftRepo;
-    @Mock
-    private EmployeeRepository empRepo;
-    @Mock
-    private ShiftAssignmentRepository shiftAssignmentRepo;
-    @Mock
-    private ChangeRequestRepository changeRequestRepository;
-
-    // Objects for use in tests
-    private Employee employee1, employee2;
-    private Shift shift1, shift2;
-
-    private TwoIntData twoIntThing1, twoIntThing2;
+    Shift shift1, shift2;
 
     @Before
     public void setUp() throws Exception {
-        shiftController = new ShiftController(shiftRepo, empRepo, shiftAssignmentRepo, changeRequestRepository);
+        // Setup embedded database
+        db = new EmbeddedDatabaseBuilder()
+                .setType(EmbeddedDatabaseType.H2)
+                .addScript("db.sql")
+                .build();
 
-        // Init Mocks
-        //MockitoAnnotations.initMocks(this);
+        // Setup LocalDateTimes for shifts
+        LocalDateTime fromTime1 = LocalDateTime.of(2017, 1, 17, 6, 0), toTime1 = LocalDateTime.of(2017, 1, 17, 14, 0), toTime2 = LocalDateTime.of(2017, 1, 17, 22, 0, 0);
 
-        // Setup of users for tests
-        employee1 = new Employee(1, 1, "Bob", "Bobsen", 12345678, "bob@bob.bob", (short) 100, "123", true, false);
-        employee2 = new Employee(2, 2, "Per", "Persson", 11223344, "per@sverige.se", (short) 50, "potet", true, false);
-
-        // Assign employeeID to test-employees (needed for tests)
-        employee1.setEmployeeId(1);
-        employee2.setEmployeeId(2);
-
-        // LocalDateTime objects for initializing Shift objects
-        LocalDateTime date1 = LocalDateTime.of(2017, 1, 10, 10, 0, 0);
-        LocalDateTime date2 = LocalDateTime.of(2017, 1, 10, 14, 0, 0);
-
-        shift1 = new Shift(1, 1, date1, date2);
-        shift2 = new Shift(2, 2, date1, date2);
-
-        // TwoIntData objects for use with addUserToShift
-        twoIntThing1 = new TwoIntData(); twoIntThing2 = new TwoIntData();
-
-        twoIntThing1.setInt1(2);
-        twoIntThing1.setInt2(2);
-        twoIntThing2.setInt1(1);
-        twoIntThing2.setInt2(1);
-
-        // Add a shift to employee2 for tests
-        shiftController.addUserToShift(1, 1);
-
-        // Stubbing methods
-        /*
-        when(shiftController.getShifts()).thenReturn(Arrays.asList(shift1, shift2));
-        when(shiftController.addUserToShift(twoIntThing2)).thenReturn(Response.ok().build());
-        when(shiftController.getUsersForShift(2)).thenReturn(Arrays.asList(employee2));
-        */
+        // Setup shifts based on data from database script
+        Shift shift1 = new Shift(1, 4, fromTime1, toTime1);
+        Shift shift2 = new Shift(2, 5, toTime1, toTime2);
     }
 
-    @Test
-    public void testMock() throws Exception {
-        // Does mocked object actually exist?
-        assertNotNull(shiftController);
+    @After
+    public void tearDown() throws Exception {
+        // Shutdown Embedded database
+        db.shutdown();
     }
 
     @Test
     public void getShifts() throws Exception {
-        // Stubbing methods
-        when(shiftRepo.findAll()).thenReturn(Arrays.asList(shift1, shift2));
-
-        // Get all shifts
+         // Get all shifts
         List<Shift> allShifts = (List) shiftController.getShifts();
-
-        // Verify methods use
-        verify(shiftController, atLeastOnce()).getShifts();
-
-
 
         // Test if shifts are equal
         assertEquals(shift1, allShifts.get(0));
@@ -128,18 +83,11 @@ public class ShiftControllerTest {
 
     @Test
     public void getShift() throws Exception {
-        //Stubbing method
-        when(shiftRepo.findOne(twoIntThing1.getInt1())).thenReturn(shift2);
-
         // Get Shift for test
-        Shift testShift = shiftController.getShift(twoIntThing1.getInt1());
-
-        // Verify method use
-        verify(shiftRepo, atLeastOnce()).findOne(twoIntThing1.getInt1());
+        Shift testShift = shiftController.getShift(2);
 
         // Compare
         assertEquals(shift2, testShift);
-
     }
 
     @Test
@@ -149,27 +97,11 @@ public class ShiftControllerTest {
 
     @Test
     public void addUserToShift() throws Exception {
-        // Stubbing methods
-        when(shiftRepo.findOne(1)).thenReturn(shift1);
-        when(empRepo.findOne(1)).thenReturn(employee1);
-
         // Attempt to add user to shift
-        shiftController.addUserToShift(1, 1);
+        shiftController.addUserToShift(1, "1");
 
-        // Verify method use
-        verify(shiftRepo, atLeastOnce()).findOne(1);
-        verify(empRepo, atLeastOnce()).findOne(1);
-
-        // Compare response with expected response (can't directly compare Response)
-        /*
-        assertEquals(Response.ok().build().getStatus(), response.getStatus());
-        assertEquals(Response.ok().build().getLength(), response.getLength());
-        assertEquals(Response.ok().build().getEntity(), response.getEntity());
-
-        assertNotEquals(404, response.getStatus());
-        */
     }
-
+/*
     @Test
     public void getUsersForShift() throws Exception {
         // Stubbing methods
@@ -188,7 +120,8 @@ public class ShiftControllerTest {
         assertEquals(employee2, userList.get(0));
 
         assertNotEquals(employee1, userList.get(0));
-        */
+
 
     }
+    */
 }
