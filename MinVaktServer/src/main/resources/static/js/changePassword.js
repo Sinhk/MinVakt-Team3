@@ -17,13 +17,11 @@ password.onchange = validatePassword;
 confirm_password.onkeyup = validatePassword;
 
 function submitPwChange() {
-    getCurrentUserId(function (id) {
-
-        if ($('#pwChangeForm')[0].checkValidity()) {
+    if ($('#pwChangeForm')[0].checkValidity()) {
             const oldPsw = $("#old_psw").val();
             const newPsw = $("#new_psw").val();
 
-            changePassword(id, oldPsw, newPsw, (data) => {
+        changePassword(oldPsw, newPsw, (data) => {
                 console.log(data);
                 console.log(data.status);
                 if (data.status == 200) {
@@ -44,5 +42,4 @@ function submitPwChange() {
                 }
             });
         }
-    })
 }

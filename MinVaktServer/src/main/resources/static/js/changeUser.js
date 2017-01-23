@@ -1,28 +1,23 @@
 /**
  * Created by Stine on 23.01.17.
  */
-$(document).ready(function() {
+$(document).ready(function () {
 
-    getCurrentUserId(function(id){
+    getCurrentUser(function (data) {
+        console.log(data);
 
-        getUserById(id, function(data){
+        $("#first_name1").val(data.firstName);
 
-            console.log(data)
+        $("#last_name1").val(data.lastName);
 
-            $("#first_name1").val(data.firstName);
+        $("#email1").val(data.email);
 
-            $("#last_name1").val(data.lastName);
+        $("#phone1").val(data.phone);
 
-            $("#email1").val(data.email);
-
-            $("#phone1").val(data.phone);
-
-        })
     });
 
 
-
-    $('#buttonUpdate').click(function() {
+    $('#buttonUpdate').click(function () {
         swal({
             title: "Oppdatert!!",
             text: "Din brukerinformasjon er oppdatert.",

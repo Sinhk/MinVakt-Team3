@@ -66,12 +66,12 @@ public class EmployeeController {
     }
 
     @GetMapping("/current")
-    public int getIdForCurrentUser(){
+    public Employee getCurrentUser() {
 
         UserDetails details = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Employee user = employeeRepo.findByEmail(details.getUsername());
 
-        return user.getEmployeeId();
+        return user;
 
     }
 
@@ -145,8 +145,8 @@ public class EmployeeController {
 
     }
 
-    @PutMapping("/{user_id}/password")
-    public ResponseEntity changePasswordForUser(@PathVariable int user_id, @RequestBody TwoStringsData info) {
+    @PutMapping("/password")
+    public ResponseEntity changePasswordForUser(@RequestBody TwoStringsData info) {
 
         String oldPass = info.getString1();
         String newPass = info.getString2();

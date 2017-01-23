@@ -28,32 +28,28 @@ $(document).ready(function(){
         }
 
     });
+    getCategories().then((categories) => {
+        getAllUsers(function (employees) {
+            const div = document.getElementById('employeeBody');
+            for (let i = 0; i < employees.length; i++) {
 
-    getAllUsers(function (employees) {
-
-
-        for(var i = 0; i<employees.length; i++){
-
-            var employee = employees[i];
-
-            getCategory(employee.email, function (category) {
-
-                var div = document.getElementById('employeeBody');
+                let employee = employees[i];
 
                 getHoursThisWeekForUser(employee.employeeId, function (hours) {
 
                     div.innerHTML +=
-                        "<tr>"+
-                        "<td>"+employee.firstName+"</td>"+
-                        "<td>"+employee.lastName+"</td>"+
-                        "<td>"+category.categoryName+"</td>"+
-                        "<td>"+employee.positionPercentage+"%</td>"+
-                        "<td>"+hours+" time(r)</td>"+
+                        "<tr>" +
+                        "<td>" + employee.firstName + "</td>" +
+                        "<td>" + employee.lastName + "</td>" +
+                        "<td>" + categories.get(employee.categoryId).categoryName + "</td>" +
+                        "<td>" + employee.positionPercentage + "%</td>" +
+                        "<td>" + hours + " time(r)</td>" +
                         "</tr>"
 
                 });
-            });
-        }
+            }
+
+        });
     });
 
 

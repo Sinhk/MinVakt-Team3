@@ -262,9 +262,9 @@ function getAllSuitableShifts(callback) {
 
 function getAllShiftForCurrentUser(callback) {
 
-    getCurrentUserId(function (id) {
+    getCurrentUser(function (user) {
 
-        getShiftsForUser(id, function (shifts) {
+        getShiftsForUser(user.employeeId, function (shifts) {
 
             callback(shifts);
 

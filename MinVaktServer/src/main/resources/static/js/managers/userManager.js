@@ -2,7 +2,7 @@
  * Created by OlavH on 18-Jan-17.
  */
 
-function getCurrentUserId(callback) {
+    function getCurrentUser(callback) {
 
     $.ajax({
         url: "/users/current",
@@ -77,10 +77,10 @@ function changeUser(user_id, jsonUser, callback) {
         }
     });
 }
-function changePassword(user_id, oldPass, newPass, callback) {
+    function changePassword(oldPass, newPass, callback) {
 
     $.ajax({
-        url: "/users/"+user_id+"/password",
+        url: "/users/password",
         type: "PUT",
         contentType: "Application/JSON",
         data: JSON.stringify({
@@ -91,7 +91,7 @@ function changePassword(user_id, oldPass, newPass, callback) {
             callback(data);
         },
         error: function (error) {
-            console.log("Error: " + data);
+            console.log("Error: " + error);
             callback(error);
         }
     });
@@ -165,3 +165,13 @@ function getHoursThisWeekForUser(user_id, callback) {
         }
     });
 }
+
+    function getCategories() {
+        return $.getJSON("/category").then((cat) => {
+            let categories = new Map();
+            cat.forEach((cate) => {
+                categories.set(cate.categoryId, cate);
+            });
+            return categories;
+        });
+    }

@@ -1,18 +1,14 @@
-$(document).ready(function(){
-    $.getJSON("/category").then((cat) => {
-        let categories = new Map();
-        cat.forEach((cate) => {
-            categories.set(cate.categoryId, cate);
-        });
+$(document).ready(function () {
+    getCategories().then((categories) => {
         getAllUsers(function (employees) {
 
-        for(var i = 0; i<employees.length; i++){
+            const div = document.getElementById("employeeBody");
+            for (let i = 0; i < employees.length; i++) {
 
-            let employee = employees[i]; // Uten const faile alt
+                let employee = employees[i]; // Uten const faile alt
 
-            getHoursThisWeekForUser(employee.employeeId, function (hours) {
+                getHoursThisWeekForUser(employee.employeeId, function (hours) {
 
-                    var div = document.getElementById("employeeBody");
                     div.innerHTML +=
                         "<tr>" +
                         "<td>" + employee.firstName + "</td>" +
@@ -23,11 +19,10 @@ $(document).ready(function(){
                         "<td>" + hours + " timer</td>" +
                         "<td>" + employee.email + "</td>" +
                         "</tr>";
-            });
-        }
+                });
+            }
         });
     });
-
 
 
     function myFunction() {
@@ -37,10 +32,10 @@ $(document).ready(function(){
         table = document.getElementById("myTable");
         tr = table.getElementsByTagName("tr");
 
-        for(i = 0; i < tr.length; i++) {
+        for (i = 0; i < tr.length; i++) {
             td = tr[i].getElementsByTagName("td")[0];
-            if(td) {
-                if(td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+            if (td) {
+                if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
                     tr[i].style.display = "";
                 } else {
                     tr[i].style.display = "none";
@@ -48,6 +43,7 @@ $(document).ready(function(){
             }
         }
     }
+
     $("#myTable").tablesorter();
-    $("#myTable").tablesorter( {sortList: [[0,0], [1,0]]} );
+    $("#myTable").tablesorter({sortList: [[0, 0], [1, 0]]});
 });
