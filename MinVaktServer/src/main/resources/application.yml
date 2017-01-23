@@ -10,6 +10,10 @@ spring:
     tomcat.max-idle: 2
   jpa:
     hibernate.ddl-auto: validate
+  jooq:
+    sql-dialect: mysql
+  main:
+    banner-mode: off
 logging:
   level:
     org:
