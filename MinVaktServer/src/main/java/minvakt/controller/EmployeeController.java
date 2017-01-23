@@ -100,8 +100,8 @@ public class EmployeeController {
         return ResponseEntity.created(location).build();*/
     }
 
-    @DeleteMapping
-    public Response removeEmployee(@RequestBody int user_id) {
+    @DeleteMapping("/{user_id}")
+    public Response removeEmployee(@PathVariable int user_id) {
         Employee user = employeeRepo.findOne(user_id);
 
         if (user != null){

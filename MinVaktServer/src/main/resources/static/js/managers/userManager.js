@@ -28,9 +28,8 @@ function addUser(jsonUser, category_id, callback) {
 function removeUser(user_id, callback) {
 
     $.ajax({
-        url: "/users/",
+        url: "/users/"+user_id,
         type: "DELETE",
-        data: user_id,
         success: function (data) {
 
             callback(data);
