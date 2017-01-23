@@ -1,6 +1,5 @@
 package minvakt.controller;
 
-import minvakt.datamodel.tables.pojos.ChangeRequest;
 import minvakt.datamodel.tables.pojos.Employee;
 import minvakt.datamodel.tables.pojos.Shift;
 import minvakt.datamodel.tables.pojos.ShiftAssignment;
@@ -72,9 +71,9 @@ public class ShiftController {
     }
 
     @GetMapping(value = "/nonassigned")
-    public List<Shift> getAllNonAssignedShifts(){
+    public List<ShiftAssignment> getAllNonAssignedShifts(){
 
-        return shiftAssignmentRepo.findByAssignedFalse().stream().map(shiftAssignment -> shiftRepo.findOne(shiftAssignment.getShiftId())).collect(Collectors.toList());
+        return shiftAssignmentRepo.findByAssignedFalse();
 
     }
 

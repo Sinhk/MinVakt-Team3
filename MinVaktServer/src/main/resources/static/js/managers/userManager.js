@@ -1,6 +1,26 @@
 /**
  * Created by OlavH on 18-Jan-17.
  */
+
+function getCurrentUserId(callback) {
+
+    $.ajax({
+        url: "/users/current",
+        type: "GET",
+        contentType: "Application/JSON",
+
+        success: function (data) {
+
+            callback(data);
+        },
+        error: function (data) {
+            console.log("Error: " + data);
+        }
+    });
+
+
+}
+
 function getAllUsers(callback) {
 
     $.getJSON("/users", function(data){callback(data)});
@@ -42,7 +62,7 @@ function removeUser(user_id, callback) {
 
 function getUserById(user_id, callback) {
 
-    $.getJSON("/users/"+user_id, function(){callback(data)});
+    $.getJSON("/users/"+user_id, function(data){callback(data)});
 
 
 }

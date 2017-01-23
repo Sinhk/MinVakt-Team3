@@ -63,6 +63,16 @@ public class EmployeeController {
         this.catRepo = catRepo;
     }
 
+    @GetMapping("/current")
+    public int getIdForCurrentUser(){
+
+        UserDetails details = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Employee user = employeeRepo.findByEmail(details.getUsername());
+
+        return user.getEmployeeId();
+
+    }
+
     @GetMapping
     public Iterable<Employee> getUsers() {//@RequestParam(value="name", defaultValue="World") String name) {
         return employeeRepo.findAll();
