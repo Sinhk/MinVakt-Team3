@@ -102,12 +102,8 @@ function changeUser(user_id, jsonUser, callback) {
             string1: oldPass,
             string2: newPass
         }),
-        success: function (data) {
-            callback(data);
-        },
-        error: function (error) {
-            console.log("Error: " + error);
-            callback(error);
+        complete: function (xhr, textStatus) {
+            callback(xhr.status);
         }
     });
 }

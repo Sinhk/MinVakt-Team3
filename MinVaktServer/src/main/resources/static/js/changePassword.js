@@ -21,10 +21,8 @@ function submitPwChange() {
             const oldPsw = $("#old_psw").val();
             const newPsw = $("#new_psw").val();
 
-        changePassword(oldPsw, newPsw, (data) => {
-                console.log(data);
-                console.log(data.status);
-                if (data.status == 200) {
+        changePassword(oldPsw, newPsw, (status) => {
+                if (status == 200) {
                     swal({
                         title: "Oppdatert!",
                         text: "Ditt passord er endret.",
