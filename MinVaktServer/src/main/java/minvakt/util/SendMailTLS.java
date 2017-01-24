@@ -78,4 +78,23 @@ public class SendMailTLS {
         buildMessage(message, email, subject, text);
         sendMail(message);
     }
+
+    public void sendChangeRequstToAdmin(String email,String text) {
+
+        try {
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress("noreply@minvakt.123"));
+            message.setRecipients(Message.RecipientType.TO,
+                    InternetAddress.parse(email));
+            message.setSubject("Minvakt bruker ønsker å bytte vakt");
+            message.setText(text);
+
+            //Transport.send(message);
+
+            System.out.println("Email sent to admin about change request");
+
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
