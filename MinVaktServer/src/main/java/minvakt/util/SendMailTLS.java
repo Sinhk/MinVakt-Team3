@@ -31,11 +31,13 @@ public class SendMailTLS {
     }
 
     private void sendMail(Message message) {
+        /*
         try {
             Transport.send(message);
         } catch (MessagingException e) {
             throw new RuntimeException(e);
         }
+        */
     }
 
     private void buildMessage(Message m, String email, String subj, String text) {
