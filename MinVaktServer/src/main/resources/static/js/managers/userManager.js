@@ -49,17 +49,30 @@ function removeUser(user_id, callback) {
         type: "DELETE",
 
         success: function (data) {
-
-                },
+           callback(data);
+        },
         error: function (data) {
             console.log("Error: " + data);
         }
     });
 }
 
+function removeButton(id) {
+    removeUser(id,function() {
+     swal({
+        title: "Bruker slettet!",
+            type: "success",
+            closeOnConfirm: true,
+            animation: "slide-from-top",
+            confirmButtonText: "Ok"
+        });
+     });
+    }
+
 function getUserById(user_id, callback) {
 
     $.getJSON("/users/"+user_id, function(data){callback(data)});
+
 
 }
 

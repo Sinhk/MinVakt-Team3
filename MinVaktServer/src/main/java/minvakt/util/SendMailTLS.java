@@ -81,7 +81,7 @@ public class SendMailTLS {
             message.setSubject("Minvakt passord");
             message.setText("Hei\n" +
                     "Her er ditt passord: " + password +
-                    "https://minvakt.herokuapp.com");
+                    "\nhttps://minvakt.herokuapp.com");
 
             Transport.send(message);
 

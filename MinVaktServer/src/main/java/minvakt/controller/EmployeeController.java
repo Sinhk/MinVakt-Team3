@@ -42,7 +42,7 @@ public class EmployeeController {
     private ShiftAssignmentRepository shiftAssignmentRepo;
     private ChangeRequestRepository changeRequestRepository;
     private CategoryRepository catRepo;
-    private SendMailTLS sendMail;
+    private SendMailTLS sendMail = new SendMailTLS();
 
     private final UserDetailsManager userDetailsManager;
 
@@ -274,15 +274,21 @@ public class EmployeeController {
 
     }
     @PutMapping(value = "/{email}/getNewPassword")
-    public void sendNewPassword(@PathVariable(value = "email") String email) {
-        String password = createPassword();
-        /// TODO: 20.01.2017 SendMail
+    public boolean sendNewPassword(@PathVariable(value = "email") String email) {
+        Employee employee = employeeRepo.findByEmail(email);
+        if(employee==null) {
+            System.out.println("No user with email: "+ email);
+            return false;
+        } else {
+            String password = createPassword();
+            /// TODO: 20.01.2017 SendMail
+            //  sendMail.sendPassword(email,password);
+            User user = new User(email, password, new ArrayList<SimpleGrantedAuthority>() {{
+                add(new SimpleGrantedAuthority("ROLE_USER"));
+            }});
+            userDetailsManager.updateUser(user);
+            return true;
+        }
 
-        sendMail.sendPassword("k.l.k08394@gmail.com",password);
-        System.out.println("fuck yeah");
-        User user = new User(email, password, new ArrayList<SimpleGrantedAuthority>() {{
-            add(new SimpleGrantedAuthority("ROLE_USER"));
-        }});
-        userDetailsManager.updateUser(user);
     }
 }
