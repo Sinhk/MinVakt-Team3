@@ -28,7 +28,7 @@ import java.util.List;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class GScrum03 extends SchemaImpl {
 
-    private static final long serialVersionUID = 1670301921;
+    private static final long serialVersionUID = 823921781;
 
     /**
      * The reference instance of <code>g_scrum03</code>
@@ -49,11 +49,6 @@ public class GScrum03 extends SchemaImpl {
      * The table <code>g_scrum03.department_required_employees_per_category</code>.
      */
     public final DepartmentRequiredEmployeesPerCategory DEPARTMENT_REQUIRED_EMPLOYEES_PER_CATEGORY = minvakt.datamodel.tables.DepartmentRequiredEmployeesPerCategory.DEPARTMENT_REQUIRED_EMPLOYEES_PER_CATEGORY;
-
-    /**
-     * The table <code>g_scrum03.department_required_per_shift</code>.
-     */
-    public final DepartmentRequiredPerShift DEPARTMENT_REQUIRED_PER_SHIFT = minvakt.datamodel.tables.DepartmentRequiredPerShift.DEPARTMENT_REQUIRED_PER_SHIFT;
 
     /**
      * The table <code>g_scrum03.employee</code>.
@@ -108,7 +103,6 @@ public class GScrum03 extends SchemaImpl {
             ChangeRequest.CHANGE_REQUEST,
             Department.DEPARTMENT,
             DepartmentRequiredEmployeesPerCategory.DEPARTMENT_REQUIRED_EMPLOYEES_PER_CATEGORY,
-            DepartmentRequiredPerShift.DEPARTMENT_REQUIRED_PER_SHIFT,
             Employee.EMPLOYEE,
             EmployeeCategory.EMPLOYEE_CATEGORY,
             Shift.SHIFT,

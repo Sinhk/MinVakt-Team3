@@ -7,8 +7,8 @@ package minvakt.datamodel.tables.records;
 import minvakt.datamodel.tables.Shift;
 import org.jooq.Field;
 import org.jooq.Record1;
-import org.jooq.Record4;
-import org.jooq.Row4;
+import org.jooq.Record6;
+import org.jooq.Row6;
 import org.jooq.impl.UpdatableRecordImpl;
 
 import javax.annotation.Generated;
@@ -29,9 +29,9 @@ import java.time.LocalDateTime;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 @Entity
 @Table(name = "shift", schema = "g_scrum03")
-public class ShiftRecord extends UpdatableRecordImpl<ShiftRecord> implements Record4<Integer, Integer, LocalDateTime, LocalDateTime> {
+public class ShiftRecord extends UpdatableRecordImpl<ShiftRecord> implements Record6<Integer, Integer, LocalDateTime, LocalDateTime, Short, Short> {
 
-    private static final long serialVersionUID = 1801904603;
+    private static final long serialVersionUID = 533184330;
 
     /**
      * Setter for <code>g_scrum03.shift.shift_id</code>.
@@ -95,6 +95,36 @@ public class ShiftRecord extends UpdatableRecordImpl<ShiftRecord> implements Rec
         return (LocalDateTime) get(3);
     }
 
+    /**
+     * Setter for <code>g_scrum03.shift.department_id</code>.
+     */
+    public void setDepartmentId(Short value) {
+        set(4, value);
+    }
+
+    /**
+     * Getter for <code>g_scrum03.shift.department_id</code>.
+     */
+    @Column(name = "department_id", nullable = false, precision = 5)
+    public Short getDepartmentId() {
+        return (Short) get(4);
+    }
+
+    /**
+     * Setter for <code>g_scrum03.shift.required_employees</code>.
+     */
+    public void setRequiredEmployees(Short value) {
+        set(5, value);
+    }
+
+    /**
+     * Getter for <code>g_scrum03.shift.required_employees</code>.
+     */
+    @Column(name = "required_employees", nullable = false, precision = 5)
+    public Short getRequiredEmployees() {
+        return (Short) get(5);
+    }
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -108,23 +138,23 @@ public class ShiftRecord extends UpdatableRecordImpl<ShiftRecord> implements Rec
     }
 
     // -------------------------------------------------------------------------
-    // Record4 type implementation
+    // Record6 type implementation
     // -------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Row4<Integer, Integer, LocalDateTime, LocalDateTime> fieldsRow() {
-        return (Row4) super.fieldsRow();
+    public Row6<Integer, Integer, LocalDateTime, LocalDateTime, Short, Short> fieldsRow() {
+        return (Row6) super.fieldsRow();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Row4<Integer, Integer, LocalDateTime, LocalDateTime> valuesRow() {
-        return (Row4) super.valuesRow();
+    public Row6<Integer, Integer, LocalDateTime, LocalDateTime, Short, Short> valuesRow() {
+        return (Row6) super.valuesRow();
     }
 
     /**
@@ -163,6 +193,22 @@ public class ShiftRecord extends UpdatableRecordImpl<ShiftRecord> implements Rec
      * {@inheritDoc}
      */
     @Override
+    public Field<Short> field5() {
+        return Shift.SHIFT.DEPARTMENT_ID;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Field<Short> field6() {
+        return Shift.SHIFT.REQUIRED_EMPLOYEES;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Integer value1() {
         return getShiftId();
     }
@@ -189,6 +235,22 @@ public class ShiftRecord extends UpdatableRecordImpl<ShiftRecord> implements Rec
     @Override
     public LocalDateTime value4() {
         return getToTime();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Short value5() {
+        return getDepartmentId();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Short value6() {
+        return getRequiredEmployees();
     }
 
     /**
@@ -231,11 +293,31 @@ public class ShiftRecord extends UpdatableRecordImpl<ShiftRecord> implements Rec
      * {@inheritDoc}
      */
     @Override
-    public ShiftRecord values(Integer value1, Integer value2, LocalDateTime value3, LocalDateTime value4) {
+    public ShiftRecord value5(Short value) {
+        setDepartmentId(value);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ShiftRecord value6(Short value) {
+        setRequiredEmployees(value);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ShiftRecord values(Integer value1, Integer value2, LocalDateTime value3, LocalDateTime value4, Short value5, Short value6) {
         value1(value1);
         value2(value2);
         value3(value3);
         value4(value4);
+        value5(value5);
+        value6(value6);
         return this;
     }
 
@@ -253,12 +335,14 @@ public class ShiftRecord extends UpdatableRecordImpl<ShiftRecord> implements Rec
     /**
      * Create a detached, initialised ShiftRecord
      */
-    public ShiftRecord(Integer shiftId, Integer responsibleEmployeeId, LocalDateTime fromTime, LocalDateTime toTime) {
+    public ShiftRecord(Integer shiftId, Integer responsibleEmployeeId, LocalDateTime fromTime, LocalDateTime toTime, Short departmentId, Short requiredEmployees) {
         super(Shift.SHIFT);
 
         set(0, shiftId);
         set(1, responsibleEmployeeId);
         set(2, fromTime);
         set(3, toTime);
+        set(4, departmentId);
+        set(5, requiredEmployees);
     }
 }

@@ -75,18 +75,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/admin/**").hasRole("ADMIN")
             .anyRequest().authenticated()
             .and()
-            .formLogin()
-            .loginPage("/login")
-            .permitAll()
-            .usernameParameter("email")
-            .passwordParameter("password")
+                .formLogin()
+                .loginPage("/login")
+                .permitAll()
+                .usernameParameter("email")
+                .passwordParameter("password")
             .and()
-            .logout()
-            .permitAll()
-            .logoutUrl("/do_logout")
-            .logoutSuccessUrl("/login?logout")
+                .logout()
+                .permitAll()
+                .logoutUrl("/do_logout")
+                .logoutSuccessUrl("/login?logout")
             .and()
-            .csrf().disable();
+                .csrf().disable();
     }
 
     @Bean

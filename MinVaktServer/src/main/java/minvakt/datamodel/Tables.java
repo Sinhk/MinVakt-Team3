@@ -38,11 +38,6 @@ public class Tables {
     public static final DepartmentRequiredEmployeesPerCategory DEPARTMENT_REQUIRED_EMPLOYEES_PER_CATEGORY = minvakt.datamodel.tables.DepartmentRequiredEmployeesPerCategory.DEPARTMENT_REQUIRED_EMPLOYEES_PER_CATEGORY;
 
     /**
-     * The table <code>g_scrum03.department_required_per_shift</code>.
-     */
-    public static final DepartmentRequiredPerShift DEPARTMENT_REQUIRED_PER_SHIFT = minvakt.datamodel.tables.DepartmentRequiredPerShift.DEPARTMENT_REQUIRED_PER_SHIFT;
-
-    /**
      * The table <code>g_scrum03.employee</code>.
      */
     public static final Employee EMPLOYEE = minvakt.datamodel.tables.Employee.EMPLOYEE;

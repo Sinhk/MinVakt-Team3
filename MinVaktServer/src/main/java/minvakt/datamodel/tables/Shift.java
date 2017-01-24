@@ -29,7 +29,7 @@ import java.util.List;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Shift extends TableImpl<ShiftRecord> {
 
-    private static final long serialVersionUID = 570665201;
+    private static final long serialVersionUID = -1526363040;
 
     /**
      * The reference instance of <code>g_scrum03.shift</code>
@@ -63,6 +63,16 @@ public class Shift extends TableImpl<ShiftRecord> {
      * The column <code>g_scrum03.shift.to_time</code>.
      */
     public final TableField<ShiftRecord, LocalDateTime> TO_TIME = createField("to_time", org.jooq.impl.SQLDataType.LOCALDATETIME.nullable(false), this, "");
+
+    /**
+     * The column <code>g_scrum03.shift.department_id</code>.
+     */
+    public final TableField<ShiftRecord, Short> DEPARTMENT_ID = createField("department_id", org.jooq.impl.SQLDataType.SMALLINT.nullable(false), this, "");
+
+    /**
+     * The column <code>g_scrum03.shift.required_employees</code>.
+     */
+    public final TableField<ShiftRecord, Short> REQUIRED_EMPLOYEES = createField("required_employees", org.jooq.impl.SQLDataType.SMALLINT.nullable(false).defaultValue(org.jooq.impl.DSL.inline("5", org.jooq.impl.SQLDataType.SMALLINT)), this, "");
 
     /**
      * Create a <code>g_scrum03.shift</code> table reference
@@ -123,7 +133,7 @@ public class Shift extends TableImpl<ShiftRecord> {
      */
     @Override
     public List<ForeignKey<ShiftRecord, ?>> getReferences() {
-        return Arrays.<ForeignKey<ShiftRecord, ?>>asList(Keys.SHIFT_RESPONSIBLE_ID_FK);
+        return Arrays.<ForeignKey<ShiftRecord, ?>>asList(Keys.SHIFT_RESPONSIBLE_ID_FK, Keys.SHIFT_DEPARTMENT_ID_FK);
     }
 
     /**

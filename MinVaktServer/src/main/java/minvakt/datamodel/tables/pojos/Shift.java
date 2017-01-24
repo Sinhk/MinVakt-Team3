@@ -25,12 +25,14 @@ import java.time.LocalDateTime;
 @Table(name = "shift", schema = "g_scrum03")
 public class Shift implements Serializable {
 
-    private static final long serialVersionUID = 247009417;
+    private static final long serialVersionUID = -1696750263;
 
     private Integer       shiftId;
     private Integer       responsibleEmployeeId;
     private LocalDateTime fromTime;
     private LocalDateTime toTime;
+    private Short         departmentId;
+    private Short         requiredEmployees;
 
     public Shift() {}
 
@@ -39,18 +41,24 @@ public class Shift implements Serializable {
         this.responsibleEmployeeId = value.responsibleEmployeeId;
         this.fromTime = value.fromTime;
         this.toTime = value.toTime;
+        this.departmentId = value.departmentId;
+        this.requiredEmployees = value.requiredEmployees;
     }
 
     public Shift(
         Integer       shiftId,
         Integer       responsibleEmployeeId,
         LocalDateTime fromTime,
-        LocalDateTime toTime
+        LocalDateTime toTime,
+        Short         departmentId,
+        Short         requiredEmployees
     ) {
         this.shiftId = shiftId;
         this.responsibleEmployeeId = responsibleEmployeeId;
         this.fromTime = fromTime;
         this.toTime = toTime;
+        this.departmentId = departmentId;
+        this.requiredEmployees = requiredEmployees;
     }
 
     @Id
@@ -91,6 +99,24 @@ public class Shift implements Serializable {
         this.toTime = toTime;
     }
 
+    @Column(name = "department_id", nullable = false, precision = 5)
+    public Short getDepartmentId() {
+        return this.departmentId;
+    }
+
+    public void setDepartmentId(Short departmentId) {
+        this.departmentId = departmentId;
+    }
+
+    @Column(name = "required_employees", nullable = false, precision = 5)
+    public Short getRequiredEmployees() {
+        return this.requiredEmployees;
+    }
+
+    public void setRequiredEmployees(Short requiredEmployees) {
+        this.requiredEmployees = requiredEmployees;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("Shift (");
@@ -99,6 +125,8 @@ public class Shift implements Serializable {
         sb.append(", ").append(responsibleEmployeeId);
         sb.append(", ").append(fromTime);
         sb.append(", ").append(toTime);
+        sb.append(", ").append(departmentId);
+        sb.append(", ").append(requiredEmployees);
 
         sb.append(")");
         return sb.toString();

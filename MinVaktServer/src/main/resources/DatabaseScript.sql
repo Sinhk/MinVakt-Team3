@@ -32,10 +32,12 @@ CREATE TABLE IF NOT EXISTS employee (
 );
 
 CREATE TABLE IF NOT EXISTS shift (
-  shift_id                    INT                   NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  responsible_employee_id     INT                   NOT NULL,
-  from_time                   DATETIME              NOT NULL,
-  to_time                     DATETIME              NOT NULL,
+  shift_id                INT      NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  responsible_employee_id INT      NOT NULL,
+  from_time               DATETIME NOT NULL,
+  to_time                 DATETIME NOT NULL,
+  department_id           SMALLINT NOT NULL,
+  required_employees      SMALLINT NOT NULL DEFAULT 5,
   CONSTRAINT shift_responsible_id_fk FOREIGN KEY (responsible_employee_id) REFERENCES employee (employee_id)
 );
 
@@ -47,8 +49,7 @@ CREATE TABLE IF NOT EXISTS shift_assignment (
   assigned            BOOL NOT NULL DEFAULT FALSE,
   comment_for_absence VARCHAR(100),
   CONSTRAINT shift_assignment_employee_id_fk FOREIGN KEY (employee_id) REFERENCES employee (employee_id),
-  CONSTRAINT shift_assignment_shift_id_fk FOREIGN KEY (shift_id) REFERENCES shift (shift_id)
-    ON DELETE CASCADE
+  CONSTRAINT shift_assignment_shift_id_fk FOREIGN KEY (shift_id) REFERENCES shift (shift_id) ON DELETE CASCADE
   #   CONSTRAINT shift_assignment_status_id_fk FOREIGN KEY (status_id) REFERENCES shift_status (status_id)
 );
 
@@ -93,14 +94,19 @@ CREATE TABLE IF NOT EXISTS department_required_employees_per_category (
   CONSTRAINT department_required_employees_category_id_fk FOREIGN KEY (category_id) REFERENCES employee_category (category_id)
 );
 
-CREATE TABLE IF NOT EXISTS department_required_per_shift (
+/*CREATE TABLE IF NOT EXISTS department_required_per_shift (
   id                  INT           AUTO_INCREMENT PRIMARY KEY,
   department_id   SMALLINT       NOT NULL,
   shift_id        INT           NOT NULL,
   amount          SMALLINT     NOT NULL,
   CONSTRAINT department_required_per_shift_department_id_fk FOREIGN KEY (department_id) REFERENCES department (department_id),
-  CONSTRAINT department_required_per_shift_shift_id_fk FOREIGN KEY (shift_id) REFERENCES shift (shift_id)
-);
+  CONSTRAINT department_required_per_shift_shift_id_fk FOREIGN KEY (shift_id) REFERENCES shift (shift_id),
+  CONSTRAINT department_shift_unique UNIQUE (department_id,shift_id)
+);*/
+
+ALTER TABLE shift
+  ADD CONSTRAINT shift_department_id_fk FOREIGN KEY (department_id) REFERENCES department (department_id);
+
 
 -- Test Data
 
@@ -136,21 +142,21 @@ VALUES (1, 'Diane', 'Watkins', '12345678', 'dwatkins8@archive.org', 100);
 INSERT INTO employee (category_id, first_name, last_name, phone, email, position_percentage)
 VALUES (3, 'Aaron', 'Watkins', '12345678', 'awatkins9@sina.com.cn', 100);
 
-INSERT INTO shift (responsible_employee_id, from_time, to_time) VALUES (4, '2017-01-17 06:00', '2017-01-17 14:00');
-INSERT INTO shift (responsible_employee_id, from_time, to_time) VALUES (5, '2017-01-17 14:00', '2017-01-17 22:00');
-INSERT INTO shift (responsible_employee_id, from_time, to_time) VALUES (6, '2017-01-17 22:00', '2017-01-18 06:00');
-INSERT INTO shift (responsible_employee_id, from_time, to_time) VALUES (5, '2017-01-18 06:00', '2017-01-18 14:00');
-INSERT INTO shift (responsible_employee_id, from_time, to_time) VALUES (4, '2017-01-18 14:00', '2017-01-18 22:00');
-INSERT INTO shift (responsible_employee_id, from_time, to_time) VALUES (6, '2017-01-18 22:00', '2017-01-19 06:00');
+INSERT INTO department (department_name) VALUES ('etg1');
+INSERT INTO department (department_name) VALUES ('etg2');
+INSERT INTO department (department_name) VALUES ('etg3');
+
+INSERT INTO shift (responsible_employee_id, from_time, to_time, department_id) VALUES (4, '2017-01-17 06:00', '2017-01-17 14:00',1);
+INSERT INTO shift (responsible_employee_id, from_time, to_time, department_id) VALUES (5, '2017-01-17 14:00', '2017-01-17 22:00',1);
+INSERT INTO shift (responsible_employee_id, from_time, to_time, department_id) VALUES (6, '2017-01-17 22:00', '2017-01-18 06:00',1);
+INSERT INTO shift (responsible_employee_id, from_time, to_time, department_id) VALUES (5, '2017-01-18 06:00', '2017-01-18 14:00',1);
+INSERT INTO shift (responsible_employee_id, from_time, to_time, department_id) VALUES (4, '2017-01-18 14:00', '2017-01-18 22:00',1);
+INSERT INTO shift (responsible_employee_id, from_time, to_time, department_id) VALUES (6, '2017-01-18 22:00', '2017-01-19 06:00',1);
 
 INSERT INTO shift_assignment (shift_id, employee_id) VALUES (1, 2);
 INSERT INTO shift_assignment (shift_id, employee_id) VALUES (1, 3);
 INSERT INTO shift_assignment (shift_id, employee_id) VALUES (2, 4);
 INSERT INTO shift_assignment (shift_id, employee_id) VALUES (2, 5);
-
-INSERT INTO department (department_name) VALUES ('etg1');
-INSERT INTO department (department_name) VALUES ('etg2');
-INSERT INTO department (department_name) VALUES ('etg3');
 
 /*
 INSERT INTO shift_department (shift_id, department_id) VALUES (1, 1);
@@ -170,6 +176,4 @@ INSERT INTO department_required_employees_per_category (department_id, category_
 INSERT INTO department_required_employees_per_category (department_id, category_id, amount) VALUES (2, 2, 3);
 INSERT INTO department_required_employees_per_category (department_id, category_id, amount) VALUES (3, 2, 3);
 
-INSERT INTO department_required_per_shift (department_id, shift_id, amount) VALUES (1, 1, 10);
-INSERT INTO department_required_per_shift (department_id, shift_id, amount) VALUES (2, 1, 10);
-INSERT INTO department_required_per_shift (department_id, shift_id, amount) VALUES (3, 1, 10);
+#INSERT INTO department_required_per_shift (department_id, shift_id, amount) SELECT department.department_id, shift.shift_id,10 FROM shift JOIN department
