@@ -30,10 +30,10 @@ $(document).ready(function(){
                             "<li class='collection-item avatar card-panel white' id="+request.requestId+"collapse"+">"+
                             "<div class='collapsible-header white black-text'><i class='material-icons circle blue lighten-2'>message</i><b>Vaktbytte</b></div>"+
                             "<div class='collapsible-body white black-text'><p>"+oldUser.firstName+" "+oldUser.lastName+" vil bytte vakt med "+newUser.firstName+" "+newUser.lastName+" fra "+shift.fromTime.split("T")[0]+" "+shift.fromTime.split("T")[1].substr(0,5)+" til "+shift.toTime.split("T")[0]+" "+shift.toTime.split("T")[1].substr(0,5)+"</p>" +
-                                "<a class='waves-effect waves-light blue lighten-2 btn' id="+request.requestId+">Godkjenn</a><a class='waves-effect waves-light blue lighten-2 btn' id='declineButton'>Ikke godkjenn</a></div>"+
+                                "<a class='waves-effect waves-light blue lighten-2 btn' id= accept"+request.requestId+">Godkjenn</a><a class='waves-effect waves-light blue lighten-2 btn' id='decline"+request.requestId+"'>Ikke godkjenn</a></div>"+
                             "</li>"
 
-                        $("#"+request.requestId).click(function () {
+                        $("#accept"+request.requestId).click(function () {
 
                             $("#acceptButton").click();
 
@@ -46,14 +46,14 @@ $(document).ready(function(){
 
 
                         })
-                        $("#declineButton").click(function () {
+                        $("#decline"+request.requestId).click(function () {
+
+                            $("#declineButton").click();
+
                             swal("Vakten ble ikke byttet", "", "error");
-                            $("#"+request.requestId+"collapse").hide();
+                            $("#" + request.requestId + "collapse").hide();
 
                             declineRequestChange(request.requestId);
-
-
-
                         })
                     })
                 })
