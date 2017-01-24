@@ -134,10 +134,6 @@ $(document).ready(function () {
 
             })
 
-
-
-
-
             toFullCalendarEvent(shift, function (fullCalendarEvent) {
 
                 $('#calendar').fullCalendar('renderEvent', fullCalendarEvent, /*sticky*/true);
