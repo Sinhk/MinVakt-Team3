@@ -16,8 +16,8 @@ public class ShiftDetailed extends Shift {
     public ShiftDetailed() {
     }
 
-    public ShiftDetailed(Integer shiftId, Integer responsibleEmployeeId, LocalDateTime fromTime, LocalDateTime toTime) {
-        super(shiftId, responsibleEmployeeId, fromTime, toTime);
+    public ShiftDetailed(Integer shiftId, Integer responsibleEmployeeId, LocalDateTime fromTime, LocalDateTime toTime, Short departmentId, Short requiredEmployees) {
+        super(shiftId, responsibleEmployeeId, fromTime, toTime, departmentId, requiredEmployees);
     }
 
     public void addEmployee(AssignedEmployee employee) {

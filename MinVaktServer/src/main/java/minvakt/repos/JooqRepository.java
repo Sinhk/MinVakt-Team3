@@ -51,4 +51,8 @@ public class JooqRepository {
 
         return shifts;
     }
+
+    /*public List<Shift> getAvailableShiftForUser(int user_id) {
+        create.select(DSL.count()).from(SHIFT).naturalJoin(SHIFT_ASSIGNMENT).naturalJoin(DEPARTMENT_REQUIRED_EMPLOYEES_PER_CATEGORY).where().cou.groupBy(SHIFT.SHIFT_ID)
+    }*/
 }
