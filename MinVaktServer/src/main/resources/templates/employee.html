@@ -15,11 +15,15 @@
 
 <div id="nav" th:replace="fragments/header :: header"></div>
 <main>
-    <div id="search">
-        <form class="search-container">
-            <input type="text" id="search-bar" onkeyup="myFunction()" placeholder="Søk"><i class="material-icons" id="icon">search</i>
-        </form>
+    <div class="row">
+        <h2 id="header">Ansatte</h2>
+        <div class="right col s5" id="search">
+            <form class="search-container">
+                <input type="text" id="search-bar" onkeyup="myFunction()" placeholder="Søk"><i class="material-icons" id="icon">search</i>
+            </form>
+        </div>
     </div>
+
 
 
     <table id="myTable" class="tablesorter">
