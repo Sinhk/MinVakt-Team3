@@ -28,11 +28,11 @@ public class Shift implements Serializable {
     private static final long serialVersionUID = -1696750263;
 
     private Integer       shiftId;
-    private Integer       responsibleEmployeeId;
+    private Integer       responsibleEmployeeId = 1;
     private LocalDateTime fromTime;
     private LocalDateTime toTime;
-    private Short         departmentId;
-    private Short         requiredEmployees;
+    private Short         departmentId = 1;
+    private Short         requiredEmployees = 5;
 
     public Shift() {}
 
