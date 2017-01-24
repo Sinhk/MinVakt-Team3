@@ -72,7 +72,7 @@ function toFullCalendarEvent(event, callback) {
 
             getResponsibleUserForShift(event.shiftId, function (responsible) {
 
-                console.log(start + " - " + end + " - " + dateStart + " - " + dateEnd + " - " + available + " - " + responsible)
+                //console.log(start + " - " + end + " - " + dateStart + " - " + dateEnd + " - " + available + " - " + responsible)
 
                 //console.log("Avdeling: "+event.comments);
 

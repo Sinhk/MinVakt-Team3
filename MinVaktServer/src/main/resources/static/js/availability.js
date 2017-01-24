@@ -1,106 +1,18 @@
-/**
- * Created by Stine on 17.01.17.
- */
-$(document).ready(function(){
+$(document).ready(function () {
 
-    /*for(var i = 0; i<330; i++){
-
-        var day = (17+i)%29;
-        var date = (day+1) >= 10 ? (day+1) : "0"+(day+1)
-
-        addShift()
-        $.ajax({
-
-            url: "/shifts",
-            type: "POST",
-            contentType: "application/json",
-            data: JSON.stringify({
-                "startD": date,
-                "startY": 2017,
-                "startH": "06",
-                "startMonth": Math.floor((i/29)+1) > 9 ? Math.floor((i/29)+1) : "0"+Math.floor((i/29)+1) ,
-                "startMin":"00",
-                "endD": date,
-                "endY": 2017,
-                "endH": 14,
-                "endMonth":Math.floor((i/29)+1) > 9 ? Math.floor((i/29)+1) : "0"+Math.floor((i/29)+1),
-                "endMin": "00",
-            }),
-            success: function () {
-                console.log("Added shift");
-            }
-        });
-
-        $.ajax({
-            url: "/shifts",
-            type: "POST",
-            contentType: "application/json",
-            data: JSON.stringify({
-                "startD": date,
-                "startY": 2017,
-                "startH": 14,
-                "startMonth": Math.floor((i/29)+1) > 9 ? Math.floor((i/29)+1) : "0"+Math.floor((i/29)+1),
-                "startMin":"00",
-                "endD": date,
-                "endY": 2017,
-                "endH": 22,
-                "endMonth":Math.floor((i/29)+1) > 9 ? Math.floor((i/29)+1) : "0"+Math.floor((i/29)+1),
-                "endMin": "00",
-            }),
-            success: function () {
-                console.log("Added shift");
-            }
-        });
-        $.ajax({
-            url: "/shifts",
-            type: "POST",
-            contentType: "application/json",
-            data: JSON.stringify({
-                "startD": date,
-                "startY": 2017,
-                "startH": 22,
-                "startMonth":Math.floor((i/29)+1) > 9 ? Math.floor((i/29)+1) : "0"+Math.floor((i/29)+1),
-                "startMin":"00",
-                "endD": date+1,
-                "endY": 2017,
-                "endH": "06",
-                "endMonth":Math.floor((i/29)+1) > 9 ? Math.floor((i/29)+1) : "0"+Math.floor((i/29)+1),
-                "endMin": "00"
-            }),
-            success: function () {
-                console.log("Added shift");
-            }
-        });
-
-    }*/
-
-
-    // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
-    /*$('.modal').modal({
-     dismissible: true, // Modal can be dismissed by clicking outside of the modal
-     opacity: .5, // Opacity of modal background
-     in_duration: 300, // Transition in duration
-     out_duration: 200, // Transition out duration
-     starting_top: '4%', // Starting top style attribute
-     ending_top: '10%', // Ending top style attribute
-     ready: function(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
-     alert("Ready");
-     console.log(modal, trigger);
-     },
-     complete: function() { alert('Closed'); } // Callback for Modal close
-     }
-     );*/
-
+    $('.modal-trigger').modal();
+    // $(".side-nav").css("margin-top", $(".nav-wrapper").height());
 
     $('#calendar').fullCalendar({
 
+        displayEventTime: false,
         locale: "no",
         timezone: "UTC",
-        displayEventTime: false,
+        selectable: true,
         header: {
-            left:'prev, today',
-            center:'title',
-            right:'next'
+            left: 'prev, today',
+            center: 'title',
+            right: 'next'
         },
         firstDay: 1,
         weekNumbers: true,
@@ -108,45 +20,92 @@ $(document).ready(function(){
         monthNames: ['Januar', 'Februar', 'Mars', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Desember'],
         weekNumberTitle: 'Uke',
         buttonText: {
-            today:    'I dag',
-            month:    'Måned',
-            week:     'Uke',
-            day:      'Dag',
-            list:     'Liste'
+            today: 'I dag',
+            month: 'Måned',
+            week: 'Uke',
+            day: 'Dag',
+            list: 'Liste'
         },
-        dayClick:function (data ) {
-            console.log("You clicked: "+data);
+        select: function (start, end, jsEvent, view) {
+
+            console.log("Start date: " + moment(start).format() +
+                "\nEnd date: " + moment(end).format());
+
+        },
+        /*dayClick:function (data ) {
+         console.log("You clicked: "+data);
+         },*/
+
+        eventMouseover: function (calEvent, jsEvent) {
+            var tooltip = '<div class="tooltipevent" style="width:150px;height:70px;background:#e3f2fd;border-style:solid;border-color:#212121;border-width:1px;position:absolute;z-index:10001;">' + ' ' + ' Tidspunkt: ' + calEvent.title + '<br> Avdeling: ' + calEvent.avdeling + '<br>  Ansvar: ' + calEvent.isResponsible + '</div>';
+            var $tool = $(tooltip).appendTo('body');
+            $(this).mouseover(function (e) {
+                $(this).css('z-index', 10000);
+                $tool.fadeIn('500');
+                $tool.fadeTo('10', 1.9);
+            }).mousemove(function (e) {
+                $tool.css('top', e.pageY + 10);
+                $tool.css('left', e.pageX + 20);
+            });
+        },
+        eventMouseout: function (calEvent, jsEvent) {
+            $(this).css('z-index', 8);
+            $('.tooltipevent').remove();
         },
 
-        eventClick: function( event, jsEvent, view ) {
 
-            console.log(event);
-            alert("*Insert CSS stuff here*\n[SETT SOM TILGJENGELIG]");
+        eventClick: function (event, jsEvent) {
+            var eventId = event.id;
+
+            console.log($('#calendar').fullCalendar('clientEvents'));
+
+            getShiftWithId(eventId, function (data) {
+
+                console.log(data);
+
+            });
+
+        },
+        /*eventMouseout: function(calEvent,jsEvent) {
+         $("#tooltip").remove();
+         }
+
+         var eventId = event.id;
+
+         var eventDB = getEventViaID(eventId);
+
+         console.log(eventDB);
+
+         }*/
+    });
+
+    getAllShifts(function (shifts) {
+
+        //  console.log(shifts);
+
+        for (var i = 0; i<shifts.length; i++){
+
+            const shift = shifts[i];
+
+            toFullCalendarEvent(shift, function (fullCalendarEvent) {
+
+                $('#calendar').fullCalendar('renderEvent', fullCalendarEvent, /*sticky*/true);
+
+            })
 
         }
+        /*  getShiftsWithRequestChange(function (ch) {
+
+         var shifts = shifts1.concat(ch);
+
+         getAvailableShifts(function (availableshifts) {
+
+         availableshifts.concat(shifts);*/
+        /*var ev = shifts.map(toFullCalendarEvent);
+         $('#calendar').fullCalendar('addEventSource', ev);*/
+        /* });
+         });*/
     });
-
-    /*for(var i = 0; i<shifts.length; i++) {
-
-     $('#calendar').fullCalendar( 'renderEvent', fullCalendarEvents[i], true);
-
-     }*/
-
-    $.getJSON("/shifts/between", function (data) {
-        var newdata = $.map(data, function (value) {
-            return toFullCalendarEvent(value)
-        });
-
-        console.log(newdata);
-        $('#calendar').fullCalendar('addEventSource', newdata);
-        /*reduce((promiseChain, item) => {
-         return promiseChain.then(() => new Promise((resolve) => {
-         toFullCalendarEvent(item, resolve);
-         }));
-         },
-         Promise.resolve());*/
-
-    });
-    //requests.then((data)=>
-
 });
+
+

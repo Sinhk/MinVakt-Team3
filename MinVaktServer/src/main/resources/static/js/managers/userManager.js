@@ -134,9 +134,9 @@ function getAssignedShiftsForUser(user_id, callback) {
 }
 function getScheduledShiftsForCurrentUser(callback) {
 
-    getCurrentUserId(function (id) {
+    getCurrentUser(function (user) {
 
-        getAssignedShiftsForUser(id, function (assignedShifts) {
+        getAssignedShiftsForUser(user.employeeId, function (assignedShifts) {
 
             callback(assignedShifts);
 

@@ -140,8 +140,15 @@ public class EmployeeController {
     @PutMapping("/{user_id}")
     public void changeEmployee(@PathVariable int user_id, @RequestBody Employee employee){
 
-        if (employee.getEmployeeId() == user_id)
-            employeeRepo.save(employee);
+        Employee user = employeeRepo.findOne(user_id);
+
+        if (employee.getEmail() != null) user.setEmail(employee.getEmail());
+        if (employee.getPhone() != null) user.setPhone(employee.getPhone());
+        if (employee.getFirstName() != null) user.setFirstName(employee.getFirstName());
+        if (employee.getLastName() != null) user.setLastName(employee.getLastName());
+
+
+        employeeRepo.save(employee);
 
     }
 
