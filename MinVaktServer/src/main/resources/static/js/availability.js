@@ -1,158 +1,192 @@
-$(document).ready(function () {
+$(document).ready(function () { // document ready
+    $(function() { // document ready
 
-    $('.modal-trigger').modal();
-    // $(".side-nav").css("margin-top", $(".nav-wrapper").height());
 
-    $('#calendar').fullCalendar({
+        /* initialize the external events
+         -----------------------------------------------------------------*/
 
-        displayEventTime: false,
-        locale: "no",
-        timezone: "UTC",
-        selectable: true,
-        header: {
-            left: 'prev, today',
-            center: 'title',
-            right: 'next'
-        },
-        firstDay: 1,
-        weekNumbers: true,
-        dayNamesShort: ['Søndag', 'Mandag', 'Tirsdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lørdag'],
-        monthNames: ['Januar', 'Februar', 'Mars', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Desember'],
-        weekNumberTitle: 'Uke',
-        buttonText: {
-            today: 'I dag',
-            month: 'Måned',
-            week: 'Uke',
-            day: 'Dag',
-            list: 'Liste'
-        },
-        resources:[
-            {
-                id: 1,
-                title: "Ingen Status", // normal farge
+        $('#external-events .fc-event').each(function() {
+
+            // store data so the calendar knows to render an event upon drop
+            $(this).data('event', {
+                title: $.trim($(this).text()), // use the element's text as the event title
+                stick: true // maintain when user navigates (see docs on the renderEvent method)
+            });
+
+            // make the event draggable using jQuery UI
+            $(this).draggable({
+                zIndex: 999,
+                revert: true,      // will cause the event to go back to its
+                revertDuration: 0  //  original position after the drag
+            });
+
+        });
+
+
+        /* initialize the calendar
+         -----------------------------------------------------------------*/
+
+        $('#calendar').fullCalendar({
+            schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
+            displayEventTime: false,
+            locale: "no",
+            timezone: "UTC+1",
+            selectable: true,
+            resourceAreaWidth: 230,
+            //editable: true,
+            aspectRatio: 1.5,
+            scrollTime: '00:00',
+            header: {
+                left: 'prev, promptResource today',
+                center: 'title',
+                right: 'customWeek, next'
             },
-            {
-                id: 2,
-                title: "Tilgjengelig",
-                bakgroundColor: "#4caf50" //grønn
-
+            firstDay: 1,
+            defaultView: 'month',
+            views: {
+                customWeek: {
+                    type: 'timeline',
+                    duration: {weeks: 1},
+                    slotDuration: {days: 1},
+                    buttonText: 'Vaktliste'
+                }
             },
-            {
-                id: 3,
-                title: "Utilgjengelig",
-                bakgroundColor: "#ff5722" // orangeish
+            dayNamesShort: ['Søndag', 'Mandag', 'Tirsdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lørdag'],
+            monthNames: ['Januar', 'Februar', 'Mars', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Desember'],
+            weekNumberTitle: 'Uke',
+            buttonText: {
+                today: 'I dag',
+                month: 'Måned',
+                week: 'Uke',
+                day: 'Dag',
+                list: 'Liste'
+            },
+            editable: true, // enable draggable events
+            droppable: true, // this allows things to be dropped onto the calendar
+
+
+            drop: function(date, jsEvent, ui, resourceId) {
+                console.log('drop', date.format(), resourceId);
+
+                // is the "remove after drop" checkbox checked?
+                if ($('#drop-remove').is(':checked')) {
+                    // if so, remove the element from the "Draggable Events" list
+                    $(this).remove();
+                }
+            },
+            eventReceive: function(event) { // called when a proper external event is dropped
+                console.log('eventReceive', event);
+            },
+            eventDrop: function(event) { // called when an event (already on the calendar) is moved
+                console.log('eventDrop', event);
             }
-        ],
-        select: function (start, end, jsEvent, view) {
+        });
 
-            console.log("Start date: " + moment(start).format() +
-                "\nEnd date: " + moment(end).format());
+    });
 
-        },
-        /*dayClick:function (data ) {
-         console.log("You clicked: "+data);
-         },*/
+    getAllUsers(function (users) {
 
-        eventMouseover: function (calEvent, jsEvent) {
-            var tooltip = '<div class="tooltipevent" style="width:150px;height:70px;background:#e3f2fd;border-style:solid;border-color:#212121;border-width:1px;position:absolute;z-index:10001;">' + ' ' + ' Tidspunkt: ' + calEvent.title + '<br> Avdeling: ' + calEvent.avdeling + '<br>  Ansvar: ' + calEvent.isResponsible + '</div>';
-            var $tool = $(tooltip).appendTo('body');
-            $(this).mouseover(function (e) {
-                $(this).css('z-index', 10000);
-                $tool.fadeIn('500');
-                $tool.fadeTo('10', 1.9);
-            }).mousemove(function (e) {
-                $tool.css('top', e.pageY + 10);
-                $tool.css('left', e.pageX + 20);
-            });
-        },
-        eventMouseout: function (calEvent, jsEvent) {
-            $(this).css('z-index', 8);
-            $('.tooltipevent').remove();
-        },
+        for (var i = 0; i < users.length; i++) {
+
+            const user = users[i];
+
+            //$('#calendar').fullCalendar('addResource', resource)
+
+            getAssignedShiftsForUser(user.employeeId, function (shiftsForUser) {
+
+                for (var i = 0; i < shiftsForUser.length; i++) {
+
+                    const shift = shiftsForUser[i];
+
+                    console.log(shift);
+
+                    userIsResponsibleForShift(shift.shiftId, user.employeeId, function (responsible) {
 
 
-        eventClick: function (event, jsEvent) {
-            var eventId = event.id;
+                        const event = {
 
-            console.log($('#calendar').fullCalendar('clientEvents'));
+                            id: shift.shiftId,
+                            resourceId: user.employeeId,
+                            start: shift.fromTime.split("T")[0],
+                            end: shift.toTime.split("T")[0],
+                            title: shift.fromTime.split("T")[1].substr(0, 5) + " - " + shift.toTime.split("T")[1].substr(0, 5),
 
-            getShiftWithId(eventId, function (data) {
+                            backgroundColor: responsible ? "#03a9f4" : "#4caf50",
 
-                console.log(data);
+                            stick: true
 
-                //TODO NÅR MAN SKAL SETTE SEG TILGJENGELIG, BRUK DETTE
-                getCurrentUser(function (user) {
-                    addUserToShift(user.employeeId, data.shiftId, function (data) {
-
-                        console.log(data);
-
+                        }
+                        $('#calendar').fullCalendar('renderEvent', event, true);
                     })
-                })
-
-            });
-
-        },
-        /*eventMouseout: function(calEvent,jsEvent) {
-         $("#tooltip").remove();
-         }
-
-         var eventId = event.id;
-
-         var eventDB = getEventViaID(eventId);
-
-         console.log(eventDB);
-
-         }*/
-    });
-
-    getAllShifts(function (shifts) {
-
-        //  console.log(shifts);
-
-        for (var i = 0; i<shifts.length; i++){
-
-            const shift = shifts[i];
-
-            getCurrentUser(function (user) {
-                getShiftAssignmentForShiftAndUser(shift.shiftId, user.employeeId, function (shiftAssignment) {
-
-                    var fullCalendarEvent = {
-
-                        id: event.shiftId,
-                        title: start.split("T")[1].substr(0,3) + " -> " + end.split("T")[1].substr(0,3),
-                        start: dateStart,
-                        end: dateEnd,
-                        resourceId: resource.id,
-                        backgroundColor: responsible != undefined && responsible.employeeId == resource.id ? "#9B0300" : available ? "#3E9B85" : "#3F7F9B",
-                        isResponsible: responsible,
-                        /*available: shiftAssignment*/
-
-                        //backgroundColor: event.responsible != undefined && event.responsible.employeeId == resource.id ? "#9B0300" : "#3E9B85"
-                    };
-
-                })
-
+                }
             })
-
-            toFullCalendarEvent(shift, function (fullCalendarEvent) {
-
-                $('#calendar').fullCalendar('renderEvent', fullCalendarEvent, /*sticky*/true);
-
-            })
-
         }
-        /*  getShiftsWithRequestChange(function (ch) {
-
-         var shifts = shifts1.concat(ch);
-
-         getAvailableShifts(function (availableshifts) {
-
-         availableshifts.concat(shifts);*/
-        /*var ev = shifts.map(toFullCalendarEvent);
-         $('#calendar').fullCalendar('addEventSource', ev);*/
-        /* });
-         });*/
     });
+
+    /*getAllAssignedShifts(function (assignedShifts) {
+
+     for (var i = 0; i < assignedShifts.length; i++) {
+
+     const nonAssignedShift = assignedShifts[i];
+
+     console.log(nonAssignedShift);
+
+     getUserById(nonAssignedShift.employeeId, function (user) {
+
+     getShiftWithId(nonAssignedShift.shiftId, function (shift) {
+
+     console.log(user);
+     console.log(shift);
+
+     var resource = {
+     id: user.employeeId,
+     title: user.firstName + " " + user.lastName,
+     }
+
+     $('#calendar').fullCalendar('addResource', resource)
+
+
+     var event = {
+
+     id: shift.shiftId,
+     resourceId: user.employeeId,
+     start: shift.fromTime.split("T")[0],
+     end: shift.toTime.split("T")[0],
+     title: shift.fromTime.split("T")[1].substr(0, 5) + " - " + shift.toTime.split("T")[1].substr(0, 5),
+
+     stick: true
+
+     }
+
+     $('#calendar').fullCalendar('renderEvent', event, true);
+
+
+
+
+     })
+     })
+     }
+     })*/
+    /*getAllShifts(function (events) {
+     calendar.fullCalendar('addEventSource', listToFullCalendarEventList(events, calendar.fullCalendar('getResources')));
+     });*/
 });
 
+function getUsersAndCreateResourceList(callback) {
 
+    const res = [];
+
+    getAllUsers(function (users) {
+
+        for (var i = 0; i < users.length; i++) {
+
+            const user = users[i];
+
+            res.push({
+                id: user.employeeId,
+                title: user.firstName + " " + user.lastName,
+            })
+        }
+        callback(res);
+    })
+}

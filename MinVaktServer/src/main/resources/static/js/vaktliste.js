@@ -4,27 +4,18 @@ $(document).ready(function () { // document ready
         schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
         displayEventTime: false,
         locale: "no",
-        timezone: "UTC",
+        timezone: "UTC+1",
         selectable: true,
         resourceAreaWidth: 230,
         //editable: true,
         aspectRatio: 1.5,
         scrollTime: '00:00',
         header: {
-            left: 'prev, promptResource today',
+            left: 'prev',
             center: 'title',
-            right: 'customWeek, next'
+            right: 'next'
         },
         firstDay: 1,
-        defaultView: 'customWeek',
-        views: {
-            customWeek: {
-                type: 'timeline',
-                duration: {weeks: 1},
-                slotDuration: {days: 1},
-                buttonText: 'Vaktliste'
-            }
-        },
         dayNamesShort: ['Søndag', 'Mandag', 'Tirsdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lørdag'],
         monthNames: ['Januar', 'Februar', 'Mars', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Desember'],
         weekNumberTitle: 'Uke',
@@ -52,9 +43,6 @@ $(document).ready(function () { // document ready
                 console.log(event);
 
             })
-
-
-
         },
 
         select: function (start, end, jsEvent, view) {

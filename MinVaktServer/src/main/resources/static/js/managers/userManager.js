@@ -24,6 +24,7 @@ function getAllUsers(callback) {
     $.getJSON("/users", function(data){callback(data)});
 
 }
+
 function addUser(jsonUser, callback) {
 
     $.ajax({
@@ -81,12 +82,13 @@ function changeUser(user_id, jsonUser, callback) {
     $.ajax({
         url: "/users/"+user_id,
         type: "PUT",
+        contentType: "Application/JSON",
         data: jsonUser,
         success: function (data) {
             callback(data);
         },
         error: function (data) {
-            console.log("Error: " + data);
+            console.log("Error: " + JSON.stringify(data));
         }
     });
 }
@@ -166,6 +168,7 @@ function getUsersThatCanBeResponsibleForShift(shift_id, callback) {
 
 
 function getHoursThisWeekForUser(user_id, callback) {
+
 
     $.ajax({
         url: "users/"+user_id+"/hours",

@@ -29,12 +29,12 @@ public class Employee implements Serializable {
     private static final long serialVersionUID = -250030484;
 
     private Integer employeeId;
-    private Short   categoryId;
+    private Short   categoryId = 1;
     private String  firstName;
     private String  lastName;
     private Integer phone;
     private String  email;
-    private Short   positionPercentage;
+    private Short   positionPercentage = 100;
     @JsonIgnore
     private String  passwd;
     @JsonIgnore

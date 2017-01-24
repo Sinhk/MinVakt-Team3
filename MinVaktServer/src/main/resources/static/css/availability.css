@@ -1,13 +1,32 @@
-#knapp{
-    margin-left:2%;
+
+.fc-sun { color:red;  }
+
+#formID\3A scheduleID table.fc-agenda-slots{
+    display:none
 }
 
-.cal
-{
-    margin-left: 2%;
-    margin-right: 2%;
+#external-events {
+    margin-top:5%;
+    float: left;
+    width: 150px;
+    height: 170px;
+    padding: 0 10px;
+    border: 1px solid #ccc;
+    background: #eee;
 }
 
-.fc-sun { color:red; }
+#external-events h4 {
+    font-size: 16px;
+    margin-top: 0;
+}
 
+#external-events .fc-event {
+    margin: 10px 0;
+    cursor: pointer;
+}
 
+#calendar {
+    margin-top:5%;
+    margin-left: 15%;
+    width:800px;
+}

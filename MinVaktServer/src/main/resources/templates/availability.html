@@ -1,57 +1,52 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
+
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Tilgjengelighet</title>
+
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.css' />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
+    <link href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.print.min.css' rel='stylesheet' media='print' />
+    <link href='https://fullcalendar.io/js/fullcalendar-scheduler-1.5.0/scheduler.min.css' rel='stylesheet' />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
     <link rel="stylesheet" type="text/css" th:href="@{/css/common.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/css/availability.css}">
-</head>
 
+
+</head>
 <body>
 
 <div id="nav" th:replace="fragments/header :: header"></div>
-<main>
-<!-- calendar -->
-<div class="cal">
-    <div class="section"></div>
-    <div id="calendar"></div>
-</div>
-<br>
-<br>
 
-<div id="knapp">
-    <!-- Modal Trigger -->
 
-    <a class="waves-effect waves-light btn modal-trigger blue lighten-2" href="#mda">Bytte vakt</a>
-
-    <!-- Modal Structure -->
-    <div id="mda" class="modal modal-fixed-footer bottom-sheet">
-        <div class="modal-content">
-            <h4>Vaktbytte</h4>
-            <p>Trykk på den vakten du vil bytte dermed "Bytt vakt"</p>
-        </div>
-        <div class="modal-footer">
-            <a href="javascript:;" class=" modal-action modal-close waves-effect waves-green btn-flat">Ok</a>
-        </div>
+    <div id='external-events'>
+        <h4>Vakter</h4>
+        <div class='fc-event'>Formiddagsvakt</div>
+        <div class='fc-event'>Ettermiddagsvakt</div>
+        <div class='fc-event'>Nattvakt</div>
     </div>
+
+    <div id='calendar'></div>
+
+    <div style='clear:both'></div>
+
 </div>
-</main>
+
 <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js' integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js'></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.js'></script>
+<script src='https://fullcalendar.io/js/fullcalendar-scheduler-1.5.0/scheduler.js'></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
-<script th:src="@{/js/managers/common.js}"></script>
-<script th:src="@{/js/managers/util.js}"></script>
-<script th:src="@{/js/managers/shiftManager.js}"></script>
-<script th:src="@{/js/managers/userManager.js}"></script>
-
-<script th:src="@{/js/availability.js}"></script>
-
+<script th:src="@{js/managers/common.js}"></script>
+<script th:src="@{js/managers/shiftManager.js}"></script>
+<script th:src="@{js/managers/userManager.js}"></script>
+<script th:src="@{js/managers/util.js}"></script>
+<script th:src="@{js/availability.js}"></script>
 
 </body>
 </html>
