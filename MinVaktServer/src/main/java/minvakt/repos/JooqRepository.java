@@ -2,6 +2,8 @@ package minvakt.repos;
 
 import minvakt.datamodel.AssignedEmployee;
 import minvakt.datamodel.ShiftDetailed;
+import minvakt.datamodel.tables.AssignedPerShift;
+import minvakt.datamodel.tables.MissingPerShiftCategory;
 import minvakt.datamodel.tables.pojos.Shift;
 import org.jooq.DSLContext;
 import org.jooq.Record10;
@@ -12,6 +14,7 @@ import org.modelmapper.jooq.RecordValueReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +22,7 @@ import java.util.Map;
 
 import static minvakt.datamodel.Tables.*;
 import static org.jooq.impl.DSL.count;
+import static org.jooq.impl.DSL.sum;
 
 @Component
 public class JooqRepository {
@@ -55,26 +59,24 @@ public class JooqRepository {
     }
 
     public List<Shift> getAvailableShifts() {
-        return create
-                .select(SHIFT.SHIFT_ID, SHIFT.FROM_TIME, SHIFT.TO_TIME, SHIFT.DEPARTMENT_ID,
-                        SHIFT.RESPONSIBLE_EMPLOYEE_ID, SHIFT.REQUIRED_EMPLOYEES, count(SHIFT_ASSIGNMENT.EMPLOYEE_ID)).from(SHIFT)
-                .leftJoin(SHIFT_ASSIGNMENT).on(SHIFT_ASSIGNMENT.SHIFT_ID.eq(SHIFT.SHIFT_ID))
-                .where(SHIFT_ASSIGNMENT.ABSENT.eq(Boolean.FALSE), SHIFT_ASSIGNMENT.ASSIGNED.eq(Boolean.TRUE))
-                .groupBy(SHIFT.SHIFT_ID).having(count().lt(SHIFT.REQUIRED_EMPLOYEES.cast(Integer.class)))
+        return create.select().from(ASSIGNED_PER_SHIFT)
+                .where(ASSIGNED_PER_SHIFT.NUM_ASSIGNED
+                        .lt(ASSIGNED_PER_SHIFT.REQUIRED_EMPLOYEES.cast(Long.class)))
                 .fetchInto(Shift.class);
     }
 
-    public List<Shift> getAvailableShiftsForUser(String email) {
-        return getAvailableShifts().stream().filter()
-        /*return create
-                .select(SHIFT.SHIFT_ID, SHIFT.FROM_TIME, SHIFT.TO_TIME, SHIFT.DEPARTMENT_ID,
-                        SHIFT.RESPONSIBLE_EMPLOYEE_ID, SHIFT.REQUIRED_EMPLOYEES, count(SHIFT_ASSIGNMENT.EMPLOYEE_ID)).from(SHIFT)
-                .leftJoin(SHIFT_ASSIGNMENT).on(SHIFT_ASSIGNMENT.SHIFT_ID.eq(SHIFT.SHIFT_ID))
-                .leftJoin(EMPLOYEE).on(EMPLOYEE.EMPLOYEE_ID).eq()
-                .leftJoin(DEPARTMENT_REQUIRED_EMPLOYEES_PER_CATEGORY).on(DEPARTMENT_REQUIRED_EMPLOYEES_PER_CATEGORY.CATEGORY_ID)
-                .where(SHIFT_ASSIGNMENT.ABSENT.eq(Boolean.FALSE), SHIFT_ASSIGNMENT.ASSIGNED.eq(Boolean.TRUE))
-                .groupBy(SHIFT.SHIFT_ID).having(count().lt(SHIFT.REQUIRED_EMPLOYEES.cast(Integer.class)))
+    public List<Shift> getAvailableShiftsForCategory(int categoryId) {
+        AssignedPerShift assi = ASSIGNED_PER_SHIFT.as("assi");
+        MissingPerShiftCategory mis = MISSING_PER_SHIFT_CATEGORY.as("mis");
+        return create
+                .select().from(mis)
+                .leftJoin(assi).on(assi.SHIFT_ID.eq(mis.SHIFT_ID))
+                .where(mis.CATEGORY_ID.notEqual((short) categoryId))
+                .groupBy(assi.SHIFT_ID)
+                .having(sum(mis.MISSING).lt(assi.NUM_MISSING.cast(BigDecimal.class)))
                 .fetchInto(Shift.class);
-    */
+
     }
+
+
 }

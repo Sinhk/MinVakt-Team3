@@ -31,7 +31,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class AssignedPerShift extends TableImpl<AssignedPerShiftRecord> {
 
-    private static final long serialVersionUID = 71888416;
+    private static final long serialVersionUID = 1327453703;
 
     /**
      * The reference instance of <code>g_scrum03.assigned_per_shift</code>
@@ -80,6 +80,11 @@ public class AssignedPerShift extends TableImpl<AssignedPerShiftRecord> {
      * The column <code>g_scrum03.assigned_per_shift.num_assigned</code>.
      */
     public final TableField<AssignedPerShiftRecord, Long> NUM_ASSIGNED = createField("num_assigned", org.jooq.impl.SQLDataType.BIGINT.nullable(false).defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.BIGINT)), this, "");
+
+    /**
+     * The column <code>g_scrum03.assigned_per_shift.num_missing</code>.
+     */
+    public final TableField<AssignedPerShiftRecord, Long> NUM_MISSING = createField("num_missing", org.jooq.impl.SQLDataType.BIGINT.nullable(false).defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.BIGINT)), this, "");
 
     /**
      * Create a <code>g_scrum03.assigned_per_shift</code> table reference

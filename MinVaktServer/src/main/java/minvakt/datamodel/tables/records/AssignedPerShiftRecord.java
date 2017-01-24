@@ -14,8 +14,8 @@ import javax.persistence.Table;
 import minvakt.datamodel.tables.AssignedPerShift;
 
 import org.jooq.Field;
-import org.jooq.Record7;
-import org.jooq.Row7;
+import org.jooq.Record8;
+import org.jooq.Row8;
 import org.jooq.impl.TableRecordImpl;
 
 
@@ -31,9 +31,9 @@ import org.jooq.impl.TableRecordImpl;
 )
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 @Table(name = "assigned_per_shift", schema = "g_scrum03")
-public class AssignedPerShiftRecord extends TableRecordImpl<AssignedPerShiftRecord> implements Record7<Integer, Integer, LocalDateTime, LocalDateTime, Short, Short, Long> {
+public class AssignedPerShiftRecord extends TableRecordImpl<AssignedPerShiftRecord> implements Record8<Integer, Integer, LocalDateTime, LocalDateTime, Short, Short, Long, Long> {
 
-    private static final long serialVersionUID = -2119616632;
+    private static final long serialVersionUID = 275611993;
 
     /**
      * Setter for <code>g_scrum03.assigned_per_shift.shift_id</code>.
@@ -140,24 +140,39 @@ public class AssignedPerShiftRecord extends TableRecordImpl<AssignedPerShiftReco
         return (Long) get(6);
     }
 
+    /**
+     * Setter for <code>g_scrum03.assigned_per_shift.num_missing</code>.
+     */
+    public void setNumMissing(Long value) {
+        set(7, value);
+    }
+
+    /**
+     * Getter for <code>g_scrum03.assigned_per_shift.num_missing</code>.
+     */
+    @Column(name = "num_missing", nullable = false, precision = 19)
+    public Long getNumMissing() {
+        return (Long) get(7);
+    }
+
     // -------------------------------------------------------------------------
-    // Record7 type implementation
+    // Record8 type implementation
     // -------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Row7<Integer, Integer, LocalDateTime, LocalDateTime, Short, Short, Long> fieldsRow() {
-        return (Row7) super.fieldsRow();
+    public Row8<Integer, Integer, LocalDateTime, LocalDateTime, Short, Short, Long, Long> fieldsRow() {
+        return (Row8) super.fieldsRow();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Row7<Integer, Integer, LocalDateTime, LocalDateTime, Short, Short, Long> valuesRow() {
-        return (Row7) super.valuesRow();
+    public Row8<Integer, Integer, LocalDateTime, LocalDateTime, Short, Short, Long, Long> valuesRow() {
+        return (Row8) super.valuesRow();
     }
 
     /**
@@ -220,6 +235,14 @@ public class AssignedPerShiftRecord extends TableRecordImpl<AssignedPerShiftReco
      * {@inheritDoc}
      */
     @Override
+    public Field<Long> field8() {
+        return AssignedPerShift.ASSIGNED_PER_SHIFT.NUM_MISSING;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Integer value1() {
         return getShiftId();
     }
@@ -270,6 +293,14 @@ public class AssignedPerShiftRecord extends TableRecordImpl<AssignedPerShiftReco
     @Override
     public Long value7() {
         return getNumAssigned();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Long value8() {
+        return getNumMissing();
     }
 
     /**
@@ -339,7 +370,16 @@ public class AssignedPerShiftRecord extends TableRecordImpl<AssignedPerShiftReco
      * {@inheritDoc}
      */
     @Override
-    public AssignedPerShiftRecord values(Integer value1, Integer value2, LocalDateTime value3, LocalDateTime value4, Short value5, Short value6, Long value7) {
+    public AssignedPerShiftRecord value8(Long value) {
+        setNumMissing(value);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AssignedPerShiftRecord values(Integer value1, Integer value2, LocalDateTime value3, LocalDateTime value4, Short value5, Short value6, Long value7, Long value8) {
         value1(value1);
         value2(value2);
         value3(value3);
@@ -347,6 +387,7 @@ public class AssignedPerShiftRecord extends TableRecordImpl<AssignedPerShiftReco
         value5(value5);
         value6(value6);
         value7(value7);
+        value8(value8);
         return this;
     }
 
@@ -364,7 +405,7 @@ public class AssignedPerShiftRecord extends TableRecordImpl<AssignedPerShiftReco
     /**
      * Create a detached, initialised AssignedPerShiftRecord
      */
-    public AssignedPerShiftRecord(Integer shiftId, Integer responsibleEmployeeId, LocalDateTime fromTime, LocalDateTime toTime, Short departmentId, Short requiredEmployees, Long numAssigned) {
+    public AssignedPerShiftRecord(Integer shiftId, Integer responsibleEmployeeId, LocalDateTime fromTime, LocalDateTime toTime, Short departmentId, Short requiredEmployees, Long numAssigned, Long numMissing) {
         super(AssignedPerShift.ASSIGNED_PER_SHIFT);
 
         set(0, shiftId);
@@ -374,5 +415,6 @@ public class AssignedPerShiftRecord extends TableRecordImpl<AssignedPerShiftReco
         set(4, departmentId);
         set(5, requiredEmployees);
         set(6, numAssigned);
+        set(7, numMissing);
     }
 }

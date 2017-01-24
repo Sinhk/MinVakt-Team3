@@ -189,7 +189,8 @@ INSERT INTO department_required_employees_per_category (department_id, category_
 CREATE OR REPLACE VIEW assigned_per_shift AS
   SELECT
     shift.*,
-    count(shift_assignment.employee_id) AS num_assigned
+    count(shift_assignment.employee_id) AS num_assigned,
+    GREATEST(0, required_employees - count(shift_assignment.employee_id)) as num_missing
   FROM shift
     LEFT JOIN shift_assignment ON shift.shift_id = shift_assignment.shift_id
   WHERE
@@ -211,5 +212,5 @@ CREATE OR REPLACE VIEW missing_per_shift_category AS
     LEFT JOIN shift_assignment ON shift.shift_id = shift_assignment.shift_id
     LEFT JOIN employee
       ON (employee_category.category_id, shift_assignment.employee_id) = (employee.category_id, employee.employee_id)
-  WHERE available_for_shifts = TRUE
+  WHERE available_for_shifts = TRUE and ((absent = FALSE AND shift_assignment.assigned = TRUE) OR shift_assignment.absent & shift_assignment.assigned IS NULL)
   GROUP BY shift.shift_id, employee_category.category_id;

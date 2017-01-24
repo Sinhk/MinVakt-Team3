@@ -66,13 +66,13 @@ public class AUserDetailsManager extends JdbcUserDetailsManager {
         // If an authentication manager has been set, re-authenticate the user with the
         // supplied password.
         if (authenticationManager != null) {
-            logger.debug("Reauthenticating user '" + username
+            logger.info("Reauthenticating user '" + username
                     + "' for password change request.");
 
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                     username, oldPassword));
         } else {
-            logger.debug("No authentication manager set. Password won't be re-checked.");
+            logger.info("No authentication manager set. Password won't be re-checked.");
         }
 
         logger.debug("Changing password for user '" + username + "'");

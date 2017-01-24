@@ -51,7 +51,6 @@ public class EmployeeController {
 
     private String createPassword() {
         return new RandomString(8).nextString();
-
     }
 
     @Autowired
@@ -67,7 +66,6 @@ public class EmployeeController {
 
     @GetMapping("/current")
     public Employee getCurrentUser() {
-
         UserDetails details = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Employee user = employeeRepo.findByEmail(details.getUsername());
 

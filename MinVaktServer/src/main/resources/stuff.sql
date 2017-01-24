@@ -1,52 +1,4 @@
 SELECT
-  shift.shift_id,
-  shift.responsible_employee_id,
-  department_required_per_shift.department_id,
-  shift_assignment.employee_id,
-  count(shift_assignment.employee_id)
-FROM (shift
-  LEFT JOIN shift_assignment ON shift.shift_id = shift_assignment.shift_id) LEFT JOIN department_required_per_shift
-    ON shift_assignment.department_id = department_required_per_shift.department_id
-GROUP BY shift.shift_id, department_required_per_shift.department_id;
-
-SELECT
-  shift.shift_id,
-  shift_assignment.employee_id,
-  shift_assignment.department_id,
-  department_required_per_shift.amount,
-  count(shift_assignment.employee_id) AS assigned
-FROM shift
-  NATURAL JOIN shift_assignment
-  LEFT JOIN department_required_per_shift
-    ON (department_required_per_shift.shift_id, department_required_per_shift.department_id) =
-       (shift.shift_id, shift_assignment.department_id)
-GROUP BY
-  shift.shift_id,
-  department_required_per_shift.department_id
-HAVING
-  assigned < department_required_per_shift.amount;
-
-CREATE FUNCTION hoursThisWeek()
-  RETURNS INT
-  BEGIN
-
-  END;
-
-/*CREATE VIEW assigned_per_shift AS
-SELECT
-  shift.shift_id,
-  shift.department_id,
-  shift.required_employees,
-  count(shift_assignment.employee_id) as assigned
-FROM shift
-  LEFT JOIN  shift_assignment ON shift.shift_id = shift_assignment.shift_id
-GROUP BY
-  shift.shift_id
-HAVING
-  assigned < shift.required_employees;
-*/
-
-SELECT
   assigned_per_shift.shift_id,
   assigned_per_shift.department_id,
   required_employees - assigned_per_shift.assigned AS missing,
@@ -83,6 +35,23 @@ WHERE missing > 0
 GROUP BY shift_id; #AND category_id = 2 or category_id is NULL ;
 
 #HAVING missing > 0;
+
+SELECT *
+FROM (
+       SELECT
+         ass.shift_id,
+         num_missing,
+         sum(missing) AS spesific_missing
+       FROM missing_per_shift_category mis
+         LEFT JOIN assigned_per_shift ass ON mis.shift_id = ass.shift_id
+       WHERE category_id != 3
+       GROUP BY ass.shift_id
+       HAVING spesific_missing < num_missing) AS stuff RIGHT JOIN shift_assignment on stuff.shift_id = shift_assignment.shift_id
+WHERE employee_id != 9
+GROUP BY shift_assignment.shift_id;
+
+
+
 
 
 SELECT

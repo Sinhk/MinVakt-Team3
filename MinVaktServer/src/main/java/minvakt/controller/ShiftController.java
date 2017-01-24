@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -42,6 +43,7 @@ public class ShiftController {
 
     @GetMapping
     public Iterable<?> getShifts(@RequestParam(defaultValue = "false") boolean detailed) {
+
         if (detailed) {
             return jooqRepo.getShiftDetailed();
         }
@@ -62,25 +64,21 @@ public class ShiftController {
     }
 
     @GetMapping("/{shift_id}/details/{user_id}")
-    public ShiftAssignment getShiftAssignmentForShiftAndUser(@PathVariable int shift_id, @PathVariable int user_id){
+    public ShiftAssignment getShiftAssignmentForShiftAndUser(@PathVariable int shift_id, @PathVariable int user_id) {
 
         return shiftAssignmentRepo.findByShiftIdAndEmployeeId(shift_id, user_id).get();
-
-
     }
 
     @GetMapping(value = "/assigned")
     public List<ShiftAssignment> getAllAssignedShifts() {
 
         return shiftAssignmentRepo.findByAssignedTrue();
-
     }
 
     @GetMapping(value = "/nonassigned")
     public List<ShiftAssignment> getAllNonAssignedShifts() {
 
         return shiftAssignmentRepo.findByAssignedFalse();
-
     }
 
     @GetMapping(value = "/{shift_id}/users")
@@ -125,16 +123,16 @@ public class ShiftController {
         return false;
     }
 
-    @GetMapping(value = "/{shift_id}/details") // TODO: 19-Jan-17 query
+    @GetMapping(value = "/{shift_id}/details")
     public List<ShiftAssignment> getShiftAssignmentsForShift(@PathVariable int shift_id) {
 
         return shiftAssignmentRepo.findByShiftId(shift_id);
-
     }
 
     @GetMapping(value = "/{shift_id}/responsible")
     @Transactional
     public Employee getResponsibleUserForShift(@PathVariable int shift_id) {
+
         return employeeRepo.findResponsibleForShift(shift_id);
     }
 
@@ -182,25 +180,32 @@ public class ShiftController {
     }*/
 
     @GetMapping(value = "/available")
-    public List<Shift> getAvailableShifts(HttpServletRequest request) {
+    public List<Shift> getAvailableShifts(HttpServletRequest request, @RequestParam(name = "category", defaultValue = "-1") int category_id) {
 
-        UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
+        if (category_id != -1) {
+            return jooqRepo.getAvailableShiftsForCategory(category_id);
+        }
+        Principal principal = request.getUserPrincipal();
         if (request.isUserInRole("ROLE_ADMIN")) {
-            log.info("Username: {}, Auths: {}", principal.getUsername(), principal.getAuthorities());
             return jooqRepo.getAvailableShifts();
         }
 
-        return jooqRepo.getAvailableShiftsForUser(principal.getUsername());
-        //shiftRepo.findAvailable();
-        //.filter(shiftAssignment -> shiftAssignment.getStatus() == ShiftStatus.AVAILABLE)
-        //.map(ShiftAssignment::getShift)
+        Employee employee = employeeRepo.findByEmail(principal.getName());
+        Short categoryId = employee.getCategoryId();
+        List<Shift> assignedShifts = shiftRepo.findByShiftAssignments_Employee_id(employee.getEmployeeId());
+        List<Shift> availableShifts = jooqRepo.getAvailableShiftsForCategory(categoryId);
+        availableShifts.removeAll(assignedShifts);
+
+        return availableShifts.stream()
+                .filter(shift -> assignedShifts.stream()
+                        .noneMatch(shift1 -> shift1.getFromTime().toLocalDate()
+                                .equals(shift.getFromTime().toLocalDate())))
+                .collect(Collectors.toList());
     }
 
-    // TODO: 19-Jan-17 Fix
+    // TODO: 19-Jan-17 Fix/Remove :  Do we ever need just one?
     @GetMapping(value = "/{shift_id}/available")
     public boolean shiftIsAvailable(@PathVariable int shift_id) {
-
         return shiftAssignmentRepo.findByShiftId(shift_id).stream()
                 //.filter(shiftAssignment -> shiftAssignment.getStatus() == ShiftStatus.AVAILABLE)
                 //.map(ShiftAssignment::getShift)

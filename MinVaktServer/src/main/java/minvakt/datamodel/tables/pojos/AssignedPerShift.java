@@ -27,7 +27,7 @@ import javax.persistence.Table;
 @Table(name = "assigned_per_shift", schema = "g_scrum03")
 public class AssignedPerShift implements Serializable {
 
-    private static final long serialVersionUID = 477709812;
+    private static final long serialVersionUID = -2082459198;
 
     private Integer       shiftId;
     private Integer       responsibleEmployeeId;
@@ -36,6 +36,7 @@ public class AssignedPerShift implements Serializable {
     private Short         departmentId;
     private Short         requiredEmployees;
     private Long          numAssigned;
+    private Long          numMissing;
 
     public AssignedPerShift() {}
 
@@ -47,6 +48,7 @@ public class AssignedPerShift implements Serializable {
         this.departmentId = value.departmentId;
         this.requiredEmployees = value.requiredEmployees;
         this.numAssigned = value.numAssigned;
+        this.numMissing = value.numMissing;
     }
 
     public AssignedPerShift(
@@ -56,7 +58,8 @@ public class AssignedPerShift implements Serializable {
         LocalDateTime toTime,
         Short         departmentId,
         Short         requiredEmployees,
-        Long          numAssigned
+        Long          numAssigned,
+        Long          numMissing
     ) {
         this.shiftId = shiftId;
         this.responsibleEmployeeId = responsibleEmployeeId;
@@ -65,6 +68,7 @@ public class AssignedPerShift implements Serializable {
         this.departmentId = departmentId;
         this.requiredEmployees = requiredEmployees;
         this.numAssigned = numAssigned;
+        this.numMissing = numMissing;
     }
 
     @Column(name = "shift_id", nullable = false, precision = 10)
@@ -130,6 +134,15 @@ public class AssignedPerShift implements Serializable {
         this.numAssigned = numAssigned;
     }
 
+    @Column(name = "num_missing", nullable = false, precision = 19)
+    public Long getNumMissing() {
+        return this.numMissing;
+    }
+
+    public void setNumMissing(Long numMissing) {
+        this.numMissing = numMissing;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("AssignedPerShift (");
@@ -141,6 +154,7 @@ public class AssignedPerShift implements Serializable {
         sb.append(", ").append(departmentId);
         sb.append(", ").append(requiredEmployees);
         sb.append(", ").append(numAssigned);
+        sb.append(", ").append(numMissing);
 
         sb.append(")");
         return sb.toString();
