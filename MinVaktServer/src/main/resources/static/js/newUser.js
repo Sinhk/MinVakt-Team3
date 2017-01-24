@@ -1,6 +1,6 @@
 $(document).ready(function () {
     addCategories();
-
+});
 function addUserForm() {
     if ($('#newUserForm')[0].checkValidity()) {
             const first_name = $("#first_name1").val();
@@ -99,4 +99,3 @@ function getCategory(email, callback) {
         }
     });
 }
-});

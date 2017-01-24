@@ -42,7 +42,7 @@ $(document).ready(function(){
 
                             acceptChangeRequest(request.requestId);
 
-                            // TODO send mail osv
+
 
 
                         })
@@ -52,7 +52,7 @@ $(document).ready(function(){
 
                             declineRequestChange(request.requestId);
 
-                            // TODO send mail
+
 
                         })
                     })
