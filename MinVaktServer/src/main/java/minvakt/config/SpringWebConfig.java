@@ -186,6 +186,7 @@ public class SpringWebConfig
         registry.addViewController("/absence").setViewName("absence");
         registry.addViewController("/endreBruker").setViewName("changeUser");
         registry.addViewController("/endrePassord").setViewName("changePassword");
+        registry.addViewController("/notification").setViewName("notification");
         registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
     }
 
