@@ -42,16 +42,23 @@ CREATE TABLE IF NOT EXISTS shift (
 );
 
 CREATE TABLE IF NOT EXISTS shift_assignment (
-  id                  INT           AUTO_INCREMENT PRIMARY KEY,
+  id                  INT            AUTO_INCREMENT PRIMARY KEY,
   shift_id            INT  NOT NULL,
   employee_id         INT  NOT NULL,
-  absent              BOOL NOT NULL DEFAULT FALSE,
-  assigned            BOOL NOT NULL DEFAULT FALSE,
+  absent              BOOL NOT NULL  DEFAULT FALSE,
+  assigned            BOOL NOT NULL  DEFAULT TRUE,
+  available           BOOL NOT NULL  DEFAULT TRUE,
   comment_for_absence VARCHAR(100),
   CONSTRAINT shift_assignment_employee_id_fk FOREIGN KEY (employee_id) REFERENCES employee (employee_id),
-  CONSTRAINT shift_assignment_shift_id_fk FOREIGN KEY (shift_id) REFERENCES shift (shift_id) ON DELETE CASCADE
+  CONSTRAINT shift_assignment_shift_id_fk FOREIGN KEY (shift_id) REFERENCES shift (shift_id)
+    ON DELETE CASCADE
   #   CONSTRAINT shift_assignment_status_id_fk FOREIGN KEY (status_id) REFERENCES shift_status (status_id)
 );
+
+/*CREATE TABLE IF NOT EXISTS shift_status (
+  status_id                  INT            AUTO_INCREMENT PRIMARY KEY,
+
+);*/
 
 CREATE TABLE IF NOT EXISTS shift_overtime (
   id                  INT           AUTO_INCREMENT PRIMARY KEY,

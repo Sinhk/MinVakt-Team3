@@ -24,14 +24,15 @@ import java.io.Serializable;
 @Table(name = "shift_assignment", schema = "g_scrum03")
 public class ShiftAssignment implements Serializable {
 
-    private static final long serialVersionUID = -1768720562;
+    private static final long serialVersionUID = 985653942;
 
     private Integer id;
     private Integer shiftId;
     private Integer employeeId;
     private Boolean absent = false;
-    private Boolean assigned = false;
-    private String  commentForAbsence = "";
+    private Boolean assigned = true;
+    private Boolean available = true;
+    private String  commentForAbsence;
 
     public ShiftAssignment() {}
 
@@ -41,6 +42,7 @@ public class ShiftAssignment implements Serializable {
         this.employeeId = value.employeeId;
         this.absent = value.absent;
         this.assigned = value.assigned;
+        this.available = value.available;
         this.commentForAbsence = value.commentForAbsence;
     }
 
@@ -50,6 +52,7 @@ public class ShiftAssignment implements Serializable {
         Integer employeeId,
         Boolean absent,
         Boolean assigned,
+        Boolean available,
         String  commentForAbsence
     ) {
         this.id = id;
@@ -57,6 +60,7 @@ public class ShiftAssignment implements Serializable {
         this.employeeId = employeeId;
         this.absent = absent;
         this.assigned = assigned;
+        this.available = available;
         this.commentForAbsence = commentForAbsence;
     }
 
@@ -107,6 +111,15 @@ public class ShiftAssignment implements Serializable {
         this.assigned = assigned;
     }
 
+    @Column(name = "available", nullable = false)
+    public Boolean getAvailable() {
+        return this.available;
+    }
+
+    public void setAvailable(Boolean available) {
+        this.available = available;
+    }
+
     @Column(name = "comment_for_absence", length = 100)
     public String getCommentForAbsence() {
         return this.commentForAbsence;
@@ -125,6 +138,7 @@ public class ShiftAssignment implements Serializable {
         sb.append(", ").append(employeeId);
         sb.append(", ").append(absent);
         sb.append(", ").append(assigned);
+        sb.append(", ").append(available);
         sb.append(", ").append(commentForAbsence);
 
         sb.append(")");
