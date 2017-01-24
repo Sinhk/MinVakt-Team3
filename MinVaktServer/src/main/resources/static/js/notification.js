@@ -24,5 +24,12 @@ $(document).ready(function(){
         swal("Vakten ble ikke byttet", "", "error");
         $('#collapse2').hide();
     })
+
+    getAllChangeRequests(function(requests){
+
+        console.log(requests);
+
+    })
+
 });
 
