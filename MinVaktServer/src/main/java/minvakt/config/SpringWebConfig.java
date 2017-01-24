@@ -188,6 +188,7 @@ public class SpringWebConfig
         registry.addViewController("/endrePassord").setViewName("changePassword");
         registry.addViewController("/notification").setViewName("notification");
         registry.addViewController("/makeSheet").setViewName("makeSheet");
+        registry.addViewController("/shiftChange").setViewName("shiftChange");
         registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
     }
 
