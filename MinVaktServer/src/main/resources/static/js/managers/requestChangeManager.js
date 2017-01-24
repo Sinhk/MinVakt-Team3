@@ -15,7 +15,19 @@ function acceptChangeRequest(change_id) {
     $.ajax({
         url: "requestchange/"+change_id,
         type: "PUT",
-        contentType: "Application/JSON",
+
+        error: function (data) {
+            console.log("Error: " + JSON.stringify(data));
+        }
+    });
+
+}
+
+function declineRequestChange(change_id) {
+
+    $.ajax({
+        url: "requestchange/"+change_id,
+        type: "DELETE",
 
         error: function (data) {
             console.log("Error: " + JSON.stringify(data));

@@ -25,7 +25,7 @@
                 <!--<a href="#" class="large material-icons">home</a>-->
                 <a href="#" data-activates="slide-out" class="button-collapse right"><i class="material-icons">menu</i></a>
                 <ul class="right hide-on-med-and-down">
-                    <li><a th:href="@{/notification}">Varsler <span class="new badge red">4</span></a></li>
+                    <li><a th:href="@{/notification}">Varsler <span class="new badge red" id="numberOfNotifications">0</span></a></li>
                     <li><a th:href="@{/changeShift}">Vaktbytte</a></li>
                     <li><a th:href="@{/absence}">Fravær</a></li>
                     <li><a th:href="@{/vaktliste}">Vaktliste</a></li>
@@ -73,6 +73,9 @@
 
 
     <!--<a href="#" data-activates="slide-out" class="button-collapse show-on-large"><i class="material-icons">menu</i></a>-->
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js' integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <script th:src="@{js/managers/requestChangeManager.js}"></script>
+    <script th:src="@{js/header.js}"></script>
 </header>
 <div th:fragment="sidebar">
     <aside>
@@ -88,7 +91,10 @@
 <script src="/js/userManager.js"></script>
 <script src="/js/util.js"></script>
 <script src="/js/newUser.js"></script>
-<script th:src="@{js/common.js}"></script>
+<script th:src="@{js/managers/common.js}"></script>
+<script th:src="@{js/managers/requestChangeManager.js}"></script>
+
+<script src="../../static/js/header.js" language="JavaScript"></script>
 
 </body>
 </html>

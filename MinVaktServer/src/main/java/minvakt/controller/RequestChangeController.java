@@ -76,5 +76,13 @@ public class RequestChangeController {
 
     }
 
+    @DeleteMapping("/{request_id}")
+    public void declineChangeRequest(@PathVariable int request_id){
 
+        ChangeRequest one = changeRequestRepository.findOne(request_id);
+
+        changeRequestRepository.delete(one);
+
+        // TODO send mail
+    }
 }

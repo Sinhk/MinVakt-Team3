@@ -26,6 +26,14 @@ function getShiftWithId(id, callback) {
 
 }
 
+function getShiftAssignmentForShiftAndUser(shift_id, user_id, callback) {
+
+    $.getJSON("/shifts/"+shift_id+"/details/"+user_id, function (data) {
+        callback(data);
+    })
+
+}
+
 function addShift(dateinfo, callback) {
 
     $.ajax({
@@ -52,10 +60,8 @@ function getUsersForShift(shift_id, callback) {
 function addUserToShift(user_id, shift_id, callback) {
 
     $.ajax({
-        url: "/shifts/"+shift_id+"/users",
+        url: "/shifts/"+shift_id+"/users?user_id="+user_id,
         type: "POST",
-        contentType: "text/plain",
-        data: user_id,
         success: function (data) {
             callback(data);
         },

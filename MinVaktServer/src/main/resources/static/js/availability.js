@@ -26,6 +26,23 @@ $(document).ready(function () {
             day: 'Dag',
             list: 'Liste'
         },
+        resources:[
+            {
+                id: 1,
+                title: "Ingen Status", // normal farge
+            },
+            {
+                id: 2,
+                title: "Tilgjengelig",
+                bakgroundColor: "#4caf50" //grønn
+
+            },
+            {
+                id: 3,
+                title: "Utilgjengelig",
+                bakgroundColor: "#ff5722" // orangeish
+            }
+        ],
         select: function (start, end, jsEvent, view) {
 
             console.log("Start date: " + moment(start).format() +
@@ -63,6 +80,15 @@ $(document).ready(function () {
 
                 console.log(data);
 
+                //TODO NÅR MAN SKAL SETTE SEG TILGJENGELIG, BRUK DETTE
+                getCurrentUser(function (user) {
+                    addUserToShift(user.employeeId, data.shiftId, function (data) {
+
+                        console.log(data);
+
+                    })
+                })
+
             });
 
         },
@@ -86,6 +112,31 @@ $(document).ready(function () {
         for (var i = 0; i<shifts.length; i++){
 
             const shift = shifts[i];
+
+            getCurrentUser(function (user) {
+                getShiftAssignmentForShiftAndUser(shift.shiftId, user.employeeId, function (shiftAssignment) {
+
+                    var fullCalendarEvent = {
+
+                        id: event.shiftId,
+                        title: start.split("T")[1].substr(0,3) + " -> " + end.split("T")[1].substr(0,3),
+                        start: dateStart,
+                        end: dateEnd,
+                        resourceId: resource.id,
+                        backgroundColor: responsible != undefined && responsible.employeeId == resource.id ? "#9B0300" : available ? "#3E9B85" : "#3F7F9B",
+                        isResponsible: responsible,
+                        /*available: shiftAssignment*/
+
+                        //backgroundColor: event.responsible != undefined && event.responsible.employeeId == resource.id ? "#9B0300" : "#3E9B85"
+                    };
+
+                })
+
+            })
+
+
+
+
 
             toFullCalendarEvent(shift, function (fullCalendarEvent) {
 

@@ -5,31 +5,69 @@
 $(document).ready(function(){
     $('.collapsible').collapsible();
 
-    $("#button1").click(function () {
+    $("#acceptButton").click(function () {
         swal("Vakten ble byttet", "", "success")
         $('#collapse1').hide();
     });
 
-    $("#button2").click(function () {
-        swal("Vakten ble byttet", "", "success")
-        $('#collapse2').hide();
-    });
 
-    $("#button3").click(function () {
-        swal("Vakten ble ikke byttet", "", "error");
-        $('#collapse1').hide();
-    })
 
-    $("#button4").click(function () {
-        swal("Vakten ble ikke byttet", "", "error");
-        $('#collapse2').hide();
-    })
+
 
     getAllChangeRequests(function(requests){
 
         console.log(requests);
 
-    })
+        for (var i = 0; i < requests.length; i++){
 
+            const request = requests[i];
+
+            console.log(request);
+
+            getShiftWithId(request.shiftId, function (shift) {
+
+                getUserById(request.oldEmployeeId, function (oldUser) {
+
+                    getUserById(request.newEmployeeId, function (newUser) {
+
+                        console.log(shift);
+                        console.log(oldUser);
+                        console.log(newUser);
+
+                        document.getElementById("requestChangeNotificationsList").innerHTML +=
+
+                            "<li class='collection-item avatar card-panel white' id="+request.requestId+"collapse"+">"+
+                            "<div class='collapsible-header white black-text'><i class='material-icons circle blue lighten-2'>message</i><b>Vaktbytte</b></div>"+
+                            "<div class='collapsible-body white black-text'><p>"+oldUser.firstName+" "+oldUser.lastName+" vil bytte vakt med "+newUser.firstName+" "+newUser.lastName+" fra "+shift.fromTime+" til "+shift.toTime+"</p>" +
+                                "<a class='waves-effect waves-light blue lighten-2 btn' id="+request.requestId+">Godkjenn</a><a class='waves-effect waves-light blue lighten-2 btn' id='declineButton'>Ikke godkjenn</a></div>"+
+                            "</li>"
+
+                        $("#"+request.requestId).click(function () {
+
+                            $("#acceptButton").click();
+
+                            swal("Vakten ble byttet", "", "success")
+                            $("#"+request.requestId+"collapse").hide();
+
+                            acceptChangeRequest(request.requestId);
+
+                            // TODO send mail osv
+
+
+                        })
+                        $("#declineButton").click(function () {
+                            swal("Vakten ble ikke byttet", "", "error");
+                            $("#"+request.requestId+"collapse").hide();
+
+                            declineRequestChange(request.requestId);
+
+                            // TODO send mail
+
+                        })
+                    })
+                })
+            })
+        }
+    })
 });
 

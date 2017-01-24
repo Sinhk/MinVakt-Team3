@@ -58,6 +58,14 @@ public class ShiftController {
         return shiftRepo.findOne(shift_id);
     }
 
+    @GetMapping("/{shift_id}/details/{user_id}")
+    public ShiftAssignment getShiftAssignmentForShiftAndUser(@PathVariable int shift_id, @PathVariable int user_id){
+
+        return shiftAssignmentRepo.findByShiftIdAndEmployeeId(shift_id, user_id).get();
+
+
+    }
+
     @GetMapping(value = "/assigned")
     public List<ShiftAssignment> getAllAssignedShifts() {
 
@@ -81,12 +89,12 @@ public class ShiftController {
 
     @PostMapping(value = "/{shift_id}/users")
     @Transactional
-    public void addUserToShift(@PathVariable int shift_id, @RequestBody String user_id) { // shift id and user id
+    public void addUserToShift(@PathVariable int shift_id, @RequestParam int user_id) { // shift id and user id
 
         System.out.println(shift_id + " . " + user_id);
 
         ShiftAssignment assignment = new ShiftAssignment();
-        assignment.setEmployeeId(Integer.valueOf(user_id));
+        assignment.setEmployeeId(user_id);
         assignment.setShiftId(shift_id);
         assignment.setAbsent(false);
         shiftAssignmentRepo.save(assignment);
