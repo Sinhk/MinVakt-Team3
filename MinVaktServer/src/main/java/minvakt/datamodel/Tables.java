@@ -4,9 +4,18 @@
 package minvakt.datamodel;
 
 
-import minvakt.datamodel.tables.*;
-
 import javax.annotation.Generated;
+
+import minvakt.datamodel.tables.AssignedPerShift;
+import minvakt.datamodel.tables.ChangeRequest;
+import minvakt.datamodel.tables.Department;
+import minvakt.datamodel.tables.DepartmentRequiredEmployeesPerCategory;
+import minvakt.datamodel.tables.Employee;
+import minvakt.datamodel.tables.EmployeeCategory;
+import minvakt.datamodel.tables.MissingPerShiftCategory;
+import minvakt.datamodel.tables.Shift;
+import minvakt.datamodel.tables.ShiftAssignment;
+import minvakt.datamodel.tables.ShiftOvertime;
 
 
 /**
@@ -21,6 +30,11 @@ import javax.annotation.Generated;
 )
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Tables {
+
+    /**
+     * VIEW
+     */
+    public static final AssignedPerShift ASSIGNED_PER_SHIFT = minvakt.datamodel.tables.AssignedPerShift.ASSIGNED_PER_SHIFT;
 
     /**
      * The table <code>g_scrum03.change_request</code>.
@@ -46,6 +60,11 @@ public class Tables {
      * The table <code>g_scrum03.employee_category</code>.
      */
     public static final EmployeeCategory EMPLOYEE_CATEGORY = minvakt.datamodel.tables.EmployeeCategory.EMPLOYEE_CATEGORY;
+
+    /**
+     * VIEW
+     */
+    public static final MissingPerShiftCategory MISSING_PER_SHIFT_CATEGORY = minvakt.datamodel.tables.MissingPerShiftCategory.MISSING_PER_SHIFT_CATEGORY;
 
     /**
      * The table <code>g_scrum03.shift</code>.

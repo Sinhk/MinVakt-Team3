@@ -4,15 +4,21 @@
 package minvakt.datamodel.tables.records;
 
 
+import javax.annotation.Generated;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import minvakt.datamodel.tables.Employee;
+
 import org.jooq.Field;
 import org.jooq.Record1;
 import org.jooq.Record10;
 import org.jooq.Row10;
 import org.jooq.impl.UpdatableRecordImpl;
-
-import javax.annotation.Generated;
-import javax.persistence.*;
 
 
 /**

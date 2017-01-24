@@ -4,14 +4,29 @@
 package minvakt.datamodel;
 
 
-import minvakt.datamodel.tables.*;
-import minvakt.datamodel.tables.records.*;
+import javax.annotation.Generated;
+
+import minvakt.datamodel.tables.ChangeRequest;
+import minvakt.datamodel.tables.Department;
+import minvakt.datamodel.tables.DepartmentRequiredEmployeesPerCategory;
+import minvakt.datamodel.tables.Employee;
+import minvakt.datamodel.tables.EmployeeCategory;
+import minvakt.datamodel.tables.Shift;
+import minvakt.datamodel.tables.ShiftAssignment;
+import minvakt.datamodel.tables.ShiftOvertime;
+import minvakt.datamodel.tables.records.ChangeRequestRecord;
+import minvakt.datamodel.tables.records.DepartmentRecord;
+import minvakt.datamodel.tables.records.DepartmentRequiredEmployeesPerCategoryRecord;
+import minvakt.datamodel.tables.records.EmployeeCategoryRecord;
+import minvakt.datamodel.tables.records.EmployeeRecord;
+import minvakt.datamodel.tables.records.ShiftAssignmentRecord;
+import minvakt.datamodel.tables.records.ShiftOvertimeRecord;
+import minvakt.datamodel.tables.records.ShiftRecord;
+
 import org.jooq.ForeignKey;
 import org.jooq.Identity;
 import org.jooq.UniqueKey;
 import org.jooq.impl.AbstractKeys;
-
-import javax.annotation.Generated;
 
 
 /**

@@ -7,9 +7,12 @@ import minvakt.repos.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -178,10 +181,18 @@ public class ShiftController {
 
     }*/
 
-    // TODO: 19-Jan-17 fix, gjør ingenting
     @GetMapping(value = "/available")
-    public List<Shift> getAvailableShifts() {
-        return shiftRepo.findAvailable();
+    public List<Shift> getAvailableShifts(HttpServletRequest request) {
+
+        UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (request.isUserInRole("ROLE_ADMIN")) {
+            log.info("Username: {}, Auths: {}", principal.getUsername(), principal.getAuthorities());
+            return jooqRepo.getAvailableShifts();
+        }
+
+        return jooqRepo.getAvailableShiftsForUser(principal.getUsername());
+        //shiftRepo.findAvailable();
         //.filter(shiftAssignment -> shiftAssignment.getStatus() == ShiftStatus.AVAILABLE)
         //.map(ShiftAssignment::getShift)
     }

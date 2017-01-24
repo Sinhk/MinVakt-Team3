@@ -80,8 +80,8 @@ CREATE TABLE IF NOT EXISTS change_request (
 CREATE TABLE IF NOT EXISTS department (
   department_id   SMALLINT         NOT NULL PRIMARY KEY AUTO_INCREMENT,
   department_name VARCHAR(30)     NOT NULL
-);
 
+);
 /*
 CREATE TABLE IF NOT EXISTS shift_department (
   shift_id      INT NOT NULL,
@@ -184,3 +184,32 @@ INSERT INTO department_required_employees_per_category (department_id, category_
 INSERT INTO department_required_employees_per_category (department_id, category_id, amount) VALUES (3, 2, 3);
 
 #INSERT INTO department_required_per_shift (department_id, shift_id, amount) SELECT department.department_id, shift.shift_id,10 FROM shift JOIN department
+
+
+CREATE OR REPLACE VIEW assigned_per_shift AS
+  SELECT
+    shift.*,
+    count(shift_assignment.employee_id) AS num_assigned
+  FROM shift
+    LEFT JOIN shift_assignment ON shift.shift_id = shift_assignment.shift_id
+  WHERE
+    (absent = FALSE AND shift_assignment.assigned = TRUE) OR shift_assignment.absent & shift_assignment.assigned IS NULL
+  GROUP BY
+    shift.shift_id;
+
+CREATE OR REPLACE VIEW missing_per_shift_category AS
+  SELECT
+    shift.shift_id,
+    employee_category.category_id,
+    count(employee.employee_id)                                                                  AS count_assigned,
+    ROUND(shift.required_employees *
+          employee_category.required_per_shift / 100)                                            AS count_required,
+    GREATEST(0, ROUND(shift.required_employees *
+                      employee_category.required_per_shift / 100) - count(employee.employee_id)) AS missing
+  FROM shift
+    JOIN employee_category
+    LEFT JOIN shift_assignment ON shift.shift_id = shift_assignment.shift_id
+    LEFT JOIN employee
+      ON (employee_category.category_id, shift_assignment.employee_id) = (employee.category_id, employee.employee_id)
+  WHERE available_for_shifts = TRUE
+  GROUP BY shift.shift_id, employee_category.category_id;

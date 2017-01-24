@@ -4,15 +4,26 @@
 package minvakt.datamodel;
 
 
-import minvakt.datamodel.tables.*;
-import org.jooq.Catalog;
-import org.jooq.Table;
-import org.jooq.impl.SchemaImpl;
-
-import javax.annotation.Generated;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import javax.annotation.Generated;
+
+import minvakt.datamodel.tables.AssignedPerShift;
+import minvakt.datamodel.tables.ChangeRequest;
+import minvakt.datamodel.tables.Department;
+import minvakt.datamodel.tables.DepartmentRequiredEmployeesPerCategory;
+import minvakt.datamodel.tables.Employee;
+import minvakt.datamodel.tables.EmployeeCategory;
+import minvakt.datamodel.tables.MissingPerShiftCategory;
+import minvakt.datamodel.tables.Shift;
+import minvakt.datamodel.tables.ShiftAssignment;
+import minvakt.datamodel.tables.ShiftOvertime;
+
+import org.jooq.Catalog;
+import org.jooq.Table;
+import org.jooq.impl.SchemaImpl;
 
 
 /**
@@ -28,12 +39,17 @@ import java.util.List;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class GScrum03 extends SchemaImpl {
 
-    private static final long serialVersionUID = 823921781;
+    private static final long serialVersionUID = -1712805370;
 
     /**
      * The reference instance of <code>g_scrum03</code>
      */
     public static final GScrum03 G_SCRUM03 = new GScrum03();
+
+    /**
+     * VIEW
+     */
+    public final AssignedPerShift ASSIGNED_PER_SHIFT = minvakt.datamodel.tables.AssignedPerShift.ASSIGNED_PER_SHIFT;
 
     /**
      * The table <code>g_scrum03.change_request</code>.
@@ -59,6 +75,11 @@ public class GScrum03 extends SchemaImpl {
      * The table <code>g_scrum03.employee_category</code>.
      */
     public final EmployeeCategory EMPLOYEE_CATEGORY = minvakt.datamodel.tables.EmployeeCategory.EMPLOYEE_CATEGORY;
+
+    /**
+     * VIEW
+     */
+    public final MissingPerShiftCategory MISSING_PER_SHIFT_CATEGORY = minvakt.datamodel.tables.MissingPerShiftCategory.MISSING_PER_SHIFT_CATEGORY;
 
     /**
      * The table <code>g_scrum03.shift</code>.
@@ -100,11 +121,13 @@ public class GScrum03 extends SchemaImpl {
 
     private final List<Table<?>> getTables0() {
         return Arrays.<Table<?>>asList(
+            AssignedPerShift.ASSIGNED_PER_SHIFT,
             ChangeRequest.CHANGE_REQUEST,
             Department.DEPARTMENT,
             DepartmentRequiredEmployeesPerCategory.DEPARTMENT_REQUIRED_EMPLOYEES_PER_CATEGORY,
             Employee.EMPLOYEE,
             EmployeeCategory.EMPLOYEE_CATEGORY,
+            MissingPerShiftCategory.MISSING_PER_SHIFT_CATEGORY,
             Shift.SHIFT,
             ShiftAssignment.SHIFT_ASSIGNMENT,
             ShiftOvertime.SHIFT_OVERTIME);
