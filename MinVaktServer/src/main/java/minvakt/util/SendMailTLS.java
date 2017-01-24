@@ -81,8 +81,8 @@ public class SendMailTLS {
 
     public void sendChangeRequstToAdmin(String email,String text) {
         Message message = new MimeMessage(session);
-        String subject = "Minvakt bruker ønsker å bytte vakt";
-        buildMessage(message, email, subject, text);
+        String subject = "Minvakt bruker ønsker å bytte vakt", text1 = text + "\nhttps://minvakt.herokuapp.com";
+        buildMessage(message, email, subject, text1);
         sendMail(message);
     }
 }
