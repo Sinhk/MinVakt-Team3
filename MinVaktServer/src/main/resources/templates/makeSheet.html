@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Vaktliste</title>
+    <title>Lag vaktliste</title>
 
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.css' />
     <link href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.print.min.css' rel='stylesheet' media='print' />
@@ -13,20 +13,36 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" type="text/css" th:href="@{/css/common.css}">
-    <link rel="stylesheet" type="text/css" th:href="@{/css/vaktliste.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/makeSheet.css}">
 
 </head>
 <body>
 
 <div id="nav" th:replace="fragments/header :: header"></div>
 <main>
-<!-- calendar -->
-<div class="cal">
-    <div class="section"></div>
-    <div id="calendar"></div>
-</div>
-<br>
-<br>
+    <div id='wrap'>
+
+        <div id='external-events'>
+            <!--Drar ut vakter-->
+            <h4>Draggable Events</h4>
+            <div class='fc-event' id="morning">Formiddagsvakt</div>
+            <div class='fc-event' id="afternoon">Ettermiddagsvakt</div>
+            <div class='fc-event' id="nigth">Nattvakt</div>
+            <p>
+                <input type='checkbox' id='drop-remove' />
+                <label for='drop-remove'>remove after drop</label>
+            </p>
+        </div>
+
+        <!-- calendar -->
+        <div class="cal">
+            <div class="section"></div>
+            <div id="calendar"></div>
+        </div>
+            <div style='clear:both'></div>
+        <br>
+        <br>
+    </div>
 </main>
 
 <!--
@@ -48,7 +64,7 @@
 <script th:src="@{js/managers/shiftManager.js}"></script>
 <script th:src="@{js/managers/userManager.js}"></script>
 <script th:src="@{js/managers/util.js}"></script>
-<script th:src="@{js/vaktliste.js}"></script>
+<script th:src="@{js/makeSheet.js}"></script>
 
 </body>
 </html>

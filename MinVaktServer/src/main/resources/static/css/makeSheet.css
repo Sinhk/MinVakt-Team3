@@ -1,0 +1,24 @@
+.cal
+{
+    margin-left: 2%;
+    margin-right: 2%;
+}
+
+.fc-sat { color:red; }
+.fc-sun { color:red;  }
+
+#formID\3A scheduleID table.fc-agenda-slots{
+    display:none
+}
+
+#morning{
+    background-color: orange;
+}
+
+#afternoon{
+    background-color: green;
+}
+
+#nigth{
+    background-color: blue;
+}
