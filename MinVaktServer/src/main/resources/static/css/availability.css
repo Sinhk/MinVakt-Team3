@@ -6,7 +6,7 @@
 }
 
 #external-events {
-    margin-top:5%;
+    margin-top:3%;
     float: left;
     width: 150px;
     height: 170px;
@@ -26,7 +26,8 @@
 }
 
 #calendar {
-    margin-top:5%;
-    margin-left: 15%;
+    float: right;
+    margin-right: 25%;
+    margin-top:3%;
     width:800px;
 }

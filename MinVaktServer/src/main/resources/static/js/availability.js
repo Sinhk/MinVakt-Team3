@@ -39,7 +39,7 @@ $(document).ready(function () { // document ready
             header: {
                 left: 'prev, promptResource today',
                 center: 'title',
-                right: 'customWeek, next'
+                right: 'customWeek, agendaWeek, next'
             },
             firstDay: 1,
             defaultView: 'month',
