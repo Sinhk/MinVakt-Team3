@@ -10,6 +10,8 @@ $(document).ready(function () { // document ready
         $(this).data('event', {
             title: $.trim($(this).text()), // use the element's text as the event title
             responsible: this.id.includes("ANSVAR"),
+            start_id: $.trim($(this).text()) == "Formiddagsvakt" ? 1 : $.trim($(this).text()) == "Ettermiddagsvakt" ? 2 : 3,
+            save: true,
             stick: true // maintain when user navigates (see docs on the renderEvent method)
         });
 
@@ -280,7 +282,73 @@ $(document).ready(function () { // document ready
     })
 
 }*/
+$("#save").click(function () {
 
+    console.log("---------------------------------------------SAVING---------------------------------------------");
+
+    // TODO Syk swal greie her
+
+    var events = $('#calendar').fullCalendar('clientEvents');
+
+    getAllShifts(function (shifts) {
+
+        for (var i = 0; i < events.length; i++) {
+
+            const event = events[i];
+
+            for (var j = 0; j < shifts.length; j++) {
+
+                const shift = shifts[j];
+
+                //console.log(event)
+                //console.log(shift)
+
+                const shift_event_id = shift.fromTime.split("T")[1].substr(0, 5) == "06:00" ? 1 : shift.fromTime.split("T")[1].substr(0, 5) == "14:00" ? 2 : 3;
+
+                const event_date = event.start.toISOString()
+                const shift_date = shift.fromTime.split("T")[0];
+                //console.log();
+
+                // Samme tid, samme dag
+
+                console.log("eventstart: "+event.start_id+" - type: "+shift_event_id+" - eventdate: "+event_date+" - shiftdate: "+shift_date)
+
+                if (event.start_id == shift_event_id && event.start && event_date == shift_date && event.save) {
+
+                    console.log("event");
+                    console.log(event)
+                    console.log("shift");
+                    console.log(shift)
+
+                    getCurrentUser(function (currentUser) {
+
+                        var user_id = currentUser.employeeId;
+                        var shift_id = shift.shiftId;
+
+                        if (event.responsible) {
+
+                            changeUserAssignment(user_id, shift_id, true, true, true, function (data) {
+
+                                console.log(data);
+                                location.reload();
+
+                            })
+                        }
+                        else {
+
+                            changeUserAssignment(user_id, shift_id, true, false, true, function (data) {
+
+                                console.log(data);
+                                location.reload();
+                            })
+                        }
+                    })
+
+                }
+            }
+        }
+    })
+})
 function getUsersAndCreateResourceList(callback) {
 
     const res = [];
