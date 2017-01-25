@@ -18,7 +18,7 @@
 <header th:fragment="header">
     <div class="navbar-fixed">
         <nav>
-            <div class="nav-wrapper blue lighten-2 z-depth-3">
+            <div class="nav-wrapper blue darken-4 z-depth-3">
                 <a th:href="@{/}" class="brand-logo"><i class="material-icons">home</i>MinVakt</a>
 
 
@@ -56,18 +56,18 @@
                     <span sec:authentication="principal.username"></span>
                     <!--<span sec:authentication="principal.lastName"></span>-->
                 </div>
-                <a th:href="@{/endreBruker}" id="buttonProfile" class="waves-effect blue lighten-2 btn">Rediger profil</a>
-                <a th:href="@{/endrePassord}" id="buttonPsw" class="waves-effect blue lighten-2 btn">Endre passord</a>
+                <a th:href="@{/endreBruker}" id="buttonProfile" class="waves-effect blue darken-4 btn">Rediger profil</a>
+                <a th:href="@{/endrePassord}" id="buttonPsw" class="waves-effect blue darken-4 btn">Endre passord</a>
                 <hr/>
             </form>
             <div class="row">
-                <a href="https://www.trondheim.kommune.no/" class="waves-effect waves-light btn blue lighten-2" id="myButton">Trondheim kommune</a>
+                <a href="https://www.trondheim.kommune.no/" class="waves-effect waves-light btn blue darken-4" id="myButton">Trondheim kommune</a>
 
             </div>
             <div class="row">
                 <div class="col s12 center">
                     <form name="logout_form" id="logout_form" method="post" th:action="@{/do_logout}">
-                        <button type="submit" class="btn waves-effect waves-light blue lighten-2">Logg ut</button>
+                        <button type="submit" class="btn waves-effect waves-light blue darken-4">Logg ut</button>
                     </form>
                 </div>
             </div>

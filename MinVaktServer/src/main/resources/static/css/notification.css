@@ -12,5 +12,9 @@
 }
 
 #declineButton {
+    margin-left: 3%;
+}
+
+#decline {
     margin-left: 2%;
 }

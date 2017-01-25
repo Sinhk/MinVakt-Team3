@@ -24,35 +24,33 @@ $(document).ready(function(){
                         console.log(shift);
                         console.log(oldUser);
                         console.log(newUser);
-                           isOkChangeRequest(request.requestId,function(message) {
-                                document.getElementById("requestChangeNotificationsList").innerHTML +=
-                                                                 "<li class='collection-item avatar card-panel white' id="+request.requestId+"collapse"+">"+
-                                                                 "<div class='collapsible-header white black-text'><i class='material-icons circle blue lighten-2'>message</i><b>Vaktbytte</b></div>"+
-                                                                 "<div class='collapsible-body white black-text'><p>"+oldUser.firstName+" "+oldUser.lastName+" vil bytte vakt med "+newUser.firstName+" "+newUser.lastName+" fra "+shift.fromTime.split("T")[0]+" "+shift.fromTime.split("T")[1].substr(0,5)+" til "+shift.toTime.split("T")[0]+" "+shift.toTime.split("T")[1].substr(0,5)+"<br>"+message+"</p>" +
-                                                                     "<a class='waves-effect waves-light blue lighten-2 btn' id= accept"+request.requestId+">Godkjenn</a><a class='waves-effect waves-light blue lighten-2 btn' id='decline"+request.requestId+"'>Ikke godkjenn</a></div>"+
-                                                                 "</li>";
 
-                                                        $("#accept"+request.requestId).click(function () {
+                        document.getElementById("requestChangeNotificationsList").innerHTML +=
 
-                                                            $("#acceptButton").click();
+                            "<li class='collection-item avatar card-panel white' id="+request.requestId+"collapse"+">"+
+                            "<div class='collapsible-header white black-text'><i class='material-icons circle red'>message</i><b>Vaktbytte</b></div>"+
+                            "<div class='collapsible-body white black-text'><p>"+oldUser.firstName+" "+oldUser.lastName+" vil bytte vakt med "+newUser.firstName+" "+newUser.lastName+" fra "+shift.fromTime.split("T")[0]+" "+shift.fromTime.split("T")[1].substr(0,5)+" til "+shift.toTime.split("T")[0]+" "+shift.toTime.split("T")[1].substr(0,5)+"</p>" +
+                                "<a class='waves-effect waves-light blue darken-4 btn' id= accept"+request.requestId+">Godkjenn</a><a class='waves-effect waves-light blue darken-4 btn' id='decline"+request.requestId+"'>Ikke godkjenn</a></div>"+
+                            "</li>"
 
-                                                            swal("Vakten ble byttet", "", "success")
-                                                            $("#"+request.requestId+"collapse").hide();
+                        $("#accept"+request.requestId).click(function () {
 
-                                                            acceptChangeRequest(request.requestId);
-                                                        });
-                              $("#decline"+request.requestId).click(function () {
+                            $("#acceptButton").click();
 
-                                 $("#declineButton").click();
+                            swal("Vakten ble byttet", "", "success")
+                            $("#"+request.requestId+"collapse").hide();
 
-                                 swal("Vakten ble ikke byttet", "", "error");
-                                 $("#" + request.requestId + "collapse").hide();
+                            acceptChangeRequest(request.requestId);
+                        });
 
-                                 declineRequestChange(request.requestId);
-                              })
-                           })
-
+                        $("#decline"+request.requestId).click(function () {
+                            $("#declineButton").click();
+                            swal("Vakten ble ikke byttet", "", "error");
+                            $("#" + request.requestId + "collapse").hide();
+                            declineRequestChange(request.requestId);
+                        })
                     })
+
                 })
             })
         }

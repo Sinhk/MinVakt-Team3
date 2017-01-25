@@ -1,5 +1,5 @@
 #search-bar {
-     border-bottom: 1.5px solid #64b5f6;
+     border-bottom: 1.5px solid #009688;
  }
 
 .search-container{
@@ -40,7 +40,7 @@
     vertical-align: top;
 }
 
-#myButton {
+#myButton1 {
     position: relative;
     float: left;
     margin-top: 2.5%;
