@@ -112,18 +112,11 @@ $(document).ready(function () { // document ready
                                             doNotSave: true,
                                             stick: true // maintain when user navigates (see docs on the renderEvent method)
                                         }, true)
-
                                 }
-
                             })
-
                         }
-
                     })
-
                 })
-
-
             },
 
             drop: function(date, jsEvent, ui, resourceId) {

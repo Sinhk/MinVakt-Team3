@@ -73,7 +73,7 @@ $(document).ready(function () { // document ready
         resourceColumns:[
             {
                 labelText:'Ansatte',
-                field: 'eployees'
+                field: 'employee'
             },
             {
                 labelText:'Stilling',
@@ -81,20 +81,22 @@ $(document).ready(function () { // document ready
             }
         ],
 
-        resources:[
-            {
-                function(callback){
+        resources: function(callback){
+
                     getUsersAndCreateResourceList(function (data) {
+
+                        console.log(data);
+
+                        for(var i = 0; i < data.length; i++){
+
+                            console.log("object");
+                            console.log(data[i]);
+
+                        }
+
                         callback(data);
                     })
-                }
-                    },
-            {
-                function(callback){
-                }
-
-            }
-        ],
+                },
         /*
         resourceLabelText: 'Ansatte',
         resources: function(callback){
@@ -134,8 +136,6 @@ $(document).ready(function () { // document ready
                 console.log(event);
 
             })
-
-
 
         },
 
@@ -243,7 +243,7 @@ $(document).ready(function () { // document ready
 
 function getUsersAndCreateResourceList(callback) {
 
-    const res = [];
+    const res =[];
 
     getAllUsers(function (users) {
 
@@ -251,16 +251,19 @@ function getUsersAndCreateResourceList(callback) {
 
             const user = users[i];
 
-            res.push({
-                field: 'position',
-                id: user.employeeId,
-                title: user.firstName + " " + user.lastName,
-            })
+            getCategory(user.email, function (category) {
 
+                const userobj = {
+                    id: user.employeeId,
+                    title: user.firstName + " " + user.lastName,
+                    employee: user.firstName + " " + user.lastName,
+                    position: category.categoryName
+
+                };
+                res.push(userobj)
+            })
         }
         callback(res);
-
-
     })
 
 }
