@@ -236,8 +236,8 @@ function eventIsAvailable(event_id) {
     });
     return is;
 }
-
-function getAvaiableShifts() {
+/*  already made?
+function getAvailableShifts() {
 
     var list;
 
@@ -258,7 +258,7 @@ function getAvaiableShifts() {
     return list;
 
 }
-
+*/
 
 function getAllSuitableShifts(callback) {
 
