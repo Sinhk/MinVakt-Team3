@@ -264,7 +264,7 @@ $(document).ready(function () { // document ready
 
                             if (event.unavailable) {
 
-                                addUserToShift(user_id, shift_id, false, function (data) {
+                                addUserToShift(user_id, shift_id, false, false, function (data) {
 
                                     console.log(data);
                                     location.reload();
@@ -273,7 +273,7 @@ $(document).ready(function () { // document ready
                             }
                             else {
 
-                                addUserToShift(user_id, shift_id, true, function (data) {
+                                addUserToShift(user_id, shift_id, true, false, function (data) {
 
                                     console.log(data);
                                     location.reload();

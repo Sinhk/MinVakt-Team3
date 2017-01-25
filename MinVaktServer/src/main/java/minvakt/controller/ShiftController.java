@@ -91,7 +91,7 @@ public class ShiftController {
 
     @PostMapping(value = "/{shift_id}/users")
     @Transactional
-    public void addUserToShift(@PathVariable int shift_id, @RequestParam int user_id, @RequestParam boolean available) { // shift id and user id
+    public void addUserToShift(@PathVariable int shift_id, @RequestParam int user_id, @RequestParam boolean available, @RequestParam boolean responsible) { // shift id and user id
 
         System.out.println(shift_id + " . " + user_id);
 
@@ -101,6 +101,23 @@ public class ShiftController {
         assignment.setAbsent(false);
         assignment.setAssigned(false);
         assignment.setAvailable(available);
+
+        if (responsible) setUserIsResponsibleForShift(shift_id, user_id);
+
+        shiftAssignmentRepo.save(assignment);
+    }
+
+    @PutMapping(value = "/{shift_id}/users")
+    @Transactional
+    public void changeUserAssignment(@PathVariable int shift_id, @RequestParam int user_id, @RequestParam boolean available, @RequestParam boolean responsible, @RequestParam(required = false) Boolean assigned) { // shift id and user id
+
+        ShiftAssignment assignment = shiftAssignmentRepo.findByShiftIdAndEmployeeId(shift_id, user_id).get();
+
+        assignment.setAbsent(false);
+        assignment.setAvailable(available);
+        assignment.setAssigned(assigned != null ? assigned : false);
+
+        if (responsible) setUserIsResponsibleForShift(shift_id, user_id);
 
         shiftAssignmentRepo.save(assignment);
     }

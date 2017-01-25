@@ -57,10 +57,10 @@ function getUsersForShift(shift_id, callback) {
 
 }
 
-function addUserToShift(user_id, shift_id, available, callback) {
+function addUserToShift(user_id, shift_id, available, responsible, callback) {
 
     $.ajax({
-        url: "/shifts/"+shift_id+"/users?user_id="+user_id+"&available="+available,
+        url: "/shifts/"+shift_id+"/users?user_id="+user_id+"&available="+available+"&responsible="+responsible,
         type: "POST",
         success: function (data) {
             callback(data);
@@ -69,7 +69,19 @@ function addUserToShift(user_id, shift_id, available, callback) {
             console.log("Error: " + JSON.stringify(data));
         }
     });
+}
+function changeUserAssignment(user_id, shift_id, available, responsible, assigned, callback) {
 
+    $.ajax({
+        url: "/shifts/"+shift_id+"/users?user_id="+user_id+"&available="+available+"&responsible="+responsible+"&assigned="+assigned,
+        type: "PUT",
+        success: function (data) {
+            callback(data);
+        },
+        error: function (data) {
+            console.log("Error: " + JSON.stringify(data));
+        }
+    });
 }
 
 
