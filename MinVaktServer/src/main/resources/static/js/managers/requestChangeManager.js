@@ -53,3 +53,18 @@ function requestChangeForShift(shift_id, user1_id, user2_id, callback) {
     });
 
 }
+
+function isOkChangeRequest (request_id,callback) {
+$.ajax({
+        url: "/requestchange/"+request_id+"/isOkChangeRequest",
+        type: "GET",
+        contentType: "Application/JSON",
+
+        success: function (data) {
+            callback(data);
+        },
+        error: function (data) {
+            console.log("Error: " + data);
+        }
+    });
+}

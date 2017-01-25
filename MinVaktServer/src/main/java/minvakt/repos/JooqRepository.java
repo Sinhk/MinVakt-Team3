@@ -121,4 +121,16 @@ public class JooqRepository {
     private static LocalDateTime getStartOfDay(LocalDateTime date) {
         return date.with(LocalTime.MIN);
     }
+    //TODO Fix me
+    public int getHoursWorked(int employee_id) {
+        return 39;
+    }
+    //TODO Fix me
+    public int getNursesOnShift(int shift_id) {
+        return 2;
+    }
+    //TODO Fix me
+    public int getHealthWorkersOnShift(int shift_id) {
+        return 3;
+    }
 }
