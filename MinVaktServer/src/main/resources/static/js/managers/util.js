@@ -57,6 +57,8 @@ function toFullCalendarEventWithResource(event, resource) {
 
 }
 
+
+
 function toFullCalendarEvent(event, callback) {
 
     console.log(event);
@@ -67,6 +69,8 @@ function toFullCalendarEvent(event, callback) {
 
         var dateStart = new Date(start);
         var dateEnd = new Date(end);
+        var department=getDepartmentofShift(event.shiftId,function(name) {department=name});
+
 
         shiftIsAvailable(event.shiftId, function (available) {
 
@@ -77,13 +81,15 @@ function toFullCalendarEvent(event, callback) {
                 //console.log("Avdeling: "+event.comments);
 
                 callback( {
+
                     id: event.shiftId,
                     title: start.split("T")[1].substr(0, 3) + " -> " + end.split("T")[1].substr(0, 3),
                     start: dateStart,
                     end: dateEnd,
                     //backgroundColor: available ? "#9B0300" : "#3E9B85",
                     available: available,
-                    avdeling: "TODO",
+                    //TODO avdeling
+                    avdeling: department,
                     isResponsible: responsible != undefined ? responsible.firstName + " " + responsible.lastName : "Ingen"
                 });
 
@@ -92,6 +98,24 @@ function toFullCalendarEvent(event, callback) {
     }
 }
 
+function getDepartmentofShift(shiftId,callback) {
+
+    $.ajax({
+            async: true,
+            url: "/shifts/" +shiftId + "/department",
+            type: "GET",
+            contentType: "Text/Plain",
+            success: function (data) {
+            console.log("Sucsess: " + data);
+                      callback(data);
+
+            },
+            error: function (data) {
+                console.log("Error: " + data);
+            }
+
+    })
+}
 
 function listToFullCalendarEventList(events, resourceList) {
 
