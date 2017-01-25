@@ -147,6 +147,15 @@ function getAssignedShiftsForUser(user_id, callback) {
     });
 
 }
+    function getAvailableShiftsForUser(user_id, callback) {
+
+        $.getJSON("/users/"+user_id+"/shifts/available", function (data) {
+            callback(data);
+        });
+
+    }
+
+
 function getScheduledShiftsForCurrentUser(callback) {
 
     getCurrentUser(function (user) {

@@ -1,19 +1,26 @@
 $(document).ready(function () { // document ready
-    $(function() { // document ready
-
 
         /* initialize the external events
          -----------------------------------------------------------------*/
+        var antEvents = 0;
+        $('#external-events .fc-event').each(function () {
 
-        $('#external-events .fc-event').each(function() {
 
             // store data so the calendar knows to render an event upon drop
             $(this).data('event', {
                 title: $.trim($(this).text()), // use the element's text as the event title
-                id: $.trim($(this).text()) == "Formiddagsvakt" ? 1 : $.trim($(this).text()) == "Ettermiddagsvakt" ? 2 : 3,
-                stick: true // maintain when user navigates (see docs on the renderEvent method)
+                id: this.id+antEvents,
+                start_id: $.trim($(this).text()) == "Formiddagsvakt" ? 1 : $.trim($(this).text()) == "Ettermiddagsvakt" ? 2 : 3,
+                stick: true, // maintain when user navigates (see docs on the renderEvent method)
+                unavailable: this.id.includes("u")
             });
+            antEvents++;
 
+            console.log(antEvents);
+            /* console.log("ID: "+this.id);
+
+             console.log("UNAVAILABLE: "+this.id.includes("u"))
+             */
             // make the event draggable using jQuery UI
             $(this).draggable({
                 zIndex: 999,
@@ -21,26 +28,8 @@ $(document).ready(function () { // document ready
                 revertDuration: 0  //  original position after the drag
             });
 
-        });
-
-        $('#unavailable-events .fc-event-u').each(function() {
-
-            // store data so the calendar knows to render an event upon drop
-            $(this).data('event', {
-                title: $.trim($(this).text()), // use the element's text as the event title
-                id: $.trim($(this).text()) == "Formiddagsvakt" ? 1 : $.trim($(this).text()) == "Ettermiddagsvakt" ? 2 : 3,
-                stick: true // maintain when user navigates (see docs on the renderEvent method)
-            });
-
-            // make the event draggable using jQuery UI
-            $(this).draggable({
-                zIndex: 999,
-                revert: true,      // will cause the event to go back to its
-                revertDuration: 0  //  original position after the drag
-            });
 
         });
-
 
         /* initialize the calendar
          -----------------------------------------------------------------*/
@@ -60,7 +49,7 @@ $(document).ready(function () { // document ready
                 center: 'title',
                 right: 'next'
             },
-            weekNumbers:true,
+            weekNumbers: true,
             firstDay: 1,
             defaultView: 'month',
             dayNamesShort: ['Søndag', 'Mandag', 'Tirsdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lørdag'],
@@ -73,38 +62,34 @@ $(document).ready(function () { // document ready
                 day: 'Dag',
                 list: 'Liste'
             },
-            editable: true, // enable draggable events
+            editable: false, // enable draggable events
             droppable: true, // this allows things to be dropped onto the calendar
 
-            eventRender: function(event, element) {
-                element.append( "<span class='closeon'>[ X ]</span>" );
+            eventRender: function (event, element) {
+                element.append("<span class='closeon'>[ X ]</span>");
 
-                element.find(".closeon").click(function() {
+                element.find(".closeon").click(function () {
 
                     swal({
-                            title: "Are you sure?",
-                            text: "You will not be able to recover this imaginary file!",
+                            title: "Er du sikker?",
+                            text: "Du kan ikke angre denne handlingen",
                             type: "warning",
                             showCancelButton: true,
                             confirmButtonColor: "#DD6B55",
-                            confirmButtonText: "Yes, delete it!",
+                            confirmButtonText: "Ja, slett den",
                             closeOnConfirm: false
                         },
 
-                        function(){
-                            $('#calendar').fullCalendar('removeEvents',event._id);
-                            swal("Deleted!", "Your imaginary file has been deleted.", "success");
+                        function () {
+                            $('#calendar').fullCalendar('removeEvents', event._id);
+                            swal("Slettet!", "Tilgjengeligheten ble slettet", "success");
+
+
+                            deleteShiftAssignment(event.assignmentId);
+                            location.reload();
                         });
 
 
-
-
-                    //TODO swal
-
-                    $('#calendar').fullCalendar('removeEvents',event._id);
-
-
-                    deleteShiftAssignment(event.assignmentId);
                 });
             },
 
@@ -116,11 +101,11 @@ $(document).ready(function () { // document ready
 
                     var changed = false;
 
-                    for(var i = 0; i<shifts.length; i++){
+                    for (var i = 0; i < shifts.length; i++) {
 
                         var shift = shifts[i];
 
-                        if(shift.fromTime.split("T")[0] == date){
+                        if (shift.fromTime.split("T")[0] == date) {
 
                             cell.css("background-color", "#4caf50"); // GREEN
                             changed = true;
@@ -130,10 +115,9 @@ $(document).ready(function () { // document ready
                         //console.log(shift);
 
                     }
-                    if(!changed){
+                    if (!changed) {
                         cell.css("background-color", "#ef5350"); // RED
                     }
-
                 })
 
                 getCurrentUser(function (currentUser) {
@@ -144,7 +128,7 @@ $(document).ready(function () { // document ready
 
                         //console.log("Amount of shifts: "+shifts.length);
 
-                        for(var i = 0; i<shifts.length; i++){
+                        for (var i = 0; i < shifts.length; i++) {
 
                             const shift = shifts[i];
 
@@ -152,18 +136,19 @@ $(document).ready(function () { // document ready
 
                                 console.log(assignment);
 
-                                if(shift.fromTime.split("T")[0] == date && assignment.available && !assignment.assigned) {
+                                if (shift.fromTime.split("T")[0] == date /*&& assignment.available*/ && !assignment.assigned) {
 
-                                    $('#calendar').fullCalendar("renderEvent",{
+                                    $('#calendar').fullCalendar("renderEvent", {
 
-                                            title: shift.fromTime.split("T")[1].substr(0,5) == "06:00" ? "Formiddagsvakt" : shift.fromTime.split("T")[1].substr(0,5) == "14:00" ? "Ettermiddagsvakt" : "Nattvakt",  // use the element's text as the event title
-                                            id: shift.fromTime.split("T")[1].substr(0,5) == "06:00" ? 1 : shift.fromTime.split("T")[1].substr(0,5) == "14:00" ? 2 : 3,
-                                            start: shift.fromTime.split("T")[0],
-                                            end: shift.toTime.split("T")[0],
-                                            doNotSave: true,
-                                            assignmentId: assignment.id,
-                                            stick: true // maintain when user navigates (see docs on the renderEvent method)
-                                        }, true)
+                                        title: shift.fromTime.split("T")[1].substr(0, 5) == "06:00" ? "Formiddagsvakt" : shift.fromTime.split("T")[1].substr(0, 5) == "14:00" ? "Ettermiddagsvakt" : "Nattvakt",  // use the element's text as the event title
+                                        id: shift.fromTime.split("T")[1].substr(0, 5) == "06:00" ? 1 : shift.fromTime.split("T")[1].substr(0, 5) == "14:00" ? 2 : 3,
+                                        start: shift.fromTime.split("T")[0],
+                                        end: shift.toTime.split("T")[0],
+                                        doNotSave: true,
+                                        assignmentId: assignment.id,
+                                        backgroundColor: !assignment.available ? "#f44336" : /*responsible ? "#03a9f4" : */"#4caf50",
+                                        stick: true // maintain when user navigates (see docs on the renderEvent method)
+                                    }, true)
                                 }
                             })
                         }
@@ -171,7 +156,7 @@ $(document).ready(function () { // document ready
                 })
             },
 
-            drop: function(date, jsEvent, ui, resourceId) {
+            drop: function (date, jsEvent, ui, resourceId) {
                 console.log('drop', date.format(), resourceId);
 
                 // is the "remove after drop" checkbox checked?
@@ -180,10 +165,10 @@ $(document).ready(function () { // document ready
                     $(this).remove();
                 }
             },
-            eventReceive: function(event) { // called when a proper external event is dropped
+            eventReceive: function (event) { // called when a proper external event is dropped
                 console.log('eventReceive', event);
             },
-            eventDrop: function(event) { // called when an event (already on the calendar) is moved
+            eventDrop: function (event) { // called when an event (already on the calendar) is moved
                 console.log('eventDrop', event);
             },
             eventClick: function (event) {
@@ -197,44 +182,44 @@ $(document).ready(function () { // document ready
 
     /*getAllUsers(function (users) {
 
-        for (var i = 0; i < users.length; i++) {
+     for (var i = 0; i < users.length; i++) {
 
-            const user = users[i];
+     const user = users[i];
 
-            //$('#calendar').fullCalendar('addResource', resource)
+     //$('#calendar').fullCalendar('addResource', resource)
 
-            getAssignedShiftsForUser(user.employeeId, function (shiftsForUser) {
+     getAssignedShiftsForUser(user.employeeId, funct ion (shiftsForUser) {
 
-                for (var i = 0; i < shiftsForUser.length; i++) {
+     for (var i = 0; i < shiftsForUser.length; i++) {
 
-                    const shift = shiftsForUser[i];
+     const shift = shiftsForUser[i];
 
-                    //console.log(shift);
+     //console.log(shift);
 
-                    userIsResponsibleForShift(shift.shiftId, user.employeeId, function (responsible) {
+     userIsResponsibleForShift(shift.shiftId, user.employeeId, function (responsible) {
 
-                        const event = {
+     const event = {
 
-                            id: shift.shiftId,
-                            resourceId: user.employeeId,
-                            start: shift.fromTime.split("T")[0],
-                            end: shift.toTime.split("T")[0],
-                            title: shift.fromTime.split("T")[1].substr(0, 5) + " - " + shift.toTime.split("T")[1].substr(0, 5),
+     id: shift.shiftId,
+     resourceId: user.employeeId,
+     start: shift.fromTime.split("T")[0],
+     end: shift.toTime.split("T")[0],
+     title: shift.fromTime.split("T")[1].substr(0, 5) + " - " + shift.toTime.split("T")[1].substr(0, 5),
 
-                            backgroundColor: responsible ? "#03a9f4" : "#4caf50",
+     backgroundColor: responsible ? "#03a9f4" : "#4caf50",
 
-                            stick: true
+     stick: true
 
-                        }
+     }
 
-                        $('#calendar').fullCalendar('renderEvent', event, true);
-                    })
-                }
-            })
-        }
-    });*/
+     $('#calendar').fullCalendar('renderEvent', event, true);
+     })
+     }
+     })
+     }
+     });*/
 
-    $("#saveButton").click(function () {
+    $("#save").click(function () {
 
         console.log("---------------------------------------------SAVING---------------------------------------------");
 
@@ -244,53 +229,62 @@ $(document).ready(function () { // document ready
 
         getAllShifts(function (shifts) {
 
-            for(var i = 0; i < events.length; i++){
+            for (var i = 0; i < events.length; i++) {
 
                 const event = events[i];
 
-                for(var j = 0; j < shifts.length; j++) {
+                for (var j = 0; j < shifts.length; j++) {
 
                     const shift = shifts[j];
 
                     //console.log(event)
                     //console.log(shift)
 
-                    const shift_event_id = shift.fromTime.split("T")[1].substr(0,5) == "06:00" ? 1 : shift.fromTime.split("T")[1].substr(0,5) == "14:00" ? 2 : 3;
+                    const shift_event_id = shift.fromTime.split("T")[1].substr(0, 5) == "06:00" ? 1 : shift.fromTime.split("T")[1].substr(0, 5) == "14:00" ? 2 : 3;
 
                     const event_date = event.start.toISOString()
                     const shift_date = shift.fromTime.split("T")[0];
                     //console.log();
 
                     // Samme tid, samme dag
-                    if(event.id == shift_event_id && event.start && event_date == shift_date && !event.doNotSave){
-                        console.log(event)
-                        console.log(shift)
 
+                    console.log("eventstart: "+event.start+" - type: "+shift_event_id+" - eventdate: "+event_date+" - shiftdate: "+shift_date)
+
+                    if (event.start_id == shift_event_id && event.start && event_date == shift_date && !event.doNotSave) {
+
+                        console.log("event");
+                        console.log(event)
+                        console.log("shift");
+                        console.log(shift)
 
                         getCurrentUser(function (currentUser) {
 
                             var user_id = currentUser.employeeId;
                             var shift_id = shift.shiftId;
 
-                            addUserToShift(user_id, shift_id, function (data) {
+                            if (event.unavailable) {
 
-                                console.log(data);
+                                addUserToShift(user_id, shift_id, false, function (data) {
 
-                            })
+                                    console.log(data);
+                                    location.reload();
 
+                                })
+                            }
+                            else {
+
+                                addUserToShift(user_id, shift_id, true, function (data) {
+
+                                    console.log(data);
+                                    location.reload();
+                                })
+                            }
                         })
 
                     }
-
                 }
-
-
-
             }
-
         })
-
-
     })
 
     /*getAllAssignedShifts(function (assignedShifts) {
@@ -343,7 +337,6 @@ $(document).ready(function () { // document ready
 
     // legg til nåværende tilgjengelighet
 
-});
 
 function getUsersAndCreateResourceList(callback) {
 

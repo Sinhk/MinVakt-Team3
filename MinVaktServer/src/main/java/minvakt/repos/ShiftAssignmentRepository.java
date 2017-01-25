@@ -15,4 +15,8 @@ public interface ShiftAssignmentRepository extends JpaRepository<ShiftAssignment
     List<ShiftAssignment> findByAssignedTrue();
 
     List<ShiftAssignment> findByAssignedFalse();
+
+    List<ShiftAssignment> findByAvailableTrue();
+
+    List<ShiftAssignment> findByAvailableFalse();
 }

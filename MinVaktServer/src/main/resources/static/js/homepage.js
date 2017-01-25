@@ -76,6 +76,7 @@ $(document).ready(function () {
 
          }*/
     });
+
     getScheduledShiftsForCurrentUser(function (shifts) {
 
         console.log(shifts);

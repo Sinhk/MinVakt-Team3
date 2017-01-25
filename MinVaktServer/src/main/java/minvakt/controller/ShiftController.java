@@ -91,7 +91,7 @@ public class ShiftController {
 
     @PostMapping(value = "/{shift_id}/users")
     @Transactional
-    public void addUserToShift(@PathVariable int shift_id, @RequestParam int user_id) { // shift id and user id
+    public void addUserToShift(@PathVariable int shift_id, @RequestParam int user_id, @RequestParam boolean available) { // shift id and user id
 
         System.out.println(shift_id + " . " + user_id);
 
@@ -100,7 +100,7 @@ public class ShiftController {
         assignment.setShiftId(shift_id);
         assignment.setAbsent(false);
         assignment.setAssigned(false);
-        assignment.setAvailable(true);
+        assignment.setAvailable(available);
 
         shiftAssignmentRepo.save(assignment);
     }

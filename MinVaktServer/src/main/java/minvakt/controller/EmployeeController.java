@@ -181,6 +181,13 @@ public class EmployeeController {
 
     }
 
+    @GetMapping(value = "/{user_id}/shifts/available")
+    public Collection<Shift> getAvailableShiftsForUser(@PathVariable int user_id){
+
+        return shiftAssignmentRepo.findByAvailableTrue().stream().filter(shiftAssignment -> shiftAssignment.getEmployeeId() == user_id).map(shiftAssignment -> shiftRepo.findOne(shiftAssignment.getShiftId())).collect(Collectors.toList());
+
+    }
+
     // FIXME: 15.01.2017
     @GetMapping("/{user_id}/shifts/inrange/")
     public Collection<Shift> getShiftsForUserInRange(@PathVariable int user_id, @RequestParam String startDate, @RequestParam String endDate){

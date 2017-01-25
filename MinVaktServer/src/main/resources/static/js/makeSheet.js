@@ -9,6 +9,7 @@ $(document).ready(function () { // document ready
         // store data so the calendar knows to render an event upon drop
         $(this).data('event', {
             title: $.trim($(this).text()), // use the element's text as the event title
+            responsible: this.id.includes("ANSVAR"),
             stick: true // maintain when user navigates (see docs on the renderEvent method)
         });
 
@@ -134,7 +135,8 @@ $(document).ready(function () { // document ready
 
             //$('#calendar').fullCalendar('addResource', resource)
 
-            getAssignedShiftsForUser(user.employeeId, function (shiftsForUser) {
+
+            getShiftsForUser(user.employeeId, function (shiftsForUser) {
 
                 for (var i = 0; i < shiftsForUser.length; i++) {
 
@@ -142,25 +144,29 @@ $(document).ready(function () { // document ready
 
                     console.log(shift);
 
-                    userIsResponsibleForShift(shift.shiftId, user.employeeId, function (responsible) {
+                    getShiftAssignmentForShiftAndUser(shift.shiftId, user.employeeId, function (shiftAssignment) {
 
+                        userIsResponsibleForShift(shift.shiftId, user.employeeId, function (responsible) {
 
-                        const event = {
+                            const event = {
 
-                            id: shift.shiftId,
-                            resourceId: user.employeeId,
-                            start: shift.fromTime.split("T")[0],
-                            end: shift.toTime.split("T")[0],
-                            title: shift.fromTime.split("T")[1].substr(0, 5) + " - " + shift.toTime.split("T")[1].substr(0, 5),
+                                id: shift.shiftId,
+                                resourceId: user.employeeId,
+                                start: shift.fromTime.split("T")[0],
+                                end: shift.toTime.split("T")[0],
+                                title: shift.fromTime.split("T")[1].substr(0, 5) + " - " + shift.toTime.split("T")[1].substr(0, 5),
 
-                            backgroundColor: responsible ? "#03a9f4" : "#4caf50",
+                                backgroundColor: !shiftAssignment.available ? "#f44336" : responsible ? "#03a9f4" : "#4caf50",
 
-                            stick: true
+                                stick: true
 
-                        }
+                            }
 
-                        $('#calendar').fullCalendar('renderEvent', event, true);
+                            $('#calendar').fullCalendar('renderEvent', event, true);
+                        })
                     })
+
+
 
 
                 }
@@ -258,7 +264,7 @@ function getUsersAndCreateResourceList(callback) {
 
             const user = users[i];
 
-
+                // Hack fordi sync ikke funka
                 res.push({
                     id: user.employeeId,
                     title: user.firstName + " " + user.lastName+", "+(user.categoryId == 1 ? "Administrasjon" : user.categoryId == 2 ? "Sykepleier" : user.categoryId == 3 ? "Helsefagarbeider" : "Assistent"),
