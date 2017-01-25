@@ -30,7 +30,8 @@ $(document).ready(function () { // document ready
         timezone: "UTC+1",
         selectable: true,
         resourceAreaWidth: 230,
-        editable: false,
+        eventStartEditable: true,
+
         aspectRatio: 1.5,
         scrollTime: '00:00',
         header: {
@@ -89,6 +90,32 @@ $(document).ready(function () { // document ready
         resourceLabelText: 'Stilling',
         resources: function(callback){
 
+        },*/
+/*
+        eventRender: function(event, element) {
+            element.append( "<span class='closeon'>[ X ]</span>" );
+
+            element.find(".closeon").click(function() {
+
+                /*swal({
+                        title: "Are you sure?",
+                        text: "You will not be able to recover this imaginary file!",
+                        type: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "Yes, delete it!",
+                        closeOnConfirm: false
+
+                    },
+
+                    function(){
+                        $('#calendar').fullCalendar('removeEvents',event._id);
+                        swal("Deleted!", "Your imaginary file has been deleted.", "success");
+                    });
+
+
+
+            });
         },*/
 
         drop: function(date, jsEvent, ui, resourceId) {
