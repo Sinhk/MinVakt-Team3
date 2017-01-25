@@ -29,7 +29,7 @@ $(document).ready(function () { // document ready
         timezone: "UTC+1",
         selectable: true,
         resourceAreaWidth: 230,
-        editable: true,
+        editable: false,
         aspectRatio: 1.5,
         scrollTime: '00:00',
         header: {

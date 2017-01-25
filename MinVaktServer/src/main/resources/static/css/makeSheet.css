@@ -11,8 +11,6 @@
     display:none
 }
 
-
-
 /*body {
     margin-top: 40px;
     text-align: center;
@@ -30,7 +28,7 @@
     margin-top:2.5%;
     float: left;
     width: 150px;
-    height: 130px;
+    height: 230px;
     padding: 0 10px;
     border: 1px solid #ccc;
     background: #eee;
@@ -68,6 +66,6 @@
 #save{
     position:fixed;
     width:11.7%;
-    margin-top:15%;
+    margin-top:23%;
 }
 

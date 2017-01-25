@@ -10,7 +10,7 @@
     margin-top:3%;
     float: left;
     width: 150px;
-    height: 170px;
+    height: 140px;
     padding: 0 10px;
     border: 1px solid #ccc;
     background: #eee;
@@ -31,4 +31,10 @@
     margin-right: 25%;
     margin-top:3%;
     width: 63%;
+}
+
+#save{
+    position:fixed;
+    width:11.7%;
+    margin-top:16%;
 }
