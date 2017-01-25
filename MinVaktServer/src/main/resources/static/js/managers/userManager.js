@@ -70,6 +70,28 @@ function removeButton(id) {
      });
     }
 
+    function editUser(user_id, callback){
+        $.ajax({
+            url: "/users/"+user_id,
+            type: "PUT",
+
+            success: function (data) {
+                callback(data);
+            },
+            error: function (data) {
+                console.log("Error: " + data);
+            }
+        });
+    }
+
+    function changeUserAdmin(id) {
+        editUser(id, function() {
+            window.location.href="http://localhost:8080/endreBrukerAdmin";
+        })
+    }
+
+
+
 function getUserById(user_id, callback) {
 
     $.getJSON("/users/"+user_id, function(data){callback(data)});

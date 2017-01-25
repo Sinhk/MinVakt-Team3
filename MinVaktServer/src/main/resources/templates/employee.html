@@ -18,14 +18,23 @@
 
 <div id="nav" th:replace="fragments/header :: header"></div>
 <main>
-    <div class="row">
-        <h2 id="header">Ansatte</h2>
+
+    <h2 id="header">Ansatte</h2>
+
+    <div>
+        <a th:href="@{/ansatte/ny}" class="waves-effect waves-light btn blue lighten-2" id="myButton">Legg til bruker</a>
+    </div>
+
+    <div>
+        <a th:href="@{/endreBrukerAdmin}" class="waves-effect waves-light btn blue lighten-2" id="myButton2">Endre bruker</a>
+    </div>
+
+
         <div class="right col s5" id="search">
             <form class="search-container">
                 <input type="text" id="search-bar" onkeyup="myFunction()" placeholder="Søk"><i class="material-icons" id="icon">search</i>
             </form>
         </div>
-    </div>
 
 
 
@@ -36,10 +45,12 @@
             <th><b>Etternavn</b></th>
             <th><b>Stilling</b></th>
             <th><b>Stillingsprosent</b></th>
-            <th><b>Telefon</b></th>
-            <th><b>Antall timer per uke</b></th>
-            <!--<th><b>E-post</b></th>-->
-            <th><b>Slett bruker</b></th>
+            <th><b>Tlf</b></th>
+            <th><b>Ant timer/uke</b></th>
+            <th><b>E-post</b></th>
+            <th><b>Slett</b></th>
+            <th><b>Rediger</b></th>
+
 
         </tr>
         </thead>
@@ -49,9 +60,7 @@
             </tbody>
     </table>
 
-    <div>
-        <a th:href="@{/ansatte/ny}" class="waves-effect waves-light btn blue lighten-2" id="myButton">Legg til bruker</a>
-    </div>
+
 
 </main>
 

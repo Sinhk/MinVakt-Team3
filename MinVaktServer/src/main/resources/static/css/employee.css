@@ -3,7 +3,10 @@
  }
 
 .search-container{
-    margin-top: -15%;
+    width: 95%;
+    margin-top: 3%;
+    margin-right: 130px;
+
 
 }
 
@@ -25,23 +28,32 @@
 }
 
 .table {
-    margin-top: -20%;
+    margin-top: 1%;
 }
 
 
 #myTable {
     width: 96.5%;
     margin-left:2%;
-    margin-right:17%;
+    margin-right:20%;
+    margin-top: 1%;
     vertical-align: top;
 }
 
 #myButton {
     position: relative;
     float: left;
-    top: 20px;
+    margin-top: 2.5%;
     margin-left: 2%;
     margin-bottom: 2%;
+}
+
+#myButton2 {
+    position: relative;
+    float: left;
+    margin-top: 2.5%;
+    margin-left: 2%;
+
 }
 
 #home {

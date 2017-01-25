@@ -17,7 +17,9 @@ $(document).ready(function () {
                         "<td>" + employee.positionPercentage + "%</td>" +
                         "<td>" + employee.phone + "</td>" +
                         "<td>" + hours + " timer</td>" +
+                        "<td>" + employee.email + "</td>" +
                         "<td> <button  onClick=\"removeButton("+employee.employeeId+")\">Slett</button>"+"</td>" +
+                        "<td> <button  onClick=\"changeUserAdmin("+employee.employeeId+")\">Rediger</button>"+"</td>" +
                         "</tr>";
                 });
             }
@@ -46,6 +48,10 @@ $(document).ready(function () {
         }
     }
 
+
     $("#myTable").tablesorter();
-    $("#myTable").tablesorter({sortList: [[0, 0], [1, 0]]});
+    $("#myTable").tablesorter({sortList: [[0, 0], [1, 0]]
+
+    });
+
 });

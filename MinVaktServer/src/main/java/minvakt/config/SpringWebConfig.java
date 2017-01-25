@@ -189,6 +189,7 @@ public class SpringWebConfig
         registry.addViewController("/notification").setViewName("notification");
         registry.addViewController("/makeSheet").setViewName("makeSheet");
         registry.addViewController("/shiftChange").setViewName("shiftChange");
+        registry.addViewController("/endreBrukerAdmin").setViewName("changeUserAdmin");
         registry.addViewController("/ledigeVakter").setViewName("availableShifts");
         registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
     }
