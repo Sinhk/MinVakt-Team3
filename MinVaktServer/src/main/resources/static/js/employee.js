@@ -18,7 +18,7 @@ $(document).ready(function () {
                         "<td>" + employee.phone + "</td>" +
                         "<td>" + hours + " timer</td>" +
                         "<td>" + employee.email + "</td>" +
-                        "<td> <button  onClick=\"removeButton("+employee.employeeId+")\">Slett</button>"+"</td>" +
+                        "<td> <button class='waves-effect waves-light btn blue darken-4' onClick=\"removeButton("+employee.employeeId+")\">Slett</button>"+"</td>" +
                         "</tr>";
                 });
             }

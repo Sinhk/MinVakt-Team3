@@ -10,20 +10,39 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.security.web.csrf.CsrfFilter;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
+import java.io.IOException;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    private final DataSource dataSource;
+
+    private final AuthFailureHandler authFailureHandler;
+
+    private final AuthSuccessHandler authSuccessHandler;
+
     @Autowired
-    private DataSource dataSource;
+    public SecurityConfig(DataSource dataSource, AuthFailureHandler authFailureHandler, AuthSuccessHandler authSuccessHandler) {
+        this.dataSource = dataSource;
+        this.authFailureHandler = authFailureHandler;
+        this.authSuccessHandler = authSuccessHandler;
+    }
 
     @Bean
     // TODO: 15.01.2017 Set query to match database
@@ -69,23 +88,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         filter.setForceEncoding(true);
 
         http
-            .addFilterBefore(filter,CsrfFilter.class)
-            .authorizeRequests()
-            .antMatchers("/css/**", "/js/**", "/images/**","/users/**/getNewPassword").permitAll()
-            .antMatchers("/admin/**").hasRole("ADMIN")
-            .anyRequest().authenticated()
-            .and()
+                .addFilterBefore(filter, CsrfFilter.class)
+                .authorizeRequests()
+                .antMatchers("/css/**", "/js/**", "/images/**", "/users/**/getNewPassword").permitAll()
+                .antMatchers("/admin/**").hasRole("ADMIN")
+                .anyRequest().authenticated()
+                .and()
                 .formLogin()
                 .loginPage("/login")
                 .permitAll()
                 .usernameParameter("email")
                 .passwordParameter("password")
-            .and()
+                .successHandler(authSuccessHandler)
+                .failureHandler(authFailureHandler)
+                .and()
                 .logout()
                 .permitAll()
                 .logoutUrl("/do_logout")
                 .logoutSuccessUrl("/login?logout")
-            .and()
+                .and()
                 .csrf().disable();
     }
 
@@ -99,5 +120,32 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
+    }
+}
+
+@Component
+class AuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
+
+    @Override
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
+                                        Authentication authentication) throws ServletException, IOException {
+
+
+        response.setStatus(HttpServletResponse.SC_OK);
+        response.getWriter().print("{\"success\": true}");
+        response.getWriter().flush();
+    }
+}
+
+@Component
+class AuthFailureHandler extends SimpleUrlAuthenticationFailureHandler {
+
+    @Override
+    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
+                                        AuthenticationException exception) throws IOException, ServletException {
+
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.getWriter().print("{\"success\": false}");
+        response.getWriter().flush();
     }
 }

@@ -17,6 +17,7 @@ import org.modelmapper.jooq.RecordValueReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
@@ -31,7 +32,7 @@ import java.util.Map;
 import static minvakt.datamodel.Tables.*;
 import static org.jooq.impl.DSL.*;
 
-@Repository
+@Controller
 public class JooqRepository {
 
     private static final Logger log = LoggerFactory.getLogger(JooqRepository.class);

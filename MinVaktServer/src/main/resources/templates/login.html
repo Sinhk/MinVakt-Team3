@@ -30,14 +30,14 @@
                 </div>
                 <div class="card-content">
 
-                <div th:if="${param.error}" class="red-text valign-center center-align">
+                <div id="errorText" class="red-text valign-center center-align hide">
                     <i class="material-icons">error</i>
                     <span>Feil e-postadresse eller passord</span>
                 </div>
                 <div th:if="${param.logout}" class="green-text center-align">
                     Du ble logget ut
                 </div>
-                <form name="f" th:action="@{/login}" method="post">
+                <form id="loginForm" action="javascript:login()">
                         <div class="row">
                             <div class="input-field col s12">
                                 <input id="emailInput" type="email" name="email" class="validate">
@@ -52,7 +52,7 @@
                         </div>
 
                         <div class="form-actions center-align">
-                            <button type="submit" class="btn waves-effect waves-light blue darken-4">Logg inn <i
+                            <button type="submit" id="login-btn" class="btn waves-effect waves-light blue darken-4">Logg inn <i
                                     class="material-icons right">send</i></button>
                         </div>
 

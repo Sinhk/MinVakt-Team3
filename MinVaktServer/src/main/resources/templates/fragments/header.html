@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     ...
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -20,8 +20,6 @@
         <nav>
             <div class="nav-wrapper blue darken-4 z-depth-3">
                 <a th:href="@{/}" class="brand-logo"><i class="material-icons">home</i>MinVakt</a>
-
-
                 <!--<a href="#" class="large material-icons">home</a>-->
                 <a href="#" data-activates="slide-out" class="button-collapse right"><i class="material-icons">menu</i></a>
                 <ul class="right hide-on-med-and-down">
@@ -47,14 +45,17 @@
 
     <ul id="slide-out" class="side-nav fixed grey lighten-2 z-depth-3 hide">
         <div>
+            <div class="center row">
+                <label>Admin View</label>
+                <div class="switch"><label>Off<input id="admin_view" type="checkbox"><span class="lever"></span>On</label></div>
+            </div>
             <form>
                 <div class="center-align">
                     <div class="section"></div>
                     <i class="large material-icons">face</i>
                 </div>
                 <div class="firstname row center">
-                    <span sec:authentication="principal.username"></span>
-                    <!--<span sec:authentication="principal.lastName"></span>-->
+                    <span id="username_label"></span>
                 </div>
                 <a th:href="@{/endreBruker}" id="buttonProfile" class="waves-effect blue darken-4 btn">Rediger profil</a>
                 <a th:href="@{/endrePassord}" id="buttonPsw" class="waves-effect blue darken-4 btn">Endre passord</a>

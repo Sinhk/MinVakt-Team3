@@ -29,7 +29,9 @@ function toFullCalendarEvent(event) {
 
 }*/
 
-
+function isAdmin() {
+    return localStorage.admin;
+}
 function toFullCalendarEventWithResource(event, resource) {
     var start = event.fromTime;
     var end = event.toTime;

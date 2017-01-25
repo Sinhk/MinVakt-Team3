@@ -4,16 +4,15 @@
 package minvakt.datamodel.tables.pojos;
 
 
+import minvakt.datamodel.tables.*;
+import minvakt.datamodel.tables.MissingPerShiftCategory;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.annotation.Generated;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 
 /**
@@ -39,6 +38,7 @@ public class Shift implements Serializable {
     private LocalDateTime toTime;
     private Short         departmentId;
     private Short         requiredEmployees;
+    private List<MissingPerShiftCategory> missing;
 
     public Shift() {}
 
@@ -158,5 +158,14 @@ public class Shift implements Serializable {
         result = 31 * result + fromTime.hashCode();
         result = 31 * result + toTime.hashCode();
         return result;
+    }
+
+    @Transient
+    public List<MissingPerShiftCategory> getMissing() {
+        return missing;
+    }
+
+    public void setMissing(List<MissingPerShiftCategory> missing) {
+        this.missing = missing;
     }
 }

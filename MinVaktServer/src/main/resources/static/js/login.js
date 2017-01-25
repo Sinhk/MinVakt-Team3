@@ -3,17 +3,7 @@
  */
 $(document).ready(function() {
     $('.modal').modal();
-/*
-    $('#newpw').click(function() {
-        swal({
-            title: "Passord sendt!",
-            type: "success",
-            closeOnConfirm: true,
-            animation: "slide-from-top",
-            confirmButtonText: "Ok"
-        });
-    });
-    */
+
     $('#newpw').click(function () {
             var email = $("#email_input").val();
                 console.log("fg");
@@ -42,3 +32,17 @@ $(document).ready(function() {
 
 });
 
+function login() {
+    $.post("/login", $('#loginForm').serialize())
+        .done((data, textStatus, jqXHR) => {
+            if (textStatus == "success") {
+                $.getJSON("/users/current").done((data) => {
+                    localStorage.admin = data.categoryId == 1;
+                    localStorage.user = JSON.stringify(data);
+                    window.location.href = "/";
+                });
+            }
+        }).fail((data) => {
+        $('#errorText').removeClass('hide');
+    });
+}

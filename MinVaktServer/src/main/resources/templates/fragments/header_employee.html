@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     ...
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -44,7 +44,7 @@
                     <i class="large material-icons">face</i>
                 </div>
                 <div class="firstname row center">
-                    <span sec:authentication="principal.username"></span>
+                    <span id="username_label"></span>
                     <!--<span sec:authentication="principal.lastName"></span>-->
                 </div>
                 <a th:href="@{/endreBruker}" id="buttonProfile" class="waves-effect blue lighten-2 btn">Rediger profil</a>
