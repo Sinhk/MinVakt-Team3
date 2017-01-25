@@ -10,6 +10,7 @@ $(document).ready(function () { // document ready
             // store data so the calendar knows to render an event upon drop
             $(this).data('event', {
                 title: $.trim($(this).text()), // use the element's text as the event title
+                id: $.trim($(this).text()) == "Formiddagsvakt" ? 1 : $.trim($(this).text()) == "Ettermiddagsvakt" ? 2 : 3,
                 stick: true // maintain when user navigates (see docs on the renderEvent method)
             });
 
@@ -56,7 +57,74 @@ $(document).ready(function () { // document ready
             },
             editable: true, // enable draggable events
             droppable: true, // this allows things to be dropped onto the calendar
+            dayRender: function (date, cell) {
 
+                date = date.toDate().toISOString().split("T")[0];
+
+                getAllShifts(function (shifts) {
+
+                    var changed = false;
+
+                    for(var i = 0; i<shifts.length; i++){
+
+                        var shift = shifts[i];
+
+                        if(shift.fromTime.split("T")[0] == date){
+
+                            cell.css("background-color", "#4caf50"); // GREEN
+                            changed = true;
+
+                        }
+
+                        //console.log(shift);
+
+                    }
+                    if(!changed){
+                        cell.css("background-color", "#ef5350"); // RED
+                    }
+
+                })
+
+                getCurrentUser(function (currentUser) {
+
+                    var user_id = currentUser.employeeId;
+
+                    getShiftsForUser(user_id, function (shifts) {
+
+                        //console.log("Amount of shifts: "+shifts.length);
+
+                        for(var i = 0; i<shifts.length; i++){
+
+                            const shift = shifts[i];
+
+                            getShiftAssignmentForShiftAndUser(shift.shiftId, user_id, function (assignment) {
+
+                                console.log(assignment);
+
+                                if(shift.fromTime.split("T")[0] == date && assignment.available && !assignment.assigned) {
+
+                                    $('#calendar').fullCalendar("renderEvent",{
+
+                                            title: shift.fromTime.split("T")[1].substr(0,5) == "06:00" ? "Formiddagsvakt" : shift.fromTime.split("T")[1].substr(0,5) == "14:00" ? "Ettermiddagsvakt" : "Nattvakt",  // use the element's text as the event title
+                                            id: shift.fromTime.split("T")[1].substr(0,5) == "06:00" ? 1 : shift.fromTime.split("T")[1].substr(0,5) == "14:00" ? 2 : 3,
+                                            start: shift.fromTime.split("T")[0],
+                                            end: shift.toTime.split("T")[0],
+                                            doNotSave: true,
+                                            stick: true // maintain when user navigates (see docs on the renderEvent method)
+                                        }, true)
+
+                                }
+
+                            })
+
+                        }
+
+                    })
+
+                })
+
+
+            },
 
             drop: function(date, jsEvent, ui, resourceId) {
                 console.log('drop', date.format(), resourceId);
@@ -72,12 +140,17 @@ $(document).ready(function () { // document ready
             },
             eventDrop: function(event) { // called when an event (already on the calendar) is moved
                 console.log('eventDrop', event);
+            },
+            eventClick: function (event) {
+
+                console.log(event);
+
             }
         });
 
     });
 
-    getAllUsers(function (users) {
+    /*getAllUsers(function (users) {
 
         for (var i = 0; i < users.length; i++) {
 
@@ -91,10 +164,9 @@ $(document).ready(function () { // document ready
 
                     const shift = shiftsForUser[i];
 
-                    console.log(shift);
+                    //console.log(shift);
 
                     userIsResponsibleForShift(shift.shiftId, user.employeeId, function (responsible) {
-
 
                         const event = {
 
@@ -115,7 +187,66 @@ $(document).ready(function () { // document ready
                 }
             })
         }
-    });
+    });*/
+
+    $("#saveButton").click(function () {
+
+        console.log("---------------------------------------------SAVING---------------------------------------------");
+
+        // TODO Syk swal greie her
+
+        var events = $('#calendar').fullCalendar('clientEvents');
+
+        getAllShifts(function (shifts) {
+
+            for(var i = 0; i < events.length; i++){
+
+                const event = events[i];
+
+                for(var j = 0; j < shifts.length; j++) {
+
+                    const shift = shifts[j];
+
+                    //console.log(event)
+                    //console.log(shift)
+
+                    const shift_event_id = shift.fromTime.split("T")[1].substr(0,5) == "06:00" ? 1 : shift.fromTime.split("T")[1].substr(0,5) == "14:00" ? 2 : 3;
+
+                    const event_date = event.start.toISOString()
+                    const shift_date = shift.fromTime.split("T")[0];
+                    //console.log();
+
+                    // Samme tid, samme dag
+                    if(event.id == shift_event_id && event.start && event_date == shift_date && !event.doNotSave){
+                        console.log(event)
+                        console.log(shift)
+
+
+                        getCurrentUser(function (currentUser) {
+
+                            var user_id = currentUser.employeeId;
+                            var shift_id = shift.shiftId;
+
+                            addUserToShift(user_id, shift_id, function (data) {
+
+                                console.log(data);
+
+                            })
+
+                        })
+
+                    }
+
+                }
+
+
+
+            }
+
+        })
+
+
+    })
 
     /*getAllAssignedShifts(function (assignedShifts) {
 
@@ -164,6 +295,9 @@ $(document).ready(function () { // document ready
     /*getAllShifts(function (events) {
      calendar.fullCalendar('addEventSource', listToFullCalendarEventList(events, calendar.fullCalendar('getResources')));
      });*/
+
+    // legg til nåværende tilgjengelighet
+
 });
 
 function getUsersAndCreateResourceList(callback) {

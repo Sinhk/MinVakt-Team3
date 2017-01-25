@@ -7,8 +7,6 @@ import minvakt.repos.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -100,6 +98,9 @@ public class ShiftController {
         assignment.setEmployeeId(user_id);
         assignment.setShiftId(shift_id);
         assignment.setAbsent(false);
+        assignment.setAssigned(false);
+        assignment.setAvailable(true);
+
         shiftAssignmentRepo.save(assignment);
     }
 
