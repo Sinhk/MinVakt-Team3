@@ -70,33 +70,13 @@ $(document).ready(function () { // document ready
             list: 'Liste'
         },
 
-        resourceColumns:[
-            {
-                labelText:'Ansatte',
-                field: 'employee'
-            },
-            {
-                labelText:'Stilling',
-                field:'position'
-            }
-        ],
+        resourceLabelText: 'Ansatte',
 
         resources: function(callback){
-
-                    getUsersAndCreateResourceList(function (data) {
-
-                        console.log(data);
-
-                        for(var i = 0; i < data.length; i++){
-
-                            console.log("object");
-                            console.log(data[i]);
-
-                        }
-
-                        callback(data);
-                    })
-                },
+            getUsersAndCreateResourceList(function (data) {
+                callback(data);
+            })
+        },
         /*
         resourceLabelText: 'Ansatte',
         resources: function(callback){
@@ -241,7 +221,7 @@ $(document).ready(function () { // document ready
      });*/
 });
 
-function getUsersAndCreateResourceList(callback) {
+/*function getUsersAndCreateResourceList(callback) {
 
     const res =[];
 
@@ -255,7 +235,7 @@ function getUsersAndCreateResourceList(callback) {
 
                 const userobj = {
                     id: user.employeeId,
-                    title: user.firstName + " " + user.lastName,
+                    title: user.firstName + " " + user.lastName + ", "+category,
                     employee: user.firstName + " " + user.lastName,
                     position: category.categoryName
 
@@ -266,6 +246,30 @@ function getUsersAndCreateResourceList(callback) {
         callback(res);
     })
 
+}*/
+
+function getUsersAndCreateResourceList(callback) {
+
+    const res = [];
+
+    getAllUsers(function (users) {
+
+        for (var i = 0; i < users.length; i++) {
+
+            const user = users[i];
+
+
+                res.push({
+                    id: user.employeeId,
+                    title: user.firstName + " " + user.lastName+", "+(user.categoryId == 1 ? "Administrasjon" : user.categoryId == 2 ? "Sykepleier" : user.categoryId == 3 ? "Helsefagarbeider" : "Assistent"),
+
+                })
+
+
+        }
+        callback(res);
+
+
+    })
+
 }
-
-
