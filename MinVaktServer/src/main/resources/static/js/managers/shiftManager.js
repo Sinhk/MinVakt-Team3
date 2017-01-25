@@ -277,3 +277,19 @@ function getAllShiftForCurrentUser(callback) {
         })
     })
 }
+
+function deleteShiftAssignment(id) {
+
+    $.ajax({
+        url: "/shifts/shiftassignments/"+id,
+        type: "DELETE",
+        success: function (data) {
+        },
+        error: function (data) {
+            console.log("Error: " + data);
+        }
+    });
+
+}
+
+

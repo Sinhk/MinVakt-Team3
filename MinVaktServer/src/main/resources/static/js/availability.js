@@ -98,6 +98,13 @@ $(document).ready(function () { // document ready
 
 
 
+
+                    //TODO swal
+
+                    $('#calendar').fullCalendar('removeEvents',event._id);
+
+
+                    deleteShiftAssignment(event.assignmentId);
                 });
             },
 
@@ -154,6 +161,7 @@ $(document).ready(function () { // document ready
                                             start: shift.fromTime.split("T")[0],
                                             end: shift.toTime.split("T")[0],
                                             doNotSave: true,
+                                            assignmentId: assignment.id,
                                             stick: true // maintain when user navigates (see docs on the renderEvent method)
                                         }, true)
                                 }

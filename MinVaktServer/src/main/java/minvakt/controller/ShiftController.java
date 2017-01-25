@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.GET;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -260,5 +259,12 @@ public class ShiftController {
 
             shiftRepo.save(shift);
         }
+    }
+
+    @DeleteMapping("/shiftassignments/{shiftAssignment_id}")
+    public void removeShiftAssignment(@PathVariable int shiftAssignment_id){
+
+        shiftAssignmentRepo.delete(shiftAssignment_id);
+
     }
 }
