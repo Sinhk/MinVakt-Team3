@@ -5,12 +5,41 @@
     display:none
 }
 
+#calendar {
+    float: right;
+    margin-right: 25%;
+    margin-top:3%;
+    width: 63%;
+}
+
+#unavailable-events {
+    position: fixed;
+    margin-top:20%;
+    float: left;
+    width: 150px;
+    height: 170px;
+    padding: 0 10px;
+    border: 1px solid #ccc;
+    background: #eee;
+}
+
+#unavailable-events h4 {
+    font-size: 16px;
+    margin-top: 0;
+}
+
+#unavailable-events .fc-event-u {
+    margin: 10px 0;
+    cursor: pointer;
+}
+
+
 #external-events {
     position: fixed;
     margin-top:3%;
     float: left;
     width: 150px;
-    height: 140px;
+    height: 170px;
     padding: 0 10px;
     border: 1px solid #ccc;
     background: #eee;

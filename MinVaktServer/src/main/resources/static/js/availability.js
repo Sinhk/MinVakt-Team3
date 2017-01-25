@@ -23,6 +23,24 @@ $(document).ready(function () { // document ready
 
         });
 
+        $('#unavailable-events .fc-event-u').each(function() {
+
+            // store data so the calendar knows to render an event upon drop
+            $(this).data('event', {
+                title: $.trim($(this).text()), // use the element's text as the event title
+                id: $.trim($(this).text()) == "Formiddagsvakt" ? 1 : $.trim($(this).text()) == "Ettermiddagsvakt" ? 2 : 3,
+                stick: true // maintain when user navigates (see docs on the renderEvent method)
+            });
+
+            // make the event draggable using jQuery UI
+            $(this).draggable({
+                zIndex: 999,
+                revert: true,      // will cause the event to go back to its
+                revertDuration: 0  //  original position after the drag
+            });
+
+        });
+
 
         /* initialize the calendar
          -----------------------------------------------------------------*/
@@ -71,7 +89,6 @@ $(document).ready(function () { // document ready
                             confirmButtonColor: "#DD6B55",
                             confirmButtonText: "Yes, delete it!",
                             closeOnConfirm: false
-
                         },
 
                         function(){
