@@ -14,7 +14,7 @@
 
 #unavailable-events {
     position: fixed;
-    margin-top:20%;
+    margin-top:17%;
     float: left;
     width: 150px;
     height: 170px;
@@ -65,5 +65,5 @@
 #save{
     position:fixed;
     width:11.7%;
-    margin-top:16%;
+    margin-top:30%;
 }

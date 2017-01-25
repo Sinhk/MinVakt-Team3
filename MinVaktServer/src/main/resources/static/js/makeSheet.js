@@ -76,6 +76,32 @@ $(document).ready(function () { // document ready
 
         resourceLabelText: 'Ansatte',
 
+        eventRender: function (event, element) {
+            element.append("<span class='closeon'>[ X ]</span>");
+
+            element.find(".closeon").click(function () {
+
+                swal({
+                        title: "Er du sikker?",
+                        text: "Du kan ikke angre denne handlingen.",
+                        type: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "Ja, slett den!",
+                        closeOnConfirm: false
+                    },
+
+                    function () {
+                        $('#calendar').fullCalendar('removeEvents', event._id);
+                        swal("Slettet!", "Tilgjengeligheten ble slettet.", "success");
+
+
+                    });
+
+
+            });
+        },
+
         resources: function(callback){
             getUsersAndCreateResourceList(function (data) {
                 callback(data);
@@ -134,6 +160,23 @@ $(document).ready(function () { // document ready
         },
         eventDrop: function(event) { // called when an event (already on the calendar) is moved
             console.log('eventDrop', event);
+        },
+
+        eventMouseover: function (calEvent, jsEvent) {
+            var tooltip = '<div class="tooltipevent" style="width:180px;height:70px;background:#e3f2fd;border-style:solid;border-color:#212121;border-width:1px;position:absolute;z-index:10001;">' + ' ' + ' INFO OM PROSENT AND STUFF ' + '</div>';
+            var $tool = $(tooltip).appendTo('body');
+            $(this).mouseover(function (e) {
+                $(this).css('z-index', 10000);
+                $tool.fadeIn('500');
+                $tool.fadeTo('10', 1.9);
+            }).mousemove(function (e) {
+                $tool.css('top', e.pageY + 10);
+                $tool.css('left', e.pageX + 20);
+            });
+        },
+        eventMouseout: function (calEvent, jsEvent) {
+            $(this).css('z-index', 8);
+            $('.tooltipevent').remove();
         },
 
         eventClick: function (event, jsEvent, view) {
