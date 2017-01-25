@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
 import java.security.Principal;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -219,5 +221,44 @@ public class ShiftController {
     @GetMapping(value = "/{shift_id}/department")
     public String getDepartmentofShift(@PathVariable int shift_id) {
         return departmentRepo.findOne(shiftRepo.findOne(shift_id).getDepartmentId()).getDepartmentName();
+    }
+
+    // Winner of the Worst Method of 2017 Award goes to:
+    private void addManyShifts(LocalDateTime start) {
+        LocalDateTime morning = LocalDateTime.of(start.toLocalDate(), LocalTime.of(6,0)),
+                      evening = LocalDateTime.of(start.toLocalDate(), LocalTime.of(14,0)),
+                      night = LocalDateTime.of(start.toLocalDate(), LocalTime.of(22,0));
+        Shift shift;
+
+        for (int i = 0; i < 30; i++) {
+            shift = new Shift();
+            shift.setDepartmentId((short) 1);
+            shift.setRequiredEmployees((short)10);
+
+            shift.setFromTime(morning.plusDays(i));
+            shift.setToTime(evening.plusDays(i));
+
+            shiftRepo.save(shift);
+
+
+            shift = new Shift();
+            shift.setDepartmentId((short) 1);
+            shift.setRequiredEmployees((short)10);
+
+            shift.setFromTime(evening.plusDays(i));
+            shift.setToTime(night.plusDays(i));
+
+            shiftRepo.save(shift);
+
+
+            shift = new Shift();
+            shift.setDepartmentId((short) 1);
+            shift.setRequiredEmployees((short)10);
+
+            shift.setFromTime(night.plusDays(i));
+            shift.setFromTime(morning.plusDays(i+1));
+
+            shiftRepo.save(shift);
+        }
     }
 }
