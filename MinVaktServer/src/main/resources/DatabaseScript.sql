@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS employee (
 
 CREATE TABLE IF NOT EXISTS shift (
   shift_id                INT      NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  responsible_employee_id INT      NOT NULL,
+  responsible_employee_id INT,
   from_time               DATETIME NOT NULL,
   to_time                 DATETIME NOT NULL,
   department_id           SMALLINT NOT NULL,
@@ -153,12 +153,35 @@ INSERT INTO department (department_name) VALUES ('etg1');
 INSERT INTO department (department_name) VALUES ('etg2');
 INSERT INTO department (department_name) VALUES ('etg3');
 
-INSERT INTO shift (responsible_employee_id, from_time, to_time, department_id) VALUES (4, '2017-01-17 06:00', '2017-01-17 14:00',1);
-INSERT INTO shift (responsible_employee_id, from_time, to_time, department_id) VALUES (5, '2017-01-17 14:00', '2017-01-17 22:00',1);
-INSERT INTO shift (responsible_employee_id, from_time, to_time, department_id) VALUES (6, '2017-01-17 22:00', '2017-01-18 06:00',1);
-INSERT INTO shift (responsible_employee_id, from_time, to_time, department_id) VALUES (5, '2017-01-18 06:00', '2017-01-18 14:00',1);
-INSERT INTO shift (responsible_employee_id, from_time, to_time, department_id) VALUES (4, '2017-01-18 14:00', '2017-01-18 22:00',1);
-INSERT INTO shift (responsible_employee_id, from_time, to_time, department_id) VALUES (6, '2017-01-18 22:00', '2017-01-19 06:00',1);
+/*INSERT INTO shift (responsible_employee_id, from_time, to_time, department_id) VALUES (4, '2017-01-17 07:30', '2017-01-17 15:30',1);
+INSERT INTO shift (responsible_employee_id, from_time, to_time, department_id) VALUES (5, '2017-01-17 15:00', '2017-01-17 22:30',1);
+INSERT INTO shift (responsible_employee_id, from_time, to_time, department_id) VALUES (6, '2017-01-17 22:00', '2017-01-18 08:00',1);
+INSERT INTO shift (responsible_employee_id, from_time, to_time, department_id) VALUES (5, '2017-01-18 07:30', '2017-01-18 15:30',1);
+INSERT INTO shift (responsible_employee_id, from_time, to_time, department_id) VALUES (4, '2017-01-18 15:00', '2017-01-18 22:30',1);
+INSERT INTO shift (responsible_employee_id, from_time, to_time, department_id) VALUES (6, '2017-01-18 22:00', '2017-01-19 08:00',1);*/
+
+INSERT INTO shift (from_time,to_time,department_id)
+  select TIMESTAMP (a.Date,b.from_time) as from_time, if(GREATEST(to_time,from_time) = from_time,TIMESTAMP (DATE_ADD(a.Date,INTERVAL 1 DAY),b.to_time),TIMESTAMP (a.Date,b.to_time)) as to_time,2 as department
+  from (
+         select MAKEDATE(year(now()),1) + INTERVAL (a.a + (10 * b.a) + (100 * c.a)) DAY as Date
+         from (select 0 as a union all select 1 union all select 2 union all select 3 union all select 4 union all select 5 union all select 6 union all select 7 union all select 8 union all select 9) as a
+           cross join (select 0 as a union all select 1 union all select 2 union all select 3 union all select 4 union all select 5 union all select 6 union all select 7 union all select 8 union all select 9) as b
+           cross join (select 0 as a union all select 1 union all select 2 union all select 3 union all select 4 union all select 5 union all select 6 union all select 7 union all select 8 union all select 9) as c
+       ) a
+    JOIN (SELECT
+            ('07:30') AS from_time,
+            ('15:30') AS to_time
+          UNION ALL
+          SELECT
+            ('15:00') AS from_time,
+            ('22:30') AS to_time
+          UNION ALL
+          SELECT
+            ('22:00') AS from_time,
+            ('08:00') AS to_time) b
+  where a.Date between '2017-01-01' and '2017-02-24';
+#where a.Date between MAKEDATE(year(now()),1) and LAST_DAY(DATE_ADD(NOW(), INTERVAL 12-MONTH(NOW()) MONTH));
+
 
 INSERT INTO shift_assignment (shift_id, employee_id) VALUES (1, 2);
 INSERT INTO shift_assignment (shift_id, employee_id) VALUES (1, 3);
