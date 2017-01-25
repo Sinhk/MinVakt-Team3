@@ -19,7 +19,7 @@ $(document).ready(function () {
                         "<td>" + hours + " timer</td>" +
                         "<td>" + employee.email + "</td>" +
                         "<td> <button  onClick=\"removeButton("+employee.employeeId+")\">Slett</button>"+"</td>" +
-                        "<td> <button  onClick=\"changeUserAdmin("+employee.employeeId+")\">Rediger</button>"+"</td>" +
+
                         "</tr>";
                 });
             }
