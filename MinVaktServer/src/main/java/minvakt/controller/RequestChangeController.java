@@ -45,8 +45,6 @@ public class RequestChangeController {
     public List<ChangeRequest> getChangeRequests() {
 
         return (List<ChangeRequest>) changeRequestRepository.findAll();
-
-
     }
 
     @Transactional
@@ -57,23 +55,19 @@ public class RequestChangeController {
         request.setShiftId(shift_id);
         request.setOldEmployeeId(user1_id);
         request.setNewEmployeeId(user2_id);
-        String employee1 = employeeRepo.findOne(user1_id).getFirstName() + " " + employeeRepo.findOne(user1_id).getLastName();
-        String employee2 = employeeRepo.findOne(user2_id).getFirstName() + " " + employeeRepo.findOne(user1_id).getLastName();
-        String shift = "\n" + shiftRepo.findOne(shift_id).getDepartmentId() + ":\nFra " + shiftRepo.findOne(shift_id).getFromTime().getYear() +
-                "/" + shiftRepo.findOne(shift_id).getFromTime().getMonth() +
-                "/" + shiftRepo.findOne(shift_id).getFromTime().getDayOfMonth() +
-                " " + shiftRepo.findOne(shift_id).getFromTime().getHour() +
-                ":" + shiftRepo.findOne(shift_id).getFromTime().getMinute() +
-                "\nFra " + shiftRepo.findOne(shift_id).getToTime().getYear() +
-                "/" + shiftRepo.findOne(shift_id).getToTime().getMonth() +
-                "/" + shiftRepo.findOne(shift_id).getToTime().getDayOfMonth() +
-                " " + shiftRepo.findOne(shift_id).getToTime().getHour() +
-                ":" + shiftRepo.findOne(shift_id).getToTime().getMinute();
         changeRequestRepository.save(request);
+
+        Employee fromEmployee = employeeRepo.findOne(user1_id);
+        String employee1 = fromEmployee.getFirstName() + " " + fromEmployee.getLastName();
+        Employee toEmployee = employeeRepo.findOne(user2_id);
+        String employee2 = toEmployee.getFirstName() + " " + fromEmployee.getLastName();
+
+        Shift shift1 = shiftRepo.findOne(shift_id);
+        String shift = toDateString(shift1);
 
 
         String text = employee1 + " ønsker bytte vakt med " + employee2 +
-                "\nShift:" + shift;
+                "\nVakt:" + shift;
         List<Employee> all = employeeRepo.findAll();
         for (Employee one : all) {
             if (one.getCategoryId() == 1) {
@@ -83,25 +77,23 @@ public class RequestChangeController {
         }
     }
 
+    private String toDateString(Shift shift) {
+        return "\n" + shift.getDepartmentId() + ":\nFra " + shift.getFromTime().toString() +
+                    "\nTil " + shift.getToTime().toString();
+    }
+
     @PutMapping("/{request_id}")
     public void acceptChangeRequest(@PathVariable int request_id) {
 
         System.out.println("accept change: " + request_id);
-        String emailOld = employeeRepo.findOne(changeRequestRepository.findOne(request_id).getOldEmployeeId()).getEmail();
-        String emailNew = employeeRepo.findOne(changeRequestRepository.findOne(request_id).getNewEmployeeId()).getEmail();
+        Employee fromEmployee = employeeRepo.findOne(changeRequestRepository.findOne(request_id).getOldEmployeeId());
+        String emailOld = fromEmployee.getEmail();
+        Employee toEmployee = employeeRepo.findOne(changeRequestRepository.findOne(request_id).getNewEmployeeId());
+        String emailNew = toEmployee.getEmail();
         int shift_id = changeRequestRepository.findOne(request_id).getShiftId();
-        String shift = "\n" + shiftRepo.findOne(shift_id).getDepartmentId() + ":\nFra " + shiftRepo.findOne(shift_id).getFromTime().getYear() +
-                "/" + shiftRepo.findOne(shift_id).getFromTime().getMonth() +
-                "/" + shiftRepo.findOne(shift_id).getFromTime().getDayOfMonth() +
-                " " + shiftRepo.findOne(shift_id).getFromTime().getHour() +
-                ":" + shiftRepo.findOne(shift_id).getFromTime().getMinute() +
-                "\nFra " + shiftRepo.findOne(shift_id).getToTime().getYear() +
-                "/" + shiftRepo.findOne(shift_id).getToTime().getMonth() +
-                "/" + shiftRepo.findOne(shift_id).getToTime().getDayOfMonth() +
-                " " + shiftRepo.findOne(shift_id).getToTime().getHour() +
-                ":" + shiftRepo.findOne(shift_id).getToTime().getMinute();
-        String text = "Ditt vaktbytte ble godkjent:\n" +
-                shift;
+        String shift = toDateString(shiftRepo.findOne(shift_id));
+
+        String text = "Ditt vaktbytte ble godkjent:\n" + shift + "\n";
         // TODO: 19.01.2017 Send mail
         //sendMail.sendAnswerOnShiftChange(emailOld,text);
         //sendMail.sendAnswerOnShiftChange(emailNew,text);
@@ -110,8 +102,6 @@ public class RequestChangeController {
         ChangeRequest one = changeRequestRepository.findOne(request_id);
 
         changeRequestRepository.delete(one);
-
-        System.out.println(shiftController);
 
         shiftController.changeShiftFromUserToUser(one.getShiftId(), one.getOldEmployeeId(), one.getNewEmployeeId());
 
@@ -122,16 +112,7 @@ public class RequestChangeController {
         String emailOld = employeeRepo.findOne(changeRequestRepository.findOne(request_id).getOldEmployeeId()).getEmail();
         String emailNew = employeeRepo.findOne(changeRequestRepository.findOne(request_id).getNewEmployeeId()).getEmail();
         int shift_id = changeRequestRepository.findOne(request_id).getShiftId();
-        String shift = "\n" + shiftRepo.findOne(shift_id).getDepartmentId() + ":\nFra " + shiftRepo.findOne(shift_id).getFromTime().getYear() +
-                "/" + shiftRepo.findOne(shift_id).getFromTime().getMonth() +
-                "/" + shiftRepo.findOne(shift_id).getFromTime().getDayOfMonth() +
-                " " + shiftRepo.findOne(shift_id).getFromTime().getHour() +
-                ":" + shiftRepo.findOne(shift_id).getFromTime().getMinute() +
-                "\nFra " + shiftRepo.findOne(shift_id).getToTime().getYear() +
-                "/" + shiftRepo.findOne(shift_id).getToTime().getMonth() +
-                "/" + shiftRepo.findOne(shift_id).getToTime().getDayOfMonth() +
-                " " + shiftRepo.findOne(shift_id).getToTime().getHour() +
-                ":" + shiftRepo.findOne(shift_id).getToTime().getMinute();
+        String shift = toDateString(shiftRepo.findOne(shift_id));
         String text = "Ditt vaktbytte ble ikke godkjent:\n" +
                 shift;
         // TODO: 19.01.2017 Send mail

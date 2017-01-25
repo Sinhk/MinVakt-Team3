@@ -74,7 +74,7 @@ public class SendMailTLS {
 
     public void sendAnswerOnShiftChange(String email, String answer) {
         Message message = new MimeMessage(session);
-        String subject = "Minvakt shift bytte", text = ("Hei\n" + answer + "\nhttps://minvakt.herokuapp.com");
+        String subject = "Minvakt vaktbytte", text = ("Hei\n" + answer + "\nhttps://minvakt.herokuapp.com");
         buildMessage(message, email, subject, text);
         sendMail(message);
     }
