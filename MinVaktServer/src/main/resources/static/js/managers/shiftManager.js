@@ -70,10 +70,10 @@ function addUserToShift(user_id, shift_id, available, responsible, callback) {
         }
     });
 }
-function changeUserAssignment(user_id, shift_id, available, responsible, assigned, callback) {
+function changeUserAssignment(user_id, shift_id, available, responsible, assigned, absent, comment, callback) {
 
     $.ajax({
-        url: "/shifts/"+shift_id+"/users?user_id="+user_id+"&available="+available+"&responsible="+responsible+"&assigned="+assigned,
+        url: "/shifts/"+shift_id+"/users?user_id="+user_id+"&available="+available+"&responsible="+responsible+"&assigned="+assigned+"&absent="+absent+"&comment="+comment,
         type: "PUT",
         success: function (data) {
             callback(data);

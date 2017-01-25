@@ -112,17 +112,38 @@ public class ShiftController {
 
     @PutMapping(value = "/{shift_id}/users")
     @Transactional
-    public void changeUserAssignment(@PathVariable int shift_id, @RequestParam int user_id, @RequestParam boolean available, @RequestParam boolean responsible, @RequestParam(required = false) Boolean assigned) { // shift id and user id
+    public void changeUserAssignment(@PathVariable int shift_id, @RequestParam int user_id, @RequestParam(required = false) Boolean available, @RequestParam(required = false) Boolean responsible, @RequestParam(required = false) Boolean assigned, @RequestParam(required = false) Boolean absent, @RequestParam(required = false) String comment) { // shift id and user id
 
-        ShiftAssignment assignment = shiftAssignmentRepo.findByShiftIdAndEmployeeId(shift_id, user_id).get();
+        Optional<ShiftAssignment> oAssignment = shiftAssignmentRepo.findByShiftIdAndEmployeeId(shift_id, user_id);
 
-        assignment.setAbsent(false);
-        assignment.setAvailable(available);
-        assignment.setAssigned(assigned != null ? assigned : false);
+        if (oAssignment.isPresent()) {
 
-        if (responsible) setUserIsResponsibleForShift(shift_id, user_id);
+            ShiftAssignment assignment = oAssignment.get();
 
-        shiftAssignmentRepo.save(assignment);
+            assignment.setAbsent(absent != null ? absent : false);
+            assignment.setAvailable(available != null ? available : false);
+            assignment.setAssigned(assigned != null ? assigned : false);
+
+            assignment.setCommentForAbsence(comment != null ? comment : "");
+
+            if (responsible) setUserIsResponsibleForShift(shift_id, user_id);
+
+            shiftAssignmentRepo.save(assignment);
+        }
+        else {
+            ShiftAssignment assignment = new ShiftAssignment();
+
+            assignment.setEmployeeId(user_id);
+            assignment.setShiftId(shift_id);
+            assignment.setAssigned(assigned != null ? assigned : false);
+            assignment.setAvailable(available != null ? available : false);
+            assignment.setCommentForAbsence(comment != null ? comment : "");
+            assignment.setAbsent(absent != null ? absent : false);
+
+            if (responsible) setUserIsResponsibleForShift(shift_id, user_id);
+
+            shiftAssignmentRepo.save(assignment);
+        }
     }
 
     @GetMapping(value = "/{shift_id}/users/{user_id}/assigned")

@@ -31,8 +31,8 @@ $(document).ready(function () { // document ready
         locale: "no",
         timezone: "UTC+1",
         selectable: true,
+        editable: false,
         resourceAreaWidth: 230,
-        eventStartEditable: true,
 
         aspectRatio: 1.5,
         scrollTime: '00:00',
@@ -140,9 +140,6 @@ $(document).ready(function () { // document ready
                         $('#calendar').fullCalendar('removeEvents',event._id);
                         swal("Deleted!", "Your imaginary file has been deleted.", "success");
                     });
-
-
-
             });
         },*/
 
@@ -206,7 +203,6 @@ $(document).ready(function () { // document ready
             const user = users[i];
 
             //$('#calendar').fullCalendar('addResource', resource)
-
 
             getShiftsForUser(user.employeeId, function (shiftsForUser) {
 
@@ -363,29 +359,30 @@ $("#save").click(function () {
                     console.log("shift");
                     console.log(shift)
 
-                    getCurrentUser(function (currentUser) {
 
-                        var user_id = currentUser.employeeId;
-                        var shift_id = shift.shiftId;
+
+                        const user_id = event.resourceId;
+                        const shift_id = shift.shiftId;
 
                         if (event.responsible) {
 
-                            changeUserAssignment(user_id, shift_id, true, true, true, function (data) {
+                            changeUserAssignment(user_id, shift_id, true, true, true, false, "", function (data) {
 
                                 console.log(data);
+                                console.log("user: "+user_id +" - shift: "+shift_id)
                                 location.reload();
 
                             })
                         }
                         else {
 
-                            changeUserAssignment(user_id, shift_id, true, false, true, function (data) {
+                            changeUserAssignment(user_id, shift_id, true, false, true, false, "", function (data) {
 
                                 console.log(data);
+                                console.log("user: "+user_id +" - shift: "+shift_id)
                                 location.reload();
                             })
                         }
-                    })
 
                 }
             }

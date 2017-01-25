@@ -20,6 +20,21 @@ $(document).ready(function(){
                     return false
                 }
                 swal("Kommentar sendt", "Du skrev: " + inputValue, "success");
+
+                getCurrentUser(function (user) {
+
+                    var shift_id = $("#category-box").val();
+
+
+                   changeUserAssignment(user.employeeId, shift_id, false, false, false, true, inputValue, function (data) {
+
+                       console.log(data);
+
+                   })
+
+
+                })
+
             }
         );
 
