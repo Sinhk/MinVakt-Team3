@@ -57,6 +57,14 @@ $(document).ready(function () { // document ready
             },
             editable: true, // enable draggable events
             droppable: true, // this allows things to be dropped onto the calendar
+
+            eventRender: function(event, element) {
+                element.append( "<span class='closeon'>[ X ]</span>" );
+                element.find(".closeon").click(function() {
+                    $('#calendar').fullCalendar('removeEvents',event._id);
+                });
+            },
+
             dayRender: function (date, cell) {
 
                 date = date.toDate().toISOString().split("T")[0];
