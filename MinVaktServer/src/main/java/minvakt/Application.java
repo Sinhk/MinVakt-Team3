@@ -1,7 +1,6 @@
 package minvakt;
 
-import minvakt.datamodel.tables.pojos.Shift;
-import minvakt.repos.JooqRepository;
+import minvakt.controller.ChangeRequestController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -11,10 +10,10 @@ import org.springframework.boot.autoconfigure.data.rest.RepositoryRestMvcAutoCon
 import org.springframework.boot.autoconfigure.thymeleaf.ThymeleafAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 
-import java.time.LocalDateTime;
-
 @SpringBootApplication(exclude = {ThymeleafAutoConfiguration.class, RepositoryRestMvcAutoConfiguration.class})
 public class Application {
+
+    public static final int HOURS_IN_WEEK = 38;
     private static final Logger log = LoggerFactory.getLogger(Application.class);
 
     public static void main(String[] args) {

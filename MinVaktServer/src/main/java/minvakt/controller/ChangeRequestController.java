@@ -2,6 +2,8 @@ package minvakt.controller;
 
 import minvakt.datamodel.tables.pojos.Employee;
 import minvakt.datamodel.tables.pojos.ChangeRequest;
+import minvakt.datamodel.tables.pojos.MissingPerShiftCategory;
+import minvakt.datamodel.tables.pojos.Shift;
 import minvakt.repos.*;
 import minvakt.util.SendMailTLS;
 import org.slf4j.Logger;
@@ -9,8 +11,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-import minvakt.datamodel.tables.pojos.*;
+
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.WeekFields;
 import java.util.List;
+import java.util.Locale;
+
+import static minvakt.Application.HOURS_IN_WEEK;
 
 /**
  * Created by OlavH on 23-Jan-17.
@@ -18,7 +26,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/requestchange")
-public class RequestChangeController {
+public class ChangeRequestController {
 
     private static final Logger log = LoggerFactory.getLogger(EmployeeController.class);
 
@@ -27,16 +35,18 @@ public class RequestChangeController {
     private ShiftAssignmentRepository shiftAssignmentRepo;
     private ChangeRequestRepository changeRequestRepository;
     private JooqRepository jooqRepository;
+    private CategoryRepository catRepo;
 
     private ShiftController shiftController;
     private SendMailTLS sendMail = new SendMailTLS();
 
     @Autowired
-    public RequestChangeController(JooqRepository jooqRepository,ShiftRepository shiftRepo, EmployeeRepository employeeRepository, ShiftAssignmentRepository shiftAssignmentRepo, ChangeRequestRepository changeRequestRepository, ShiftController shiftController) {
+    public ChangeRequestController(JooqRepository jooqRepository, ShiftRepository shiftRepo, EmployeeRepository employeeRepository, ShiftAssignmentRepository shiftAssignmentRepo, ChangeRequestRepository changeRequestRepository, CategoryRepository catRepo, ShiftController shiftController) {
         this.shiftRepo = shiftRepo;
         this.employeeRepo = employeeRepository;
         this.shiftAssignmentRepo = shiftAssignmentRepo;
         this.changeRequestRepository = changeRequestRepository;
+        this.catRepo = catRepo;
         this.shiftController = shiftController;
         this.jooqRepository = jooqRepository;
     }
@@ -124,27 +134,44 @@ public class RequestChangeController {
         changeRequestRepository.delete(one);
     }
 
+
     @GetMapping(value = "/{request_id}/isOkChangeRequest")
     public String getIsOkChangeRequest(@PathVariable int request_id) {
         ChangeRequest one = changeRequestRepository.findOne(request_id);
+        Shift shift = shiftRepo.findOne(one.getShiftId());
+        WeekFields weekFields = WeekFields.of(Locale.getDefault());
+        int week = shift.getFromTime().get(weekFields.weekOfWeekBasedYear());
+        boolean overtime = false;
+        if (jooqRepository.getHoursWorked(one.getNewEmployeeId(), week)
+                .plus(Duration.between(shift.getFromTime(),shift.getToTime()))
+                .compareTo(Duration.of(HOURS_IN_WEEK, ChronoUnit.HOURS))>0) {
+            overtime = true;
+        }
+
         int oldUserCategory = employeeRepo.findOne(one.getOldEmployeeId()).getCategoryId();
         int newUserCategory = employeeRepo.findOne(one.getOldEmployeeId()).getCategoryId();
-        Shift shift = shiftRepo.findOne(changeRequestRepository.findOne(request_id).getShiftId());
-        int shift_id = shift.getShiftId();
-        int amount = shiftRepo.findOne(one.getShiftId()).getRequiredEmployees();
-        int nurses = (int) (amount * 0.2);
-        int healthWorkers = (int) (amount * 0.3);
-        if (jooqRepository.getHoursWorked(one.getNewEmployeeId()) > 40) {
-            return "Dette fører til overtid";
-        } else if (oldUserCategory == newUserCategory) {
-            return "Denne godkjenningen går bra";
-        } else if (oldUserCategory == 3 && jooqRepository.getHealthWorkersOnShift(shift_id) - 1 < healthWorkers) {
-            return "Dette fører til for lite helsefagarbeidere";
-        } else if (oldUserCategory == 2 && jooqRepository.getNursesOnShift(shift_id) - 1 < nurses) {
-            return "Dette fører til for lite sykepleiere";
-        }else{
-            return "Denne godkjenningen går bra";
+        if (oldUserCategory == newUserCategory) {
+           if(overtime){
+               return "Dette fører til overtid";
+           }
+               return "Denne godkjenningen går bra";
         }
+
+        int shift_id = one.getShiftId();
+
+        List<MissingPerShiftCategory> missingForShift = jooqRepository.getMissingForShift(shift_id);
+        for (MissingPerShiftCategory perShiftCategory : missingForShift) {
+            if (oldUserCategory == perShiftCategory.getCategoryId()) {
+                if (perShiftCategory.getCountAssigned() - 1 < perShiftCategory.getCountRequired()) {
+                    return "Dette fører til for lite " + catRepo.findOne((short)oldUserCategory).getCategoryName();
+                }
+            }
+        }
+        // TODO: 25.01.2017 Er det en bedre måte å sjekke dette?
+    if(overtime){
+        return "Dette fører til overtid";
+    }
+        return "Denne godkjenningen går bra";
     }
 
 }

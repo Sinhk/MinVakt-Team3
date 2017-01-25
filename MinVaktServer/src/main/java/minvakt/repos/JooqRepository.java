@@ -1,10 +1,11 @@
 package minvakt.repos;
 
+import minvakt.Application;
 import minvakt.datamodel.AssignedEmployee;
 import minvakt.datamodel.ShiftDetailed;
 import minvakt.datamodel.tables.AssignedPerShift;
 import minvakt.datamodel.tables.EmployeeTimeWorkedWeek;
-import minvakt.datamodel.tables.MissingPerShiftCategory;
+import minvakt.datamodel.tables.pojos.MissingPerShiftCategory;
 import minvakt.datamodel.tables.ShiftAssignment;
 import minvakt.datamodel.tables.pojos.Employee;
 import minvakt.datamodel.tables.pojos.Shift;
@@ -18,9 +19,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.WeekFields;
@@ -29,6 +30,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import static minvakt.Application.*;
 import static minvakt.datamodel.Tables.*;
 import static org.jooq.impl.DSL.*;
 
@@ -39,7 +41,6 @@ public class JooqRepository {
 
     private final DSLContext create;
     private final ModelMapper modelMapper = new ModelMapper();
-    private final int HOURS_IN_WEEK = 40;
 
     @Autowired
     public JooqRepository(DSLContext dslContext) {
@@ -78,7 +79,7 @@ public class JooqRepository {
 
     public List<Shift> getAvailableShiftsForCategory(int categoryId) {
         AssignedPerShift assi = ASSIGNED_PER_SHIFT.as("assi");
-        MissingPerShiftCategory mis = MISSING_PER_SHIFT_CATEGORY.as("mis");
+        minvakt.datamodel.tables.MissingPerShiftCategory mis = MISSING_PER_SHIFT_CATEGORY.as("mis");
         return create
                 .select().from(mis)
                 .leftJoin(assi).on(assi.SHIFT_ID.eq(mis.SHIFT_ID))
@@ -92,7 +93,7 @@ public class JooqRepository {
     public List<Employee> getEmployeesAvailableForShift(Shift shift) {
         WeekFields weekFields = WeekFields.of(Locale.getDefault());
         int weekNumber = shift.getFromTime().get(weekFields.weekOfWeekBasedYear());
-        MissingPerShiftCategory mis = MISSING_PER_SHIFT_CATEGORY.as("mis");
+        minvakt.datamodel.tables.MissingPerShiftCategory mis = MISSING_PER_SHIFT_CATEGORY.as("mis");
         EmployeeTimeWorkedWeek etww = EMPLOYEE_TIME_WORKED_WEEK.as("etww");
         minvakt.datamodel.tables.Shift theShift = SHIFT.as("theshift");
         ShiftAssignment wish = SHIFT_ASSIGNMENT.as("wish");
@@ -122,16 +123,22 @@ public class JooqRepository {
     private static LocalDateTime getStartOfDay(LocalDateTime date) {
         return date.with(LocalTime.MIN);
     }
-    //TODO Fix me
-    public int getHoursWorked(int employee_id) {
-        return 39;
+
+    public Duration getHoursWorked(int employee_id, int week) {
+        EmployeeTimeWorkedWeek et = EMPLOYEE_TIME_WORKED_WEEK.as("et");
+        String time = create.select(et.TIME_WORKED)
+                .from(et)
+                .where(et.EMPLOYEE_ID.eq(employee_id)
+                        .and(et.WEEK_NUM.eq(week)))
+                .fetchOneInto(String.class);
+        String[] split = time.split(":");
+
+        return Duration.ofHours(Long.parseLong(split[0])).plusMinutes(Long.parseLong(split[1]));
     }
-    //TODO Fix me
-    public int getNursesOnShift(int shift_id) {
-        return 2;
-    }
-    //TODO Fix me
-    public int getHealthWorkersOnShift(int shift_id) {
-        return 3;
+
+    public List<MissingPerShiftCategory> getMissingForShift(int shift_id){
+        return create.selectFrom(MISSING_PER_SHIFT_CATEGORY)
+                .where(MISSING_PER_SHIFT_CATEGORY.SHIFT_ID.eq(shift_id))
+                .fetchInto(MissingPerShiftCategory.class);
     }
 }
