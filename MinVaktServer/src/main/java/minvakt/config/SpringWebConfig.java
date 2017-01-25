@@ -192,6 +192,7 @@ public class SpringWebConfig
         registry.addViewController("/endreBrukerAdmin").setViewName("changeUserAdmin");
         registry.addViewController("/ledigeVakter").setViewName("availableShifts");
         registry.addViewController("/employeeE").setViewName("employeeE");
+        registry.addViewController("/help").setViewName("help");
         registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
     }
 

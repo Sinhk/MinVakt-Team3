@@ -1,31 +1,15 @@
-#myTable1 {
-    margin-top: 25px;
-    margin-left: 5px;
+#header {
+    margin-left: 3%;
+    margin-top: 2%;
 }
-
 
 #button {
-    margin-top: 80px;
-    margin-left: 40px;
+    margin-top: 10%;
+    margin-left: 3%;
 }
 
-.selected {
-    color: black;
-}
-
-#table1 {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-#table1 td:hover {
-
-}
-
-#table1 td {
-    border: 1px solid #eee;
-}
-
-#table1 {
-    background: white;
+#category-box {
+    margin-top: 3%;
+    margin-left: 8%;
+    width: 450px;
 }
