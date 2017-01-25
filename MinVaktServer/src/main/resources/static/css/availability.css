@@ -6,6 +6,7 @@
 }
 
 #external-events {
+    position: fixed;
     margin-top:3%;
     float: left;
     width: 150px;
@@ -29,5 +30,5 @@
     float: right;
     margin-right: 25%;
     margin-top:3%;
-    width:800px;
+    width: 63%;
 }

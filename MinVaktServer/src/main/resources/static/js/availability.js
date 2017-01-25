@@ -37,20 +37,13 @@ $(document).ready(function () { // document ready
             aspectRatio: 1.5,
             scrollTime: '00:00',
             header: {
-                left: 'prev, promptResource today',
+                left: 'prev',
                 center: 'title',
-                right: 'customWeek, agendaWeek, next'
+                right: 'next'
             },
+            weekNumbers:true,
             firstDay: 1,
             defaultView: 'month',
-            views: {
-                customWeek: {
-                    type: 'timeline',
-                    duration: {weeks: 1},
-                    slotDuration: {days: 1},
-                    buttonText: 'Vaktliste'
-                }
-            },
             dayNamesShort: ['Søndag', 'Mandag', 'Tirsdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lørdag'],
             monthNames: ['Januar', 'Februar', 'Mars', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Desember'],
             weekNumberTitle: 'Uke',
@@ -116,6 +109,7 @@ $(document).ready(function () { // document ready
                             stick: true
 
                         }
+
                         $('#calendar').fullCalendar('renderEvent', event, true);
                     })
                 }
