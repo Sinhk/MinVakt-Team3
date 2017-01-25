@@ -50,8 +50,8 @@ CREATE TABLE IF NOT EXISTS shift_assignment (
   available           BOOL NOT NULL  DEFAULT TRUE,
   comment_for_absence VARCHAR(100),
   CONSTRAINT shift_assignment_employee_id_fk FOREIGN KEY (employee_id) REFERENCES employee (employee_id),
-  CONSTRAINT shift_assignment_shift_id_fk FOREIGN KEY (shift_id) REFERENCES shift (shift_id)
-    ON DELETE CASCADE
+  CONSTRAINT shift_assignment_shift_id_fk FOREIGN KEY (shift_id) REFERENCES shift (shift_id) ON DELETE CASCADE,
+  CONSTRAINT unique_shift_employee UNIQUE (shift_id,employee_id)
   #   CONSTRAINT shift_assignment_status_id_fk FOREIGN KEY (status_id) REFERENCES shift_status (status_id)
 );
 
