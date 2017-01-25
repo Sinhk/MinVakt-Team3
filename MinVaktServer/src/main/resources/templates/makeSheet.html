@@ -16,7 +16,7 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/makeSheet.css}">
 
 </head>
-<body>
+
 
 <div id="nav" th:replace="fragments/header :: header"></div>
 <main>
@@ -24,15 +24,14 @@
 
         <div id='external-events'>
             <!--Drar ut vakter-->
-            <h4>Draggable Events</h4>
-            <div class='fc-event' id="morning">Formiddagsvakt</div>
-            <div class='fc-event' id="afternoon">Ettermiddagsvakt</div>
-            <div class='fc-event' id="nigth">Nattvakt</div>
-            <p>
-                <input type='checkbox' id='drop-remove' />
-                <label for='drop-remove'>remove after drop</label>
-            </p>
+            <h5>Vakter:</h5>
+            <div class='fc-event' id="morning">06:00-14:00</div>
+            <div class='fc-event' id="afternoon">14:00-22:00</div>
+            <div class='fc-event' id="nigth">22:00-06:00</div>
+
         </div>
+
+        <a class="waves-effect waves-light btn blue lighten-2" id="save">Lagre timeliste</a>
 
         <!-- calendar -->
         <div class="cal">
@@ -56,6 +55,7 @@
     </div>
 </div>-->
 <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js' integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+<script src ='https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js'></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js'></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.js'></script>
 <script src='https://fullcalendar.io/js/fullcalendar-scheduler-1.5.0/scheduler.js'></script>

@@ -1,12 +1,34 @@
 $(document).ready(function () { // document ready
     var calendar = $('#calendar');
+
+    /* initialize the external events
+     -----------------------------------------------------------------*/
+
+    $('#external-events .fc-event').each(function() {
+
+        // store data so the calendar knows to render an event upon drop
+        $(this).data('event', {
+            title: $.trim($(this).text()), // use the element's text as the event title
+            stick: true // maintain when user navigates (see docs on the renderEvent method)
+        });
+
+        // make the event draggable using jQuery UI
+        $(this).draggable({
+            zIndex: 999,
+            revert: true,      // will cause the event to go back to its
+            revertDuration: 0  //  original position after the drag
+        });
+
+    });
+
     calendar.fullCalendar({
         schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
         displayEventTime: false,
+        droppable: true,
         locale: "no",
         timezone: "UTC+1",
         selectable: true,
-        /*resourceAreaWidth: 230,*/
+        resourceAreaWidth: 230,
         editable: true,
         aspectRatio: 1.5,
         scrollTime: '00:00',
@@ -15,21 +37,93 @@ $(document).ready(function () { // document ready
             center: 'title',
             right: 'next'
         },
-        defaultView: 'timelineDay',
+        firstDay:1,
+        defaultView: 'customWeek',
         views: {
-            timelineThreeDays: {
+            customWeek: {
                 type: 'timeline',
-                duration: {days: 3},
+                duration: {weeks: 1},
+                slotDuration: {days: 1},
+                buttonText: 'Vaktliste'
             }
         },
+
+        /*
+        defaultView: 'agendaWeek',
+        views: {
+            type: 'costumeWeek',
+        }
+    }*/
+        columnFormat:{
+            month: 'ddd',
+            week: 'ddd d/M',
+            day: 'dddd d/M'
+        },
+        dayNamesShort: ['Søndag', 'Mandag', 'Tirsdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lørdag'],
         monthNames: ['Januar', 'Februar', 'Mars', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Desember'],
+        weekNumberTitle: 'Uke',
+        buttonText: {
+            today: 'I dag',
+            month: 'Måned',
+            week: 'Uke',
+            day: 'Dag',
+            list: 'Liste'
+        },
+
+        resourceColumns:[
+            {
+                labelText:'Ansatte',
+                field: 'eployees'
+            },
+            {
+                labelText:'Stilling',
+                field:'position'
+            }
+        ],
+
+        resources:[
+            {
+                function(callback){
+                    getUsersAndCreateResourceList(function (data) {
+                        callback(data);
+                    })
+                }
+                    },
+            {
+                function(callback){
+                }
+
+            }
+        ],
+        /*
         resourceLabelText: 'Ansatte',
         resources: function(callback){
             getUsersAndCreateResourceList(function (data) {
                 callback(data);
             })
         },
-/*
+
+        resourceLabelText: 'Stilling',
+        resources: function(callback){
+
+        },*/
+
+        drop: function(date, jsEvent, ui, resourceId) {
+            console.log('drop', date.format(), resourceId);
+
+            // is the "remove after drop" checkbox checked?
+            if ($('#drop-remove').is(':checked')) {
+                // if so, remove the element from the "Draggable Events" list
+                $(this).remove();
+            }
+        },
+        eventReceive: function(event) { // called when a proper external event is dropped
+            console.log('eventReceive', event);
+        },
+        eventDrop: function(event) { // called when an event (already on the calendar) is moved
+            console.log('eventDrop', event);
+        },
+
         eventClick: function (event, jsEvent, view) {
 
             var eventId = event.id;
@@ -43,13 +137,13 @@ $(document).ready(function () { // document ready
 
 
 
-        },*/
-/*
+        },
+
         select: function (start, end, jsEvent, view) {
 
             console.log("Start date: " + moment(start).format() +
                 "\nEnd date: " + moment(end).format());
-        }*/
+        }
     });
 
     getAllUsers(function (users) {
@@ -158,6 +252,7 @@ function getUsersAndCreateResourceList(callback) {
             const user = users[i];
 
             res.push({
+                field: 'position',
                 id: user.employeeId,
                 title: user.firstName + " " + user.lastName,
             })
