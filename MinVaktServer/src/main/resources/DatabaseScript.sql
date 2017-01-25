@@ -169,16 +169,16 @@ INSERT INTO shift (from_time,to_time,department_id)
            cross join (select 0 as a union all select 1 union all select 2 union all select 3 union all select 4 union all select 5 union all select 6 union all select 7 union all select 8 union all select 9) as c
        ) a
     JOIN (SELECT
-            ('07:30') AS from_time,
-            ('15:30') AS to_time
+            ('06:00') AS from_time,
+            ('14:00') AS to_time
           UNION ALL
           SELECT
-            ('15:00') AS from_time,
-            ('22:30') AS to_time
+            ('14:00') AS from_time,
+            ('22:00') AS to_time
           UNION ALL
           SELECT
             ('22:00') AS from_time,
-            ('08:00') AS to_time) b
+            ('06:00') AS to_time) b
   where a.Date between '2017-01-01' and '2017-02-24';
 #where a.Date between MAKEDATE(year(now()),1) and LAST_DAY(DATE_ADD(NOW(), INTERVAL 12-MONTH(NOW()) MONTH));
 
@@ -215,9 +215,7 @@ CREATE OR REPLACE VIEW assigned_per_shift AS
     count(shift_assignment.employee_id) AS num_assigned,
     GREATEST(0, required_employees - count(shift_assignment.employee_id)) as num_missing
   FROM shift
-    LEFT JOIN shift_assignment ON shift.shift_id = shift_assignment.shift_id
-  WHERE
-    (absent = FALSE AND shift_assignment.assigned = TRUE) OR shift_assignment.absent & shift_assignment.assigned IS NULL
+    LEFT JOIN shift_assignment ON (shift.shift_id,FALSE ,TRUE) = (shift_assignment.shift_id, shift_assignment.absent,shift_assignment.assigned)
   GROUP BY
     shift.shift_id;
 
@@ -232,8 +230,20 @@ CREATE OR REPLACE VIEW missing_per_shift_category AS
                       employee_category.required_per_shift / 100) - count(employee.employee_id)) AS missing
   FROM shift
     JOIN employee_category
-    LEFT JOIN shift_assignment ON shift.shift_id = shift_assignment.shift_id
+    LEFT JOIN shift_assignment  ON (shift.shift_id,FALSE ,TRUE) = (shift_assignment.shift_id, shift_assignment.absent,shift_assignment.assigned)
     LEFT JOIN employee
       ON (employee_category.category_id, shift_assignment.employee_id) = (employee.category_id, employee.employee_id)
-  WHERE available_for_shifts = TRUE and ((absent = FALSE AND shift_assignment.assigned = TRUE) OR shift_assignment.absent & shift_assignment.assigned IS NULL)
+  WHERE available_for_shifts = TRUE
   GROUP BY shift.shift_id, employee_category.category_id;
+
+CREATE OR REPLACE VIEW employee_time_worked_week as
+  SELECT
+    employee.employee_id,
+    employee.position_percentage,
+    TIME_FORMAT (sum(TIMEDIFF(to_time,from_time)),'%H:%i') as time_worked,
+    WEEK(from_time,3) as week_num
+  FROM employee
+    LEFT JOIN shift_assignment ON employee.employee_id = shift_assignment.employee_id
+    LEFT JOIN shift ON shift_assignment.shift_id = shift.shift_id
+  #WHERE WEEK(from_time,3) = WEEK(NOW(),3) OR from_time is NULL
+  GROUP BY employee.employee_id, WEEK(from_time,3);

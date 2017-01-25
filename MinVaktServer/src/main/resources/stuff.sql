@@ -47,11 +47,78 @@ FROM (
        WHERE category_id != 3
        GROUP BY ass.shift_id
        HAVING spesific_missing < num_missing) AS stuff RIGHT JOIN shift_assignment on stuff.shift_id = shift_assignment.shift_id
-WHERE employee_id != 9
+WHERE employee_id != 15
 GROUP BY shift_assignment.shift_id;
 
+SELECT * FROM (SELECT
+                 ('07:30') AS from_time,
+                 ('15:30') AS to_time
+               UNION ALL
+               SELECT
+                 ('15:00') AS from_time,
+                 ('22:30') AS to_time
+               UNION ALL
+               SELECT
+                 ('22:00') AS from_time,
+                 ('08:00') AS to_time) b;
 
 
+SELECT
+  DISTINCT (employee.employee_id),
+  ifnull((employee.position_percentage * 40 / 100) -  time_worked, employee.position_percentage * 40 / 100) as time_missing,
+  missing,
+  NOT ISNULL(wish_asig.shift_id) as wish
+  FROM employee
+    LEFT JOIN shift theshift on theshift.shift_id = 2
+    LEFT JOIN employee_category on employee.category_id = employee_category.category_id
+    LEFT JOIN employee_time_worked_week etww on (etww.employee_id, etww.week_num) = (employee.employee_id, WEEK(theshift.from_time,3))
+    LEFT JOIN missing_per_shift_category mpsc on (mpsc.shift_id, mpsc.category_id) = (2, employee.category_id)
+    LEFT JOIN shift_assignment wish_asig on (wish_asig.employee_id, wish_asig.shift_id) = (employee.employee_id,2)
+    LEFT JOIN shift_assignment on (employee.employee_id,TRUE) = (shift_assignment.employee_id,shift_assignment.assigned)
+    LEFT JOIN shift ON shift_assignment.shift_id = shift.shift_id
+WHERE available_for_shifts = TRUE AND (NOT (DAYOFYEAR(shift.from_time) = DAYOFYEAR(theshift.from_time)) OR shift.shift_id is null)
+ORDER BY mpsc.missing DESC, wish DESC, time_missing DESC;
+
+
+SELECT
+  employee.employee_id,
+  employee.position_percentage,
+  TIME_FORMAT (sum(TIMEDIFF(to_time,from_time)),'%H:%i') as time_worked,
+  ifnull((employee.position_percentage * 35 / 100) -  TIME_FORMAT(sum(TIMEDIFF(to_time,from_time)),'%H:%i'),employee.position_percentage * 35 / 100) as time_missing,
+  WEEK(from_time,3) as week_num
+FROM employee
+  LEFT JOIN shift_assignment ON employee.employee_id = shift_assignment.employee_id
+  LEFT JOIN shift ON shift_assignment.shift_id = shift.shift_id
+#WHERE WEEK(from_time,3) = WEEK(NOW(),3) OR from_time is NULL
+GROUP BY employee.employee_id, WEEK(from_time,3)
+ORDER BY time_missing DESC;
+
+
+
+SELECT *,
+FROM employee
+  LEFT JOIN employee_category ON employee.category_id = employee_category.category_id
+  LEFT JOIN shift_assignment ON employee.employee_id = shift_assignment.employee_id
+  LEFT JOIN shift on shift_assignment.shift_id = shift.shift_id
+WHERE employee_category.available_for_shifts = TRUE AND shift.shift_id != 3 AND NOT shift.from_time BETWEEN '$today 00:00:00' AND '$today 23:59:59'
+
+
+
+SELECT
+  ass.shift_id,
+  num_missing,
+  sum(missing) AS spesific_missing
+FROM missing_per_shift_category mis
+  LEFT JOIN assigned_per_shift ass ON mis.shift_id = ass.shift_id
+WHERE ass.shift_id = 3
+GROUP BY ass.shift_id
+HAVING (spesific_missing < num_missing) AS stuff RIGHT JOIN shift_assignment on stuff.shift_id = shift_assignment.shift_id
+
+
+SELECT *
+FROM shift
+  LEFT JOIN missing_per_shift_category mis on mis.shift_id = shift.shift_id
+WHERE shift.shift_id = 2;
 
 
 SELECT

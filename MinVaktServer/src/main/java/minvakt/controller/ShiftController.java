@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
+import java.time.Duration;
+import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
@@ -199,6 +202,12 @@ public class ShiftController {
                 .collect(Collectors.toList());
 
     }*/
+
+    @GetMapping(value = "/{shift_id}/possible_users")
+    public List<Employee> getAvailbalesForShift(@PathVariable int shift_id) {
+        Shift shift = shiftRepo.findOne(shift_id);
+        return jooqRepo.getEmployeesAvailableForShift(shift);
+    }
 
     @GetMapping(value = "/available")
     public List<Shift> getAvailableShifts(HttpServletRequest request, @RequestParam(name = "category", defaultValue = "-1") int category_id) {
