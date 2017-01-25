@@ -7,12 +7,11 @@ import minvakt.repos.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.GET;
 import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
@@ -30,15 +29,16 @@ public class ShiftController {
     private ShiftAssignmentRepository shiftAssignmentRepo;
     private ChangeRequestRepository changeRequestRepository;
     private JooqRepository jooqRepo;
-
+    private DepartmentRepository departmentRepo;
 
     @Autowired
-    public ShiftController(ShiftRepository shiftRepo, EmployeeRepository employeeRepository, ShiftAssignmentRepository shiftAssignmentRepo, ChangeRequestRepository changeRequestRepository, JooqRepository jooqRepo) {
+    public ShiftController(ShiftRepository shiftRepo, EmployeeRepository employeeRepository, ShiftAssignmentRepository shiftAssignmentRepo, ChangeRequestRepository changeRequestRepository, JooqRepository jooqRepo,DepartmentRepository departmentRepo) {
         this.shiftRepo = shiftRepo;
         this.employeeRepo = employeeRepository;
         this.shiftAssignmentRepo = shiftAssignmentRepo;
         this.changeRequestRepository = changeRequestRepository;
         this.jooqRepo = jooqRepo;
+        this.departmentRepo = departmentRepo;
     }
 
     @GetMapping
@@ -98,6 +98,9 @@ public class ShiftController {
         assignment.setEmployeeId(user_id);
         assignment.setShiftId(shift_id);
         assignment.setAbsent(false);
+        assignment.setAssigned(false);
+        assignment.setAvailable(true);
+
         shiftAssignmentRepo.save(assignment);
     }
 
@@ -211,5 +214,10 @@ public class ShiftController {
                 //.map(ShiftAssignment::getShift)
                 .collect(Collectors.toList()).contains(shiftAssignmentRepo.getOne(shift_id));
 
+    }
+
+    @GetMapping(value = "/{shift_id}/department")
+    public String getDepartmentofShift(@PathVariable int shift_id) {
+        return departmentRepo.findOne(shiftRepo.findOne(shift_id).getDepartmentId()).getDepartmentName();
     }
 }
