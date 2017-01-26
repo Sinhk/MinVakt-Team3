@@ -169,7 +169,7 @@ public class ShiftController {
         }
         if(absent = true) {
             SendMailTLS sendMailTLS = new SendMailTLS();
-            List<Employee> eMails =getAvailbalesForShift(shift_id);
+            List<Employee> eMails =getAvailableForShift(shift_id);
             sendMailTLS.sendFreeShiftToGroup("https://minvakt.herokuapp.com/ledigeVakter",eMails);
             String text ="Bruker: "+ employeeRepo.findOne(user_id).getFirstName() + " " + employeeRepo.findOne(user_id).getLastName() +
                     "\nHar tatt fri på vakten: "+ shiftRepo.findOne(shift_id).getFromTime().toString()+
