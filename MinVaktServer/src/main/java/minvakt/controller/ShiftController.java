@@ -225,7 +225,7 @@ public class ShiftController {
     }*/
 
     @GetMapping(value = "/{shift_id}/possible_users")
-    public List<Employee> getAvailbalesForShift(@PathVariable int shift_id) {
+    public List<Employee> getAvailableForShift(@PathVariable int shift_id) {
         Shift shift = shiftRepo.findOne(shift_id);
         return jooqRepo.getEmployeesAvailableForShift(shift);
     }
