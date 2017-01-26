@@ -53,7 +53,19 @@
 <body>
 
 <div id="nav" th:replace="fragments/header :: header"></div>
+<!-- Modal Trigger -->
+<a class="waves-effect waves-light btn" href="#modal1">Modal</a>
 
+<!-- Modal Structure -->
+<div id="modal1" class="modal">
+    <div class="modal-content">
+        <h4>Modal Header</h4>
+        <p>A bunch of text</p>
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+    </div>
+</div>
 <main>
     <h2 id="header">Personlig kalender</h2>
 
@@ -73,13 +85,22 @@
 </div>
 <br>
 <br>
+    <div id="shiftDetail" class="hide">
+        <div class="modal-content">
+            <h4>Detaljer</h4>
+            <p>A bunch of text</p>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+        </div>
+    </div>
 </main>
 
 <script src="//cdn.jsdelivr.net/alertifyjs/1.8.0/alertify.min.js"></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js'></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.js'></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/locale/nb.js'></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
 <script th:src="@{js/managers/util.js}"></script>
 <script th:src="@{js/managers/shiftManager.js}"></script>
 <script th:src="@{js/managers/userManager.js}"></script>

@@ -64,8 +64,8 @@ function toFullCalendarEventPromise(event) {
         const start = event.fromTime;
         const end = event.toTime;
 
-        const dateStart = new Date(start);
-        const dateEnd = new Date(end);
+        const dateStart = moment(start);
+        const dateEnd = moment(end);
         return getDepartmentName(event.departmentId).then((department)=>{
             //return getResponsibleUserForShift(event.shiftId).then((responsible) => {
 
@@ -102,8 +102,8 @@ function toFullCalendarEvent(event, callback) {
         const start = event.fromTime;
         const end = event.toTime;
 
-        const dateStart = new Date(start);
-        const dateEnd = new Date(end);
+        const dateStart = moment(start);
+        const dateEnd = moment(end);
         getDepartmentName(event.departmentId).then((department)=>{
 
             getResponsibleUserForShift(event.shiftId, function (responsible) {
@@ -243,8 +243,8 @@ function toFullCalendarEvent(event, callback) {
         const start = event.fromTime;
         const end = event.toTime;
 
-        const dateStart = new Date(start);
-        const dateEnd = new Date(end);
+        const dateStart = moment(start);
+        const dateEnd = moment(end);
         getDepartmentName(event.departmentId).then((department)=>{
 
             getResponsibleUserForShift(event.shiftId, function (responsible) {

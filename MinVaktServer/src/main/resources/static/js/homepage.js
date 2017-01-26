@@ -1,13 +1,11 @@
 $(document).ready(function () {
-
     $('.modal-trigger').modal();
     // $(".side-nav").css("margin-top", $(".nav-wrapper").height());
 
     $('#calendar').fullCalendar({
 
-        displayEventTime: false,
+        //displayEventTime: false,
         locale: "no",
-        timezone: "UTC",
         selectable: true,
         header: {
             left: 'prev, today',
@@ -55,13 +53,15 @@ $(document).ready(function () {
 
 
         eventClick: function (event, jsEvent) {
-            var eventId = event.id;
+            console.log(event);
+            openDetails(event);
+            /*var eventId = event.id;
 
             getShiftWithId(eventId, function (data) {
 
                 console.log(data);
 
-            });
+            });*/
 
         },
         /*eventMouseout: function(calEvent,jsEvent) {
@@ -123,4 +123,10 @@ function switchAdminViewHomePage() {
              });*/
         });
     }
+}
+
+function openDetails(event) {
+    $('#calendar').addClass('hide');
+    $('#shiftDetail').removeClass('hide');
+    console.log(event);
 }
