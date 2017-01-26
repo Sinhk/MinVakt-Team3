@@ -230,7 +230,9 @@ $(document).ready(function () { // document ready
                                 end: shift.toTime.split("T")[0],
                                 title: shift.fromTime.split("T")[1].substr(0, 5) + " - " + shift.toTime.split("T")[1].substr(0, 5),
 
-                                backgroundColor: shiftAssignment.assigned ? "#2196f3" : !shiftAssignment.available ? "#f44336" : responsible ? "#03a9f4" : "#4caf50",
+                                backgroundColor: shiftAssignment.assigned ? "#2196f3"
+                                    : !shiftAssignment.available ? "#f44336"
+                                    : responsible ? "#00bcd4" : "#4caf50",
 
                                 stick: true
 
@@ -365,14 +367,13 @@ $("#save").click(function () {
 
                     const user_id = event.resourceId;
                     const shift_id = shift.shiftId;
-
+                    console.log("ANSVAR: "+event.responsible);
                     if (event.responsible) {
 
                         changeUserAssignment(user_id, shift_id, true, true, true, false, "", function (data) {
 
                             console.log(data);
-                            console.log("user: " + user_id + " - shift: " + shift_id)
-                            location.reload();
+                            console.log("user: " + user_id + " - shift: " + shift_id+" RESPONSIBLE")
 
                         })
                     }
@@ -381,10 +382,10 @@ $("#save").click(function () {
                         changeUserAssignment(user_id, shift_id, true, false, true, false, "", function (data) {
 
                             console.log(data);
-                            console.log("user: " + user_id + " - shift: " + shift_id)
-                            location.reload();
+                            console.log("user: " + user_id + " - shift: " + shift_id+"IKKE RESPONSIBLE")
                         })
                     }
+                    //location.reload();
 
                 }
             }
