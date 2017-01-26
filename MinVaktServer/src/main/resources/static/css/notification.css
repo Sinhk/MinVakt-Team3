@@ -12,9 +12,14 @@
 }
 
 #declineButton {
-    margin-left: 3%;
+    margin-left: 30%;
 }
 
 #decline {
+    margin-left: 10%;
+}
+
+#header {
+    margin-top: 2%;
     margin-left: 2%;
 }

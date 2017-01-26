@@ -1,15 +1,20 @@
 #header {
-    margin-left: 3%;
+    margin-left: 2%;
     margin-top: 2%;
 }
 
 #button {
     margin-top: 10%;
-    margin-left: 3%;
+    margin-left: 2%;
 }
 
 #category-box {
     margin-top: 3%;
-    margin-left: 8%;
+    margin-left: 5%;
     width: 450px;
+}
+
+#text {
+    margin-left: 2%;
+    color: grey;
 }

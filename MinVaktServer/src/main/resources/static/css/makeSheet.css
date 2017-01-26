@@ -11,6 +11,15 @@
     display:none
 }
 
+#header {
+    margin-top: 2%;
+    margin-left: 2%;
+}
+#text {
+    margin-left: 2%;
+    color: grey;
+}
+
 /*body {
     margin-top: 40px;
     text-align: center;

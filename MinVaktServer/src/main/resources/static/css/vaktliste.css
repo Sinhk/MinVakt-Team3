@@ -1,5 +1,6 @@
 .cal
 {
+    margin-top: -2%;
     margin-left: 2%;
     margin-right: 2%;
 }
@@ -9,4 +10,13 @@
 
 #formID\3A scheduleID table.fc-agenda-slots{
     display:none
+}
+#new {
+    margin-top:-13%;
+    margin-left: 82%;
+}
+
+#header {
+    margin-top: 2%;
+    margin-left: 2%;
 }

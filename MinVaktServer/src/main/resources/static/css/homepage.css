@@ -20,3 +20,7 @@ aside
 
 .fc-sun { color:red; }
 
+#header {
+    margin-top: 2%;
+    margin-left: 2%;
+}

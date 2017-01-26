@@ -67,3 +67,13 @@
     width:11.7%;
     margin-top:30%;
 }
+
+#header {
+    margin-top: 2%;
+    margin-left: 2%;
+}
+
+#text {
+    margin-left: 2%;
+    color: darkgrey;
+}
