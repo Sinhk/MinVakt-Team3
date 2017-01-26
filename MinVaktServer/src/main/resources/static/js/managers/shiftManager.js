@@ -91,7 +91,8 @@ function getShiftAssignmentsForShift(shift_id, callback) {
 
 }
 
-function shiftIsAvailable(shift_id, callback) {
+
+/*function shiftIsAvailable(shift_id, callback) {
 
     $.ajax({
         url: "/shifts/"+shift_id+"/available",
@@ -103,7 +104,7 @@ function shiftIsAvailable(shift_id, callback) {
             console.log("Error: " + data);
         }
     });
-}
+}*/ //USE THE ONE BELLOW
 
 function getAvailableShifts(callback) {
 

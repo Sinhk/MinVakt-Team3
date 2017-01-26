@@ -169,15 +169,15 @@ public class EmployeeController {
 
 
     @GetMapping(value = "/{user_id}/shifts")
-    public Collection<Shift> getShiftsForUser(@PathVariable int user_id){
+    public List<Shift> getShiftsForUser(@PathVariable int user_id){
 
-        return shiftRepo.findByShiftAssignments_Employee_id(user_id);
+        return shiftRepo.findByShiftEmployeeId(user_id);
     }
 
     @GetMapping(value = "/{user_id}/shifts/assigned")
-    public Collection<Shift> getAssignedShiftsForUser(@PathVariable int user_id){
+    public List<Shift> getAssignedShiftsForUser(@PathVariable int user_id){
 
-        return shiftAssignmentRepo.findByAssignedTrue().stream().filter(shiftAssignment -> shiftAssignment.getEmployeeId() == user_id).map(shiftAssignment -> shiftRepo.findOne(shiftAssignment.getShiftId())).collect(Collectors.toList());
+        return shiftRepo.findByShiftEmployeeId(user_id);
 
     }
 
@@ -195,7 +195,7 @@ public class EmployeeController {
         LocalDate start = LocalDate.parse(startDate);
         LocalDate end = LocalDate.parse(endDate);
 
-        List<Shift> byShiftAssignments_user = shiftRepo.findByShiftAssignments_Employee_id(user_id);
+        List<Shift> byShiftAssignments_user = shiftRepo.findByShiftEmployeeId(user_id);
 
         List<Shift> shiftList = byShiftAssignments_user
                 .stream()
@@ -261,7 +261,7 @@ public class EmployeeController {
         //Employee user = employeeRepo.findOne(user_id);
 
         // TODO: 19-Jan-17 Sjekke om det funke med employee_id
-        Collection<Shift> shiftsForUser = shiftRepo.findByShiftAssignments_Employee_id(user_id);
+        Collection<Shift> shiftsForUser = shiftRepo.findByShiftEmployeeId(user_id);
 
         return shiftsForUser
                 .stream()

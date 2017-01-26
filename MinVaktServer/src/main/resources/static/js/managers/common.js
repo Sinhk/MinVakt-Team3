@@ -4,25 +4,28 @@ $(document).ready(function () {
         edge: 'right'
     }, $("#slide-out").removeClass('hide'));
 
-    $('#username_label').text(JSON.parse(localStorage.user).email);
+    $('#username_label').text(JSON.parse(sessionStorage.user).email);
 
     let adminView = $('#admin_view');
-    adminView.prop('checked', (localStorage.admin === 'true'));
+    adminView.prop('checked', (sessionStorage.admin === 'true'));
 
     adminView.change((data) => {
-        localStorage.admin = data.target.checked;
-        console.log(localStorage.admin);
+        sessionStorage.admin = data.target.checked;
         switchAdminView();
     });
     switchAdminView();
 });
 
+
+
 function switchAdminView() {
-    let admin = JSON.parse(localStorage.admin);
+    var event = new Event('viewChange');
+    let admin = JSON.parse(sessionStorage.admin);
 
     if (admin){
         $(".admin").removeClass('hide');
     }else{
         $(".admin").addClass('hide');
     }
+    document.dispatchEvent(event);
 }

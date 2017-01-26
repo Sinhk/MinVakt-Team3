@@ -26,12 +26,12 @@ $(document).ready(function () {
             day: 'Dag',
             list: 'Liste'
         },
-        select: function (start, end, jsEvent, view) {
+        /*select: function (start, end, jsEvent, view) {
 
             console.log("Start date: " + moment(start).format() +
                 "\nEnd date: " + moment(end).format());
 
-        },
+        },*/
         /*dayClick:function (data ) {
          console.log("You clicked: "+data);
          },*/
@@ -76,34 +76,50 @@ $(document).ready(function () {
 
          }*/
     });
-
-    getScheduledShiftsForCurrentUser(function (shifts) {
-
-        console.log(shifts);
-
-        for (var i = 0; i<shifts.length; i++){
-
-            const shift = shifts[i];
-
-            toFullCalendarEvent(shift, function (fullCalendarEvent) {
-
-                $('#calendar').fullCalendar('renderEvent', fullCalendarEvent, /*sticky*/true);
-
-            })
-
-        }
-        /*  getShiftsWithRequestChange(function (ch) {
-
-         var shifts = shifts1.concat(ch);
-
-         getAvailableShifts(function (availableshifts) {
-
-         availableshifts.concat(shifts);*/
-        /*var ev = shifts.map(toFullCalendarEvent);
-         $('#calendar').fullCalendar('addEventSource', ev);*/
-        /* });
-         });*/
-    });
+    switchAdminViewHomePage();
+    document.addEventListener('viewChange', switchAdminViewHomePage);
 });
 
+function switchAdminViewHomePage() {
+    let admin = JSON.parse(sessionStorage.admin);
 
+    let calendar = $('#calendar');
+    calendar.fullCalendar('removeEvents');
+    if(admin){
+        let from = calendar.fullCalendar('getView').intervalStart;
+        let to = calendar.fullCalendar('getView').intervalEnd;
+        console.log(from.toISOString());
+        /*$.ajaxSetup({
+            scriptCharset: "utf-8",
+            contentType: "application/json; charset=utf-8"
+        });*/
+        $.getJSON("/shifts/limited", {from: from.toISOString(), to: to.toISOString()}).then((shifts) => {
+                let eventsPr = shifts.map(toFullCalendarEventPromise);
+            Promise.all(eventsPr).then((events) => {
+                calendar.fullCalendar('addEventSource', events);
+            });
+
+            }
+        );
+    }else{
+        getScheduledShiftsForCurrentUser(function (shifts) {
+            for (let i = 0; i<shifts.length; i++){
+                const shift = shifts[i];
+                toFullCalendarEvent(shift, function (fullCalendarEvent) {
+                    calendar.fullCalendar('renderEvent', fullCalendarEvent, /*sticky*/true);
+                })
+            }
+            /*  getShiftsWithRequestChange(function (ch) {
+
+             var shifts = shifts1.concat(ch);
+
+             getAvailableShifts(function (availableshifts) {
+
+             availableshifts.concat(shifts);*/
+            /*var ev = shifts.map(toFullCalendarEvent);
+             $('#calendar').fullCalendar('addEventSource', ev);*/
+            /* });
+             });*/
+        });
+    }
+}

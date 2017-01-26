@@ -1,5 +1,6 @@
 package minvakt.controller;
 
+import minvakt.controller.data.TwoStringsData;
 import minvakt.datamodel.tables.pojos.Employee;
 import minvakt.datamodel.tables.pojos.Shift;
 import minvakt.datamodel.tables.pojos.ShiftAssignment;
@@ -7,16 +8,16 @@ import minvakt.repos.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
-import java.time.Duration;
-import java.time.LocalTime;
-import java.time.temporal.ChronoUnit;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -46,12 +47,19 @@ public class ShiftController {
     }
 
     @GetMapping
-    public Iterable<?> getShifts(@RequestParam(defaultValue = "false") boolean detailed) {
-
+    public Iterable<?> getShifts(@RequestParam(defaultValue = "false") boolean detailed){
         if (detailed) {
             return jooqRepo.getShiftDetailed();
         }
         return shiftRepo.findAll();
+    }
+
+    @GetMapping("/limited")
+    public Iterable<?> getShiftsBetween(@RequestParam("from")
+                                            @DateTimeFormat( iso = DateTimeFormat.ISO.DATE )LocalDate from,
+                                         @RequestParam("to") @DateTimeFormat( iso = DateTimeFormat.ISO.DATE ) LocalDate to) {
+
+            return shiftRepo.findBetweenDates(from.atStartOfDay(), to.atStartOfDay());
     }
 
 
@@ -243,7 +251,7 @@ public class ShiftController {
 
         Employee employee = employeeRepo.findByEmail(principal.getName());
         Short categoryId = employee.getCategoryId();
-        List<Shift> assignedShifts = shiftRepo.findByShiftAssignments_Employee_id(employee.getEmployeeId());
+        List<Shift> assignedShifts = shiftRepo.findByShiftEmployeeId(employee.getEmployeeId());
         List<Shift> availableShifts = jooqRepo.getAvailableShiftsForCategory(categoryId);
         availableShifts.removeAll(assignedShifts);
 
