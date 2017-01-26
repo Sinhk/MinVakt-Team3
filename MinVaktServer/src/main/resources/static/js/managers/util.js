@@ -83,6 +83,19 @@ function toFullCalendarEventPromise(event) {
            // });
         });
 }
+function toAvailableEventPromise(event) {
+        const dateStart = moment(event.fromTime);
+        const dateEnd = moment(event.toTime);
+        return getDepartmentName(event.departmentId).then((department)=>{
+                return Promise.resolve( {
+                    id: event.shiftId,
+                    title: "Avdeling: " + department,// + ": " + resFullName,
+                    start: dateStart,
+                    end: dateEnd
+                });
+           // });
+        });
+}
 
 function toFullCalendarEvent(event, callback) {
     if (event != undefined) {

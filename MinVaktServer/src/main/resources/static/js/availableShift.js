@@ -1,8 +1,67 @@
 
 
 $(document).ready(function(){
+    const calendar = $('#calendar');
+    $.getJSON("/shifts/available").then((shifts) =>{
+        let eventsPr =  shifts.map(toAvailableEventPromise);
+        Promise.all(eventsPr).then((events) => {
+            calendar.fullCalendar('addEventSource', events);
+        });
+    });
 
-    /*
+    calendar.fullCalendar({
+        locale: "no",
+        selectable: true,
+        header: {
+            left: 'prev, today',
+            center: 'title',
+            right: 'next'
+        },
+        firstDay: 1,
+        weekNumbers: true,
+        dayNames: ['Søndag', 'Mandag', 'Tirsdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lørdag'],
+        dayNamesShort: ['Søn', 'Man', 'Tir', 'Ons', 'Tor', 'Fre', 'Lør'],
+        monthNames: ['Januar', 'Februar', 'Mars', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Desember'],
+        weekNumberTitle: 'Uke',
+        buttonText: {
+            today: 'I dag'
+        },
+        defaultView: 'listMonth',
+        noEventsMessage: 'Ingen ledige vakter',
+        eventClick: function(calEvent){
+            newWish(calEvent);
+        }
+
+
+    });
+});
+
+function newWish(event) {
+    console.log(event.start.dayOfYear());
+    swal({
+            title: "Vil du ønske deg denne vakten?",
+            text: "Vakt: " + event.start.format('DD/MM') + event.start.format("HH:mm") + " - " + event.end.format("HH:mm"),
+            showCancelButton: true,
+            //confirmButtonColor: "#11dd07",
+            confirmButtonText: "Ja",
+            cancelButtonText: "Nei",
+            closeOnConfirm: false,
+            showLoaderOnConfirm: true,
+        },
+        function(){
+            $.post("/shifts/"+event.id+"/wish").then(()=> {
+                swal("Vaktønske er registrert","","success");
+                $('#calendar').fullCalendar('removeEvents', function (eventa) {
+                    return event.start.dayOfYear() === eventa.start.dayOfYear();
+                });
+            }).catch(()=>{
+                swal("Noe gikk galt","","error")
+            });
+
+        });
+}
+
+/*
     getCurrentUser(function (user) {
 
         getShiftsForUser(user.employeeId, function (shifts) {
@@ -19,17 +78,21 @@ $(document).ready(function(){
     })
 
     var body = document.getElementById("table1");
-*/
 
-    getAvailableShifts(function(shifts) {
-        for(var i = 0; i < shifts.length; i++) {
 
-           const shift = shifts[i];
+    getAvailableShifts(function(data) {
+        var shifts = data
+        for(var i = 0; i<shifts.length; i++) {
 
-           document.getElementById("category-box").innerHTML +=
-
-               "<option value= '"+shift.shiftId+"' id = shift"+shift.shiftId+">"+shift.fromTime.split("T")[0]+" "+shift.fromTime.split("T")[1].substr(0,5)+"</option>"
-       }
+            var shift = shifts[i];
+               console.log(shifts);
+            body.innerHTML += "<tr>" +
+                "<td><input type='checkbox' id='test5' />" +
+                "<label for='test5'></label></td>" +
+                "<td>"+shift.fromTime.split('T')[0]+"</td>" +
+                "<td>"+shift.fromTime.split('T')[1].substr(0,5)+"</td>" +
+                "</tr>";
+        }
     });
 
 
@@ -49,30 +112,12 @@ $(document).ready(function(){
         );
 
     });
+*/
 
-    function highlight(e) {
-        if (selected[0]) selected[0].className = '';
-        e.target.parentNode.className = 'selected';
-    }
-
-    var table1 = document.getElementById('table1'),
-        selected = table1.getElementsByClassName('selected');
-    table1.onclick = highlight;
+   
 
 
 
 
-    $("#table1 tr").click(function (event) {
-        if (event.target.type !== 'checkbox') {
-            $(':checkbox', this).trigger('click');
-        }
-    });
 
-    $("input[type='checkbox']").change(function (e) {
-        if ($(this).is(":checked")) {
-            $(this).closest('tr').addClass("highlight_row");
-        } else {
-            $(this).closest('tr').removeClass("highlight_row");
-        }
-    });
-});
+

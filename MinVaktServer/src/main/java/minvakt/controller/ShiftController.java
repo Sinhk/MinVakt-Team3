@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -101,9 +102,23 @@ public class ShiftController {
         return employeeRepo.findByShiftAssignments_Shift(shift_id);
     }
 
+    @PostMapping("/{shift_id}/wish")
+    @Transactional
+    public ResponseEntity<?> addWish(HttpServletRequest request, @PathVariable int shift_id){
+        Employee employee = employeeRepo.findByEmail(request.getUserPrincipal().getName());
+        ShiftAssignment assignment = new ShiftAssignment();
+        assignment.setAssigned(false);
+        assignment.setAbsent(false);
+        assignment.setAvailable(true);
+        assignment.setEmployeeId(employee.getEmployeeId());
+        assignment.setShiftId(shift_id);
+        shiftAssignmentRepo.save(assignment);
+        return ResponseEntity.ok().build();
+    }
+
     @PostMapping(value = "/{shift_id}/users")
     @Transactional
-    public void addUserToShift(@PathVariable int shift_id, @RequestParam int user_id, @RequestParam boolean available, @RequestParam boolean responsible) { // shift id and user id
+    public void addUserToShift(@PathVariable int shift_id, @RequestParam int user_id, @RequestParam(defaultValue = "true") boolean available, @RequestParam(defaultValue = "false") boolean responsible) { // shift id and user id
 
         System.out.println(shift_id + " . " + user_id);
 
