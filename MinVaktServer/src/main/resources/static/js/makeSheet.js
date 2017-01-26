@@ -229,7 +229,11 @@ $(document).ready(function () { // document ready
                         resourceId: shiftAssignment.employeeId,
                         start: shift.fromTime.split("T")[0],
                         end: shift.toTime.split("T")[0],
-                        title: shift.fromTime.split("T")[1].substr(0, 5) + " - " + shift.toTime.split("T")[1].substr(0, 5),
+                        title: shift.fromTime.split("T")[1].substr(0, 2) + " - " + shift.toTime.split("T")[1].substr(0, 2) +
+                            (responsible ? " A"
+                            : shiftAssignment.assigned ? " V"
+                            : !shiftAssignment.available ? " U"
+                            : " T"),
 
                         backgroundColor: responsible ? "#00bcd4"
                             : shiftAssignment.assigned ? "#2196f3"

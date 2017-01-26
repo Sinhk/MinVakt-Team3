@@ -258,7 +258,7 @@ function toFullCalendarEvent(event, callback) {
                     callback( {
 
                         id: event.shiftId,
-                        title: start.split("T")[1].substr(0, 5) + " - " + end.split("T")[1].substr(0, 5),// + ": " + resFullName,
+                        title: start.split("T")[1].substr(0, 2) + " - " + end.split("T")[1].substr(0, 2)+(res ? " A" : " V"),// + ": " + resFullName,
                         start: dateStart,
                         end: dateEnd,
                         //backgroundColor: available ? "#9B0300" : "#3E9B85",
