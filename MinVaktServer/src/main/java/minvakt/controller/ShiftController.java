@@ -341,7 +341,7 @@ public class ShiftController {
 
     }
     @GetMapping("/shiftassignments/{shiftAssignment_id}")
-    public ShiftAssignment getShiftByShiftAssignmentId(@PathVariable int shiftAssignment_id){
+    public ShiftAssignment getShiftAssignmentByShiftAssignmentId(@PathVariable int shiftAssignment_id){
 
 
         return shiftAssignmentRepo.findOne(shiftAssignment_id);

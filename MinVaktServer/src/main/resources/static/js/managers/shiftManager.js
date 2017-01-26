@@ -319,7 +319,7 @@ function getShiftAssignmentsForUser(user_id, callback) {
     });
 }
 
-function getShiftByShiftAssignmentId(shiftAssignmentId, callback) {
+function getShiftAssignmentByShiftAssignmentId(shiftAssignmentId, callback) {
 
     $.ajax({
         url: "/shifts/shiftassignments/"+shiftAssignmentId,
@@ -346,4 +346,5 @@ function getMissingPerShiftCategory(shift_id,callback) {
             }
     });
 }
+
 

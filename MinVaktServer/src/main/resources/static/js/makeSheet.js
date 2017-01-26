@@ -78,32 +78,6 @@ $(document).ready(function () { // document ready
 
         resourceLabelText: 'Ansatte',
 
-        eventRender: function (event, element) {
-            element.append("<span class='closeon'>[ X ]</span>");
-
-            element.find(".closeon").click(function () {
-
-                swal({
-                        title: "Er du sikker?",
-                        text: "Du kan ikke angre denne handlingen.",
-                        type: "warning",
-                        showCancelButton: true,
-                        confirmButtonColor: "#DD6B55",
-                        confirmButtonText: "Ja, slett den!",
-                        closeOnConfirm: false
-                    },
-
-                    function () {
-                        $('#calendar').fullCalendar('removeEvents', event._id);
-                        swal("Slettet!", "Tilgjengeligheten ble slettet.", "success");
-
-
-                    });
-
-
-            });
-        },
-
         resources: function (callback) {
             getUsersAndCreateResourceList(function (data) {
                 callback(data);
@@ -189,6 +163,34 @@ $(document).ready(function () { // document ready
 
             })
 
+            $('#calendar').fullCalendar('removeEvents', event._id);
+
+
+            // TODO SWEETALERT
+
+            var shiftAssignmentId = event.id;
+
+            getShiftAssignmentByShiftAssignmentId(shiftAssignmentId, function (shiftAssignment) {
+
+                var user_id = shiftAssignment.employeeId;
+                var shift_id = shiftAssignment.shiftId;
+
+                console.log(shiftAssignment);
+
+                changeUserAssignment(user_id, shift_id, true, false, false, false, "", function (data) {
+
+                    console.log(data);
+                    console.log("user: " + user_id + " - shift: " + shift_id+" RESPONSIBLE")
+
+                })
+
+            })
+
+
+
+
+
+
         },
 
         select: function (start, end, jsEvent, view) {
@@ -198,58 +200,92 @@ $(document).ready(function () { // document ready
         }
     });
 
-    getAllUsers(function (users) {
 
-        for (var i = 0; i < users.length; i++) {
+        getAllUsers(function (users) {
 
-            const user = users[i];
+            for (var i = 0; i < users.length; i++) {
 
-            //$('#calendar').fullCalendar('addResource', resource)
+                const user = users[i];
 
-            getShiftAssignmentsForUser(user.employeeId, function (shiftAssignments) {
+                //$('#calendar').fullCalendar('addResource', resource)
 
-
-                for (var i = 0; i < shiftAssignments.length; i++) {
-
-                    const shiftAssignment = shiftAssignments[i];
-
-                    getShiftWithId(shiftAssignment.shiftId, function (shift) {
+                getShiftAssignmentsForUser(user.employeeId, function (shiftAssignments) {
 
 
-                        console.log(shift);
-                        console.log(shiftAssignment);
+                    for (var j = 0; j < shiftAssignments.length; j++) {
 
+                        const shiftAssignment = shiftAssignments[j];
 
-                        userIsResponsibleForShift(shift.shiftId, user.employeeId, function (responsible) {
+                        getShiftWithId(shiftAssignment.shiftId, function (shift) {
 
-                            const event = {
+                           /* console.log(shift);
+                            console.log(shiftAssignment);*/
 
-                                id: shift.shiftId,
-                                resourceId: user.employeeId,
-                                start: shift.fromTime.split("T")[0],
-                                end: shift.toTime.split("T")[0],
-                                title: shift.fromTime.split("T")[1].substr(0, 5) + " - " + shift.toTime.split("T")[1].substr(0, 5),
+                            userIsResponsibleForShift(shift.shiftId, user.employeeId, function (responsible) {
 
-                                backgroundColor: shiftAssignment.assigned ? "#2196f3"
-                                    : !shiftAssignment.available ? "#f44336"
-                                    : responsible ? "#00bcd4" : "#4caf50",
+                                const event = {
 
-                                stick: true
+                                    id: shiftAssignment.id,
+                                    resourceId: user.employeeId,
+                                    start: shift.fromTime.split("T")[0],
+                                    end: shift.toTime.split("T")[0],
+                                    title: shift.fromTime.split("T")[1].substr(0, 5) + " - " + shift.toTime.split("T")[1].substr(0, 5),
 
-                            }
+                                    backgroundColor: responsible ? "#00bcd4"
+                                        : shiftAssignment.assigned ? "#2196f3"
+                                        : !shiftAssignment.available ? "#f44336"
+                                        : "#4caf50",
 
-                            $('#calendar').fullCalendar('renderEvent', event, true);
+                                    stick: true,
+                                    setAsUnassigned: false
+
+                                }
+
+                                $('#calendar').fullCalendar('renderEvent', event, true);
+                            })
                         })
-                    })
+                    }
+                })
+
+            }
+
+        });
 
 
-                }
+    /*function renderEvents() {
+
+        console.log("RENDERING EVENTS")
+        calendar.fullCalendar({
+            eventRender: function (event, element) {
+
+                console.log(event);
+                console.log(element);
+
+                element.append("<span class='closeon'>[ X ]</span>");
+
+                element.find(".closeon").click(function () {
+
+                    swal({
+                            title: "Er du sikker?",
+                            text: "Du kan ikke angre denne handlingen.",
+                            type: "warning",
+                            showCancelButton: true,
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "Ja, slett den!",
+                            closeOnConfirm: false
+                        },
+
+                        function () {
+                            $('#calendar').fullCalendar('removeEvents', event._id);
+                            swal("Slettet!", "Tilgjengeligheten ble slettet.", "success");
 
 
-            })
+                        });
+                });
+            },
+        });
 
-        }
-    });
+    }*/
 
     /*getAllAssignedShifts(function (assignedShifts) {
 
@@ -359,15 +395,13 @@ $("#save").click(function () {
 
                 if (event.start_id == shift_event_id && event.start && event_date == shift_date && event.save) {
 
-                    console.log("event");
-                    console.log(event)
-                    console.log("shift");
-                    console.log(shift)
 
 
                     const user_id = event.resourceId;
                     const shift_id = shift.shiftId;
-                    console.log("ANSVAR: "+event.responsible);
+
+
+
                     if (event.responsible) {
 
                         changeUserAssignment(user_id, shift_id, true, true, true, false, "", function (data) {
@@ -392,6 +426,7 @@ $("#save").click(function () {
         }
     })
 })
+
 function getUsersAndCreateResourceList(callback) {
 
     const res = [];
