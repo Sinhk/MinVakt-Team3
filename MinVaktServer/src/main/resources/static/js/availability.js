@@ -10,9 +10,9 @@ $(document).ready(function () { // document ready
         $(this).data('event', {
             title: $.trim($(this).text()), // use the element's text as the event title
             id: this.id+antEvents,
-            start_id: $.trim($(this).text()) == "Formiddagsvakt" ? 1 : $.trim($(this).text()) == "Ettermiddagsvakt" ? 2 : 3,
+            start_id: $.trim($(this).text()) == "Formiddagsvakt" ? 1 : $.trim($(this).text()) == "Ettermiddagsvakt" ? 2 : $.trim($(this).text()) == "Nattvakt" ? 3 : $.trim($(this).text()) == "FormiddagsFravær" ? 1 : $.trim($(this).text()) == "EttermiddagsFravær" ? 2 : 3,
             stick: true, // maintain when user navigates (see docs on the renderEvent method)
-            unavailable: this.id.includes("u")
+            unavailable: this.id.includes("u"),
         });
         antEvents++;
         /* console.log("ID: "+this.id);
@@ -70,7 +70,7 @@ $(document).ready(function () { // document ready
 
             element.append("<span class='closeon' id='closeon"+event.assignmentId+"'>[ X ]</span>");
 
-            element.find(".closeon").click(function () {
+            element.find("#closeon"+event.assignmentId).click(function () {
 
                 swal({
                         title: "Er du sikker?",
@@ -103,8 +103,6 @@ $(document).ready(function () { // document ready
                             }
 
                         }
-
-
 
                         //location.reload();
                     });
@@ -153,9 +151,14 @@ $(document).ready(function () { // document ready
 
                             if (shift.fromTime.split("T")[0] == date /*&& assignment.available*/ && !assignment.assigned) {
 
+                                const title = assignment.available ?
+                                    shift.fromTime.split("T")[1].substr(0, 5) == "06:00" ? "Formiddagsvakt" : shift.fromTime.split("T")[1].substr(0, 5) == "14:00" ? "Ettermiddagsvakt" : "Nattvakt"
+                                    :
+                                    shift.fromTime.split("T")[1].substr(0, 5) == "06:00" ? "FormiddagsFravær" : shift.fromTime.split("T")[1].substr(0, 5) == "14:00" ? "EttermiddagsFravær" : "NattFravær"
+
                                 $('#calendar').fullCalendar("renderEvent", {
 
-                                    title: shift.fromTime.split("T")[1].substr(0, 5) == "06:00" ? "Formiddagsvakt" : shift.fromTime.split("T")[1].substr(0, 5) == "14:00" ? "Ettermiddagsvakt" : "Nattvakt",  // use the element's text as the event title
+                                    title: title,
                                     id: assignment.id+"event"/*shift.fromTime.split("T")[1].substr(0, 5) == "06:00" ? 1 : shift.fromTime.split("T")[1].substr(0, 5) == "14:00" ? 2 : 3*/,
                                     start: shift.fromTime.split("T")[0],
                                     end: shift.toTime.split("T")[0],
@@ -195,6 +198,8 @@ $(document).ready(function () { // document ready
             console.log('eventDrop', event);
         },
         eventClick: function (event) {
+
+            $('#calendar').fullCalendar('removeEvent', event.id);
 
             console.log(event);
             //$('#calendar').fullCalendar("removeEvent", event);
@@ -276,7 +281,11 @@ $("#save").click(function () {
 
                 // Samme tid, samme dag
 
-                console.log("eventstart: "+event.start+" - type: "+shift_event_id+" - eventdate: "+event_date+" - shiftdate: "+shift_date)
+                //console.log("eventstart: "+event.start+" - type: "+shift_event_id+" - eventdate: "+event_date+" - shiftdate: "+shift_date)
+                console.log("event");
+                console.log(event)
+                console.log("shift");
+                console.log(shift)
 
                 if (event.start_id == shift_event_id && event.start && event_date == shift_date && !event.doNotSave) {
 
@@ -289,6 +298,9 @@ $("#save").click(function () {
 
                         var user_id = currentUser.employeeId;
                         var shift_id = shift.shiftId;
+
+                        console.log("***ADDING SHIFT TO USER***")
+                        console.log(user_id+" - "+shift_id)
 
                         if (event.unavailable) {
 
