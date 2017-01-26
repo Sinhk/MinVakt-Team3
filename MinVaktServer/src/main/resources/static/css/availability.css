@@ -11,17 +11,17 @@
     margin-top:3%;
     width: 63%;
 }
-
+/*
 #unavailable-events {
     position: fixed;
     margin-top:17%;
     float: left;
     width: 150px;
-    height: 170px;
+    height: 500px;
     padding: 0 10px;
     border: 1px solid #ccc;
     background: #eee;
-}
+}*/
 
 #unavailable-events h4 {
     font-size: 16px;
@@ -39,7 +39,7 @@
     margin-top:3%;
     float: left;
     width: 150px;
-    height: 170px;
+    height: 260px;
     padding: 0 10px;
     border: 1px solid #ccc;
     background: #eee;

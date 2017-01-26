@@ -28,8 +28,8 @@ $(document).ready(function () { // document ready
         schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
         displayEventTime: false,
         droppable: true,
-        locale: "no",
-        timezone: "UTC+1",
+        locale: "nb",
+        timezone: "UTC",
         selectable: true,
         editable: false,
         resourceAreaWidth: 230,
@@ -42,9 +42,11 @@ $(document).ready(function () { // document ready
             right: 'next'
         },
         firstDay:1,
+        weekNumbers:true,
         defaultView: 'customWeek',
         views: {
             customWeek: {
+                dayNamesShort: ['Søndag', 'Mandag', 'Tirsdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lørdag'],
                 type: 'timeline',
                 duration: {weeks: 1},
                 slotDuration: {days: 1},
@@ -160,7 +162,7 @@ $(document).ready(function () { // document ready
         },
 
         eventMouseover: function (calEvent, jsEvent) {
-            var tooltip = '<div class="tooltipevent" style="width:180px;height:70px;background:#e3f2fd;border-style:solid;border-color:#212121;border-width:1px;position:absolute;z-index:10001;">' + ' ' + ' INFO OM PROSENT AND STUFF ' + '</div>';
+            var tooltip = '<div class="tooltipevent" style="width:180px;height:70px;background:#e3f2fd;border-style:solid;border-color:#212121;border-width:1px;position:absolute;z-index:10001;">' + ' ' + ' Sykepleiere: <br> Helsefagarbeidere: ' + '</div>';
             var $tool = $(tooltip).appendTo('body');
             $(this).mouseover(function (e) {
                 $(this).css('z-index', 10000);

@@ -3,7 +3,7 @@ $(document).ready(function () { // document ready
     calendar.fullCalendar({
         schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
         displayEventTime: false,
-        locale: "no",
+        locale: "nb",
         timezone: "UTC",
         selectable: true,
         resourceAreaWidth: 230,
@@ -16,6 +16,7 @@ $(document).ready(function () { // document ready
             right: 'next'
         },
         firstDay: 1,
+        weekNumbers:true,
         defaultView: 'customWeek',
         views: {
             customWeek: {
