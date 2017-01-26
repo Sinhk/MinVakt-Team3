@@ -13,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 
 /**
@@ -27,10 +28,12 @@ import javax.persistence.Table;
 )
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 @Entity
-@Table(name = "shift_assignment", schema = "g_scrum03")
+@Table(name = "shift_assignment", schema = "g_scrum03", uniqueConstraints = {
+    @UniqueConstraint(columnNames = {"shift_id", "employee_id"})
+})
 public class ShiftAssignment implements Serializable {
 
-    private static final long serialVersionUID = 1986955605;
+    private static final long serialVersionUID = 1375230526;
 
     private Integer id;
     private Integer shiftId;

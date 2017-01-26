@@ -241,9 +241,13 @@ CREATE OR REPLACE VIEW employee_time_worked_week as
     employee.employee_id,
     employee.position_percentage,
     TIME_FORMAT (sum(TIMEDIFF(to_time,from_time)),'%H:%i') as time_worked,
+    DATE_SUB(
+        DATE_ADD(MAKEDATE(YEAR(from_time), 1), INTERVAL WEEK(from_time,3) WEEK),
+        INTERVAL WEEKDAY(DATE_ADD(MAKEDATE(YEAR(from_time), 1), INTERVAL WEEK(from_time,3) WEEK)) -1 DAY) start_of_week,
+    YEAR(from_time) as year_field,
     WEEK(from_time,3) as week_num
   FROM employee
     LEFT JOIN shift_assignment ON employee.employee_id = shift_assignment.employee_id
     LEFT JOIN shift ON shift_assignment.shift_id = shift.shift_id
   #WHERE WEEK(from_time,3) = WEEK(NOW(),3) OR from_time is NULL
-  GROUP BY employee.employee_id, WEEK(from_time,3);
+  GROUP BY employee.employee_id, year_field,WEEK(from_time,3);

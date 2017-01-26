@@ -10,6 +10,7 @@ import minvakt.datamodel.tables.pojos.MissingPerShiftCategory;
 import minvakt.datamodel.tables.pojos.Shift;
 import org.jooq.DSLContext;
 import org.jooq.Record10;
+import org.jooq.Record2;
 import org.jooq.Result;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.NameTokenizers;
@@ -21,13 +22,11 @@ import org.springframework.stereotype.Controller;
 
 import java.math.BigDecimal;
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.WeekFields;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
 import static minvakt.Application.HOURS_IN_WEEK;
 import static minvakt.datamodel.Tables.*;
@@ -126,12 +125,12 @@ public class JooqRepository {
         return date.with(LocalTime.MIN);
     }
 
-    public Duration getHoursWorked(int employee_id, int week) {
+    public Duration getHoursWorked(int employee_id, int week, int year) {
         EmployeeTimeWorkedWeek et = EMPLOYEE_TIME_WORKED_WEEK.as("et");
         String time = create.select(et.TIME_WORKED)
                 .from(et)
                 .where(et.EMPLOYEE_ID.eq(employee_id)
-                        .and(et.WEEK_NUM.eq(week)))
+                        .and(et.WEEK_NUM.eq(week)).and(et.YEAR_FIELD.eq(year)))
                 .fetchOneInto(String.class);
 
         if (time == null) {
@@ -141,6 +140,30 @@ public class JooqRepository {
         String[] split = time.split(":");
 
         return Duration.ofHours(Long.parseLong(split[0])).plusMinutes(Long.parseLong(split[1]));
+    }
+
+    public Map<Integer, Duration> getHoursWorked(LocalDate start, LocalDate end) {
+        Map<Integer, Duration> hourMap = new HashMap<>();
+        EmployeeTimeWorkedWeek et = EMPLOYEE_TIME_WORKED_WEEK.as("et");
+        Result<Record2<Integer, String>> record2s = create.select(et.EMPLOYEE_ID, et.TIME_WORKED)
+                .from(et)
+                .where(et.START_OF_WEEK.between(start, end))
+                .groupBy(et.EMPLOYEE_ID)
+                .fetch();
+        record2s.forEach(record -> {
+                    String time = record.value2();
+                    Duration duration;
+                    if (time == null) {
+                        duration = Duration.ZERO;
+                    } else {
+                        String[] split = time.split(":");
+                        duration = Duration.ofHours(Long.parseLong(split[0])).plusMinutes(Long.parseLong(split[1]));
+                    }
+                    Integer employee = record.value1();
+                    hourMap.put(employee, duration);
+                });
+
+        return hourMap;
     }
 
     public List<MissingPerShiftCategory> getMissingForShift(int shift_id) {

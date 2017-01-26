@@ -4,6 +4,8 @@
 package minvakt.datamodel.tables;
 
 
+import java.time.LocalDate;
+
 import javax.annotation.Generated;
 
 import minvakt.datamodel.GScrum03;
@@ -29,7 +31,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class EmployeeTimeWorkedWeek extends TableImpl<EmployeeTimeWorkedWeekRecord> {
 
-    private static final long serialVersionUID = 1643001832;
+    private static final long serialVersionUID = -2021554601;
 
     /**
      * The reference instance of <code>g_scrum03.employee_time_worked_week</code>
@@ -58,6 +60,16 @@ public class EmployeeTimeWorkedWeek extends TableImpl<EmployeeTimeWorkedWeekReco
      * The column <code>g_scrum03.employee_time_worked_week.time_worked</code>.
      */
     public final TableField<EmployeeTimeWorkedWeekRecord, String> TIME_WORKED = createField("time_worked", org.jooq.impl.SQLDataType.VARCHAR.length(10), this, "");
+
+    /**
+     * The column <code>g_scrum03.employee_time_worked_week.start_of_week</code>.
+     */
+    public final TableField<EmployeeTimeWorkedWeekRecord, LocalDate> START_OF_WEEK = createField("start_of_week", org.jooq.impl.SQLDataType.LOCALDATE, this, "");
+
+    /**
+     * The column <code>g_scrum03.employee_time_worked_week.year_field</code>.
+     */
+    public final TableField<EmployeeTimeWorkedWeekRecord, Integer> YEAR_FIELD = createField("year_field", org.jooq.impl.SQLDataType.INTEGER, this, "");
 
     /**
      * The column <code>g_scrum03.employee_time_worked_week.week_num</code>.

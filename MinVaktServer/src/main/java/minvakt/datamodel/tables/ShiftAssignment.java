@@ -36,7 +36,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class ShiftAssignment extends TableImpl<ShiftAssignmentRecord> {
 
-    private static final long serialVersionUID = 101905825;
+    private static final long serialVersionUID = 94993055;
 
     /**
      * The reference instance of <code>g_scrum03.shift_assignment</code>
@@ -137,7 +137,7 @@ public class ShiftAssignment extends TableImpl<ShiftAssignmentRecord> {
      */
     @Override
     public List<UniqueKey<ShiftAssignmentRecord>> getKeys() {
-        return Arrays.<UniqueKey<ShiftAssignmentRecord>>asList(Keys.KEY_SHIFT_ASSIGNMENT_PRIMARY);
+        return Arrays.<UniqueKey<ShiftAssignmentRecord>>asList(Keys.KEY_SHIFT_ASSIGNMENT_PRIMARY, Keys.KEY_SHIFT_ASSIGNMENT_UNIQUE_SHIFT_EMPLOYEE);
     }
 
     /**

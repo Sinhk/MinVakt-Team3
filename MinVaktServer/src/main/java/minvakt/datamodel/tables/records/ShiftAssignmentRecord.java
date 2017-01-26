@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import minvakt.datamodel.tables.ShiftAssignment;
 
@@ -33,10 +34,12 @@ import org.jooq.impl.UpdatableRecordImpl;
 )
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 @Entity
-@Table(name = "shift_assignment", schema = "g_scrum03")
+@Table(name = "shift_assignment", schema = "g_scrum03", uniqueConstraints = {
+    @UniqueConstraint(columnNames = {"shift_id", "employee_id"})
+})
 public class ShiftAssignmentRecord extends UpdatableRecordImpl<ShiftAssignmentRecord> implements Record7<Integer, Integer, Integer, Boolean, Boolean, Boolean, String> {
 
-    private static final long serialVersionUID = 767494302;
+    private static final long serialVersionUID = -678883847;
 
     /**
      * Setter for <code>g_scrum03.shift_assignment.id</code>.

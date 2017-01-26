@@ -68,6 +68,7 @@ public class Keys {
     public static final UniqueKey<EmployeeCategoryRecord> KEY_EMPLOYEE_CATEGORY_PRIMARY = UniqueKeys0.KEY_EMPLOYEE_CATEGORY_PRIMARY;
     public static final UniqueKey<ShiftRecord> KEY_SHIFT_PRIMARY = UniqueKeys0.KEY_SHIFT_PRIMARY;
     public static final UniqueKey<ShiftAssignmentRecord> KEY_SHIFT_ASSIGNMENT_PRIMARY = UniqueKeys0.KEY_SHIFT_ASSIGNMENT_PRIMARY;
+    public static final UniqueKey<ShiftAssignmentRecord> KEY_SHIFT_ASSIGNMENT_UNIQUE_SHIFT_EMPLOYEE = UniqueKeys0.KEY_SHIFT_ASSIGNMENT_UNIQUE_SHIFT_EMPLOYEE;
     public static final UniqueKey<ShiftOvertimeRecord> KEY_SHIFT_OVERTIME_PRIMARY = UniqueKeys0.KEY_SHIFT_OVERTIME_PRIMARY;
 
     // -------------------------------------------------------------------------
@@ -110,6 +111,7 @@ public class Keys {
         public static final UniqueKey<EmployeeCategoryRecord> KEY_EMPLOYEE_CATEGORY_PRIMARY = createUniqueKey(EmployeeCategory.EMPLOYEE_CATEGORY, "KEY_employee_category_PRIMARY", EmployeeCategory.EMPLOYEE_CATEGORY.CATEGORY_ID);
         public static final UniqueKey<ShiftRecord> KEY_SHIFT_PRIMARY = createUniqueKey(Shift.SHIFT, "KEY_shift_PRIMARY", Shift.SHIFT.SHIFT_ID);
         public static final UniqueKey<ShiftAssignmentRecord> KEY_SHIFT_ASSIGNMENT_PRIMARY = createUniqueKey(ShiftAssignment.SHIFT_ASSIGNMENT, "KEY_shift_assignment_PRIMARY", ShiftAssignment.SHIFT_ASSIGNMENT.ID);
+        public static final UniqueKey<ShiftAssignmentRecord> KEY_SHIFT_ASSIGNMENT_UNIQUE_SHIFT_EMPLOYEE = createUniqueKey(ShiftAssignment.SHIFT_ASSIGNMENT, "KEY_shift_assignment_unique_shift_employee", ShiftAssignment.SHIFT_ASSIGNMENT.SHIFT_ID, ShiftAssignment.SHIFT_ASSIGNMENT.EMPLOYEE_ID);
         public static final UniqueKey<ShiftOvertimeRecord> KEY_SHIFT_OVERTIME_PRIMARY = createUniqueKey(ShiftOvertime.SHIFT_OVERTIME, "KEY_shift_overtime_PRIMARY", ShiftOvertime.SHIFT_OVERTIME.ID);
     }
 

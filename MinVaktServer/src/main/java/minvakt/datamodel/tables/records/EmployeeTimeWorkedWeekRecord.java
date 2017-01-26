@@ -4,6 +4,8 @@
 package minvakt.datamodel.tables.records;
 
 
+import java.time.LocalDate;
+
 import javax.annotation.Generated;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,8 +14,8 @@ import javax.persistence.Table;
 import minvakt.datamodel.tables.EmployeeTimeWorkedWeek;
 
 import org.jooq.Field;
-import org.jooq.Record4;
-import org.jooq.Row4;
+import org.jooq.Record6;
+import org.jooq.Row6;
 import org.jooq.impl.TableRecordImpl;
 
 
@@ -29,9 +31,9 @@ import org.jooq.impl.TableRecordImpl;
 )
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 @Table(name = "employee_time_worked_week", schema = "g_scrum03")
-public class EmployeeTimeWorkedWeekRecord extends TableRecordImpl<EmployeeTimeWorkedWeekRecord> implements Record4<Integer, Short, String, Integer> {
+public class EmployeeTimeWorkedWeekRecord extends TableRecordImpl<EmployeeTimeWorkedWeekRecord> implements Record6<Integer, Short, String, LocalDate, Integer, Integer> {
 
-    private static final long serialVersionUID = 818444241;
+    private static final long serialVersionUID = 58799317;
 
     /**
      * Setter for <code>g_scrum03.employee_time_worked_week.employee_id</code>.
@@ -79,10 +81,40 @@ public class EmployeeTimeWorkedWeekRecord extends TableRecordImpl<EmployeeTimeWo
     }
 
     /**
+     * Setter for <code>g_scrum03.employee_time_worked_week.start_of_week</code>.
+     */
+    public void setStartOfWeek(LocalDate value) {
+        set(3, value);
+    }
+
+    /**
+     * Getter for <code>g_scrum03.employee_time_worked_week.start_of_week</code>.
+     */
+    @Column(name = "start_of_week")
+    public LocalDate getStartOfWeek() {
+        return (LocalDate) get(3);
+    }
+
+    /**
+     * Setter for <code>g_scrum03.employee_time_worked_week.year_field</code>.
+     */
+    public void setYearField(Integer value) {
+        set(4, value);
+    }
+
+    /**
+     * Getter for <code>g_scrum03.employee_time_worked_week.year_field</code>.
+     */
+    @Column(name = "year_field", precision = 10)
+    public Integer getYearField() {
+        return (Integer) get(4);
+    }
+
+    /**
      * Setter for <code>g_scrum03.employee_time_worked_week.week_num</code>.
      */
     public void setWeekNum(Integer value) {
-        set(3, value);
+        set(5, value);
     }
 
     /**
@@ -90,27 +122,27 @@ public class EmployeeTimeWorkedWeekRecord extends TableRecordImpl<EmployeeTimeWo
      */
     @Column(name = "week_num", precision = 10)
     public Integer getWeekNum() {
-        return (Integer) get(3);
+        return (Integer) get(5);
     }
 
     // -------------------------------------------------------------------------
-    // Record4 type implementation
+    // Record6 type implementation
     // -------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Row4<Integer, Short, String, Integer> fieldsRow() {
-        return (Row4) super.fieldsRow();
+    public Row6<Integer, Short, String, LocalDate, Integer, Integer> fieldsRow() {
+        return (Row6) super.fieldsRow();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Row4<Integer, Short, String, Integer> valuesRow() {
-        return (Row4) super.valuesRow();
+    public Row6<Integer, Short, String, LocalDate, Integer, Integer> valuesRow() {
+        return (Row6) super.valuesRow();
     }
 
     /**
@@ -141,7 +173,23 @@ public class EmployeeTimeWorkedWeekRecord extends TableRecordImpl<EmployeeTimeWo
      * {@inheritDoc}
      */
     @Override
-    public Field<Integer> field4() {
+    public Field<LocalDate> field4() {
+        return EmployeeTimeWorkedWeek.EMPLOYEE_TIME_WORKED_WEEK.START_OF_WEEK;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Field<Integer> field5() {
+        return EmployeeTimeWorkedWeek.EMPLOYEE_TIME_WORKED_WEEK.YEAR_FIELD;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Field<Integer> field6() {
         return EmployeeTimeWorkedWeek.EMPLOYEE_TIME_WORKED_WEEK.WEEK_NUM;
     }
 
@@ -173,7 +221,23 @@ public class EmployeeTimeWorkedWeekRecord extends TableRecordImpl<EmployeeTimeWo
      * {@inheritDoc}
      */
     @Override
-    public Integer value4() {
+    public LocalDate value4() {
+        return getStartOfWeek();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Integer value5() {
+        return getYearField();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Integer value6() {
         return getWeekNum();
     }
 
@@ -208,7 +272,25 @@ public class EmployeeTimeWorkedWeekRecord extends TableRecordImpl<EmployeeTimeWo
      * {@inheritDoc}
      */
     @Override
-    public EmployeeTimeWorkedWeekRecord value4(Integer value) {
+    public EmployeeTimeWorkedWeekRecord value4(LocalDate value) {
+        setStartOfWeek(value);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public EmployeeTimeWorkedWeekRecord value5(Integer value) {
+        setYearField(value);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public EmployeeTimeWorkedWeekRecord value6(Integer value) {
         setWeekNum(value);
         return this;
     }
@@ -217,11 +299,13 @@ public class EmployeeTimeWorkedWeekRecord extends TableRecordImpl<EmployeeTimeWo
      * {@inheritDoc}
      */
     @Override
-    public EmployeeTimeWorkedWeekRecord values(Integer value1, Short value2, String value3, Integer value4) {
+    public EmployeeTimeWorkedWeekRecord values(Integer value1, Short value2, String value3, LocalDate value4, Integer value5, Integer value6) {
         value1(value1);
         value2(value2);
         value3(value3);
         value4(value4);
+        value5(value5);
+        value6(value6);
         return this;
     }
 
@@ -239,12 +323,14 @@ public class EmployeeTimeWorkedWeekRecord extends TableRecordImpl<EmployeeTimeWo
     /**
      * Create a detached, initialised EmployeeTimeWorkedWeekRecord
      */
-    public EmployeeTimeWorkedWeekRecord(Integer employeeId, Short positionPercentage, String timeWorked, Integer weekNum) {
+    public EmployeeTimeWorkedWeekRecord(Integer employeeId, Short positionPercentage, String timeWorked, LocalDate startOfWeek, Integer yearField, Integer weekNum) {
         super(EmployeeTimeWorkedWeek.EMPLOYEE_TIME_WORKED_WEEK);
 
         set(0, employeeId);
         set(1, positionPercentage);
         set(2, timeWorked);
-        set(3, weekNum);
+        set(3, startOfWeek);
+        set(4, yearField);
+        set(5, weekNum);
     }
 }

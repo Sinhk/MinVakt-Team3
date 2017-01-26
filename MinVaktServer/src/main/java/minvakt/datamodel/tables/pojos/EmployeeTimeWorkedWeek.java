@@ -5,6 +5,7 @@ package minvakt.datamodel.tables.pojos;
 
 
 import java.io.Serializable;
+import java.time.LocalDate;
 
 import javax.annotation.Generated;
 import javax.persistence.Column;
@@ -26,12 +27,14 @@ import javax.persistence.Table;
 @Table(name = "employee_time_worked_week", schema = "g_scrum03")
 public class EmployeeTimeWorkedWeek implements Serializable {
 
-    private static final long serialVersionUID = 1183270500;
+    private static final long serialVersionUID = 318106537;
 
-    private Integer employeeId;
-    private Short   positionPercentage;
-    private String  timeWorked;
-    private Integer weekNum;
+    private Integer   employeeId;
+    private Short     positionPercentage;
+    private String    timeWorked;
+    private LocalDate startOfWeek;
+    private Integer   yearField;
+    private Integer   weekNum;
 
     public EmployeeTimeWorkedWeek() {}
 
@@ -39,18 +42,24 @@ public class EmployeeTimeWorkedWeek implements Serializable {
         this.employeeId = value.employeeId;
         this.positionPercentage = value.positionPercentage;
         this.timeWorked = value.timeWorked;
+        this.startOfWeek = value.startOfWeek;
+        this.yearField = value.yearField;
         this.weekNum = value.weekNum;
     }
 
     public EmployeeTimeWorkedWeek(
-        Integer employeeId,
-        Short   positionPercentage,
-        String  timeWorked,
-        Integer weekNum
+        Integer   employeeId,
+        Short     positionPercentage,
+        String    timeWorked,
+        LocalDate startOfWeek,
+        Integer   yearField,
+        Integer   weekNum
     ) {
         this.employeeId = employeeId;
         this.positionPercentage = positionPercentage;
         this.timeWorked = timeWorked;
+        this.startOfWeek = startOfWeek;
+        this.yearField = yearField;
         this.weekNum = weekNum;
     }
 
@@ -81,6 +90,24 @@ public class EmployeeTimeWorkedWeek implements Serializable {
         this.timeWorked = timeWorked;
     }
 
+    @Column(name = "start_of_week")
+    public LocalDate getStartOfWeek() {
+        return this.startOfWeek;
+    }
+
+    public void setStartOfWeek(LocalDate startOfWeek) {
+        this.startOfWeek = startOfWeek;
+    }
+
+    @Column(name = "year_field", precision = 10)
+    public Integer getYearField() {
+        return this.yearField;
+    }
+
+    public void setYearField(Integer yearField) {
+        this.yearField = yearField;
+    }
+
     @Column(name = "week_num", precision = 10)
     public Integer getWeekNum() {
         return this.weekNum;
@@ -97,6 +124,8 @@ public class EmployeeTimeWorkedWeek implements Serializable {
         sb.append(employeeId);
         sb.append(", ").append(positionPercentage);
         sb.append(", ").append(timeWorked);
+        sb.append(", ").append(startOfWeek);
+        sb.append(", ").append(yearField);
         sb.append(", ").append(weekNum);
 
         sb.append(")");

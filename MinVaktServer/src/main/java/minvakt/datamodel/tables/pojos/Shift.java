@@ -4,9 +4,6 @@
 package minvakt.datamodel.tables.pojos;
 
 
-import minvakt.datamodel.tables.*;
-import minvakt.datamodel.tables.MissingPerShiftCategory;
-
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;

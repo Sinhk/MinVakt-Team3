@@ -153,7 +153,8 @@ public class ChangeRequestController {
         }
         WeekFields weekFields = WeekFields.of(Locale.getDefault());
         int week = shift.getFromTime().get(weekFields.weekOfWeekBasedYear());
-        if (jooqRepository.getHoursWorked(one.getNewEmployeeId(), week)
+        int year = shift.getFromTime().getYear();
+        if (jooqRepository.getHoursWorked(one.getNewEmployeeId(), week,year)
                 .plus(Duration.between(shift.getFromTime(),shift.getToTime()))
                 .compareTo(Duration.of(HOURS_IN_WEEK, ChronoUnit.HOURS))>0) {
             one.setOvertime(true);
