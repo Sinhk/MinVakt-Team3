@@ -26,6 +26,7 @@ $(document).ready(function(){
                         console.log(oldUser);
                         console.log(newUser);
                         console.log(request);
+                        isOkChangeRequest(request.requestId,function(message) {
 
                         document.getElementById("requestChangeNotificationsList").innerHTML +=
 

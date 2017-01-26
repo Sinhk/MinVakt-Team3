@@ -3,17 +3,14 @@
 $(document).ready(function(){
 
     var body = document.getElementById("table1");
-    var shifts;
-        getAvailableShifts(function(data) {
-        shifts = data
-        });
 
 
-    getAllAvailableShifts(function () {
+    getAvailableShifts(function(data) {
+        var shifts = data
         for(var i = 0; i<shifts.length; i++) {
 
             var shift = shifts[i];
-
+               console.log(shifts);
             body.innerHTML += "<tr>" +
                 "<td><input type='checkbox' id='indeterminate-checkbox' />" +
                 "<label for='indeterminate-checkbox'></label></td>" +
@@ -21,8 +18,8 @@ $(document).ready(function(){
                 "<td>"+shift.fromTime.split('T')[1].substr(0,5)+"</td>" +
                 "</tr>";
         }
-
     });
+
 
     $("#button").click(function () {
 

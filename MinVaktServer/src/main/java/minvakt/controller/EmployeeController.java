@@ -145,7 +145,7 @@ public class EmployeeController {
         if (employee.getFirstName() != null) user.setFirstName(employee.getFirstName());
         if (employee.getLastName() != null) user.setLastName(employee.getLastName());
 
-        //employeeRepo.save(employee);
+        employeeRepo.save(user);
     }
 
     @PutMapping("/password")

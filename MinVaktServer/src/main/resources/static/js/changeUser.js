@@ -9,34 +9,31 @@ $(document).ready(function () {
 
         $("#last_name1").val(data.lastName);
 
-        $("#email1").val(data.email);
-
         $("#phone1").val(data.phone);
 
     });
+});
 
-    $("#updateBtn").click(function () {
+function checkChangeUser() {
+    if ($('#changeUserForm')[0].checkValidity()) {
 
         getCurrentUser(function(user){
 
             console.log(user);
 
-            var id = user.employeeId;
+            const id = user.employeeId;
 
-            var newFirstName = $("#first_name1").val();
+            const newFirstName = $("#first_name1").val();
 
-            var newLastName = $("#last_name1").val();
+            const newLastName = $("#last_name1").val();
 
-            var newEmail = $("#email1").val();
-
-            var newPhone = $("#phone1").val();
+            const newPhone = $("#phone1").val();
 
             changeUser(id, JSON.stringify({
                 "firstName": newFirstName,
                 "lastName": newLastName,
-                "email": newEmail,
                 "phone": newPhone,
-            }), function (data) {
+                }), function (data) {
 
                 console.log(data.employeeId);
 
@@ -46,8 +43,27 @@ $(document).ready(function () {
                     type: "success",
                     confirmButtonText: "Ok"
                 });
-            })
-        })
+                },(data) => {
 
-    })
-});
+                   console.log(data);
+                   console.log(data.status);
+                   if (data.status == 200) {
+                       swal({
+                           title: "Bruker laget!",
+                           text: "Ditt passord sendt på e-post.",
+                           type: "success",
+                           confirmButtonText: "Ok"
+                       });
+                   } else { //if (data.status == 304)
+                       swal({
+                           title: "Feil input",
+                           text: "Sjekk input linje med rød strek",
+                           type: "error",
+                           confirmButtonText: "Ok"
+                       });
+                   }
+                }
+            )
+        })
+    }
+}

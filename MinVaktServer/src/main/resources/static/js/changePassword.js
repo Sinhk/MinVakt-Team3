@@ -31,10 +31,10 @@ function submitPwChange() {
                     });
                 } else { //if (data.status == 304) 
                     swal({
-                        title: "418 I'm a teapot",
+                        title: "Feil!",
                         text: "Gammelt passord er feil",
-                        //type: "error",
-                        imageUrl: "images/teapot.jpg",
+                        type: "error",
+                        //imageUrl: "images/teapot.jpg",
                         confirmButtonText: "Ok"
                     });
                 }
