@@ -5,7 +5,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.time.LocalDateTime;
@@ -15,12 +17,12 @@ import static org.junit.Assert.*;
 /**
  * Created by magnu on 16.01.2017.
  */
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public class EmployeeControllerTest {
 
     // Mock controller
-    @Mock
-    private EmployeeController mockedEmpCont;
+    @InjectMocks
+    private EmployeeController employeeController;
 
     // Employees and Shifts for tests
     /*
