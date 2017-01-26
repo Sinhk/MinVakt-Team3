@@ -65,7 +65,7 @@
 #save{
     position:fixed;
     width:11.7%;
-    margin-top:30%;
+    margin-top: 25%;
 }
 
 #header {
@@ -79,14 +79,19 @@
 }
 
 #circle {
-    margin-left: 2%;
+    margin-left: 4%;
 }
+
+#circle2 {
+    margin-left: -30%;
+}
+
 #text1 {
     margin-left: 15%;
     margin-top: -10%;
 }
 
 #text2 {
-    margin-left: 15%;
+    margin-left: -18%;
     margin-top: -10%;
 }
