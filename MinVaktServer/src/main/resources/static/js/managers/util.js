@@ -30,7 +30,7 @@ function toFullCalendarEvent(event) {
 }*/
 
 function isAdmin() {
-    return localStorage.admin;
+    return sessionStorage.admin;
 }
 function toFullCalendarEventWithResource(event, resource) {
     var start = event.fromTime;
@@ -60,44 +60,73 @@ function toFullCalendarEventWithResource(event, resource) {
 }
 
 
+function toFullCalendarEventPromise(event) {
+        const start = event.fromTime;
+        const end = event.toTime;
 
-function toFullCalendarEvent(event, callback) {
+        const dateStart = new Date(start);
+        const dateEnd = new Date(end);
+        return getDepartmentName(event.departmentId).then((department)=>{
+            //return getResponsibleUserForShift(event.shiftId).then((responsible) => {
 
-    console.log(event);
-    if (event != undefined) {
-
-        var start = event.fromTime;
-        var end = event.toTime;
-
-        var dateStart = new Date(start);
-        var dateEnd = new Date(end);
-        var department=getDepartmentofShift(event.shiftId,function(name) {department=name});
-
-
-        shiftIsAvailable(event.shiftId, function (available) {
-
-            getResponsibleUserForShift(event.shiftId, function (responsible) {
-
-                //console.log(start + " - " + end + " - " + dateStart + " - " + dateEnd + " - " + available + " - " + responsible)
-
-                //console.log("Avdeling: "+event.comments);
-
-                callback( {
-
+                //const resFullName = responsible.firstName + " " + responsible.lastName;
+                return Promise.resolve( {
                     id: event.shiftId,
-                    title: start.split("T")[1].substr(0, 3) + " -> " + end.split("T")[1].substr(0, 3),
+                    title: start.split("T")[1].substr(0, 5) + " - " + end.split("T")[1].substr(0, 5),// + ": " + resFullName,
                     start: dateStart,
                     end: dateEnd,
                     //backgroundColor: available ? "#9B0300" : "#3E9B85",
-                    available: available,
-                    //TODO avdeling
+                    //available: available,
+                    avdeling: department
+                    //isResponsible: responsible != undefined ? resFullName : "Ingen"
+                });
+           // });
+        });
+}
+
+function toFullCalendarEvent(event, callback) {
+    if (event != undefined) {
+        const start = event.fromTime;
+        const end = event.toTime;
+
+        const dateStart = new Date(start);
+        const dateEnd = new Date(end);
+        getDepartmentName(event.departmentId).then((department)=>{
+
+            getResponsibleUserForShift(event.shiftId, function (responsible) {
+
+                const resFullName = responsible.firstName + " " + responsible.lastName;
+                callback( {
+
+                    id: event.shiftId,
+                    title: start.split("T")[1].substr(0, 5) + " - " + end.split("T")[1].substr(0, 5),// + ": " + resFullName,
+                    start: dateStart,
+                    end: dateEnd,
+                    //backgroundColor: available ? "#9B0300" : "#3E9B85",
+                    //available: available,
                     avdeling: department,
-                    isResponsible: responsible != undefined ? responsible.firstName + " " + responsible.lastName : "Ingen"
+                    isResponsible: responsible != undefined ? resFullName : "Ingen"
                 });
 
             });
         });
     }
+}
+
+function getDepartmentName(departmentId) {
+    return getDepartments().then((departments)=>{
+        return Promise.resolve(departments.filter((dep)=>dep.departmentId = departmentId)[0].departmentName);
+    })
+
+}
+function getDepartments(){
+    if(sessionStorage.getItem("departments") === null){
+        return $.getJSON("/departments").then((data)=>{
+            sessionStorage.departments = JSON.stringify(data);
+            return Promise.resolve(JSON.parse(sessionStorage.departments));
+            }
+        )
+    }else{return Promise.resolve(JSON.parse(sessionStorage.departments));}
 }
 
 function getDepartmentofShift(shiftId,callback) {

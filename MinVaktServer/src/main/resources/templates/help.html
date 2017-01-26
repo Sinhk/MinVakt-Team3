@@ -8,14 +8,34 @@
     <title>Hjelp</title>
     <link rel='stylesheet' href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.95.3/css/materialize.min.css" type="text/css" rel="stylesheet" media="screen,projection"/>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" type="text/css" th:href="@{/css/common.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/css/help.css}">
 </head>
+
 <body>
 <div id="nav" th:replace="fragments/header :: header"></div>
+
+<div class="first_row row">
+    <div class="col s3">
+        <div class="shift_card">
+            <div class="card">
+                <div class="card-image waves-effect waves-block waves-light">
+                    <div id="shiftchange">
+
+                    <img class="activator" src="images/office.jpg">
+                </div>
+                <div class="card-content">
+                    <span class="card-title activator grey-text text-darken-4">Vaktbytte<i class="material-icons right">more_vert</i></span>
+                    <p><a th:href="@{/shiftChange}">Bytt vakt her</a></p>
+                </div>
+                <div class="card-reveal">
+                    <span class="card-title grey-text text-darken-4">Vaktbyttee<i class="material-icons right">close</i></span>
+                    <p>Du trykker på den valgte vakten du ønsker å bytte på kalenderen din dermed får du opp "bytte vakt" og "meld sykdom". Her velger du bytte vakt.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 <div class="first_row row">
@@ -24,15 +44,17 @@
             <div class="card">
                 <div class="card-image waves-effect waves-block waves-light">
                     <div id="shiftchange">
-                        <div class="section"></div>
-                        <i class="medium material-icons">people</i>
+                       <!-- <div class="section"></div>-->
+
+                        <i class="medium material-icons blue-text text-darken-4"><div class="large circle grey">people</div></i>
+
                     </div>
                 </div>
 
-                <div class="card-content">
+               <!-- <div class="card-content">-->
                     <span class="card-title activator grey-text text-darken-4">Vaktbytte</span>
-                    <p><a href="homepage.html">Bytt vakt her</a></p>
-                </div>
+                    <p><a th:href="@{/shiftChange}">Bytt vakt her</a></p>
+                <!--</div>-->
 
                 <div class="card-reveal">
                     <span class="card-title grey-text text-darken-4">Vaktbytte<i class="material-icons right">close</i></span>
@@ -120,8 +142,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
 <script th:src="@{js/managers/common.js}"></script>
-<script src="/js/managers/userManager.js"></script>
-<script src="/js/managers/util.js"></script>
 <script th:src="@{js/help.js}"></script>
 
 </body>

@@ -4,9 +4,13 @@
 
 $(document).ready(function () {
 
-    getAllChangeRequests(function (requests) {
+    getNumChangeRequests(function (requests) {
 
-        $("#numberOfNotifications").text(requests.length);
+        const notifications = $("#numberOfNotifications");
+        notifications.text(requests);
+        if(requests >0){
+            notifications.addClass('new red');
+        }
 
     })
 

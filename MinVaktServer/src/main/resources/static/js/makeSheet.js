@@ -4,7 +4,7 @@ $(document).ready(function () { // document ready
     /* initialize the external events
      -----------------------------------------------------------------*/
 
-    $('#external-events .fc-event').each(function() {
+    $('#external-events .fc-event').each(function () {
 
         // store data so the calendar knows to render an event upon drop
         $(this).data('event', {
@@ -28,8 +28,8 @@ $(document).ready(function () { // document ready
         schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
         displayEventTime: false,
         droppable: true,
-        locale: "no",
-        timezone: "UTC+1",
+        locale: "nb",
+        timezone: "UTC",
         selectable: true,
         editable: false,
         resourceAreaWidth: 230,
@@ -41,10 +41,12 @@ $(document).ready(function () { // document ready
             center: 'title',
             right: 'next'
         },
-        firstDay:1,
+        firstDay: 1,
+        weekNumbers: true,
         defaultView: 'customWeek',
         views: {
             customWeek: {
+                dayNamesShort: ['Søndag', 'Mandag', 'Tirsdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lørdag'],
                 type: 'timeline',
                 duration: {weeks: 1},
                 slotDuration: {days: 1},
@@ -53,12 +55,12 @@ $(document).ready(function () { // document ready
         },
 
         /*
-        defaultView: 'agendaWeek',
-        views: {
-            type: 'costumeWeek',
-        }
-    }*/
-        columnFormat:{
+         defaultView: 'agendaWeek',
+         views: {
+         type: 'costumeWeek',
+         }
+         }*/
+        columnFormat: {
             month: 'ddd',
             week: 'ddd d/M',
             day: 'dddd d/M'
@@ -102,48 +104,48 @@ $(document).ready(function () { // document ready
             });
         },
 
-        resources: function(callback){
+        resources: function (callback) {
             getUsersAndCreateResourceList(function (data) {
                 callback(data);
             })
         },
         /*
-        resourceLabelText: 'Ansatte',
-        resources: function(callback){
-            getUsersAndCreateResourceList(function (data) {
-                callback(data);
-            })
-        },
+         resourceLabelText: 'Ansatte',
+         resources: function(callback){
+         getUsersAndCreateResourceList(function (data) {
+         callback(data);
+         })
+         },
 
-        resourceLabelText: 'Stilling',
-        resources: function(callback){
+         resourceLabelText: 'Stilling',
+         resources: function(callback){
 
-        },*/
-/*
-        eventRender: function(event, element) {
-            element.append( "<span class='closeon'>[ X ]</span>" );
+         },*/
+        /*
+         eventRender: function(event, element) {
+         element.append( "<span class='closeon'>[ X ]</span>" );
 
-            element.find(".closeon").click(function() {
+         element.find(".closeon").click(function() {
 
-                /*swal({
-                        title: "Are you sure?",
-                        text: "You will not be able to recover this imaginary file!",
-                        type: "warning",
-                        showCancelButton: true,
-                        confirmButtonColor: "#DD6B55",
-                        confirmButtonText: "Yes, delete it!",
-                        closeOnConfirm: false
+         /*swal({
+         title: "Are you sure?",
+         text: "You will not be able to recover this imaginary file!",
+         type: "warning",
+         showCancelButton: true,
+         confirmButtonColor: "#DD6B55",
+         confirmButtonText: "Yes, delete it!",
+         closeOnConfirm: false
 
-                    },
+         },
 
-                    function(){
-                        $('#calendar').fullCalendar('removeEvents',event._id);
-                        swal("Deleted!", "Your imaginary file has been deleted.", "success");
-                    });
-            });
-        },*/
+         function(){
+         $('#calendar').fullCalendar('removeEvents',event._id);
+         swal("Deleted!", "Your imaginary file has been deleted.", "success");
+         });
+         });
+         },*/
 
-        drop: function(date, jsEvent, ui, resourceId) {
+        drop: function (date, jsEvent, ui, resourceId) {
             console.log('drop', date.format(), resourceId);
 
             // is the "remove after drop" checkbox checked?
@@ -152,15 +154,15 @@ $(document).ready(function () { // document ready
                 $(this).remove();
             }
         },
-        eventReceive: function(event) { // called when a proper external event is dropped
+        eventReceive: function (event) { // called when a proper external event is dropped
             console.log('eventReceive', event);
         },
-        eventDrop: function(event) { // called when an event (already on the calendar) is moved
+        eventDrop: function (event) { // called when an event (already on the calendar) is moved
             console.log('eventDrop', event);
         },
 
         eventMouseover: function (calEvent, jsEvent) {
-            var tooltip = '<div class="tooltipevent" style="width:180px;height:70px;background:#e3f2fd;border-style:solid;border-color:#212121;border-width:1px;position:absolute;z-index:10001;">' + ' ' + ' INFO OM PROSENT AND STUFF ' + '</div>';
+            var tooltip = '<div class="tooltipevent" style="width:180px;height:70px;background:#e3f2fd;border-style:solid;border-color:#212121;border-width:1px;position:absolute;z-index:10001;">' + ' ' + ' Sykepleiere: <br> Helsefagarbeidere: ' + '</div>';
             var $tool = $(tooltip).appendTo('body');
             $(this).mouseover(function (e) {
                 $(this).css('z-index', 10000);
@@ -204,15 +206,19 @@ $(document).ready(function () { // document ready
 
             //$('#calendar').fullCalendar('addResource', resource)
 
-            getShiftsForUser(user.employeeId, function (shiftsForUser) {
+            getShiftAssignmentsForUser(user.employeeId, function (shiftAssignments) {
 
-                for (var i = 0; i < shiftsForUser.length; i++) {
 
-                    const shift = shiftsForUser[i];
+                for (var i = 0; i < shiftAssignments.length; i++) {
 
-                    console.log(shift);
+                    const shiftAssignment = shiftAssignments[i];
 
-                    getShiftAssignmentForShiftAndUser(shift.shiftId, user.employeeId, function (shiftAssignment) {
+                    getShiftWithId(shiftAssignment.shiftId, function (shift) {
+
+
+                        console.log(shift);
+                        console.log(shiftAssignment);
+
 
                         userIsResponsibleForShift(shift.shiftId, user.employeeId, function (responsible) {
 
@@ -224,7 +230,9 @@ $(document).ready(function () { // document ready
                                 end: shift.toTime.split("T")[0],
                                 title: shift.fromTime.split("T")[1].substr(0, 5) + " - " + shift.toTime.split("T")[1].substr(0, 5),
 
-                                backgroundColor: !shiftAssignment.available ? "#f44336" : responsible ? "#03a9f4" : "#4caf50",
+                                backgroundColor: shiftAssignment.assigned ? "#2196f3"
+                                    : !shiftAssignment.available ? "#f44336"
+                                    : responsible ? "#00bcd4" : "#4caf50",
 
                                 stick: true
 
@@ -235,10 +243,7 @@ $(document).ready(function () { // document ready
                     })
 
 
-
-
                 }
-
 
 
             })
@@ -297,30 +302,30 @@ $(document).ready(function () { // document ready
 
 /*function getUsersAndCreateResourceList(callback) {
 
-    const res =[];
+ const res =[];
 
-    getAllUsers(function (users) {
+ getAllUsers(function (users) {
 
-        for (var i = 0; i < users.length; i++) {
+ for (var i = 0; i < users.length; i++) {
 
-            const user = users[i];
+ const user = users[i];
 
-            getCategory(user.email, function (category) {
+ getCategory(user.email, function (category) {
 
-                const userobj = {
-                    id: user.employeeId,
-                    title: user.firstName + " " + user.lastName + ", "+category,
-                    employee: user.firstName + " " + user.lastName,
-                    position: category.categoryName
+ const userobj = {
+ id: user.employeeId,
+ title: user.firstName + " " + user.lastName + ", "+category,
+ employee: user.firstName + " " + user.lastName,
+ position: category.categoryName
 
-                };
-                res.push(userobj)
-            })
-        }
-        callback(res);
-    })
+ };
+ res.push(userobj)
+ })
+ }
+ callback(res);
+ })
 
-}*/
+ }*/
 $("#save").click(function () {
 
     console.log("---------------------------------------------SAVING---------------------------------------------");
@@ -350,7 +355,7 @@ $("#save").click(function () {
 
                 // Samme tid, samme dag
 
-                console.log("eventstart: "+event.start_id+" - type: "+shift_event_id+" - eventdate: "+event_date+" - shiftdate: "+shift_date)
+                console.log("eventstart: " + event.start_id + " - type: " + shift_event_id + " - eventdate: " + event_date + " - shiftdate: " + shift_date)
 
                 if (event.start_id == shift_event_id && event.start && event_date == shift_date && event.save) {
 
@@ -360,29 +365,27 @@ $("#save").click(function () {
                     console.log(shift)
 
 
+                    const user_id = event.resourceId;
+                    const shift_id = shift.shiftId;
+                    console.log("ANSVAR: "+event.responsible);
+                    if (event.responsible) {
 
-                        const user_id = event.resourceId;
-                        const shift_id = shift.shiftId;
+                        changeUserAssignment(user_id, shift_id, true, true, true, false, "", function (data) {
 
-                        if (event.responsible) {
+                            console.log(data);
+                            console.log("user: " + user_id + " - shift: " + shift_id+" RESPONSIBLE")
 
-                            changeUserAssignment(user_id, shift_id, true, true, true, false, "", function (data) {
+                        })
+                    }
+                    else {
 
-                                console.log(data);
-                                console.log("user: "+user_id +" - shift: "+shift_id)
-                                location.reload();
+                        changeUserAssignment(user_id, shift_id, true, false, true, false, "", function (data) {
 
-                            })
-                        }
-                        else {
-
-                            changeUserAssignment(user_id, shift_id, true, false, true, false, "", function (data) {
-
-                                console.log(data);
-                                console.log("user: "+user_id +" - shift: "+shift_id)
-                                location.reload();
-                            })
-                        }
+                            console.log(data);
+                            console.log("user: " + user_id + " - shift: " + shift_id+"IKKE RESPONSIBLE")
+                        })
+                    }
+                    //location.reload();
 
                 }
             }
@@ -399,12 +402,12 @@ function getUsersAndCreateResourceList(callback) {
 
             const user = users[i];
 
-                // Hack fordi sync ikke funka
-                res.push({
-                    id: user.employeeId,
-                    title: user.firstName + " " + user.lastName+", "+(user.categoryId == 1 ? "Administrasjon" : user.categoryId == 2 ? "Sykepleier" : user.categoryId == 3 ? "Helsefagarbeider" : "Assistent"),
+            // Hack fordi sync ikke funka
+            res.push({
+                id: user.employeeId,
+                title: user.firstName + " " + user.lastName + ", " + (user.categoryId == 1 ? "Administrasjon" : user.categoryId == 2 ? "Sykepleier" : user.categoryId == 3 ? "Helsefagarbeider" : "Assistent"),
 
-                })
+            })
 
 
         }

@@ -4,15 +4,12 @@
 package minvakt.datamodel.tables.pojos;
 
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.io.Serializable;
 
 import javax.annotation.Generated;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 
 /**
@@ -27,6 +24,7 @@ import javax.persistence.Table;
 )
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 @Entity
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @Table(name = "change_request", schema = "g_scrum03")
 public class ChangeRequest implements Serializable {
 
@@ -36,6 +34,14 @@ public class ChangeRequest implements Serializable {
     private Integer shiftId;
     private Integer oldEmployeeId;
     private Integer newEmployeeId;
+    private String comment;
+    private Shift shift;
+    private Employee oldEmployee;
+    private Employee newEmployee;
+    private Boolean overtime;
+    private Boolean allowed;
+    private String missing;
+
 
     public ChangeRequest() {}
 
@@ -94,6 +100,69 @@ public class ChangeRequest implements Serializable {
 
     public void setNewEmployeeId(Integer newEmployeeId) {
         this.newEmployeeId = newEmployeeId;
+    }
+
+    @Transient
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    @Transient
+    public Employee getOldEmployee() {
+        return oldEmployee;
+    }
+
+    public void setOldEmployee(Employee oldEmployee) {
+        this.oldEmployee = oldEmployee;
+    }
+
+    @Transient
+    public Employee getNewEmployee() {
+        return newEmployee;
+    }
+
+    public void setNewEmployee(Employee newEmployee) {
+        this.newEmployee = newEmployee;
+    }
+
+    @Transient
+    public Shift getShift() {
+        return shift;
+    }
+
+    public void setShift(Shift shift) {
+        this.shift = shift;
+    }
+
+    @Transient
+    public Boolean getOvertime() {
+        return overtime;
+    }
+
+    public void setOvertime(Boolean overtime) {
+        this.overtime = overtime;
+    }
+
+    @Transient
+    public Boolean getAllowed() {
+        return allowed;
+    }
+
+    public void setAllowed(Boolean allowed) {
+        this.allowed = allowed;
+    }
+
+    @Transient
+    public String getMissing() {
+        return missing;
+    }
+
+    public void setMissing(String missing) {
+        this.missing = missing;
     }
 
     @Override

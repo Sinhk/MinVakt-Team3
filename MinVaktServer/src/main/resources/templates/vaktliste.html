@@ -20,9 +20,10 @@
 
 <div id="nav" th:replace="fragments/header :: header"></div>
 <main>
-    <a th:href="@{/makeSheet}" class="waves-effect waves-light btn blue darken-4" id="new">Ny timeliste</a>
+    <h2 id="header">Vaktliste</h2>
+    <a th:href="@{/makeSheet}" class="admin waves-effect waves-light btn blue darken-4" id="new">Ny timeliste</a>
 
-<!-- calendar -->
+    <!-- calendar -->
 <div class="cal">
     <div class="section"></div>
     <div id="calendar"></div>
@@ -42,8 +43,10 @@
     </div>
 </div>-->
 <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js' integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+<script src ='https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js'></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js'></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.js'></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/locale/nb.js"></script>
 <script src='https://fullcalendar.io/js/fullcalendar-scheduler-1.5.0/scheduler.js'></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
 <script th:src="@{js/managers/common.js}"></script>

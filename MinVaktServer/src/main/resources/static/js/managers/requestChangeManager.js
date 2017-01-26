@@ -2,6 +2,14 @@
  * Created by OlavH on 20-Jan-17.
  */
 
+function getNumChangeRequests(callback) {
+
+    $.getJSON("/requestchange",{count: true}, function (data) {
+        callback(data);
+    })
+
+}
+
 function getAllChangeRequests(callback) {
 
     $.getJSON("/requestchange", function (data) {
@@ -12,26 +20,18 @@ function getAllChangeRequests(callback) {
 
 function acceptChangeRequest(change_id) {
 
-    $.ajax({
+    return $.ajax({
         url: "requestchange/"+change_id,
         type: "PUT",
-
-        error: function (data) {
-            console.log("Error: " + JSON.stringify(data));
-        }
     });
 
 }
 
 function declineRequestChange(change_id) {
 
-    $.ajax({
+    return $.ajax({
         url: "requestchange/"+change_id,
         type: "DELETE",
-
-        error: function (data) {
-            console.log("Error: " + JSON.stringify(data));
-        }
     });
 
 }

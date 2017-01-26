@@ -10,13 +10,11 @@ $(document).ready(function () { // document ready
         $(this).data('event', {
             title: $.trim($(this).text()), // use the element's text as the event title
             id: this.id+antEvents,
-            start_id: $.trim($(this).text()) == "Formiddagsvakt" ? 1 : $.trim($(this).text()) == "Ettermiddagsvakt" ? 2 : 3,
+            start_id: $.trim($(this).text()) == "Formiddagsvakt" ? 1 : $.trim($(this).text()) == "Ettermiddagsvakt" ? 2 : $.trim($(this).text()) == "Nattvakt" ? 3 : $.trim($(this).text()) == "FormiddagsFravær" ? 1 : $.trim($(this).text()) == "EttermiddagsFravær" ? 2 : 3,
             stick: true, // maintain when user navigates (see docs on the renderEvent method)
-            unavailable: this.id.includes("u")
+            unavailable: this.id.includes("u"),
         });
         antEvents++;
-
-        console.log(antEvents);
         /* console.log("ID: "+this.id);
 
          console.log("UNAVAILABLE: "+this.id.includes("u"))
@@ -65,9 +63,14 @@ $(document).ready(function () { // document ready
         droppable: true, // this allows things to be dropped onto the calendar
 
         eventRender: function (event, element) {
-            element.append("<span class='closeon'>[ X ]</span>");
 
-            element.find(".closeon").click(function () {
+            /*console.log("----------render-------");
+            console.log(event);
+            console.log(element);*/
+
+            element.append("<span class='closeon' id='closeon"+event.assignmentId+"'>[ X ]</span>");
+
+            element.find("#closeon"+event.assignmentId).click(function () {
 
                 swal({
                         title: "Er du sikker?",
@@ -80,12 +83,28 @@ $(document).ready(function () { // document ready
                     },
 
                     function () {
-                        $('#calendar').fullCalendar('removeEvents', event._id);
-                        swal("Slettet!", "Tilgjengeligheten ble slettet.", "success");
 
+                        var events = $('#calendar').fullCalendar("clientEvents");
 
-                        deleteShiftAssignment(event.assignmentId);
-                        location.reload();
+                        for(var i = 0; i< events.length; i++){
+
+                            const event1 = events[i];
+
+                            if(event1.assignmentId == event.assignmentId){
+
+                                console.log(event1);
+
+                                swal("Slettet!", "Tilgjengeligheten ble slettet.", "success");
+
+                                $('#calendar').fullCalendar('removeEvents', event1.id);
+
+                                deleteShiftAssignment(event.assignmentId);
+
+                            }
+
+                        }
+
+                        //location.reload();
                     });
 
 
@@ -110,7 +129,6 @@ $(document).ready(function () { // document ready
                         changed = true;
 
                     }
-
                     //console.log(shift);
 
                 }
@@ -123,24 +141,25 @@ $(document).ready(function () { // document ready
 
                 var user_id = currentUser.employeeId;
 
-                getShiftsForUser(user_id, function (shifts) {
+                getShiftAssignmentsForUser(user_id, function (shiftAssignments) {
 
-                    //console.log("Amount of shifts: "+shifts.length);
+                    for (var i = 0; i < shiftAssignments.length; i++) {
 
-                    for (var i = 0; i < shifts.length; i++) {
+                        const assignment = shiftAssignments[i];
 
-                        const shift = shifts[i];
-
-                        getShiftAssignmentForShiftAndUser(shift.shiftId, user_id, function (assignment) {
-
-                            console.log(assignment);
+                        getShiftWithId(assignment.shiftId, function (shift) {
 
                             if (shift.fromTime.split("T")[0] == date /*&& assignment.available*/ && !assignment.assigned) {
 
+                                const title = assignment.available ?
+                                    shift.fromTime.split("T")[1].substr(0, 5) == "06:00" ? "Formiddagsvakt" : shift.fromTime.split("T")[1].substr(0, 5) == "14:00" ? "Ettermiddagsvakt" : "Nattvakt"
+                                    :
+                                    shift.fromTime.split("T")[1].substr(0, 5) == "06:00" ? "FormiddagsFravær" : shift.fromTime.split("T")[1].substr(0, 5) == "14:00" ? "EttermiddagsFravær" : "NattFravær"
+
                                 $('#calendar').fullCalendar("renderEvent", {
 
-                                    title: shift.fromTime.split("T")[1].substr(0, 5) == "06:00" ? "Formiddagsvakt" : shift.fromTime.split("T")[1].substr(0, 5) == "14:00" ? "Ettermiddagsvakt" : "Nattvakt",  // use the element's text as the event title
-                                    id: shift.fromTime.split("T")[1].substr(0, 5) == "06:00" ? 1 : shift.fromTime.split("T")[1].substr(0, 5) == "14:00" ? 2 : 3,
+                                    title: title,
+                                    id: assignment.id+"event"/*shift.fromTime.split("T")[1].substr(0, 5) == "06:00" ? 1 : shift.fromTime.split("T")[1].substr(0, 5) == "14:00" ? 2 : 3*/,
                                     start: shift.fromTime.split("T")[0],
                                     end: shift.toTime.split("T")[0],
                                     doNotSave: true,
@@ -149,8 +168,16 @@ $(document).ready(function () { // document ready
                                     stick: true // maintain when user navigates (see docs on the renderEvent method)
                                 }, true)
                             }
+
                         })
+
                     }
+
+
+                    //console.log("Amount of shifts: "+shifts.length);
+
+
+
                 })
             })
         },
@@ -172,8 +199,10 @@ $(document).ready(function () { // document ready
         },
         eventClick: function (event) {
 
-            console.log(event);
+            $('#calendar').fullCalendar('removeEvent', event.id);
 
+            console.log(event);
+            //$('#calendar').fullCalendar("removeEvent", event);
         }
     });
 
@@ -252,7 +281,11 @@ $("#save").click(function () {
 
                 // Samme tid, samme dag
 
-                console.log("eventstart: "+event.start+" - type: "+shift_event_id+" - eventdate: "+event_date+" - shiftdate: "+shift_date)
+                //console.log("eventstart: "+event.start+" - type: "+shift_event_id+" - eventdate: "+event_date+" - shiftdate: "+shift_date)
+                console.log("event");
+                console.log(event)
+                console.log("shift");
+                console.log(shift)
 
                 if (event.start_id == shift_event_id && event.start && event_date == shift_date && !event.doNotSave) {
 
@@ -266,21 +299,24 @@ $("#save").click(function () {
                         var user_id = currentUser.employeeId;
                         var shift_id = shift.shiftId;
 
+                        console.log("***ADDING SHIFT TO USER***")
+                        console.log(user_id+" - "+shift_id)
+
                         if (event.unavailable) {
 
-                            addUserToShift(user_id, shift_id, false, function (data) {
+                            addUserToShift(user_id, shift_id, false, false, function (data) {
 
                                 console.log(data);
-                                location.reload();
+                                //location.reload();
 
                             })
                         }
                         else {
 
-                            addUserToShift(user_id, shift_id, true, function (data) {
+                            addUserToShift(user_id, shift_id, true, false, function (data) {
 
                                 console.log(data);
-                                location.reload();
+                                //location.reload();
                             })
                         }
                     })
@@ -288,6 +324,7 @@ $("#save").click(function () {
                 }
             }
         }
+        location.reload();
     })
 })
 

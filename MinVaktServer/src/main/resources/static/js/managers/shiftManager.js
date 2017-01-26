@@ -91,7 +91,8 @@ function getShiftAssignmentsForShift(shift_id, callback) {
 
 }
 
-function shiftIsAvailable(shift_id, callback) {
+
+/*function shiftIsAvailable(shift_id, callback) {
 
     $.ajax({
         url: "/shifts/"+shift_id+"/available",
@@ -103,7 +104,7 @@ function shiftIsAvailable(shift_id, callback) {
             console.log("Error: " + data);
         }
     });
-}
+}*/ //USE THE ONE BELLOW
 
 function getAvailableShifts(callback) {
 
@@ -304,5 +305,31 @@ function deleteShiftAssignment(id) {
     });
 
 }
+function getShiftAssignmentsForUser(user_id, callback) {
 
+    $.ajax({
+        url: "/shifts/shiftassignments/?user_id="+user_id,
+        type: "GET",
+        success: function (data) {
+            callback(data);
+        },
+        error: function (data) {
+            console.log("Error: " + data);
+        }
+    });
+}
+
+function getShiftByShiftAssignmentId(shiftAssignmentId, callback) {
+
+    $.ajax({
+        url: "/shifts/shiftassignments/"+shiftAssignmentId,
+        type: "GET",
+        success: function (data) {
+            callback(data);
+        },
+        error: function (data) {
+            console.log("Error: " + data);
+        }
+    });
+}
 

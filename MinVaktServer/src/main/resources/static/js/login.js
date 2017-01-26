@@ -37,8 +37,8 @@ function login() {
         .done((data, textStatus, jqXHR) => {
             if (textStatus == "success") {
                 $.getJSON("/users/current").done((data) => {
-                    localStorage.admin = data.categoryId == 1;
-                    localStorage.user = JSON.stringify(data);
+                    sessionStorage.admin = data.categoryId == 1;
+                    sessionStorage.user = JSON.stringify(data);
                     window.location.href = "/";
                 });
             }

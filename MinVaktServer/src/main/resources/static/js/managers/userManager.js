@@ -10,7 +10,6 @@
         contentType: "Application/JSON",
 
         success: function (data) {
-
             callback(data);
         },
         error: function (data) {
