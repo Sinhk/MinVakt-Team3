@@ -15,8 +15,6 @@ $(document).ready(function () { // document ready
             unavailable: this.id.includes("u")
         });
         antEvents++;
-
-        console.log(antEvents);
         /* console.log("ID: "+this.id);
 
          console.log("UNAVAILABLE: "+this.id.includes("u"))
@@ -65,7 +63,12 @@ $(document).ready(function () { // document ready
         droppable: true, // this allows things to be dropped onto the calendar
 
         eventRender: function (event, element) {
-            element.append("<span class='closeon'>[ X ]</span>");
+
+            /*console.log("----------render-------");
+            console.log(event);
+            console.log(element);*/
+
+            element.append("<span class='closeon' id='closeon"+event.assignmentId+"'>[ X ]</span>");
 
             element.find(".closeon").click(function () {
 
@@ -80,12 +83,30 @@ $(document).ready(function () { // document ready
                     },
 
                     function () {
-                        $('#calendar').fullCalendar('removeEvents', event._id);
-                        swal("Slettet!", "Tilgjengeligheten ble slettet.", "success");
+
+                        var events = $('#calendar').fullCalendar("clientEvents");
+
+                        for(var i = 0; i< events.length; i++){
+
+                            const event1 = events[i];
+
+                            if(event1.assignmentId == event.assignmentId){
+
+                                console.log(event1);
+
+                                swal("Slettet!", "Tilgjengeligheten ble slettet.", "success");
+
+                                $('#calendar').fullCalendar('removeEvent', event1.id);
+
+                                deleteShiftAssignment(event.assignmentId);
+
+                            }
+
+                        }
 
 
-                        deleteShiftAssignment(event.assignmentId);
-                        location.reload();
+
+                        //location.reload();
                     });
 
 
@@ -123,17 +144,13 @@ $(document).ready(function () { // document ready
 
                 var user_id = currentUser.employeeId;
 
-                getShiftsForUser(user_id, function (shifts) {
+                getShiftAssignmentsForUser(user_id, function (shiftAssignments) {
 
-                    //console.log("Amount of shifts: "+shifts.length);
+                    for (var i = 0; i < shiftAssignments.length; i++) {
 
-                    for (var i = 0; i < shifts.length; i++) {
+                        const assignment = shiftAssignments[i];
 
-                        const shift = shifts[i];
-
-                        getShiftAssignmentForShiftAndUser(shift.shiftId, user_id, function (assignment) {
-
-                            console.log(assignment);
+                        getShiftWithId(assignment.shiftId, function (shift) {
 
                             if (shift.fromTime.split("T")[0] == date /*&& assignment.available*/ && !assignment.assigned) {
 
@@ -149,8 +166,16 @@ $(document).ready(function () { // document ready
                                     stick: true // maintain when user navigates (see docs on the renderEvent method)
                                 }, true)
                             }
+
                         })
+
                     }
+
+
+                    //console.log("Amount of shifts: "+shifts.length);
+
+
+
                 })
             })
         },
@@ -173,7 +198,7 @@ $(document).ready(function () { // document ready
         eventClick: function (event) {
 
             console.log(event);
-
+            //$('#calendar').fullCalendar("removeEvent", event);
         }
     });
 
@@ -268,19 +293,19 @@ $("#save").click(function () {
 
                         if (event.unavailable) {
 
-                            addUserToShift(user_id, shift_id, false, function (data) {
+                            addUserToShift(user_id, shift_id, false, false, function (data) {
 
                                 console.log(data);
-                                location.reload();
+                                //location.reload();
 
                             })
                         }
                         else {
 
-                            addUserToShift(user_id, shift_id, true, function (data) {
+                            addUserToShift(user_id, shift_id, true, false, function (data) {
 
                                 console.log(data);
-                                location.reload();
+                                //location.reload();
                             })
                         }
                     })
@@ -288,6 +313,7 @@ $("#save").click(function () {
                 }
             }
         }
+        location.reload();
     })
 })
 

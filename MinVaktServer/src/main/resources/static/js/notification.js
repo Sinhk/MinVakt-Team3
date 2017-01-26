@@ -21,21 +21,25 @@ $(document).ready(function(){
 
                     getUserById(request.newEmployeeId, function (newUser) {
 
+                        console.log("---------------");
                         console.log(shift);
                         console.log(oldUser);
                         console.log(newUser);
+                        console.log(request);
 
                         document.getElementById("requestChangeNotificationsList").innerHTML +=
 
-                            "<li class='collection-item avatar card-panel white' id="+request.requestId+"collapse"+">"+
+                            "<li class='collection-item avatar card-panel white' id='"+request.requestId+"collapse'>"+
                             "<div class='collapsible-header white black-text'><i class='material-icons circle red'>message</i><b>Vaktbytte</b></div>"+
                             "<div class='collapsible-body white black-text'><p>"+oldUser.firstName+" "+oldUser.lastName+" vil bytte vakt med "+newUser.firstName+" "+newUser.lastName+" fra "+shift.fromTime.split("T")[0]+" "+shift.fromTime.split("T")[1].substr(0,5)+" til "+shift.toTime.split("T")[0]+" "+shift.toTime.split("T")[1].substr(0,5)+"</p>" +
-                                "<a class='waves-effect waves-light blue darken-4 btn' id= accept"+request.requestId+">Godkjenn</a><a class='waves-effect waves-light blue darken-4 btn' id='decline"+request.requestId+"'>Ikke godkjenn</a></div>"+
+                            "<a class='waves-effect waves-light blue darken-4 btn' id= 'accept"+request.requestId+"'>Godkjenn</a><a class='waves-effect waves-light blue darken-4 btn' id='decline"+request.requestId+"'>Ikke godkjenn</a></div>"+
                             "</li>"
 
                         $("#accept"+request.requestId).click(function () {
 
-                            $("#acceptButton").click();
+                            //$("#acceptButton").click();
+
+                            console.log("#accept"+request.requestId);
 
                             swal("Vakten ble byttet", "", "success")
                             $("#"+request.requestId+"collapse").hide();
@@ -44,7 +48,11 @@ $(document).ready(function(){
                         });
 
                         $("#decline"+request.requestId).click(function () {
-                            $("#declineButton").click();
+                            //$("#declineButton").click();
+
+                            console.log("#accept"+request.requestId);
+
+
                             swal("Vakten ble ikke byttet", "", "error");
                             $("#" + request.requestId + "collapse").hide();
                             declineRequestChange(request.requestId);

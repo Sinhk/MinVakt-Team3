@@ -32,8 +32,7 @@ $(document).ready(function(){
 
                     requestChangeForShift(shift_id, currentUser.employeeId, user_id, function (data) {
 
-                        console.log(data);
-
+                        document.getElementById("shift"+shift_id).parentElement.removeChild(document.getElementById("shift"+shift_id));
                     })
                 })
             });

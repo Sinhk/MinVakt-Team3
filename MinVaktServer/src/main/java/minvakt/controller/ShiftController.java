@@ -1,6 +1,5 @@
 package minvakt.controller;
 
-import minvakt.controller.data.TwoStringsData;
 import minvakt.datamodel.tables.pojos.Employee;
 import minvakt.datamodel.tables.pojos.Shift;
 import minvakt.datamodel.tables.pojos.ShiftAssignment;
@@ -17,7 +16,6 @@ import java.security.Principal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -320,6 +318,20 @@ public class ShiftController {
     public void removeShiftAssignment(@PathVariable int shiftAssignment_id){
 
         shiftAssignmentRepo.delete(shiftAssignment_id);
+
+    }
+    @GetMapping("/shiftassignments/{shiftAssignment_id}")
+    public ShiftAssignment getShiftByShiftAssignmentId(@PathVariable int shiftAssignment_id){
+
+
+        return shiftAssignmentRepo.findOne(shiftAssignment_id);
+
+    }
+    @GetMapping("/shiftassignments/")
+    public List<ShiftAssignment> getShiftAssignmentsForUser(@RequestParam int user_id){
+
+
+        return shiftAssignmentRepo.findByEmployeeId(user_id);
 
     }
 }

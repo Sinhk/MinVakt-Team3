@@ -5,7 +5,6 @@ $(document).ready(function () {
 
     getCurrentUser(function (data) {
 
-
         $("#first_name1").val(data.firstName);
 
         $("#last_name1").val(data.lastName);

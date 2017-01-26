@@ -81,6 +81,10 @@ $(document).ready(function () {
                 function () {
 
                     swal("Forespøsel om vaktbytte sendt!", " ", "success");
+
+
+                    $("#category-box")
+
                 });
 
 

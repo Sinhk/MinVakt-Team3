@@ -11,6 +11,7 @@ public interface ShiftAssignmentRepository extends JpaRepository<ShiftAssignment
     Optional<ShiftAssignment> findByShiftIdAndEmployeeId(int shift_id, int user_id);
 
     List<ShiftAssignment> findByShiftId(int shift_id);
+    List<ShiftAssignment> findByEmployeeId(int user_id);
 
     List<ShiftAssignment> findByAssignedTrue();
 
