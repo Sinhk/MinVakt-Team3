@@ -163,27 +163,44 @@ $(document).ready(function () { // document ready
 
             })
 
-            $('#calendar').fullCalendar('removeEvents', event._id);
+
+            swal({  title: "Er du sikker på at du vil slette vakten?",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "Slett",
+                    cancelButtonText: "Avbryt",
+                    closeOnConfirm: false,
+                    closeOnCancel: false },
+                function(isConfirm){
+                    if (isConfirm) {
+                        swal("Slettet", "Vakten din har blitt slettet", "success");
+
+                        $('#calendar').fullCalendar('removeEvents', event._id);
+
+                        var shiftAssignmentId = event.id;
+
+                        getShiftAssignmentByShiftAssignmentId(shiftAssignmentId, function (shiftAssignment) {
+
+                            var user_id = shiftAssignment.employeeId;
+                            var shift_id = shiftAssignment.shiftId;
+
+                            console.log(shiftAssignment);
+
+                            changeUserAssignment(user_id, shift_id, true, false, false, false, "", function (data) {
+
+                                console.log(data);
+                                console.log("user: " + user_id + " - shift: " + shift_id+" RESPONSIBLE")
+
+                            })
+
+                        })
+                    }
+                    else {
+                        swal("Avbrutt", "Vakten din ble ikke slettet", "error");   }
+                });
 
 
-            // TODO SWEETALERT
-
-            var shiftAssignmentId = event.id;
-
-            getShiftAssignmentByShiftAssignmentId(shiftAssignmentId, function (shiftAssignment) {
-
-                var user_id = shiftAssignment.employeeId;
-                var shift_id = shiftAssignment.shiftId;
-
-                console.log(shiftAssignment);
-
-                changeUserAssignment(user_id, shift_id, true, false, false, false, "", function (data) {
-
-                    console.log("user: " + user_id + " - shift: " + shift_id + " RESPONSIBLE")
-
-                })
-
-            })
 
 
         },
@@ -347,7 +364,7 @@ $("#save").click(function () {
 
     console.log("---------------------------------------------SAVING---------------------------------------------");
 
-    // TODO Syk swal greie her
+    swal("Den nye timelisten ble lagret", "", "success")
 
     var events = $('#calendar').fullCalendar('clientEvents');
 
