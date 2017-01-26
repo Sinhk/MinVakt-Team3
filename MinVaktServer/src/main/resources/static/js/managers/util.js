@@ -83,6 +83,19 @@ function toFullCalendarEventPromise(event) {
            // });
         });
 }
+function toAvailableEventPromise(event) {
+        const dateStart = moment(event.fromTime);
+        const dateEnd = moment(event.toTime);
+        return getDepartmentName(event.departmentId).then((department)=>{
+                return Promise.resolve( {
+                    id: event.shiftId,
+                    title: "Avdeling: " + department,// + ": " + resFullName,
+                    start: dateStart,
+                    end: dateEnd
+                });
+           // });
+        });
+}
 
 function toFullCalendarEvent(event, callback) {
     if (event != undefined) {
@@ -105,7 +118,9 @@ function toFullCalendarEvent(event, callback) {
                     //backgroundColor: available ? "#9B0300" : "#3E9B85",
                     //available: available,
                     avdeling: department,
-                    isResponsible: responsible != undefined ? resFullName : "Ingen"
+                    isResponsible: responsible != undefined ? resFullName : "Ingen",
+                    backgroundColor: responsible ? "#00bcd4" : "#2196f3",
+
                 });
 
             });
@@ -222,3 +237,44 @@ function userListToResourceList(userlist) {
     return resourceList;
 
 }
+
+function toFullCalendarEvent(event, callback) {
+    if (event != undefined) {
+        const start = event.fromTime;
+        const end = event.toTime;
+
+        const dateStart = new Date(start);
+        const dateEnd = new Date(end);
+        getDepartmentName(event.departmentId).then((department)=>{
+
+            getResponsibleUserForShift(event.shiftId, function (responsible) {
+
+                getCurrentUser(function (user) {
+
+                    const resFullName = responsible.firstName + " " + responsible.lastName;
+
+                    const res = responsible.employeeId == user.employeeId;
+
+                    callback( {
+
+                        id: event.shiftId,
+                        title: start.split("T")[1].substr(0, 5) + " - " + end.split("T")[1].substr(0, 5),// + ": " + resFullName,
+                        start: dateStart,
+                        end: dateEnd,
+                        //backgroundColor: available ? "#9B0300" : "#3E9B85",
+                        //available: available,
+                        avdeling: department,
+                        isResponsible: responsible != undefined ? resFullName : "Ingen",
+                        backgroundColor: res ? "#00bcd4" : "#2196f3",
+
+                    });
+
+                })
+
+
+
+            });
+        });
+    }
+}
+

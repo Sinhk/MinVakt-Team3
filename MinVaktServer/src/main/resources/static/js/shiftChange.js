@@ -13,6 +13,7 @@ $(document).ready(function(){
                 text: "Sikker på at du vil bytte denne vakten?",
                 /*type: "warning",*/
                 showCancelButton: true,
+                cancelButtonText: "Avbryt",
                 confirmButtonColor: "#4caf50 ",
                 confirmButtonText: "Ja",
                 closeOnConfirm: false

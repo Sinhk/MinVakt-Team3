@@ -65,51 +65,38 @@ $(document).ready(function () { // document ready
         }
     });
 
-    getAllUsers(function (users) {
+    getAllShiftAssignments(function (shiftAssignments) {
 
-        for (var i = 0; i < users.length; i++) {
+        for (var i = 0; i < shiftAssignments.length; i++) {
 
-            const user = users[i];
+            const shiftAssignment = shiftAssignments[i];
 
-            //$('#calendar').fullCalendar('addResource', resource)
+            getShiftWithId(shiftAssignment.shiftId, function (shift) {
 
-            getAssignedShiftsForUser(user.employeeId, function (shiftsForUser) {
+                const responsible = shift.responsibleEmployeeId == shiftAssignment.employeeId;
 
-                for (var i = 0; i < shiftsForUser.length; i++) {
+                console.log(shift)
 
-                    const shift = shiftsForUser[i];
+                const event = {
 
-                    console.log(shift);
+                    id: shiftAssignment.shiftId,
+                    resourceId: shiftAssignment.employeeId,
+                    start: shift.fromTime.split("T")[0],
+                    end: shift.toTime.split("T")[0],
+                    title: shift.fromTime.split("T")[1].substr(0, 5) + " - " + shift.toTime.split("T")[1].substr(0, 5),
 
-                    userIsResponsibleForShift(shift.shiftId, user.employeeId, function (responsible) {
+                    backgroundColor: responsible ? "#00bcd4" : "#2196f3",
 
-
-                        const event = {
-
-                            id: shift.shiftId,
-                            resourceId: user.employeeId,
-                            start: shift.fromTime.split("T")[0],
-                            end: shift.toTime.split("T")[0],
-                            title: shift.fromTime.split("T")[1].substr(0, 5) + " - " + shift.toTime.split("T")[1].substr(0, 5),
-
-                            backgroundColor: responsible ? "#03a9f4" : "#4caf50",
-
-                            stick: true
-
-                        }
-
-                        $('#calendar').fullCalendar('renderEvent', event, true);
-                    })
-
-
+                    stick: true
                 }
 
+                console.log(event);
 
+                $('#calendar').fullCalendar('renderEvent', event, true);
 
             })
-
         }
-    });
+    })
 
     /*getAllAssignedShifts(function (assignedShifts) {
 

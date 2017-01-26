@@ -1,0 +1,26 @@
+.cal {
+    margin-left: 2%;
+    margin-right: 2%;
+}
+
+.fc-sun {
+    color:red;  }
+
+#formID\3A scheduleID table.fc-agenda-slots{
+    display:none
+}
+
+#header {
+    margin-top: 2%;
+    margin-left: 2%;
+}
+#text {
+    margin-left: 2%;
+    color: grey;
+}
+
+#calendar {
+    float:left;
+    width:85%;
+    /*float: right;*/
+}

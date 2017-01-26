@@ -319,7 +319,7 @@ function getShiftAssignmentsForUser(user_id, callback) {
     });
 }
 
-function getShiftByShiftAssignmentId(shiftAssignmentId, callback) {
+function getShiftAssignmentByShiftAssignmentId(shiftAssignmentId, callback) {
 
     $.ajax({
         url: "/shifts/shiftassignments/"+shiftAssignmentId,
@@ -333,3 +333,24 @@ function getShiftByShiftAssignmentId(shiftAssignmentId, callback) {
     });
 }
 
+function getMissingPerShiftCategory(shift_id,callback) {
+
+    $.ajax({
+           url: "/shifts/"+shift_id+"/getAmountOnShiftWithRequired",
+            type: "GET",
+            success: function (data) {
+                callback(data);
+            },
+            error: function (data) {
+                console.log("Error: " + data);
+            }
+    });
+}
+
+function getAllShiftAssignments(callback) {
+
+    $.getJSON("/shifts/shiftassignments", function (data) {
+        callback(data);
+    })
+
+}

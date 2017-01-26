@@ -65,8 +65,8 @@ $(document).ready(function () { // document ready
         eventRender: function (event, element) {
 
             /*console.log("----------render-------");
-            console.log(event);
-            console.log(element);*/
+             console.log(event);
+             console.log(element);*/
 
             element.append("<span class='closeon' id='closeon"+event.assignmentId+"'>[ X ]</span>");
 

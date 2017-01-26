@@ -16,6 +16,9 @@ public interface ShiftRepository extends JpaRepository<Shift, Integer> {
 
     //List<Shift> findByShiftAssignments_Employee(Employee employee);
     @Query("SELECT s from Shift s LEFT JOIN ShiftAssignment a on s.shiftId = a.shiftId where a.employeeId = ?1 and a.assigned=true")
+    List<Shift> findAssignedByShiftEmployeeId(int employee);
+
+    @Query("SELECT s from Shift s LEFT JOIN ShiftAssignment a on s.shiftId = a.shiftId where a.employeeId = ?1")
     List<Shift> findByShiftEmployeeId(int employee);
 
     @Query("SELECT s FROM Shift s ")

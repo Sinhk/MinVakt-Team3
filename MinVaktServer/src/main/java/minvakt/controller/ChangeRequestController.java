@@ -94,7 +94,7 @@ public class ChangeRequestController {
         for (Employee one : all) {
             if (one.getCategoryId() == 1) {
                 // TODO: 19.01.2017 Send mail
-                // sendMail.sendChangeRequstToAdmin(text);
+                sendMail.sendChangeRequstToAdmin(one.getEmail(),text);
             }
         }
     }

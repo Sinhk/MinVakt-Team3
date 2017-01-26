@@ -178,7 +178,7 @@ public class EmployeeController {
     @GetMapping(value = "/{user_id}/shifts/assigned")
     public List<Shift> getAssignedShiftsForUser(@PathVariable int user_id){
 
-        return shiftRepo.findByShiftEmployeeId(user_id);
+        return shiftRepo.findAssignedByShiftEmployeeId(user_id);
 
     }
 
@@ -262,7 +262,7 @@ public class EmployeeController {
         //Employee user = employeeRepo.findOne(user_id);
 
         // TODO: 19-Jan-17 Sjekke om det funke med employee_id
-        Collection<Shift> shiftsForUser = shiftRepo.findByShiftEmployeeId(user_id);
+        Collection<Shift> shiftsForUser = shiftRepo.findAssignedByShiftEmployeeId(user_id);
 
         return shiftsForUser
                 .stream()

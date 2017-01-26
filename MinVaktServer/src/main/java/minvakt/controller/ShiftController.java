@@ -1,13 +1,16 @@
 package minvakt.controller;
 
 import minvakt.datamodel.tables.pojos.Employee;
+import minvakt.datamodel.tables.pojos.MissingPerShiftCategory;
 import minvakt.datamodel.tables.pojos.Shift;
 import minvakt.datamodel.tables.pojos.ShiftAssignment;
 import minvakt.repos.*;
+import minvakt.util.SendMailTLS;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -98,9 +101,23 @@ public class ShiftController {
         return employeeRepo.findByShiftAssignments_Shift(shift_id);
     }
 
+    @PostMapping("/{shift_id}/wish")
+    @Transactional
+    public ResponseEntity<?> addWish(HttpServletRequest request, @PathVariable int shift_id){
+        Employee employee = employeeRepo.findByEmail(request.getUserPrincipal().getName());
+        ShiftAssignment assignment = new ShiftAssignment();
+        assignment.setAssigned(false);
+        assignment.setAbsent(false);
+        assignment.setAvailable(true);
+        assignment.setEmployeeId(employee.getEmployeeId());
+        assignment.setShiftId(shift_id);
+        shiftAssignmentRepo.save(assignment);
+        return ResponseEntity.ok().build();
+    }
+
     @PostMapping(value = "/{shift_id}/users")
     @Transactional
-    public void addUserToShift(@PathVariable int shift_id, @RequestParam int user_id, @RequestParam boolean available, @RequestParam boolean responsible) { // shift id and user id
+    public void addUserToShift(@PathVariable int shift_id, @RequestParam int user_id, @RequestParam(defaultValue = "true") boolean available, @RequestParam(defaultValue = "false") boolean responsible) { // shift id and user id
 
         System.out.println(shift_id + " . " + user_id);
 
@@ -150,6 +167,23 @@ public class ShiftController {
 
             shiftAssignmentRepo.save(assignment);
         }
+        if(absent = true) {
+            SendMailTLS sendMailTLS = new SendMailTLS();
+            List<Employee> eMails =getAvailbalesForShift(shift_id);
+            sendMailTLS.sendFreeShiftToGroup("https://minvakt.herokuapp.com/ledigeVakter",eMails);
+            String text ="Bruker: "+ employeeRepo.findOne(user_id).getFirstName() + " " + employeeRepo.findOne(user_id).getLastName() +
+                    "\nHar tatt fri på vakten: "+ shiftRepo.findOne(shift_id).getFromTime().toString()+
+                    "Kommentar: " + comment;
+            List<Employee> all = employeeRepo.findAll();
+            for (Employee one : all) {
+                if (one.getCategoryId() == 1) {
+                    // TODO: 19.01.2017 Send mail
+                    sendMailTLS.sendMessageAbsent(one.getEmail(),text);
+                }
+            }
+
+        }
+
     }
 
     @GetMapping(value = "/{shift_id}/users/{user_id}/assigned")
@@ -314,6 +348,11 @@ public class ShiftController {
         }
     }
 
+    @GetMapping("/shiftassignments")
+    public List<ShiftAssignment> getAllShiftAssignments(){
+        return shiftAssignmentRepo.findAll();
+    }
+
     @DeleteMapping("/shiftassignments/{shiftAssignment_id}")
     public void removeShiftAssignment(@PathVariable int shiftAssignment_id){
 
@@ -321,7 +360,7 @@ public class ShiftController {
 
     }
     @GetMapping("/shiftassignments/{shiftAssignment_id}")
-    public ShiftAssignment getShiftByShiftAssignmentId(@PathVariable int shiftAssignment_id){
+    public ShiftAssignment getShiftAssignmentByShiftAssignmentId(@PathVariable int shiftAssignment_id){
 
 
         return shiftAssignmentRepo.findOne(shiftAssignment_id);
@@ -333,5 +372,10 @@ public class ShiftController {
 
         return shiftAssignmentRepo.findByEmployeeId(user_id);
 
+    }
+
+    @GetMapping("/{shift_id}/getAmountOnShiftWithRequired/")
+    public List<MissingPerShiftCategory> getAmountOnShift(@PathVariable int shift_id) {
+        return jooqRepo.getMissingForShift(shift_id);
     }
 }

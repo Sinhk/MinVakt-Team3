@@ -61,6 +61,9 @@ public class JooqRepository {
             System.out.println(shiftDetailed);
             records.forEach(record -> {
                 AssignedEmployee employee = modelMapper.map(record, AssignedEmployee.class);
+                if (employee.getEmployeeId().equals(shiftDetailed.getResponsibleEmployeeId())) {
+                    shiftDetailed.setResponsible(employee);
+                }
                 shiftDetailed.addEmployee(employee);
             });
             shifts.add(shiftDetailed);

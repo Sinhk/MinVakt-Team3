@@ -1,6 +1,9 @@
 package minvakt.util; /**
  * Created by klk94 on 19.01.2017.
  */
+import minvakt.datamodel.tables.pojos.Employee;
+
+import java.util.List;
 import java.util.Properties;
 
 import javax.mail.Message;
@@ -66,9 +69,9 @@ public class SendMailTLS {
         sendMail(message);
     }
 
-    public void sendFreeShiftToGroup(String link, String[] eMails) {
-        for(String eMail:eMails) {
-            sendFreeShift(link, eMail);
+    public void sendFreeShiftToGroup(String link, List<Employee> eMails) {
+        for(Employee one:eMails) {
+            sendFreeShift(link, one.getEmail());
         }
     }
 
@@ -80,6 +83,13 @@ public class SendMailTLS {
     }
 
     public void sendChangeRequstToAdmin(String email,String text) {
+        Message message = new MimeMessage(session);
+        String subject = "Minvakt bruker ønsker å bytte vakt", text1 = text + "\nhttps://minvakt.herokuapp.com";
+        buildMessage(message, email, subject, text1);
+        sendMail(message);
+    }
+
+    public void sendMessageAbsent(String email, String text) {
         Message message = new MimeMessage(session);
         String subject = "Minvakt bruker ønsker å bytte vakt", text1 = text + "\nhttps://minvakt.herokuapp.com";
         buildMessage(message, email, subject, text1);

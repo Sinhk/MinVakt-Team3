@@ -10,6 +10,7 @@ $(document).ready(function(){
         swal({  title: "Årsak til fravær",
                 text: "Skriv inn årsaken til ditt fravær under",
                 type: "input",   showCancelButton: true,
+                cancelButtonText: "Avbryt",
                 closeOnConfirm: false,
                 animation: "slide-from-top",
                 inputPlaceholder: "Skriv her" },
