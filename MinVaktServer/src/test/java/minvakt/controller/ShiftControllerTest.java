@@ -53,18 +53,18 @@ public class ShiftControllerTest {
         LocalDateTime fromTime1 = LocalDateTime.of(2017, 1, 17, 6, 0), toTime1 = LocalDateTime.of(2017, 1, 17, 14, 0), toTime2 = LocalDateTime.of(2017, 1, 17, 22, 0, 0);
 
         // Setup shifts based on data from database script
-        shift1 = new Shift(1, 1, fromTime1, toTime1);
-        shift2 = new Shift(2, 2, toTime1, toTime2);
-        nonAssignedShift = new Shift(3, 2, fromTime1, toTime1);
+        shift1 = new Shift(1, 1, fromTime1, toTime1, (short)1, (short)5);
+        shift2 = new Shift(2, 2, toTime1, toTime2, (short)1, (short)5);
+        nonAssignedShift = new Shift(3, 2, fromTime1, toTime1, (short)1, (short)5);
 
         // Setup employees based on data from database script
         emp1 = new Employee(1, (short)1, "admin", "", 12345678, "admin@minvakt.no", (short)100, "$2a$04$c7YTJkh8TVGsmCNNWW7pXu0f/dmy6E6TdsCgX7dnZlJQP7DBfuKjq", true, true);
         emp2 = new Employee(2, (short)2, "user", "", 12345679, "user@minvakt.no", (short)100, "$2a$06$vMO32hhPzSrnvM8tRYwMZ.mzxkrrtXHtsYmRNxESKiClLPtZGRtF6", true, true);
 
         // Setup shift assignments based on data from database script
-        shiftAssign1 = new ShiftAssignment(1, 1, 1, false, true, "");
-        shiftAssign2 = new ShiftAssignment(2, 2, 2, true, true, "Diarrhea");
-        nonAssigned = new ShiftAssignment(3, 3, 2, false, false, "");
+        shiftAssign1 = new ShiftAssignment(1, 1, 1, false, true, false, "");
+        shiftAssign2 = new ShiftAssignment(2, 2, 2, true, true, false, "Diarrhea");
+        nonAssigned = new ShiftAssignment(3, 3, 2, false, false, true , "");
 
         // Setup change requests based on data from database script
         change1 = new ChangeRequest(1, 1, 1, 2);
@@ -82,7 +82,7 @@ public class ShiftControllerTest {
         when(shiftRepo.findAll()).thenReturn(Arrays.asList(shift1, shift2));
 
         // Get all shifts
-        List<Shift> allShifts = (List<Shift>) shiftController.getShifts();
+        List<Shift> allShifts = (List<Shift>) shiftController.getShifts(false);
 
         // Test if shifts are equal
         assertEquals(shift1, allShifts.get(0));
@@ -129,20 +129,16 @@ public class ShiftControllerTest {
     public void getAllAssignedShifts() throws Exception {
         // Stubbing methods
         when(shiftAssignmentRepo.findByAssignedTrue()).thenReturn(Arrays.asList(shiftAssign1, shiftAssign2));
-        when(shiftRepo.findOne(shiftAssign1.getId())).thenReturn(shift1);
-        when(shiftRepo.findOne(shiftAssign2.getId())).thenReturn(shift2);
 
         // Get list of assigned shifts
-        List<Shift> list = shiftController.getAllAssignedShifts();
+        List<ShiftAssignment> list = shiftController.getAllAssignedShifts();
 
         // Verify method use
         verify(shiftAssignmentRepo, atLeastOnce()).findByAssignedTrue();
-        verify(shiftRepo, atLeastOnce()).findOne(shiftAssign1.getId());
-        verify(shiftRepo, atLeastOnce()).findOne(shiftAssign2.getId());
 
         // Assert stuff
-        assertEquals(shift1, list.get(0));
-        assertEquals(shift2, list.get(1));
+        assertEquals(shiftAssign1, list.get(0));
+        assertEquals(shiftAssign2, list.get(1));
         assertEquals(2, list.size());
     }
 
@@ -150,31 +146,27 @@ public class ShiftControllerTest {
     public void getAllNonAssignedShifts() throws Exception {
         // Stubbing methods
         when(shiftAssignmentRepo.findByAssignedFalse()).thenReturn(Arrays.asList(nonAssigned));
-        when(shiftRepo.findOne(nonAssigned.getId())).thenReturn(nonAssignedShift);
 
         // Get list of assigned shifts
-        List<Shift> list = shiftController.getAllNonAssignedShifts();
+        List<ShiftAssignment> list = shiftController.getAllNonAssignedShifts();
 
         // Verify method use
         verify(shiftAssignmentRepo, atLeastOnce()).findByAssignedFalse();
-        verify(shiftRepo, atLeastOnce()).findOne(nonAssigned.getId());
 
         // Assert
-        assertEquals(nonAssignedShift, list.get(0));
+        assertEquals(nonAssigned, list.get(0));
     }
 
     @Test
     public void getUsersForShift() throws Exception {
         // Stubbing methods
-        when(shiftRepo.findOne(2)).thenReturn(shift2);
-        when(employeeRepo.findByShiftAssignments_Shift(shift2)).thenReturn(Arrays.asList(emp2));
+        when(employeeRepo.findByShiftAssignments_Shift(shift2.getShiftId())).thenReturn(Arrays.asList(emp2));
 
         // Get users assigned to shift with ID 2
         List<Employee> userList = shiftController.getUsersForShift(2);
 
         // Verify method use
-        verify(shiftRepo, atLeastOnce()).findOne(2);
-        verify(employeeRepo, atLeastOnce()).findByShiftAssignments_Shift(shift2);
+        verify(employeeRepo, atLeastOnce()).findByShiftAssignments_Shift(shift2.getShiftId());
 
         // Check if correct employees are assigned to shift with ID 2
         assertEquals(emp2, userList.get(0));
@@ -188,13 +180,13 @@ public class ShiftControllerTest {
         when(shiftRepo.findOne(shiftAssign1.getId())).thenReturn(shift1);
 
         // Attempt to add user to shift
-        shiftController.addUserToShift(1, "1");
+        shiftController.addUserToShift(1, 1, false, true);
 
         // Get list of assigned shifts
-        List<Shift> list = shiftController.getAllAssignedShifts();
+        List<ShiftAssignment> list = shiftController.getAllAssignedShifts();
 
         // Assert
-        assertEquals(shift1, list.get(0));
+        assertEquals(shiftAssign1, list.get(0));
 
         // Verify
         verify(shiftAssignmentRepo).findByAssignedTrue();
@@ -238,15 +230,16 @@ public class ShiftControllerTest {
     @Test
     public void getShiftAssignmentsForShift() throws Exception {
         // Stub
-        when(shiftAssignmentRepo.findAll()).thenReturn(Arrays.asList(shiftAssign1));
+        when(shiftAssignmentRepo.findByShiftId(shift1.getShiftId())).thenReturn(Arrays.asList(shiftAssign1));
 
         // Get list
         List<ShiftAssignment> list = shiftController.getShiftAssignmentsForShift(shift1.getShiftId());
 
         // Verify
-        verify(shiftAssignmentRepo, atLeastOnce()).findAll();
+        verify(shiftAssignmentRepo, atLeastOnce()).findByShiftId(shift1.getShiftId());
     }
 
+    /*  Method removed???
     @Test
     public void getEmployeesOnShift() throws Exception {
         // Stub
@@ -261,6 +254,7 @@ public class ShiftControllerTest {
         // Verify
         verify(shiftAssignmentRepo).findAll();
     }
+    */
 
     @Test
     public void setUserIsResponsibleForShift() throws Exception {
