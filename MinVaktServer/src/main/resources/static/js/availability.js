@@ -96,7 +96,7 @@ $(document).ready(function () { // document ready
 
                                 swal("Slettet!", "Tilgjengeligheten ble slettet.", "success");
 
-                                $('#calendar').fullCalendar('removeEvent', event1.id);
+                                $('#calendar').fullCalendar('removeEvents', event1.id);
 
                                 deleteShiftAssignment(event.assignmentId);
 
@@ -131,7 +131,6 @@ $(document).ready(function () { // document ready
                         changed = true;
 
                     }
-
                     //console.log(shift);
 
                 }
@@ -157,7 +156,7 @@ $(document).ready(function () { // document ready
                                 $('#calendar').fullCalendar("renderEvent", {
 
                                     title: shift.fromTime.split("T")[1].substr(0, 5) == "06:00" ? "Formiddagsvakt" : shift.fromTime.split("T")[1].substr(0, 5) == "14:00" ? "Ettermiddagsvakt" : "Nattvakt",  // use the element's text as the event title
-                                    id: shift.fromTime.split("T")[1].substr(0, 5) == "06:00" ? 1 : shift.fromTime.split("T")[1].substr(0, 5) == "14:00" ? 2 : 3,
+                                    id: assignment.id+"event"/*shift.fromTime.split("T")[1].substr(0, 5) == "06:00" ? 1 : shift.fromTime.split("T")[1].substr(0, 5) == "14:00" ? 2 : 3*/,
                                     start: shift.fromTime.split("T")[0],
                                     end: shift.toTime.split("T")[0],
                                     doNotSave: true,
