@@ -1,9 +1,11 @@
 package minvakt.controller;
 
+import minvakt.datamodel.tables.pojos.MissingPerShiftCategory;
 import minvakt.datamodel.tables.pojos.Employee;
 import minvakt.datamodel.tables.pojos.Shift;
 import minvakt.datamodel.tables.pojos.ShiftAssignment;
 import minvakt.repos.*;
+import minvakt.util.SendMailTLS;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.Path;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -150,6 +153,23 @@ public class ShiftController {
 
             shiftAssignmentRepo.save(assignment);
         }
+        if(absent = true) {
+            SendMailTLS sendMailTLS = new SendMailTLS();
+            List<Employee> eMails =getAvailbalesForShift(shift_id);
+            sendMailTLS.sendFreeShiftToGroup("https://minvakt.herokuapp.com/ledigeVakter",eMails);
+            String text ="Bruker: "+ employeeRepo.findOne(user_id).getFirstName() + " " + employeeRepo.findOne(user_id).getLastName() +
+                    "\nHar tatt fri på vakten: "+ shiftRepo.findOne(shift_id).getFromTime().toString()+
+                    "Kommentar: " + comment;
+            List<Employee> all = employeeRepo.findAll();
+            for (Employee one : all) {
+                if (one.getCategoryId() == 1) {
+                    // TODO: 19.01.2017 Send mail
+                    sendMailTLS.sendMessageAbsent(one.getEmail(),text);
+                }
+            }
+
+        }
+
     }
 
     @GetMapping(value = "/{shift_id}/users/{user_id}/assigned")
@@ -333,5 +353,10 @@ public class ShiftController {
 
         return shiftAssignmentRepo.findByEmployeeId(user_id);
 
+    }
+
+    @GetMapping("/{shift_id}/getAmountOnShiftWithRequired/")
+    public List<MissingPerShiftCategory> getAmountOnShift(@PathVariable int shift_id) {
+        return jooqRepo.getMissingForShift(shift_id);
     }
 }

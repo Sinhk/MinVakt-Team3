@@ -2,6 +2,7 @@
 
 $(document).ready(function(){
 
+    /*
     getCurrentUser(function (user) {
 
         getShiftsForUser(user.employeeId, function (shifts) {
@@ -18,21 +19,17 @@ $(document).ready(function(){
     })
 
     var body = document.getElementById("table1");
+*/
 
+    getAvailableShifts(function(shifts) {
+        for(var i = 0; i < shifts.length; i++) {
 
-    getAvailableShifts(function(data) {
-        var shifts = data
-        for(var i = 0; i<shifts.length; i++) {
+           const shift = shifts[i];
 
-            var shift = shifts[i];
-               console.log(shifts);
-            body.innerHTML += "<tr>" +
-                "<td><input type='checkbox' id='test5' />" +
-                "<label for='test5'></label></td>" +
-                "<td>"+shift.fromTime.split('T')[0]+"</td>" +
-                "<td>"+shift.fromTime.split('T')[1].substr(0,5)+"</td>" +
-                "</tr>";
-        }
+           document.getElementById("category-box").innerHTML +=
+
+               "<option value= '"+shift.shiftId+"' id = shift"+shift.shiftId+">"+shift.fromTime.split("T")[0]+" "+shift.fromTime.split("T")[1].substr(0,5)+"</option>"
+       }
     });
 
 
