@@ -179,16 +179,11 @@ $(document).ready(function () { // document ready
 
                 changeUserAssignment(user_id, shift_id, true, false, false, false, "", function (data) {
 
-                    console.log(data);
-                    console.log("user: " + user_id + " - shift: " + shift_id+" RESPONSIBLE")
+                    console.log("user: " + user_id + " - shift: " + shift_id + " RESPONSIBLE")
 
                 })
 
             })
-
-
-
-
 
 
         },
@@ -201,91 +196,77 @@ $(document).ready(function () { // document ready
     });
 
 
-        getAllUsers(function (users) {
+    getAllShiftAssignments(function (shiftAssignments) {
 
-            for (var i = 0; i < users.length; i++) {
+        for (var i = 0; i < shiftAssignments.length; i++) {
 
-                const user = users[i];
+            const shiftAssignment = shiftAssignments[i];
 
-                //$('#calendar').fullCalendar('addResource', resource)
+            getShiftWithId(shiftAssignment.shiftId, function (shift) {
 
-                getShiftAssignmentsForUser(user.employeeId, function (shiftAssignments) {
+                var responsible = shift.responsibleEmployeeId == shiftAssignment.employeeId;
 
+                    const event = {
 
-                    for (var j = 0; j < shiftAssignments.length; j++) {
+                        id: shiftAssignment.id,
+                        resourceId: shiftAssignment.employeeId,
+                        start: shift.fromTime.split("T")[0],
+                        end: shift.toTime.split("T")[0],
+                        title: shift.fromTime.split("T")[1].substr(0, 5) + " - " + shift.toTime.split("T")[1].substr(0, 5),
 
-                        const shiftAssignment = shiftAssignments[j];
+                        backgroundColor: responsible ? "#00bcd4"
+                            : shiftAssignment.assigned ? "#2196f3"
+                            : !shiftAssignment.available ? "#f44336"
+                            : "#4caf50",
 
-                        getShiftWithId(shiftAssignment.shiftId, function (shift) {
+                        stick: true,
 
-                           /* console.log(shift);
-                            console.log(shiftAssignment);*/
-
-                            userIsResponsibleForShift(shift.shiftId, user.employeeId, function (responsible) {
-
-                                const event = {
-
-                                    id: shiftAssignment.id,
-                                    resourceId: user.employeeId,
-                                    start: shift.fromTime.split("T")[0],
-                                    end: shift.toTime.split("T")[0],
-                                    title: shift.fromTime.split("T")[1].substr(0, 5) + " - " + shift.toTime.split("T")[1].substr(0, 5),
-
-                                    backgroundColor: responsible ? "#00bcd4"
-                                        : shiftAssignment.assigned ? "#2196f3"
-                                        : !shiftAssignment.available ? "#f44336"
-                                        : "#4caf50",
-
-                                    stick: true,
-                                    setAsUnassigned: false
-
-                                }
-
-                                $('#calendar').fullCalendar('renderEvent', event, true);
-                            })
-                        })
                     }
+                    $('#calendar').fullCalendar('renderEvent', event, true);
+
                 })
 
-            }
 
-        });
 
+
+        }
+
+        })
 
     /*function renderEvents() {
 
-        console.log("RENDERING EVENTS")
-        calendar.fullCalendar({
-            eventRender: function (event, element) {
+     console.log("RENDERING EVENTS")
+     calendar.fullCalendar({
+     eventRender: function (event, element) {
 
-                console.log(event);
-                console.log(element);
+     console.log(event);
+     console.log(element);
 
-                element.append("<span class='closeon'>[ X ]</span>");
+     element.append("<span class='closeon'>[ X ]</span>");
 
-                element.find(".closeon").click(function () {
+     element.find(".closeon").click(function () {
 
-                    swal({
-                            title: "Er du sikker?",
-                            text: "Du kan ikke angre denne handlingen.",
-                            type: "warning",
-                            showCancelButton: true,
-                            confirmButtonColor: "#DD6B55",
-                            confirmButtonText: "Ja, slett den!",
-                            closeOnConfirm: false
-                        },
+     swal({
+     title: "Er du sikker?",
+     text: "Du kan ikke angre denne handlingen.",
+     type: "warning",
+     showCancelButton: true,
+     confirmButtonColor: "#DD6B55",
+     confirmButtonText: "Ja, slett den!",
+     closeOnConfirm: false
+     },
 
-                        function () {
-                            $('#calendar').fullCalendar('removeEvents', event._id);
-                            swal("Slettet!", "Tilgjengeligheten ble slettet.", "success");
+     function () {
+     $('#calendar').fullCalendar('removeEvents', event._id);
+     swal("Slettet!", "Tilgjengeligheten ble slettet.", "success");
 
 
-                        });
-                });
-            },
-        });
+     });
+     });
+     },
+     });
 
-    }*/
+     }*/
 
     /*getAllAssignedShifts(function (assignedShifts) {
 
@@ -396,10 +377,8 @@ $("#save").click(function () {
                 if (event.start_id == shift_event_id && event.start && event_date == shift_date && event.save) {
 
 
-
                     const user_id = event.resourceId;
                     const shift_id = shift.shiftId;
-
 
 
                     if (event.responsible) {
@@ -407,7 +386,7 @@ $("#save").click(function () {
                         changeUserAssignment(user_id, shift_id, true, true, true, false, "", function (data) {
 
                             console.log(data);
-                            console.log("user: " + user_id + " - shift: " + shift_id+" RESPONSIBLE")
+                            console.log("user: " + user_id + " - shift: " + shift_id + " RESPONSIBLE")
 
                         })
                     }
@@ -416,7 +395,7 @@ $("#save").click(function () {
                         changeUserAssignment(user_id, shift_id, true, false, true, false, "", function (data) {
 
                             console.log(data);
-                            console.log("user: " + user_id + " - shift: " + shift_id+"IKKE RESPONSIBLE")
+                            console.log("user: " + user_id + " - shift: " + shift_id + "IKKE RESPONSIBLE")
                         })
                     }
                     //location.reload();

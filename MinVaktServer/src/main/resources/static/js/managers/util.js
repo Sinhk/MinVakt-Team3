@@ -118,7 +118,9 @@ function toFullCalendarEvent(event, callback) {
                     //backgroundColor: available ? "#9B0300" : "#3E9B85",
                     //available: available,
                     avdeling: department,
-                    isResponsible: responsible != undefined ? resFullName : "Ingen"
+                    isResponsible: responsible != undefined ? resFullName : "Ingen",
+                    backgroundColor: responsible ? "#00bcd4" : "#2196f3",
+
                 });
 
             });
@@ -247,18 +249,29 @@ function toFullCalendarEvent(event, callback) {
 
             getResponsibleUserForShift(event.shiftId, function (responsible) {
 
-                const resFullName = responsible.firstName + " " + responsible.lastName;
-                callback( {
+                getCurrentUser(function (user) {
 
-                    id: event.shiftId,
-                    title: start.split("T")[1].substr(0, 5) + " - " + end.split("T")[1].substr(0, 5),// + ": " + resFullName,
-                    start: dateStart,
-                    end: dateEnd,
-                    //backgroundColor: available ? "#9B0300" : "#3E9B85",
-                    //available: available,
-                    avdeling: department,
-                    isResponsible: responsible != undefined ? resFullName : "Ingen"
-                });
+                    const resFullName = responsible.firstName + " " + responsible.lastName;
+
+                    const res = responsible.employeeId == user.employeeId;
+
+                    callback( {
+
+                        id: event.shiftId,
+                        title: start.split("T")[1].substr(0, 5) + " - " + end.split("T")[1].substr(0, 5),// + ": " + resFullName,
+                        start: dateStart,
+                        end: dateEnd,
+                        //backgroundColor: available ? "#9B0300" : "#3E9B85",
+                        //available: available,
+                        avdeling: department,
+                        isResponsible: responsible != undefined ? resFullName : "Ingen",
+                        backgroundColor: res ? "#00bcd4" : "#2196f3",
+
+                    });
+
+                })
+
+
 
             });
         });

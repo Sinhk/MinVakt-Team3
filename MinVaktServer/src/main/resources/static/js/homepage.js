@@ -105,6 +105,7 @@ function switchAdminViewHomePage() {
         getScheduledShiftsForCurrentUser(function (shifts) {
             for (let i = 0; i<shifts.length; i++){
                 const shift = shifts[i];
+
                 toFullCalendarEvent(shift, function (fullCalendarEvent) {
                     calendar.fullCalendar('renderEvent', fullCalendarEvent, /*sticky*/true);
                 })

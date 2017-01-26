@@ -1,7 +1,7 @@
 package minvakt.controller;
 
-import minvakt.datamodel.tables.pojos.MissingPerShiftCategory;
 import minvakt.datamodel.tables.pojos.Employee;
+import minvakt.datamodel.tables.pojos.MissingPerShiftCategory;
 import minvakt.datamodel.tables.pojos.Shift;
 import minvakt.datamodel.tables.pojos.ShiftAssignment;
 import minvakt.repos.*;
@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.Path;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -347,6 +346,11 @@ public class ShiftController {
 
             shiftRepo.save(shift);
         }
+    }
+
+    @GetMapping("/shiftassignments")
+    public List<ShiftAssignment> getAllShiftAssignments(){
+        return shiftAssignmentRepo.findAll();
     }
 
     @DeleteMapping("/shiftassignments/{shiftAssignment_id}")

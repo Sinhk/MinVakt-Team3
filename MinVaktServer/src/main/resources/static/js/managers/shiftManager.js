@@ -347,4 +347,10 @@ function getMissingPerShiftCategory(shift_id,callback) {
     });
 }
 
+function getAllShiftAssignments(callback) {
 
+    $.getJSON("/shifts/shiftassignments", function (data) {
+        callback(data);
+    })
+
+}
