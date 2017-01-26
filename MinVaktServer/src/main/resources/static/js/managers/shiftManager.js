@@ -26,6 +26,14 @@ function getShiftWithId(id, callback) {
 
 }
 
+function getShiftAssignmentForShiftAndUser(shift_id, user_id, callback) {
+
+    $.getJSON("/shifts/"+shift_id+"/details/"+user_id, function (data) {
+        callback(data);
+    })
+
+}
+
 function addShift(dateinfo, callback) {
 
     $.ajax({
@@ -49,13 +57,11 @@ function getUsersForShift(shift_id, callback) {
 
 }
 
-function addUserToShift(user_id, shift_id, callback) {
+function addUserToShift(user_id, shift_id, available, responsible, callback) {
 
     $.ajax({
-        url: "/shifts/"+shift_id+"/users",
+        url: "/shifts/"+shift_id+"/users?user_id="+user_id+"&available="+available+"&responsible="+responsible,
         type: "POST",
-        contentType: "text/plain",
-        data: user_id,
         success: function (data) {
             callback(data);
         },
@@ -63,8 +69,21 @@ function addUserToShift(user_id, shift_id, callback) {
             console.log("Error: " + JSON.stringify(data));
         }
     });
-
 }
+function changeUserAssignment(user_id, shift_id, available, responsible, assigned, absent, comment, callback) {
+
+    $.ajax({
+        url: "/shifts/"+shift_id+"/users?user_id="+user_id+"&available="+available+"&responsible="+responsible+"&assigned="+assigned+"&absent="+absent+"&comment="+comment,
+        type: "PUT",
+        success: function (data) {
+            callback(data);
+        },
+        error: function (data) {
+            console.log("Error: " + JSON.stringify(data));
+        }
+    });
+}
+
 
 function getShiftAssignmentsForShift(shift_id, callback) {
 
@@ -92,88 +111,35 @@ function getAvailableShifts(callback) {
 
 }
 
-function getStatusForShiftAndUser(shift_id, user_id) {
-
-    var status;
-
-    $.ajax({
-        async:false,
-        url: "shifts/"+shift_id+"/"+user_id+"/status",
-        type: "GET",
-        contentType: "Application/JSON",
-
-        success: function (data) {
-
-            status = data;
-        },
-        error: function (data) {
-            console.log("Error: "+data);
-        }
-    });
-    return status;
-
-}
-function setStatusForShiftAndUser(shift_id, user_id, status) {
 
 
-    $.ajax({
-        url: "shifts/"+shift_id+"/"+user_id+"/status",
-        type: "PUT",
-        contentType: "text/plain",
-        data: status,
+function userIsResponsibleForShift(shift_id, user_id, callback) {
 
-        success: function (data) {
-            console.log("Success: "+data);
-        },
-        error: function (data) {
-            console.log("Error: "+data);
-        }
-    });
+    getResponsibleUserForShift(shift_id, function (res) {
+
+        callback(res.employeeId == user_id);
+
+    })
+
 
 }
 
-function userIsResponsibleForShift(shift_id, user_id) {
+function getResponsibleUserForShift(shift_id, callback) {
 
-    var isResponsible;
 
     $.ajax({
-        async: false,
-        url: "shifts/"+shift_id+"/"+user_id+"/responsible",
-        type: "GET",
-        contentType: "Application/JSON",
-
-        success: function (data) {
-
-            isResponsible = data;
-        },
-        error: function (data) {
-            console.log("Error: "+data);
-        }
-    });
-    return isResponsible;
-
-}
-
-function getResponsibleUserForShift(shift_id) {
-
-
-    var isResponsible;
-
-    $.ajax({
-        async: false,
         url: "shifts/"+shift_id+"/responsible",
         type: "GET",
         contentType: "Application/JSON",
 
         success: function (data) {
 
-            isResponsible = data;
+            callback(data)
         },
         error: function (data) {
             console.log("Error: "+data);
         }
     });
-    return isResponsible;
 
 }
 
@@ -185,9 +151,10 @@ function getResponsibleUsersForShifts(shifts) {
 
         var employeeShifts = shifts[i];
 
-        for(var i = 0; i < employeeShifts.length; i++) {
-            list.push(getResponsibleUserForShift(employeeShifts[i].shiftId));
-            console.log(employeeShifts[i]);
+        for(var j = 0; j < employeeShifts.length; j++) {
+            getResponsibleUserForShift(employeeShifts[j].shiftId, function (user) {
+                list.push(user);
+            });
         }
 
     }
@@ -196,7 +163,6 @@ function getResponsibleUsersForShifts(shifts) {
 }
 
 function setResponsibleUserForShift(shift_id, user_id, boolean) {
-
 
     $.ajax({
         async: false,
@@ -283,40 +249,8 @@ function eventIsAvailable(event_id) {
     });
     return is;
 }
-function getShiftsWithRequestChange(callback) {
-    $.ajax({
-        url: "shifts/requestchange",
-        type: "GET",
-
-        success: function (data) {
-            console.log("Success: "+JSON.stringify(data));
-            callback(data);
-        },
-
-        error: function (data) {
-            console.log("Error: "+JSON.stringify(data));
-        }
-    });
-}
-
-function requestChange(shift_id, user1_id, user2_id) {
-
-    $.ajax({
-        async: false,
-        url: "/"+shift_id+"/users/"+user1_id+"/requestchange/"+user2_id,
-        type: "POST",
-
-        success: function (data) {
-            console.log("Success: "+JSON.stringify(data));
-        },
-
-        error: function (data) {
-            console.log("Error: "+JSON.stringify(data));
-        }
-    });
-
-}
-function getAvaiableShifts() {
+/*  already made?
+function getAvailableShifts() {
 
     var list;
 
@@ -337,7 +271,7 @@ function getAvaiableShifts() {
     return list;
 
 }
-
+*/
 
 function getAllSuitableShifts(callback) {
 
@@ -347,10 +281,28 @@ function getAllSuitableShifts(callback) {
 
 function getAllShiftForCurrentUser(callback) {
 
+    getCurrentUser(function (user) {
 
-    $.getJSON("/shifts/currentUser", function (data) {
-        callback(data);
+        getShiftsForUser(user.employeeId, function (shifts) {
+
+            callback(shifts);
+
+        })
     })
+}
 
+function deleteShiftAssignment(id) {
+
+    $.ajax({
+        url: "/shifts/shiftassignments/"+id,
+        type: "DELETE",
+        success: function (data) {
+        },
+        error: function (data) {
+            console.log("Error: " + data);
+        }
+    });
 
 }
+
+

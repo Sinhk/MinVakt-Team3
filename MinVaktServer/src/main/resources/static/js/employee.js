@@ -1,37 +1,32 @@
-$(document).ready(function(){
+$(document).ready(function () {
+    getCategories().then((categories) => {
+        getAllUsers(function (employees) {
 
-    getAllUsers(function (employees) {
+            const div = document.getElementById("employeeBody");
+            for (let i = 0; i < employees.length; i++) {
 
-        for(var i = 0; i<employees.length; i++){
+                let employee = employees[i]; // Uten const faile alt
 
-            const employee = employees[i]; // Uten const faile alt
-
-            console.log(employee);
-
-            getHoursThisWeekForUser(employee.employeeId, function (hours) {
-
-                getCategory(employee.email, function (category) {
-
-                    var div = document.getElementById("employeeBody");
+                getHoursThisWeekForUser(employee.employeeId, function (hours) {
 
                     div.innerHTML +=
                         "<tr>" +
                         "<td>" + employee.firstName + "</td>" +
                         "<td>" + employee.lastName + "</td>" +
-                        "<td>" + category.categoryName+ "</td>" +
+                        "<td>" + categories.get(employee.categoryId).categoryName + "</td>" +
                         "<td>" + employee.positionPercentage + "%</td>" +
                         "<td>" + employee.phone + "</td>" +
                         "<td>" + hours + " timer</td>" +
                         "<td>" + employee.email + "</td>" +
-                        "</tr>"
-
-                })
-            });
-        }
+                        "<td> <button class='waves-effect waves-light btn blue darken-4' onClick=\"removeButton("+employee.employeeId+")\">Slett</button>"+"</td>" +
+                        "</tr>";
+                });
+            }
+        });
     });
 
-    $("#myTable").tablesorter();
-    $("#myTable").tablesorter( {sortList: [[0,0], [1,0]]} );
+
+
 
     function myFunction() {
         var input, filter, table, tr, td, i;
@@ -40,10 +35,10 @@ $(document).ready(function(){
         table = document.getElementById("myTable");
         tr = table.getElementsByTagName("tr");
 
-        for(i = 0; i < tr.length; i++) {
+        for (i = 0; i < tr.length; i++) {
             td = tr[i].getElementsByTagName("td")[0];
-            if(td) {
-                if(td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+            if (td) {
+                if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
                     tr[i].style.display = "";
                 } else {
                     tr[i].style.display = "none";
@@ -51,4 +46,11 @@ $(document).ready(function(){
             }
         }
     }
+
+
+    $("#myTable").tablesorter();
+    $("#myTable").tablesorter({sortList: [[0, 0], [1, 0]]
+
+    });
+
 });

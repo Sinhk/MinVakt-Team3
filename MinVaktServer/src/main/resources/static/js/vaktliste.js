@@ -13,7 +13,7 @@ $(document).ready(function () { // document ready
         header: {
             left: 'prev, promptResource today',
             center: 'title',
-            right: 'customWeek, next'
+            right: 'next'
         },
         firstDay: 1,
         defaultView: 'customWeek',
@@ -36,19 +36,24 @@ $(document).ready(function () { // document ready
             list: 'Liste'
         },
         resourceLabelText: 'Ansatte',
-        resources: function (callback) {
-            $.getJSON("/users/resource", function (res) {
-                callback(res)
-            });
+        resources: function(callback){
+            getUsersAndCreateResourceList(function (data) {
+                callback(data);
+            })
         },
 
         eventClick: function (event, jsEvent, view) {
 
             var eventId = event.id;
 
-            var eventDB = getEventViaID(eventId);
+            getShiftWithId(eventId, function (shift) {
 
-            console.log(eventDB);
+                console.log(shift);
+                console.log(event);
+
+            })
+
+
 
         },
 
@@ -59,8 +64,121 @@ $(document).ready(function () { // document ready
         }
     });
 
-    getAllShifts(function (events) {
-        calendar.fullCalendar('addEventSource', listToFullCalendarEventList(events, calendar.fullCalendar().resources));
+    getAllUsers(function (users) {
+
+        for (var i = 0; i < users.length; i++) {
+
+            const user = users[i];
+
+            //$('#calendar').fullCalendar('addResource', resource)
+
+            getAssignedShiftsForUser(user.employeeId, function (shiftsForUser) {
+
+                for (var i = 0; i < shiftsForUser.length; i++) {
+
+                    const shift = shiftsForUser[i];
+
+                    console.log(shift);
+
+                    userIsResponsibleForShift(shift.shiftId, user.employeeId, function (responsible) {
+
+
+                        const event = {
+
+                            id: shift.shiftId,
+                            resourceId: user.employeeId,
+                            start: shift.fromTime.split("T")[0],
+                            end: shift.toTime.split("T")[0],
+                            title: shift.fromTime.split("T")[1].substr(0, 5) + " - " + shift.toTime.split("T")[1].substr(0, 5),
+
+                            backgroundColor: responsible ? "#03a9f4" : "#4caf50",
+
+                            stick: true
+
+                        }
+
+                        $('#calendar').fullCalendar('renderEvent', event, true);
+                    })
+
+
+                }
+
+
+
+            })
+
+        }
     });
+
+    /*getAllAssignedShifts(function (assignedShifts) {
+
+     for (var i = 0; i < assignedShifts.length; i++) {
+
+     const nonAssignedShift = assignedShifts[i];
+
+     console.log(nonAssignedShift);
+
+     getUserById(nonAssignedShift.employeeId, function (user) {
+
+     getShiftWithId(nonAssignedShift.shiftId, function (shift) {
+
+     console.log(user);
+     console.log(shift);
+
+     var resource = {
+     id: user.employeeId,
+     title: user.firstName + " " + user.lastName,
+     }
+
+     $('#calendar').fullCalendar('addResource', resource)
+
+
+     var event = {
+
+     id: shift.shiftId,
+     resourceId: user.employeeId,
+     start: shift.fromTime.split("T")[0],
+     end: shift.toTime.split("T")[0],
+     title: shift.fromTime.split("T")[1].substr(0, 5) + " - " + shift.toTime.split("T")[1].substr(0, 5),
+
+     stick: true
+
+     }
+
+     $('#calendar').fullCalendar('renderEvent', event, true);
+
+
+
+
+     })
+     })
+     }
+     })*/
+    /*getAllShifts(function (events) {
+     calendar.fullCalendar('addEventSource', listToFullCalendarEventList(events, calendar.fullCalendar('getResources')));
+     });*/
 });
+
+function getUsersAndCreateResourceList(callback) {
+
+    const res = [];
+
+    getAllUsers(function (users) {
+
+        for (var i = 0; i < users.length; i++) {
+
+            const user = users[i];
+
+            res.push({
+                id: user.employeeId,
+                title: user.firstName + " " + user.lastName,
+            })
+
+        }
+        callback(res);
+
+
+    })
+
+}
 

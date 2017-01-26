@@ -1,32 +1,54 @@
 $(document).ready(function () {
     addCategories();
-
-    $("#button").click(function () {
-        var first_name = $("#first_name1").val();
-        var last_name = $("#last_name1").val();
-        var email = $("#email1").val();
-        var phone = $("#phone1").val();
-        var positionPercentage = $("#positionPercentage").val();
-        var category = $("#category-box").val();
+});
+function addUserForm() {
+    if ($('#newUserForm')[0].checkValidity()) {
+            const first_name = $("#first_name1").val();
+            const last_name = $("#last_name1").val();
+            const email = $("#email1").val();
+            const phone = $("#phone1").val();
+            const positionPercentage = $("#positionPercentage").val();
+            const category = $("#category-box").val();
 
         addUser(JSON.stringify({
-            "firstName": first_name,
-            "lastName": last_name,
-            "email": email,
-            "phone": phone,
-            "positionPercentage": positionPercentage
-        }), category, function (data) {
+              "firstName": first_name,
+              "lastName": last_name,
+              "email": email,
+              "phone": phone,
+              "positionPercentage": positionPercentage,
+              "categoryId": category
+          }), function (data) {
 
+              console.log(data);
+
+              swal({
+                  title: "Fullført!",
+                  text: "Bruker er opprettet.",
+                  type: "success",
+                  confirmButtonText: "Ok"
+              });
+
+          },(data) => {
+        console.log(data);
+        console.log(data.status);
+        if (data.status == 200) {
             swal({
-                title: "Fullført!",
-                text: "Bruker er opprettet.",
+                title: "Bruker laget!",
+                text: "Ditt passord sendt på e-post.",
                 type: "success",
                 confirmButtonText: "Ok"
             });
-
-        })
+        } else { //if (data.status == 304)
+            swal({
+                title: "Feil input",
+                text: "Sjekk input linje med rød strek",
+                type: "error",
+                confirmButtonText: "Ok"
+            });
+        }
     });
-});
+    }
+}
 
     function addCategories() {
         $.getJSON("/category", function (data) {

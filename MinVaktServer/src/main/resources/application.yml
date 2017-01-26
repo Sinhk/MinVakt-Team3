@@ -1,4 +1,6 @@
 spring:
+  main:
+    banner-mode: off
   datasource:
     url: jdbc:mysql://mysql.stud.iie.ntnu.no/g_scrum03
     username: g_scrum03
@@ -10,6 +12,8 @@ spring:
     tomcat.max-idle: 2
   jpa:
     hibernate.ddl-auto: validate
+  jooq:
+    sql-dialect: mysql
 logging:
   level:
     org:
@@ -20,13 +24,12 @@ server:
 ---
 
 spring:
+  main:
+    banner-mode: off
   profiles:
     active: dev
   thymeleaf:
     cache: false
-
-#  datasource:
-#    url: jdbc:h2:~/test
 logging:
   level:
     org:

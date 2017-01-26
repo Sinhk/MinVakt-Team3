@@ -184,6 +184,15 @@ public class SpringWebConfig
         registry.addViewController("/tilgjengelighet").setViewName("availability");
         registry.addViewController("/changeShift").setViewName("changeShift");
         registry.addViewController("/absence").setViewName("absence");
+        registry.addViewController("/endreBruker").setViewName("changeUser");
+        registry.addViewController("/endrePassord").setViewName("changePassword");
+        registry.addViewController("/notification").setViewName("notification");
+        registry.addViewController("/makeSheet").setViewName("makeSheet");
+        registry.addViewController("/shiftChange").setViewName("shiftChange");
+        registry.addViewController("/endreBrukerAdmin").setViewName("changeUserAdmin");
+        registry.addViewController("/ledigeVakter").setViewName("availableShifts");
+        registry.addViewController("/employeeE").setViewName("employeeE");
+        registry.addViewController("/help").setViewName("help");
         registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
     }
 

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Vaktbytte</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Vaktbytte</title>
+    <!--<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.css' />-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css">
+
+    <link rel="stylesheet" type="text/css" th:href="@{/css/common.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/shiftChange.css}">
+</head>
+
+<body>
+<div id="nav" th:replace="fragments/header :: header"></div>
+
+<h2 id="header">Vaktbytte</h2>
+<div id="text">
+<h10 id="info">Velg ønsket vakt og person du ønsker å bytte med. Forspørsel sendes til administrasjonen og du <br>
+    vil motta tilbakemelding med beskjed om bytte ble godkjent eller ikke. Vaktbytte er IKKE godkjent før du <br>
+    har mottat en beskjed fra administasjonen om dette.</h10>
+</div>
+<div class="input-field">
+    <label>
+        <select id="category-box" class="browser-default white">
+            <option value="" disabled selected>Velg vakt</option>
+        </select>
+    </label>
+</div>
+
+<div class="input-field">
+    <label>
+        <select id="category-box1" class="browser-default white">
+            <option value="" disabled selected>Velg ansatt</option>
+        </select>
+    </label>
+</div>
+
+<div>
+    <button id="button" class="btn waves-effect waves-light blue darken-4" type="submit" name="action">Bytte vakt</button>
+</div>
+
+
+
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js' integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.28.4/js/jquery.tablesorter.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
+
+<script th:src="@{js/managers/common.js}"></script>
+<script th:src="@{js/managers/shiftManager.js}"></script>
+<script th:src="@{js/managers/userManager.js}"></script>
+
+<!--
+<script src="js/shiftChange.js"></script>
+-->
+<script th:src="@{js/managers/requestChangeManager.js}"></script>
+<script th:src="@{js/shiftChange.js}"></script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+.collection {
+    width: 74%;
+    margin-left: 1%;
+    margin-top: 2%;
+    background-color: white;
+    color: white;
+}
+
+.collapsible {
+    background-color: white;
+    color: white;
+}
+
+#declineButton {
+    margin-left: 3%;
+}
+
+#decline {
+    margin-left: 2%;
+}

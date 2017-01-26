@@ -1,29 +1,40 @@
 #myTable1 {
-    width: 40%;
+    width: 100%;
     margin-left:2%;
-    margin-right:17%;
-    vertical-align: top;
-    margin-top: 8%;
+    margin-top: 5%;
+}
+
+
+#home {
+    position: relative;
+    float: left;
+    top: 5px;
+
 }
 
 #myTable2 {
-    width: 40%;
-    margin-left:10%;
-    margin-right:17%;
-    vertical-align: top;
-    margin-top: 8%;
+    width: 120%;
+    margin-left: 15%;
+    margin-top: 3.25%;
 }
 
-.inlineTable{
-    dislpay: inline-block;
+
+.selected {
+    background-color: #64b5f6;
+    color: white;
 }
 
-.floatLeft{
-    width:40%;
-    float: left;
+.selected2 {
+    background-color: #64b5f6;
+    color: white;
 }
 
-.floatRight{
-    width: 40%;
-    float: right;
+#button{
+    margin-top: 2%;
+    margin-left: 63%;
 }
+
+
+
+
+

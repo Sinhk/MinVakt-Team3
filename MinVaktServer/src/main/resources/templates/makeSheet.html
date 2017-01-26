@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Lag vaktliste</title>
+
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.css' />
+    <link href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.print.min.css' rel='stylesheet' media='print' />
+    <link href='https://fullcalendar.io/js/fullcalendar-scheduler-1.5.0/scheduler.min.css' rel='stylesheet' />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/common.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/makeSheet.css}">
+
+</head>
+
+
+<div id="nav" th:replace="fragments/header :: header"></div>
+<main>
+    <div id='wrap'>
+
+        <div id='external-events'>
+            <!--Drar ut vakter-->
+            <h5>Vakter:</h5>
+            <div class='fc-event' id="06-Vakt">06:00-14:00</div>
+            <div class='fc-event' id="14-Vakt">14:00-22:00</div>
+            <div class='fc-event' id="22-Vakt">22:00-06:00</div>
+            <div class='fc-event' id="06-VaktANSVAR">A: 06:00-14:00</div>
+            <div class='fc-event' id="14-VaktANSVAR">A: 14:00-22:00</div>
+            <div class='fc-event' id="22-VaktANSVAR">A: 22:00-06:00</div>
+
+        </div>
+
+        <a class="waves-effect waves-light btn blue darken-4" id="save">Lagre timeliste</a>
+
+
+
+        <!-- calendar -->
+        <div class="cal">
+            <div class="section"></div>
+            <div id="calendar"></div>
+        </div>
+            <div style='clear:both'></div>
+        <br>
+        <br>
+    </div>
+</main>
+
+<!--
+<div id="modal1" class="modal bottom-sheet">
+    <div class="modal-content">
+        <h4>Modal Header</h4>
+        <p>A bunch of text</p>
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+    </div>
+</div>-->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js' integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+<script src ='https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.js'></script>
+<script src='https://fullcalendar.io/js/fullcalendar-scheduler-1.5.0/scheduler.js'></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script th:src="@{js/managers/common.js}"></script>
+<script th:src="@{js/managers/shiftManager.js}"></script>
+<script th:src="@{js/managers/userManager.js}"></script>
+<script th:src="@{js/managers/util.js}"></script>
+<script th:src="@{js/newUser.js}"></script>
+
+<script th:src="@{js/makeSheet.js}"></script>
+
+</body>
+</html>

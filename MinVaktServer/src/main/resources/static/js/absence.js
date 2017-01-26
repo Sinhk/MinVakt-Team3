@@ -4,33 +4,7 @@
 
 $(document).ready(function(){
 
-    var body = document.getElementById("table1");
-
-    var shifts1;
-
-    getAllShiftForCurrentUser(function (shifts) {
-
-        shifts1 = shifts;
-
-        for(var i = 0; i<shifts.length; i++) {
-
-            var shift = shifts[i];
-
-            body.innerHTML += "<tr>" +
-                "<td><input type='checkbox' id='indeterminate-checkbox' />" +
-                "<label for='indeterminate-checkbox'></label></td>" +
-                "<td>"+shift.fromTime.split('T')[0]+"</td>" +
-                "<td>"+shift.fromTime.split('T')[1].substr(0,5)+"</td>" +
-                "</tr>";
-        }
-
-    });
-
-    $("#button").click(function () {
-
-        var selected = table1.getElementsByClassName('selected');
-
-        console.log(selected);
+    $("#button").click(function(){
 
 
         swal({  title: "Årsak til fravær",
@@ -42,38 +16,44 @@ $(document).ready(function(){
             function(inputValue){
                 if (inputValue === false) return false;
                 if (inputValue === "") {
-                    swal.showInputError("Du må skrive noe :(");
+                    swal.showInputError("Du må skrive noe");
                     return false
                 }
                 swal("Kommentar sendt", "Du skrev: " + inputValue, "success");
+
+                getCurrentUser(function (user) {
+
+                    var shift_id = $("#category-box").val();
+
+
+                   changeUserAssignment(user.employeeId, shift_id, false, false, false, true, inputValue, function (data) {
+
+                       console.log(data);
+
+                   })
+
+
+                })
+
             }
         );
 
-    });
-
-    function highlight(e) {
-        if (selected[0]) selected[0].className = '';
-        e.target.parentNode.className = 'selected';
-    }
-
-    var table1 = document.getElementById('table1'),
-        selected = table1.getElementsByClassName('selected');
-    table1.onclick = highlight;
+    })
 
 
+    getCurrentUser(function (user) {
 
+        getShiftsForUser(user.employeeId, function (shifts) {
 
-    $("#table1 tr").click(function (event) {
-        if (event.target.type !== 'checkbox') {
-            $(':checkbox', this).trigger('click');
-        }
-    });
+            for(var i = 0; i < shifts.length; i++) {
 
-    $("input[type='checkbox']").change(function (e) {
-        if ($(this).is(":checked")) {
-            $(this).closest('tr').addClass("highlight_row");
-        } else {
-            $(this).closest('tr').removeClass("highlight_row");
-        }
-    });
+                const shift = shifts[i];
+
+                document.getElementById("category-box").innerHTML +=
+
+                    "<option value= '"+shift.shiftId+"' id = shift"+shift.shiftId+">"+shift.fromTime.split("T")[0]+" "+shift.fromTime.split("T")[1].substr(0,5)+"</option>"
+            }
+        })
+    })
+
 });

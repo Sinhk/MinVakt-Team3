@@ -8,16 +8,14 @@
 <body>
 
 <div>
-    <p>startD</p><input id="startD" name="startD">
-    <p>startY</p><input id="startY" name="startY">
-    <p>startH</p><input id="startH" name="startH">
-    <p>startMonth</p><input id="startMonth" name="startMonth">
-    <p>startMin</p><input id="startMin" name="startMin">
-    <p>endD</p><input id="endD" name="endD">
-    <p>endY</p><input id="endY" name="endY">
-    <p>endH</p><input id="endH" name="endH">
-    <p>endMonth</p><input id="endMonth" name="endMonth">
-    <p>endMin</p><input id="endMin" name="endMin">
+    <p>Start: YYYY-MM-DD</p><input id="startDate">
+    <p>End:   YYYY-MM-DD</p><input id="endDate">
+
+    <p>Start: HH:MM</p><input id="startHour">
+    <p>End:   HH:MM</p><input id="endHour">
+
+    <p>Department ID</p><input id="departmentId">
+    <p>Required</p><input id="required">
 
     <button id="addShift">Add shift</button>
 </div>
@@ -25,7 +23,42 @@
 <script src="https://code.jquery.com/jquery-3.1.0.js" integrity="sha256-slogkvB1K3VOkzAI8QITxV3VzpOnkeNVsKvtkYLMjfk="
         crossorigin="anonymous"></script>
 <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
-<script src="js/tests/addShift.js" language="JavaScript"></script>
+<script src="js/managers/shiftManager.js"></script>
+<script>
+
+    $(document).ready(function () {
+
+        $("#addShift").click(function () {
+            var start = $("#startDate").val();
+            var end = $("#endDate").val();
+
+            var startH = $("#startHour").val();
+            var endH = $("#endHour").val();
+
+            var dep = $("#departmentId").val();
+            var req = $("#required").val();
+
+            addShift(JSON.stringify({
+
+                fromTime: start+"T"+startH+":00",
+                toTime: end+"T"+endH+":00",
+                departmentId: dep,
+                requiredEmployees: req
+
+            }),function (data) {
+
+                console.log(data);
+
+            })
+        })
+
+
+
+
+    })
+
+</script>
+
 </body>
 
 </html>

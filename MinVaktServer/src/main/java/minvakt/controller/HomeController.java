@@ -23,7 +23,6 @@ public class HomeController {
         UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         log.info("Username: {}, Auths: {}", principal.getUsername(), principal.getAuthorities());
-        log.info("Creds: {}", SecurityContextHolder.getContext().getAuthentication().getCredentials());
         return "homepage";
     }
 }

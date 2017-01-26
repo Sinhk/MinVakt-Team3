@@ -1,13 +1,69 @@
-#knapp{
-    margin-left:2%;
+
+.fc-sun { color:red;  }
+
+#formID\3A scheduleID table.fc-agenda-slots{
+    display:none
 }
 
-.cal
-{
-    margin-left: 2%;
-    margin-right: 2%;
+#calendar {
+    float: right;
+    margin-right: 25%;
+    margin-top:3%;
+    width: 63%;
 }
 
-.fc-sun { color:red; }
+#unavailable-events {
+    position: fixed;
+    margin-top:17%;
+    float: left;
+    width: 150px;
+    height: 170px;
+    padding: 0 10px;
+    border: 1px solid #ccc;
+    background: #eee;
+}
+
+#unavailable-events h4 {
+    font-size: 16px;
+    margin-top: 0;
+}
+
+#unavailable-events .fc-event-u {
+    margin: 10px 0;
+    cursor: pointer;
+}
 
 
+#external-events {
+    position: fixed;
+    margin-top:3%;
+    float: left;
+    width: 150px;
+    height: 170px;
+    padding: 0 10px;
+    border: 1px solid #ccc;
+    background: #eee;
+}
+
+#external-events h4 {
+    font-size: 16px;
+    margin-top: 0;
+}
+
+#external-events .fc-event {
+    margin: 10px 0;
+    cursor: pointer;
+}
+
+#calendar {
+    float: right;
+    margin-right: 25%;
+    margin-top:3%;
+    width: 63%;
+}
+
+#save{
+    position:fixed;
+    width:11.7%;
+    margin-top:30%;
+}

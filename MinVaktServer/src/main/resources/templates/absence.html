@@ -18,32 +18,19 @@
 <body>
 <div id="nav" th:replace="fragments/header :: header"></div>
 
-<div class="row">
-    <div class="col s4">
-        <table id="myTable1" class="tablesorter highlight">
-            <thead>
-            <tr>
-                <th><b>Dine vakter</b></th>
-            </tr>
-            </thead>
+<h2 id="header">Registrer fravær</h2>
 
-            <tbody id="table1">
-
-            </tbody>
-
-
-
-        </table>
-    </div>
-
-    <div class="left-align col s5">
-        <button id="button" class="btn waves-effect waves-light blue lighten-2" type="submit" name="action">Legg til kommentar</button>
-    </div>
-
-
-
-
+<div class="input-field">
+    <label>
+        <select id="category-box" class="browser-default white">
+            <option value="" disabled selected>Velg vakt</option>
+        </select>
+    </label>
 </div>
+
+        <div class="left-align col s5">
+            <button id="button" class="btn waves-effect waves-light blue darken-4" type="submit" name="action">Lagre fravær</button>
+        </div>
 
 <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js' integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.28.4/js/jquery.tablesorter.js"></script>

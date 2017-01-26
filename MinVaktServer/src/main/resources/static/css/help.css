@@ -6,16 +6,6 @@
     margin-left: 10%;
 }
 
-aside
-{
-    position: fixed;
-    margin-left: 77%;
-    padding:0;
-    width: 300px;
-    top: 4em;
-    left: 0;
-}
-
 .first_row{
     margin-left: 2%;
     margin-top:2%;
