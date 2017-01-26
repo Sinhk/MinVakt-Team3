@@ -34,7 +34,7 @@
 
 #external-events {
     position: fixed;
-    margin-top:2.5%;
+    margin-top:5%;
     float: left;
     width: 150px;
     height: 230px;
@@ -42,6 +42,11 @@
     border: 1px solid #ccc;
     background: #eee;
     /*text-align: left;*/
+}
+
+#category-box1 {
+    position: fixed;
+    width: 11.7%;
 }
 
 #external-events h4 {
@@ -75,7 +80,7 @@
 #save{
     position:fixed;
     width:11.7%;
-    margin-top:23%;
+    margin-top:25%;
 }
 
 #circle {
