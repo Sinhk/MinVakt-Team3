@@ -11,7 +11,6 @@
     <link href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.print.min.css' rel='stylesheet' media='print' />
     <link href='https://fullcalendar.io/js/fullcalendar-scheduler-1.5.0/scheduler.min.css' rel='stylesheet' />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" type="text/css" th:href="@{/css/common.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/css/vaktliste.css}">
@@ -22,9 +21,9 @@
 <div id="nav" th:replace="fragments/header :: header"></div>
 <main>
     <h2 id="header">Vaktliste</h2>
-    <a th:href="@{/makeSheet}" class="waves-effect waves-light btn blue darken-4" id="new">Ny timeliste</a>
+    <a th:href="@{/makeSheet}" class="admin waves-effect waves-light btn blue darken-4" id="new">Ny timeliste</a>
 
-<!-- calendar -->
+    <!-- calendar -->
 <div class="cal">
     <div class="section"></div>
     <div id="calendar"></div>

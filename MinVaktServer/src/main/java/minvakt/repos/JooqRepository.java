@@ -1,13 +1,12 @@
 package minvakt.repos;
 
-import minvakt.Application;
 import minvakt.datamodel.AssignedEmployee;
 import minvakt.datamodel.ShiftDetailed;
 import minvakt.datamodel.tables.AssignedPerShift;
 import minvakt.datamodel.tables.EmployeeTimeWorkedWeek;
-import minvakt.datamodel.tables.pojos.MissingPerShiftCategory;
 import minvakt.datamodel.tables.ShiftAssignment;
 import minvakt.datamodel.tables.pojos.Employee;
+import minvakt.datamodel.tables.pojos.MissingPerShiftCategory;
 import minvakt.datamodel.tables.pojos.Shift;
 import org.jooq.DSLContext;
 import org.jooq.Record10;
@@ -30,7 +29,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import static minvakt.Application.*;
+import static minvakt.Application.HOURS_IN_WEEK;
 import static minvakt.datamodel.Tables.*;
 import static org.jooq.impl.DSL.*;
 
@@ -131,12 +130,17 @@ public class JooqRepository {
                 .where(et.EMPLOYEE_ID.eq(employee_id)
                         .and(et.WEEK_NUM.eq(week)))
                 .fetchOneInto(String.class);
+
+        if (time == null) {
+            return Duration.ZERO;
+        }
+
         String[] split = time.split(":");
 
         return Duration.ofHours(Long.parseLong(split[0])).plusMinutes(Long.parseLong(split[1]));
     }
 
-    public List<MissingPerShiftCategory> getMissingForShift(int shift_id){
+    public List<MissingPerShiftCategory> getMissingForShift(int shift_id) {
         return create.selectFrom(MISSING_PER_SHIFT_CATEGORY)
                 .where(MISSING_PER_SHIFT_CATEGORY.SHIFT_ID.eq(shift_id))
                 .fetchInto(MissingPerShiftCategory.class);

@@ -60,8 +60,10 @@ public class SpringWebConfig
         for (HttpMessageConverter converter : converters) {
             if (converter instanceof org.springframework.http.converter.json.MappingJackson2HttpMessageConverter) {
                 ObjectMapper mapper = ((MappingJackson2HttpMessageConverter) converter).getObjectMapper();
+                Hibernate5Module hibernate = new Hibernate5Module();
+                hibernate.disable(Hibernate5Module.Feature.USE_TRANSIENT_ANNOTATION);
                 mapper
-                        .registerModule(new Hibernate5Module())
+                        .registerModule(hibernate)
                         .registerModule(new ParameterNamesModule())
                         .registerModule(new Jdk8Module())
                         .registerModule(new JavaTimeModule())

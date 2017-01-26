@@ -140,7 +140,8 @@ public class EmployeeController {
 
         Employee user = employeeRepo.findOne(user_id);
 
-        if (employee.getEmail() != null) user.setEmail(employee.getEmail());
+        //Email is username, locked for now
+        //if (employee.getEmail() != null) user.setEmail(employee.getEmail());
         if (employee.getPhone() != null) user.setPhone(employee.getPhone());
         if (employee.getFirstName() != null) user.setFirstName(employee.getFirstName());
         if (employee.getLastName() != null) user.setLastName(employee.getLastName());

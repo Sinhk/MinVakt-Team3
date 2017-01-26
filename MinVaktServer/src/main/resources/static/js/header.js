@@ -4,9 +4,9 @@
 
 $(document).ready(function () {
 
-    getAllChangeRequests(function (requests) {
+    getNumChangeRequests(function (requests) {
 
-        $("#numberOfNotifications").text(requests.length);
+        $("#numberOfNotifications").text(requests);
 
     })
 

@@ -9,6 +9,7 @@ import minvakt.util.SendMailTLS;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -52,9 +53,20 @@ public class ChangeRequestController {
     }
 
     @GetMapping
-    public List<ChangeRequest> getChangeRequests() {
-
-        return (List<ChangeRequest>) changeRequestRepository.findAll();
+    public ResponseEntity<?> getChangeRequests(@RequestParam(defaultValue = "false") boolean count) {
+        if (count) {
+            return ResponseEntity.ok(changeRequestRepository.count());
+        }
+        List<ChangeRequest> requests = (List<ChangeRequest>) changeRequestRepository.findAll();
+        requests.forEach(req -> {
+            Shift shift = shiftRepo.findOne(req.getShiftId());
+            req.setShift(shift);
+            checkIsOkChangeRequest(req, shift);
+            req.setNewEmployee(employeeRepo.findOne(req.getNewEmployeeId()));
+            req.setOldEmployee(employeeRepo.findOne(req.getOldEmployeeId()));
+        });
+        requests.sort((o1, o2) -> o1.getShift().getFromTime().compareTo(o2.getShift().getToTime()));
+        return ResponseEntity.ok(requests);
     }
 
     @Transactional
@@ -104,9 +116,9 @@ public class ChangeRequestController {
         String shift = toDateString(shiftRepo.findOne(shift_id));
 
         String text = "Ditt vaktbytte ble godkjent:\n" + shift + "\n";
-        // TODO: 19.01.2017 Send mail
-        //sendMail.sendAnswerOnShiftChange(emailOld,text);
-        //sendMail.sendAnswerOnShiftChange(emailNew,text);
+
+        sendMail.sendAnswerOnShiftChange(emailOld,text);
+        sendMail.sendAnswerOnShiftChange(emailNew,text);
 
         changeRequestRepository.findOne(request_id).getOldEmployeeId();
         ChangeRequest one = changeRequestRepository.findOne(request_id);
@@ -125,9 +137,8 @@ public class ChangeRequestController {
         String shift = toDateString(shiftRepo.findOne(shift_id));
         String text = "Ditt vaktbytte ble ikke godkjent:\n" +
                 shift;
-        // TODO: 19.01.2017 Send mail
-        //sendMail.sendAnswerOnShiftChange(emailOld,text);
-        //sendMail.sendAnswerOnShiftChange(emailNew,text);
+        sendMail.sendAnswerOnShiftChange(emailOld,text);
+        sendMail.sendAnswerOnShiftChange(emailNew,text);
 
         ChangeRequest one = changeRequestRepository.findOne(request_id);
 
@@ -135,43 +146,34 @@ public class ChangeRequestController {
     }
 
 
-    @GetMapping(value = "/{request_id}/isOkChangeRequest")
-    public String getIsOkChangeRequest(@PathVariable int request_id) {
-        ChangeRequest one = changeRequestRepository.findOne(request_id);
-        Shift shift = shiftRepo.findOne(one.getShiftId());
+    private void checkIsOkChangeRequest(ChangeRequest one, Shift shift) {
+        if(shiftAssignmentRepo.findByShiftIdAndEmployeeId(shift.getShiftId(), one.getNewEmployeeId()).isPresent()){
+            one.setAllowed(false);
+            return;
+        }
         WeekFields weekFields = WeekFields.of(Locale.getDefault());
         int week = shift.getFromTime().get(weekFields.weekOfWeekBasedYear());
-        boolean overtime = false;
         if (jooqRepository.getHoursWorked(one.getNewEmployeeId(), week)
                 .plus(Duration.between(shift.getFromTime(),shift.getToTime()))
                 .compareTo(Duration.of(HOURS_IN_WEEK, ChronoUnit.HOURS))>0) {
-            overtime = true;
+            one.setOvertime(true);
         }
 
         int oldUserCategory = employeeRepo.findOne(one.getOldEmployeeId()).getCategoryId();
         int newUserCategory = employeeRepo.findOne(one.getOldEmployeeId()).getCategoryId();
-        if (oldUserCategory == newUserCategory) {
-           if(overtime){
-               return "Dette fører til overtid";
-           }
-               return "Denne godkjenningen går bra";
-        }
-
-        int shift_id = one.getShiftId();
-
-        List<MissingPerShiftCategory> missingForShift = jooqRepository.getMissingForShift(shift_id);
-        for (MissingPerShiftCategory perShiftCategory : missingForShift) {
-            if (oldUserCategory == perShiftCategory.getCategoryId()) {
-                if (perShiftCategory.getCountAssigned() - 1 < perShiftCategory.getCountRequired()) {
-                    return "Dette fører til for lite " + catRepo.findOne((short)oldUserCategory).getCategoryName();
+        if (oldUserCategory != newUserCategory) {
+            List<MissingPerShiftCategory> missingForShift = jooqRepository.getMissingForShift(shift.getShiftId());
+            for (MissingPerShiftCategory perShiftCategory : missingForShift) {
+                if (oldUserCategory == perShiftCategory.getCategoryId()) {
+                    if (perShiftCategory.getCountAssigned() - 1 < perShiftCategory.getCountRequired()) {
+                        one.setMissing(catRepo.findOne((short) oldUserCategory).getCategoryName());
+                        one.setAllowed(false);
+                        return;
+                    }
                 }
             }
         }
-        // TODO: 25.01.2017 Er det en bedre måte å sjekke dette?
-    if(overtime){
-        return "Dette fører til overtid";
-    }
-        return "Denne godkjenningen går bra";
+        one.setAllowed(true);
     }
 
 }
