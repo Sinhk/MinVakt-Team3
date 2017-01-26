@@ -328,7 +328,7 @@ public class ShiftControllerTest {
         when(employeeRepo.findByEmail("admin@minvakt.no")).thenReturn(emp1);
         when(request1.isUserInRole("ROLE_ADMIN")).thenReturn(true);
         when(request2.isUserInRole("ROLE_ADMIN")).thenReturn(false);
-        when(shiftRepo.findByShiftAssignments_Employee_id(emp1.getEmployeeId())).thenReturn(Arrays.asList(shift2));
+        when(shiftRepo.findByShiftEmployeeId(emp1.getEmployeeId())).thenReturn(Arrays.asList(shift2));
         when(principal.getName()).thenReturn("admin@minvakt.no");
         when(request2.getUserPrincipal()).thenReturn(principal);
 
@@ -352,7 +352,7 @@ public class ShiftControllerTest {
         verify(employeeRepo, atLeastOnce()).findByEmail("admin@minvakt.no");
         verify(request1, atLeastOnce()).isUserInRole("ROLE_ADMIN");
         verify(request2, atLeastOnce()).isUserInRole("ROLE_ADMIN");
-        verify(shiftRepo, atLeastOnce()).findByShiftAssignments_Employee_id(emp1.getEmployeeId());
+        verify(shiftRepo, atLeastOnce()).findByShiftEmployeeId(emp1.getEmployeeId());
         verify(principal, atLeastOnce()).getName();
         verify(request2, atLeastOnce()).getUserPrincipal();
     }
