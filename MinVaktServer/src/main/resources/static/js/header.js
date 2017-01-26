@@ -6,7 +6,11 @@ $(document).ready(function () {
 
     getNumChangeRequests(function (requests) {
 
-        $("#numberOfNotifications").text(requests);
+        const notifications = $("#numberOfNotifications");
+        notifications.text(requests);
+        if(requests >0){
+            notifications.addClass('new red');
+        }
 
     })
 
