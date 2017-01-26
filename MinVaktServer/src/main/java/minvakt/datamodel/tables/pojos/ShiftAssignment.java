@@ -150,4 +150,21 @@ public class ShiftAssignment implements Serializable {
         sb.append(")");
         return sb.toString();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ShiftAssignment shiftA = (ShiftAssignment) o;
+
+        if (!id.equals(shiftA.id)) return false;
+        if (!shiftId.equals(shiftA.shiftId)) return false;
+        if (!employeeId.equals(shiftA.employeeId)) return false;
+        if (!absent.equals(shiftA.absent)) return false;
+        if (!assigned.equals(shiftA.assigned)) return false;
+        if (!commentForAbsence.equals(shiftA.commentForAbsence)) return false;
+
+        return true;
+    }
 }
