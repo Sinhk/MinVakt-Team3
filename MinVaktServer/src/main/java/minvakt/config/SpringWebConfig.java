@@ -196,6 +196,7 @@ public class SpringWebConfig
         registry.addViewController("/ledigeVakter").setViewName("availableShifts");
         registry.addViewController("/employeeE").setViewName("employeeE");
         registry.addViewController("/help").setViewName("help");
+        registry.addViewController("/availabilityAdmin").setViewName("availabilityAdmin");
         registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
     }
 

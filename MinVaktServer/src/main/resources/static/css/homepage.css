@@ -18,7 +18,8 @@ aside
     margin-right: 2%;
 }
 
-.fc-sun { color:red; }
+.fc-sun {
+    color:red; }
 
 #header {
     margin-top: 2%;

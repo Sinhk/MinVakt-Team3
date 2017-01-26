@@ -1,5 +1,6 @@
 
-.fc-sun { color:red;  }
+.fc-sun {
+    color:red;  }
 
 #formID\3A scheduleID table.fc-agenda-slots{
     display:none
