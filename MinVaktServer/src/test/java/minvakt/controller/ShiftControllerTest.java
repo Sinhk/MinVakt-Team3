@@ -358,7 +358,12 @@ public class ShiftControllerTest {
 
     @Test
     public void shiftIsAvailable() throws Exception {
+        // Stub
+        when(shiftAssignmentRepo.findByShiftId(shift1.getShiftId())).thenReturn(Arrays.asList(shiftAssign1));
+        when(shiftAssignmentRepo.getOne(shift1.getShiftId())).thenReturn(shiftAssign1);
 
+        // Run method and assert
+        assert(shiftController.shiftIsAvailable(shift1.getShiftId()));
     }
 
     @Test
