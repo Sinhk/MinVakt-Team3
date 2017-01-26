@@ -18,24 +18,18 @@
 <body>
 <div id="nav" th:replace="fragments/header :: header"></div>
 
-<div class="row">
-    <div class="col s4">
-        <table id="myTable1" class="tablesorter highlight">
-            <thead>
-            <tr>
-                <th><b>Ledige vakter</b></th>
-            </tr>
-            </thead>
+<h2 id="header">Ledige vakter</h2>
 
-            <tbody id="table1">
+<div class="input-field">
+    <label>
+        <select id="category-box" class="browser-default white">
+            <option value="" disabled selected>Velg vakt</option>
+        </select>
+    </label>
+</div>
 
-            </tbody>
-        </table>
-    </div>
-
-    <div class="left-align col s5">
-        <button id="button" class="btn waves-effect waves-light blue lighten-2" type="submit" name="action">Ønsk vakt</button>
-    </div>
+<div class="left-align col s5">
+    <button id="button" class="btn waves-effect waves-light blue darken-4" type="submit" name="action">Ønsk vakt</button>
 </div>
 
 <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js' integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
@@ -46,7 +40,7 @@
 <script th:src="@{js/managers/shiftManager.js}"></script>
 <script th:src="@{js/managers/userManager.js}"></script>
 
-<script th:src="@{js/shifts.js}"></script>
+<script th:src="@{js/availableShifts.js}"></script>
 
 </body>
 </html>
