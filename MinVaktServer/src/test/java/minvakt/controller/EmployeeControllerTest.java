@@ -1,6 +1,14 @@
 package minvakt.controller;
 
 
+import minvakt.datamodel.ShiftDetailed;
+import minvakt.datamodel.tables.pojos.ChangeRequest;
+import minvakt.datamodel.tables.pojos.Employee;
+import minvakt.datamodel.tables.pojos.Shift;
+import minvakt.datamodel.tables.pojos.ShiftAssignment;
+
+import minvakt.repos.*;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -8,9 +16,22 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.core.Response;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.mockito.Mockito.*;
+
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -19,39 +40,43 @@ import static org.junit.Assert.*;
  */
 @RunWith(MockitoJUnitRunner.class)
 public class EmployeeControllerTest {
-
-    // Mock controller
     @InjectMocks
     private EmployeeController employeeController;
 
+    @Mock
+    private EmployeeRepository employeeRepo;
+
+    @Mock
+    private ShiftRepository shiftRepo;
+
+    @Mock
+    private ShiftAssignmentRepository shiftAssignmentRepo;
+
+    @Mock
+    private ChangeRequestRepository changeRequestRepository;
+
+    @Mock
+    private CategoryRepository catRepo;
+
+    @Mock
+    private UserDetailsManager userDetailsManager;
+
+
+
     // Employees and Shifts for tests
-    /*
     private Employee emp1, emp2;
-    private Shift shift1, shift2;
-    */
+    private Shift shift1, shift2,nonAssignedShift;
+
+
     @Before
     public void setUp() throws Exception {
-        /*
-        // Initialization of Employee objects
-        emp1 = new Employee("Bob", "Bobsen", "bob@bob.bob", 12345678, 100);
-        emp2 = new Employee("Per", "Persson", "per@sverige.se", 11223344, 50);
 
-        // Assign employeeID to test-employees (needed for tests)
-        emp1.setEmployeeId(1);
-        emp2.setEmployeeId(2);
+        // Setup employees based on data from database script
+        emp1 = new Employee(1, (short)1, "admin", "", 12345678, "admin@minvakt.no", (short)100, "$2a$04$c7YTJkh8TVGsmCNNWW7pXu0f/dmy6E6TdsCgX7dnZlJQP7DBfuKjq", true, true);
+        emp2 = new Employee(2, (short)2, "user", "", 12345679, "user@minvakt.no", (short)100, "$2a$06$vMO32hhPzSrnvM8tRYwMZ.mzxkrrtXHtsYmRNxESKiClLPtZGRtF6", true, true);
 
+        //UserDetailsManager
 
-        // LocalDateTime objects for initializing Shift objects
-        LocalDateTime date1 = LocalDateTime.of(2017, 1, 10, 10, 0, 0);
-        LocalDateTime date2 = LocalDateTime.of(2017, 1, 10, 14, 0, 0);
-
-        shift1 = new Shift(date1, date2);
-        shift2 = new Shift(date1.toLocalDate(), PredeterminedIntervals.DAYTIME);
-
-        // Assign ID to shifts, needed for tests
-        shift1.setShiftId(1);
-        shift2.setShiftId(2);
-        */
     }
 
     @After
@@ -60,24 +85,88 @@ public class EmployeeControllerTest {
     }
 
     @Test
-    public void getUsers() throws Exception {
+    public void getCurrentUser() throws Exception {
+    //    HttpServletRequest request = mock(HttpServletRequest.class);
+      //  java.security.Principal principal = mock(java.security.Principal.class);
 
     }
 
     @Test
-    public void addEmployee() throws Exception {
+    public void getUsers() throws Exception {
+        // Stubbing methods
+        when(employeeRepo.findAll()).thenReturn(Arrays.asList(emp1, emp2));
 
+        // Get all employees
+        List<Employee> allEmp = (List<Employee>) employeeController.getUsers();
+
+        // Assert
+        assertEquals(emp1, allEmp.get(0));
+        assertEquals(emp2, allEmp.get(1));
+        assertNotEquals(emp2, allEmp.get(0));
+
+        // Verify
+        verify(employeeRepo, atLeastOnce()).findAll();
+    }
+
+    @Test
+    public void getAsResource() throws Exception {
+
+    }
+
+    @Test //TODO Sindre fix
+    public void addEmployee() throws Exception {
+ /*
+        // Stubbing method
+        when(employeeRepo.saveAndFlush(emp2)).thenReturn(emp2);
+
+        // Add employee
+        String test = employeeController.addEmployee(emp2);
+        System.out.println(test);
+        // assert
+        assertNotNull(test);
+
+        // Verify method use
+        verify(employeeRepo, atLeastOnce()).save(emp2);
+*/
     }
 
     @Test
     public void removeEmployee() throws Exception {
+        // Stubbing method
+        when(employeeRepo.save(emp2)).thenReturn(emp2);
+        when(employeeRepo.findOne(emp2.getEmployeeId())).thenReturn(emp2);
+        when(employeeRepo.findOne(emp1.getEmployeeId())).thenReturn(null);
+
+        // remove employee
+
+        Response response =employeeController.removeEmployee(emp2.getEmployeeId());
+        Response test = Response.ok().build();
+
+        //assert
+        assertEquals(test.getStatus(),response.getStatus());
+
+        // if else
+        response =employeeController.removeEmployee(emp1.getEmployeeId());
+        test = Response.noContent().build();
+
+        //assert
+        assertEquals(test.getStatus(),response.getStatus());
+
+        // Verify method use
+        verify(employeeRepo, atLeastOnce()).save(emp2);
 
     }
 
     @Test
-    public void findUser() throws Exception {
+    public void getUserById() throws Exception {
 
     }
+
+    @Test
+    public void changeEmployee() throws Exception {
+
+    }
+
 
     @Test
     public void changePasswordForUser() throws Exception {
@@ -90,12 +179,32 @@ public class EmployeeControllerTest {
     }
 
     @Test
+    public void getAssignedShiftsForUser() throws Exception {
+
+    }
+
+    @Test
+    public void getAvailableShiftsForUser() throws Exception {
+
+    }
+
+    @Test
     public void getShiftsForUserInRange() throws Exception {
 
     }
 
     @Test
-    public void addShiftToUser() throws Exception {
+    public void getEmployeesThatCanBeResponsible() throws Exception {
+
+    }
+
+    @Test
+    public void getCategory() throws Exception {
+
+    }
+
+    @Test
+    public void getHoursThisWeekForUser() throws Exception {
 
     }
 
@@ -103,5 +212,12 @@ public class EmployeeControllerTest {
     public void removeShiftFromUser() throws Exception {
 
     }
+
+    @Test
+    public void sendNewPassword() throws  Exception{
+
+    }
+
+
 
 }

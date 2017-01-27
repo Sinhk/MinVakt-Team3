@@ -110,12 +110,12 @@ public class EmployeeController {
     @DeleteMapping("/{user_id}")
     public Response removeEmployee(@PathVariable int user_id) {
         Employee user = employeeRepo.findOne(user_id);
-        user.setEnabled(false);
+
         if (user != null){
+            user.setEnabled(false);
             employeeRepo.save(user);
             return Response.ok().build();
         }
-
         return Response.noContent().build();
     }
 
