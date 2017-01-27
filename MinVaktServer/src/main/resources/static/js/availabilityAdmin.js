@@ -168,13 +168,19 @@ $(document).ready(function () { // document ready
                     type: "warning",
                     showCancelButton: true,
                     confirmButtonColor: "#DD6B55",
-                    confirmButtonText: "Slett",
-                    cancelButtonText: "Avbryt",
+                    confirmButtonText: "SLETT",
+                    cancelButtonText: "AVBRYT",
                     closeOnConfirm: false,
                     closeOnCancel: false },
                 function(isConfirm){
                     if (isConfirm) {
-                        swal("Slettet", "Vakten din har blitt slettet", "success");
+                        swal({
+                            title: "Slettet",
+                            text: "Vakten din har blitt slettet",
+                            type: "success",
+                            confirmButtonText: "OK",
+                            confirmButtonColor: "#0d47a1"
+                        })
 
                         $('#calendar').fullCalendar('removeEvents', event._id);
 
@@ -197,7 +203,15 @@ $(document).ready(function () { // document ready
                         })
                     }
                     else {
-                        swal("Avbrutt", "Vakten din ble ikke slettet", "error");   }
+                        swal ({
+                            title: "Avbrutt",
+                            text: "Vakten din ble ikke slettet",
+                            type: "error",
+                            confirmButtonText: "OK",
+                            confirmButtonColor: "#0d47a1"
+                        })
+                        /*swal("Avbrutt", "Vakten din ble ikke slettet", "error"); */
+                    }
                 });
 
 

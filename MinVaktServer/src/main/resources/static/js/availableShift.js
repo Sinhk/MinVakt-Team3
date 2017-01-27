@@ -41,8 +41,8 @@ function newWish(event) {
             text: "Vakt: " + event.start.format('DD/MM') + event.start.format("HH:mm") + " - " + event.end.format("HH:mm"),
             showCancelButton: true,
             confirmButtonColor: "#0d47a1",
-            confirmButtonText: "Ja",
-            cancelButtonText: "Nei",
+            confirmButtonText: "JA",
+            cancelButtonText: "NEI",
             cancelButtonColor: "#9e9e9e",
             closeOnConfirm: false,
             showLoaderOnConfirm: true,
@@ -60,7 +60,11 @@ function newWish(event) {
                     return event.start.dayOfYear() === eventa.start.dayOfYear();
                 });
             }).catch(()=>{
-                swal("Noe gikk galt","","error")
+                swal({
+                    title: "Noe gikk galt",
+                    type: "error",
+                    confirmButtonColor: "#0d47a1"
+                })
             });
 
         });

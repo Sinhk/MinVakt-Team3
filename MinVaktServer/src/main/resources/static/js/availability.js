@@ -81,10 +81,10 @@ $(document).ready(function () { // document ready
                         text: "Du kan ikke angre denne handlingen.",
                         type: "warning",
                         showCancelButton: true,
-                        cancelButtonText: "Avbryt",
+                        cancelButtonText: "AVBRYT",
                         cancelButtonColor: "#9e9e9e",
                         confirmButtonColor: "#0d47a1",
-                        confirmButtonText: "Ja, slett den!",
+                        confirmButtonText: "SLETT",
                         closeOnConfirm: false
                     },
 
