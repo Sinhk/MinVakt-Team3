@@ -162,7 +162,7 @@ $(document).ready(function () { // document ready
 
                                 $('#calendar').fullCalendar("renderEvent", {
 
-                                    title: title,
+                                    title: title+ (!assignment.available ? " F" : ""),
                                     id: assignment.id/*shift.fromTime.split("T")[1].substr(0, 5) == "06:00" ? 1 : shift.fromTime.split("T")[1].substr(0, 5) == "14:00" ? 2 : 3*/,
                                     start: shift.fromTime.split("T")[0],
                                     end: shift.toTime.split("T")[0],
