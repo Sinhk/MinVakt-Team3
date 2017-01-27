@@ -229,6 +229,8 @@ function registerAbsence(shiftId) {
             type: "input",
             showCancelButton: true,
             cancelButtonText: "Avbryt",
+            cancelButtonColor: "#9e9e9e",
+            confirmButtonColor: "#0d47a1",
             closeOnConfirm: false,
             animation: "slide-from-top",
             inputPlaceholder: "Skriv her",
