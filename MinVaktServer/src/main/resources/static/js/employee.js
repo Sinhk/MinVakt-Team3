@@ -1,5 +1,8 @@
 $(document).ready(function () {
+
+
     getCategories().then((categories) => {
+
         getAllUsers(function (employees) {
 
             const div = document.getElementById("employeeBody");
@@ -26,8 +29,6 @@ $(document).ready(function () {
     });
 
 
-
-
     function myFunction() {
         var input, filter, table, tr, td, i;
         input = document.getElementById("myInput");
@@ -46,11 +47,4 @@ $(document).ready(function () {
             }
         }
     }
-
-
-    $("#myTable").tablesorter();
-    $("#myTable").tablesorter({sortList: [[0, 0], [1, 0]]
-
-    });
-
 });
