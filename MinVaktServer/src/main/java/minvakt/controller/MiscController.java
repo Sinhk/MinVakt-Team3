@@ -30,14 +30,6 @@ public class MiscController {
     public MiscController(DepartmentRepository depRepo) {
         this.depRepo = depRepo;
     }
-    /*@GetMapping("/")
-    String index(Model model) {
-        model.addAttribute("now", LocalDateTime.now());
-        UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        log.info("Username: {}, Auths: {}", principal.getUsername(), principal.getAuthorities());
-        return "homepage";
-    }*/
 
     @GetMapping("/departments")
     public List<Department> getDepartments(){

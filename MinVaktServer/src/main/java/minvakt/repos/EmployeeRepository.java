@@ -28,6 +28,4 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
     @Query("SELECT e from Employee e LEFT JOIN ShiftAssignment sa on e.employeeId = sa.employeeId LEFT JOIN Shift s on s.shiftId = sa.shiftId where date(s.fromTime) = ?1")
     List<Employee> findByShiftDate(Date date);
 
-    //void setPassword(User user, String password);
-
 }

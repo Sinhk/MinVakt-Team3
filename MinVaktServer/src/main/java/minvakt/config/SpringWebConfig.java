@@ -73,15 +73,6 @@ public class SpringWebConfig
         }
     }
 
-
-    /* ******************************************************************* */
-    /*  GENERAL CONFIGURATION ARTIFACTS                                    */
-    /*  Static Resources, i18n Messages, Formatters (Conversion Service)   */
-    /* ******************************************************************* */
-
-    /*
-     *  Dispatcher configuration for serving static resources
-     */
     @Override
     public void addResourceHandlers(final ResourceHandlerRegistry registry) {
         super.addResourceHandlers(registry);
@@ -90,43 +81,6 @@ public class SpringWebConfig
         registry.addResourceHandler("/js/**").addResourceLocations("/static/js/");
         registry.addResourceHandler("/**").addResourceLocations("/static/");
     }
-
-    /*
-     *  Message externalization/internationalization
-     */
-  /*  @Bean
-    public ResourceBundleMessageSource messageSource() {
-        ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
-        messageSource.setBasename("Messages");
-        return messageSource;
-    }*/
-
-    /*
-     * Add formatter for class {@link thymeleafexamples.stsm.business.entities.Variety}
-     * and {@link java.util.Date} in addition to the one registered by default
-     */
-    /*@Override
-    public void addFormatters(final FormatterRegistry registry) {
-        super.addFormatters(registry);
-        registry.addFormatter(varietyFormatter());
-        registry.addFormatter(dateFormatter());
-    }*/
-
-    /*@Bean
-    public VarietyFormatter varietyFormatter() {
-        return new VarietyFormatter();
-    }
-
-    @Bean
-    public DateFormatter dateFormatter() {
-        return new DateFormatter();
-    }*/
-
-
-    /* **************************************************************** */
-    /*  THYMELEAF-SPECIFIC ARTIFACTS                                    */
-    /*  TemplateResolver <- TemplateEngine <- ViewResolver              */
-    /* **************************************************************** */
 
     @Bean
     public SpringResourceTemplateResolver templateResolver() {
@@ -153,8 +107,6 @@ public class SpringWebConfig
 
     @Bean
     public SpringTemplateEngine templateEngine() {
-        // SpringTemplateEngine automatically applies SpringStandardDialect and
-        // enables Spring's own MessageSource message resolution mechanisms.
         SpringTemplateEngine templateEngine = new SpringTemplateEngine();
         templateEngine.addTemplateResolver(templateResolver());
         templateEngine.addTemplateResolver(urlTemplateResolver());

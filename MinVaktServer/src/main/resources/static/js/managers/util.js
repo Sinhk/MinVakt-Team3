@@ -1,37 +1,13 @@
-/**
- * Created by OlavH on 16-Jan-17.
- */
-
 function parseLocalDateTimeToDate(localdatetime) {
 
     return new Date(localdatetime);
 
 }
-/*
-
-function toFullCalendarEvent(event) {
-
-    var start = event.startDateTime;
-    var end = event.endDateTime;
-
-    var dateStart = new Date(start[0], start[1], start[2], start[3], start[4]);
-    var dateEnd = new Date(end[0], end[1], end[2], end[3], end[4]);
-
-
-    var full = {
-        id: event.id,
-        title: dateStart+" - "+dateEnd,
-        start: dateStart,
-        end: dateEnd
-    };
-
-    return full;
-
-}*/
 
 function isAdmin() {
     return sessionStorage.admin;
 }
+
 function toFullCalendarEventWithResource(event, resource) {
     var start = event.fromTime;
     var end = event.toTime;
@@ -51,9 +27,7 @@ function toFullCalendarEventWithResource(event, resource) {
             resourceId: resource.id,
             backgroundColor: responsible != undefined && responsible.employeeId == resource.id ? "#9B0300" : available ? "#3E9B85" : "#3F7F9B",
             isResponsible: responsible,
-            available: available,
-
-            //backgroundColor: event.responsible != undefined && event.responsible.employeeId == resource.id ? "#9B0300" : "#3E9B85"
+            available: available
         };
     });
 
@@ -70,12 +44,12 @@ function toFullCalendarEventPromise(shift) {
 
         getResponsibleUserForShift(shift.shiftId, function (responsible) {
 
-        })
+        });
         //return $.getJSON("shifts/"+shift.shiftId+"/responsible").then((responsible) => {
             //console.log(responsible);
         return Promise.resolve({
                 id: shift.shiftId,
-                title: start.split("T")[1].substr(0, 5) + " - " + end.split("T")[1].substr(0, 5),// + ": " + resFullName,
+                title: "",//start.split("T")[1].substr(0, 5) + " - " + end.split("T")[1].substr(0, 5),// + ": " + resFullName,
                 start: dateStart,
                 end: dateEnd,
                 //backgroundColor: available ? "#9B0300" : "#3E9B85",
@@ -103,37 +77,6 @@ function toAvailableEventPromise(event) {
                 });
            // });
         });
-}
-
-function toFullCalendarEvent(event, callback) {
-    if (event != undefined) {
-        const start = event.fromTime;
-        const end = event.toTime;
-
-        const dateStart = moment(start);
-        const dateEnd = moment(end);
-        getDepartmentName(event.departmentId).then((department)=>{
-
-            getResponsibleUserForShift(event.shiftId, function (responsible) {
-
-                const resFullName = responsible.firstName + " " + responsible.lastName;
-                callback( {
-
-                    id: event.shiftId,
-                    title: start.split("T")[1].substr(0, 5) + " - " + end.split("T")[1].substr(0, 5),// + ": " + resFullName,
-                    start: dateStart,
-                    end: dateEnd,
-                    //backgroundColor: available ? "#9B0300" : "#3E9B85",
-                    //available: available,
-                    avdeling: department,
-                    isResponsible: responsible != undefined ? resFullName : "Ingen",
-                    backgroundColor: responsible ? "#00bcd4" : "#2196f3",
-
-                });
-
-            });
-        });
-    }
 }
 
 function getDepartmentName(departmentId) {
@@ -266,7 +209,7 @@ function toFullCalendarEvent(event, callback) {
                     callback( {
 
                         id: event.shiftId,
-                        title: start.split("T")[1].substr(0, 2) + " - " + end.split("T")[1].substr(0, 2)+(res ? " A" : " V"),// + ": " + resFullName,
+                        title: /*start.split("T")[1].substr(0, 2) + " - " + end.split("T")[1].substr(0, 2)+*/(res ? " A" : " V"),// + ": " + resFullName,
                         start: dateStart,
                         end: dateEnd,
                         //backgroundColor: available ? "#9B0300" : "#3E9B85",
@@ -278,9 +221,6 @@ function toFullCalendarEvent(event, callback) {
                     });
 
                 })
-
-
-
             });
         });
     }

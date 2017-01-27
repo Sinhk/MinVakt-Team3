@@ -66,7 +66,6 @@ public class ShiftController {
     }
 
 
-    // TODO: 19.01.2017 do this automagically
     @PostMapping
     public void addShift(@RequestBody Shift shift) {
         shiftRepo.save(shift);
@@ -179,7 +178,6 @@ public class ShiftController {
             List<Employee> all = employeeRepo.findAll();
             for (Employee one : all) {
                 if (one.getCategoryId() == 1) {
-                    // TODO: 19.01.2017 Send mail
                     sendMailTLS.sendMessageAbsent(one.getEmail(), text);
                 }
             }
@@ -250,22 +248,6 @@ public class ShiftController {
         });
     }
 
-    /*@GetMapping(value = "/byday")
-    public List<Shift> getShiftsByDay(@RequestBody String day){
-
-        LocalDate date = LocalDate.parse(day);
-
-        Iterable<Shift> all = shiftRepo.findAll();
-
-        List<Shift> shiftList = new ArrayList<>((Collection<? extends Shift>) all);
-
-        return shiftList
-                .stream()
-                .filter(shift -> shift.getStartDateTime().toLocalDate().isEqual(date))
-                .collect(Collectors.toList());
-
-    }*/
-
     @GetMapping(value = "/{shift_id}/possible_users")
     public List<Employee> getAvailableForShift(@PathVariable int shift_id) {
         Shift shift = shiftRepo.findOne(shift_id);
@@ -296,7 +278,6 @@ public class ShiftController {
         return availableShifts.stream().filter(shift -> assignedShifts.stream().noneMatch(shift1 -> shift1.getFromTime().toLocalDate().equals(shift.getFromTime().toLocalDate()))).collect(Collectors.toList());
     }
 
-    // TODO: 19-Jan-17 Fix/Remove :  Do we ever need just one?
     @GetMapping(value = "/{shift_id}/available")
     public boolean shiftIsAvailable(@PathVariable int shift_id) {
         return shiftAssignmentRepo.findByShiftId(shift_id).stream()
@@ -385,7 +366,6 @@ public class ShiftController {
     public Map<Integer, Long> getTotalHoursForMonth(@RequestParam int month) {
 
         LocalDate startOfMonth = LocalDate.of(LocalDate.now().getYear(), month, 1);
-
 
         Map<Integer, Duration> integerDurationMap = jooqRepo.getHoursWorked(startOfMonth, startOfMonth.plusDays(startOfMonth.getMonth().length(LocalDate.now().isLeapYear())));
 

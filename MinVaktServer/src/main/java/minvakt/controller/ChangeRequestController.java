@@ -94,7 +94,6 @@ public class ChangeRequestController {
         List<Employee> all = employeeRepo.findAll();
         for (Employee one : all) {
             if (one.getCategoryId() == 1) {
-                // TODO: 19.01.2017 Send mail
                 sendMail.sendChangeRequstToAdmin(one.getEmail(),text);
             }
         }

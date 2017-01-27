@@ -4,7 +4,6 @@ $(document).ready(function () {
 
     $('#calendar').fullCalendar({
 
-        //displayEventTime: false,
         locale: "no",
         selectable: true,
         header: {
@@ -24,6 +23,7 @@ $(document).ready(function () {
             day: 'Dag',
             list: 'Liste'
         },
+        displayEventEnd: true,
         /*select: function (start, end, jsEvent, view) {
 
             console.log("Start date: " + moment(start).format() +

@@ -5,6 +5,7 @@ package minvakt.datamodel.tables.pojos;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.io.Serializable;
 
@@ -29,6 +30,7 @@ import javax.persistence.Table;
 )
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 @Entity
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @Table(name = "employee", schema = "g_scrum03")
 public class Employee implements Serializable {
 

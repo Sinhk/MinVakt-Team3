@@ -21,15 +21,6 @@ public interface ShiftRepository extends JpaRepository<Shift, Integer> {
     @Query("SELECT s from Shift s LEFT JOIN ShiftAssignment a on s.shiftId = a.shiftId where a.employeeId = ?1")
     List<Shift> findByShiftEmployeeId(int employee);
 
-    @Query("SELECT s FROM Shift s ")
-    List<Shift> findAvailable();
-
     @Query("select s from Shift s where (s.fromTime between ?1 and ?2)")
     List<Shift> findBetweenDates( LocalDateTime start, LocalDateTime end);
-
-
-    //boolean exsistsByShiftAssignmentStatusAndShiftId(ShiftStatus status,int shift_id);
-
-    // TODO: 16-Jan-17
-    //List<Shift> findShiftsInRange(User user, LocalDate start, LocalDate end);
 }

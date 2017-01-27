@@ -42,6 +42,4 @@ public class WeekDateInterval implements Serializable{
         System.out.println(of.start +" - "+of.end);
 
     }
-
-
 }
