@@ -257,7 +257,7 @@ $("#save").click(function () {
     console.log("---------------------------------------------SAVING---------------------------------------------");
 
     swal({
-        title: "Den nye timelisten ble lagret",
+        title: "Den nye vaktlisten ble lagret",
         type: "success",
         confirmButtonColor: "#0d47a1"
     })
