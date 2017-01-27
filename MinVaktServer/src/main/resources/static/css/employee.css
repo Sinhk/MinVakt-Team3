@@ -42,8 +42,9 @@
 }
 
 #btn {
-    margin-top:-11%;
-    margin-left: 79%;
+    float: right;
+    margin-top:-6.5%;
+    margin-right: 2%;
 }
 
 #home {
