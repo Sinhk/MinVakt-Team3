@@ -365,17 +365,25 @@ function getMonthlyReportMap(month,callback) {
 
 }
 
-function sendTotalHours(email,text) {
+function sendTotalHours(email) {
 
-    $.ajax({
-           url: "/shifts/"+email+"/sendTotalHours/",
+    getMonthlyReportMap(new Date().getMonth(), function (map) {
+
+        $.ajax({
+            url: "/shifts/"+email+"/sendTotalHours/",
             type: "GET",
+            contentType: "Application/JSON",
+            data: map,
+
 
             success: function (data) {
-            //console.log(data);
+                //console.log(data);
             },
             error: function (data) {
                 console.log("Error: " + data);
             }
-    });
+        });
+    })
+
+
 }

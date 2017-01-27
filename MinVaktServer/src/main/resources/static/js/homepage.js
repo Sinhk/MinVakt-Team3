@@ -70,6 +70,9 @@ $(document).ready(function () {
     });
     switchAdminViewHomePage();
     document.addEventListener('viewChange', switchAdminViewHomePage);
+
+
+
 });
 
 function switchAdminViewHomePage() {
@@ -249,3 +252,58 @@ function registerAbsence(shiftId) {
         }
     );
 }
+
+$(document).ready(function () {
+
+    if(new Date().getDate() == 1 ){ // Første dag i måneden
+
+        console.log("First day of month");
+
+        var email="";
+        swal({
+                title: "Klar for innsending",
+                text: "Skriv inn e-posten til mottaker av den måndelige rapporten.",
+                type: "input",
+                input: "email",
+                showCancelButton: true,
+                cancelButtonText: "Avbryt",
+                confirmButtonText: "Send",
+                closeOnConfirm: false,
+                animation: "slide-from-top",
+                inputPlaceholder: "Skriv e-postadresse her"
+            },
+            function (inputValue) {
+                if (inputValue === false) return false;
+                if (inputValue === "") {
+                    swal.showInputError("Du må skrive noe");
+                    return false
+                }
+                email =inputValue;
+                swal("Månedlig rapport innsendt", "Du skrev: " + inputValue, "success");
+            }
+        ),
+
+            getMonthlyReportMap(new Date().getMonth()+1, function (map) {
+
+                console.log(map);
+
+                getAllUsers(function (employees) {
+
+
+                    const div = document.getElementById("users");
+                    let text = "Liste over ansatte med timer jobbet:";
+                    for (let i = 0; i < employees.length; i++) {
+
+                        let employee = employees[i]; // Uten const faile alt
+
+                        var nr = employee.employeeId;
+                        text += "\n"+ employee.firstName + " " + employee.lastName + "/"+ employee.email+" : " +(map[nr] == undefined ? "0" : map[nr]);
+                    }
+                    sendTotalHours(email,text)
+
+                })
+            })
+
+    }
+
+})

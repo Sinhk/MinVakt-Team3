@@ -25,7 +25,7 @@ $(document).ready(function(){
              }
          })
     })
-}
+})
 
  $("#new").click(function () {
         var email="";
@@ -73,4 +73,4 @@ $(document).ready(function(){
             })
         })
     })
-})
+
