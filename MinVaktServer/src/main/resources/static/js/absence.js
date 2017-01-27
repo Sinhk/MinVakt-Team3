@@ -6,7 +6,6 @@ $(document).ready(function(){
 
     $("#button").click(function(){
 
-
         swal({  title: "Årsak til fravær",
                 text: "Skriv inn årsaken til ditt fravær under",
                 type: "input",
