@@ -401,10 +401,11 @@ public class ShiftController {
 
     }
 
-    @GetMapping("/{eMail}/sendTotalHours")
-    public void sendTotalHours(@PathVariable String eMail, @RequestBody String text ){
+    @PostMapping("/{eMail}/sendTotalHours")
+    public boolean sendTotalHours(@PathVariable String eMail, @RequestBody String text ){
         SendMailTLS sendMail = new SendMailTLS();
         sendMail.sendTotalHoursToThePayrollOffice(eMail,text);
+        return true;
     }
 
 }

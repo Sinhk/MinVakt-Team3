@@ -620,4 +620,9 @@ public class ShiftControllerTest {
         // Assert
         assertEquals(8, (long)testMap.get(1));
     }
+
+    @Test
+    public void sendTotalHours() throws Exception {
+        assert(shiftController.sendTotalHours("123@123.123", "hei"));
+    }
 }
