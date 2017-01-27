@@ -356,3 +356,11 @@ function getAllShiftAssignments(callback) {
     })
 
 }
+
+function getMonthlyReportMap(month,callback) {
+
+    $.getJSON("/shifts/totalhours?month="+month, function (data) {
+        callback(data);
+    })
+
+}

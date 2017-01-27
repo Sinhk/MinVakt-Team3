@@ -88,6 +88,8 @@ function toFullCalendarEventPromise(shift) {
 function toAvailableEventPromise(event) {
         const dateStart = moment(event.fromTime);
         const dateEnd = moment(event.toTime);
+    console.log(event)
+
         return getDepartmentName(event.departmentId).then((department)=>{
                 return Promise.resolve( {
                     id: event.shiftId,
@@ -132,7 +134,7 @@ function toFullCalendarEvent(event, callback) {
 
 function getDepartmentName(departmentId) {
     return getDepartments().then((departments)=>{
-        return Promise.resolve(departments.filter((dep)=>dep.departmentId = departmentId)[0].departmentName);
+        return Promise.resolve(departments.filter((dep)=>dep.departmentId == departmentId)[0].departmentName);
     })
 
 }

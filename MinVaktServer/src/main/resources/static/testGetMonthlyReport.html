@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Monthly Report</title>
+</head>
+<body>
+
+<table id="myTable" class="tablesorter">
+    <thead>
+    <tr>
+        <th><b>Fornavn</b></th>
+        <th><b>Etternavn</b></th>
+        <th><b>E-post</b></th>
+        <th><b>Timer</b></th>
+
+
+    </tr>
+    </thead>
+
+    <tbody id="users">
+
+    </tbody>
+</table>
+
+
+
+
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js' integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+
+<script th:src="@{js/managers/common.js}"></script>
+<script th:src="@{js/managers/userManager.js}"></script>
+<script th:src="@{js/managers/shiftManager.js}"></script>
+
+<script src="js/managers/shiftManager.js"></script>
+<script src="js/managers/userManager.js"></script>
+
+
+
+<script>
+
+    getMonthlyReportMap(1, function (map) {
+
+        console.log(map);
+
+
+        getAllUsers(function (employees) {
+
+
+            const div = document.getElementById("users");
+
+            for (let i = 0; i < employees.length; i++) {
+
+                let employee = employees[i]; // Uten const faile alt
+
+                var nr = employee.employeeId;
+
+                div.innerHTML +=
+                        "<tr>" +
+                        "<td>" + employee.firstName + "</td>" +
+                        "<td>" + employee.lastName + "</td>" +
+                        "<td>" + employee.email + "</td>" +
+                        "<td>" + (map[nr] == undefined ? "0" : map[nr])  + "</td>" +
+                        "</tr>";
+
+            }
+
+        })
+    })
+
+</script>
+
+</body>
+</html>
