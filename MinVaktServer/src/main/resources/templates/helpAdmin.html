@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Hjelp</title>
+    <link rel='stylesheet' href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/common.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/help.css}">
+    <title>Hjelp</title>
+</head>
+<body>
+<div id="nav" th:replace="fragments/header :: header"></div>
+
+<h2 id="header">Informasjonsside</h2>
+
+<div class="first_row row">
+    <div class="col s3">
+        <div class="shift_card">
+            <div class="card grey lighten-4">
+                <div class="icon">
+                    <i class="medium material-icons blue-text text-darken-4">assignment</i>
+                    <!--<img class="activator" src="images/office.jpg">-->
+                </div>
+                <div class="card-content">
+                    <span class="header card-title activator grey-text text-darken-4">Vaktliste<i class="material-icons right" id="more">more_vert</i></span>
+                    <p><a th:href="@{/vaktliste}">Gå til vaktliste her</a></p>
+                </div>
+                <div class="card-reveal">
+                    <span class="card-title grey-text text-darken-4">Vaktliste<i class="material-icons right">close</i></span>
+                    <p>Her vises en oversikt over alle ansatte som er satt opp på den valgte uken.
+                        Vaktene som er markert med blå og/eller merket med «A» er ansvarsvaktene.
+                        De grønne som er markert med «V» er vaktene du er satt opp.
+                        Her har du også mulighet til å lage vaktlister inne på knappen «Lag vaktliste».</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col s3">
+        <div class="shift_card">
+            <div class="card grey lighten-4">
+                <div class="icon">
+                    <i class="medium material-icons blue-text text-darken-4">note_add</i>
+                    <!--<img class="activator" src="images/office.jpg">-->
+                </div>
+                <div class="card-content">
+                    <span class="header card-title activator grey-text text-darken-4">Lag vaktliste<i class="material-icons right" id="more">more_vert</i></span>
+                    <p><a th:href="@{/makeSheet}">Lag vaktliste her</a></p>
+                </div>
+                <div class="card-reveal">
+                    <span class="card-title grey-text text-darken-4">Lag vaktliste<i class="material-icons right">close</i></span>
+                    <p>Her må du gå gjennom vaktliste og dermed «Ny timeliste». Her får du en oversikt over alle ansatte og en kalender som viser uke for uke.
+                        Dermed drar du vakter fra boksen merket med «Vakter» og slipper denne på de vaktene som er markert med «T» og er grønn.
+                        Det vil si at denne personen har satt seg tilgjengelig for denne vakten.
+                        Her velger du også hvem som har ansvarsvakt på lik måte som du setter opp resten av vaktene.
+                        Disse er merket med «A» og er lysblå.
+                        De som allerede er mørkere blå og markert «V» er allerede satt opp i vaktlisten.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col s3">
+        <div class="shift_card">
+            <div class="card grey lighten-4">
+                <div class="icon">
+                    <i class="medium material-icons blue-text text-darken-4">event_available</i>
+                    <!--<img class="activator" src="images/office.jpg">-->
+                </div>
+                <div class="card-content">
+                    <span class="header card-title activator grey-text text-darken-4">Tilgjengelighet<i class="material-icons right" id="more">more_vert</i></span>
+                    <p><a th:href="@{/tilgjengelighet}">Gå til tilgjengelighet her</a></p>
+                </div>
+                <div class="card-reveal">
+                    <span class="card-title grey-text text-darken-4">Vaktliste<i class="material-icons right">close</i></span>
+                    <p>Her har du muligheten til å se en oversikt over de ulike tilgjengelighetene til de ansatte.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="second_row row">
+    <div class="col s3">
+        <div class="shift_card">
+            <div class="card grey lighten-4">
+                <div class="icon">
+                    <i class="medium material-icons blue-text text-darken-4">group</i>
+                    <!--<img class="activator" src="images/office.jpg">-->
+                </div>
+                <div class="card-content">
+                    <span class="header card-title activator grey-text text-darken-4">Ansatte<i class="material-icons right" id="more">more_vert</i></span>
+                    <p><a th:href="@{/ansatte}">Gå til ansatte her</a></p>
+                </div>
+                <div class="card-reveal">
+                    <span class="card-title grey-text text-darken-4">Ansatte<i class="material-icons right">close</i></span>
+                    <p>Her har du muligheten til å se en oversikt over alle ansatte med informasjon som navn, stilling, stillingsprosent, telfonnummer, antall timer per uke som denne personen har jobbet, e-post og en knapp «slett» på alle registrerte ansatte.
+                        Velger du å slette vil ikke den valgte ansatte eksistere mer.
+                        Du kan også sortere etter valgt kategori ut i fra å trykke på overskiftene, for eksempel overskriften «Fornavn».
+                        Her finner du også knappen «Legg til bruker» som gir deg muligheter til å opprette en ny ansatt.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col s3">
+        <div class="shift_card">
+            <div class="card grey lighten-4">
+                <div class="icon">
+                    <i class="medium material-icons blue-text text-darken-4">person_add</i>
+                    <!--<img class="activator" src="images/office.jpg">-->
+                </div>
+                <div class="card-content">
+                    <span class="header card-title activator grey-text text-darken-4">Legg til en ansatt<i class="material-icons right" id="more">more_vert</i></span>
+                    <p><a th:href="@{/ansatte/ny}">Legg til en ansatt her</a></p>
+                </div>
+                <div class="card-reveal">
+                    <span class="card-title grey-text text-darken-4">Legg til en ansatt<i class="material-icons right">close</i></span>
+                    <p>Her får du muligheten til å opprette en ny bruker. Her må alle felt fylles inn med den etterspurte informasjonen.
+                        Deretter trykk «Opprett bruker»-knappen og du vil få en bekreftelse på at brukeren ble opprettet.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col s3">
+        <div class="shift_card">
+            <div class="card grey lighten-4">
+                <div class="icon">
+                    <i class="medium material-icons blue-text text-darken-4">date_range</i>
+                    <!--<img class="activator" src="images/office.jpg">-->
+                </div>
+                <div class="card-content">
+                    <span class="header card-title activator grey-text text-darken-4">Ledige vakter<i class="material-icons right" id="more">more_vert</i></span>
+                    <p><a th:href="@{/ledigeVakter}">Gå til ledige vakter her</a></p>
+                </div>
+                <div class="card-reveal">
+                    <span class="card-title grey-text text-darken-4">Ledige vakter<i class="material-icons right">close</i></span>
+                    <p>Denne siden viser en oversikt over alle ledige vakter med informasjon om vakten som dato, klokkeslett og avdeling denne vakten er på.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="third_row row">
+    <div class="col s3">
+        <div class="shift_card">
+            <div class="card grey lighten-4">
+                <div class="icon">
+                    <i class="medium material-icons blue-text text-darken-4">event_busy</i>
+                    <!--<img class="activator" src="images/office.jpg">-->
+                </div>
+                <div class="card-content">
+                    <span class="header card-title activator grey-text text-darken-4">Fravær<i class="material-icons right" id="more">more_vert</i></span>
+                    <p><a th:href="@{/absence}">Gå til fravær her</a></p>
+                </div>
+                <div class="card-reveal">
+                    <span class="card-title grey-text text-darken-4">Fravær<i class="material-icons right">close</i></span>
+                    <p>Her har du muligheten til å legge inn fravær ved sykdom. Dette gjøres ved å velge vakten du skal legge inn til fravær. Deretter trykk «lagre fravær». Dermed får du beskjed om at du har registeret fravær. Melding om fravær blir dermed sendt på e-post til administrasjonen. </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col s3">
+        <div class="shift_card">
+            <div class="card grey lighten-4">
+                <div class="icon">
+                    <i class="medium material-icons blue-text text-darken-4">notifications</i>
+                    <!--<img class="activator" src="images/office.jpg">-->
+                </div>
+                <div class="card-content">
+                    <span class="header card-title activator grey-text text-darken-4">Varsler<i class="material-icons right" id="more">more_vert</i></span>
+                    <p><a th:href="@{/notification}">Gå til varsler her</a></p>
+                </div>
+                <div class="card-reveal">
+                    <span class="card-title grey-text text-darken-4">Varsler<i class="material-icons right">close</i></span>
+                    <p>Denne siden viser en oversikt over alle varsler som kommer inn til admin. Dette er bytteforespøsler om jobbvakter fra de ansatte. Her velger du enten godkjenn eller ikke godkjenn.
+                        Blir forespørselen godkjent fra admin. vil vakten til den ansatte bli fjernet fra timelisten hans/hennes.
+                    Hvis vaktbyttet ikke blir godkjent står vakten fortsatt i timelisten til den ansatte.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col s3">
+        <div class="shift_card">
+            <div class="card grey lighten-4">
+                <div class="icon">
+                    <i class="medium material-icons blue-text text-darken-4">home</i>
+                    <!--<img class="activator" src="images/office.jpg">-->
+                </div>
+                <div class="card-content">
+                    <span class="header card-title activator grey-text text-darken-4">Hjem<i class="material-icons right" id="more">more_vert</i></span>
+                    <p><a th:href="@{/}">Gå til hjemside her</a></p>
+                </div>
+                <div class="card-reveal">
+                    <span class="card-title grey-text text-darken-4">Hjem<i class="material-icons right">close</i></span>
+                    <p>Dette er hovedsiden, den som man blir sendt til etter å ha logget inn. Her er din personlige kalender, med oversikt over dine vakter. Man kan lett komme tilbake til hjem-siden ved å trykke på ikonet med et bilde av et hjem.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js' integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.28.4/js/jquery.tablesorter.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+    <script th:src="@{js/managers/common.js}"></script>
+    <script th:src="@{js/help.js}"></script>
+
+</body>
+</html>

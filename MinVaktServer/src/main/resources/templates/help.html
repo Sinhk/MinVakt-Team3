@@ -14,7 +14,7 @@
 
 <body>
 <div id="nav" th:replace="fragments/header :: header"></div>
-
+<h2 id="header">Informasjonsside</h2>
 <div class="first_row row">
     <!--First card for "Vaktbytte"-->
     <div class="col s3">
@@ -30,7 +30,13 @@
                 </div>
                 <div class="card-reveal">
                     <span class="card-title grey-text text-darken-4">Vaktbytte<i class="material-icons right">close</i></span>
-                    <p>Du trykker på den valgte vakten du ønsker å bytte på kalenderen din dermed får du opp "bytte vakt" og "meld sykdom". Her velger du bytte vakt.</p>
+                    <p>Du bytter vakt via hjemsiden/din personlige kalender.
+                        Der trykker du på den vakten du vil bytte på kalenderen din, dermed får du informasjon om alle ansatte som jobber på den valgte vakten og annet generell informasjon om vakten.
+                        Dermed trykker du «Bytte vakt», her får du opp at du må velge en ansatt som du vil bytte vakten din med.
+                        Her vil bare de ansatte som fyller kravene dine komme opp og tlf.nr til den valgte ansatte.
+                        Når du trykker på «bytt vakt», får du opp en melding om at forespørsel er sendt.
+                        Dette blir sendt til admin og han må godkjenne eller ikke godkjenne vaktbyttet ditt.
+                        Hvis godkjent vil vakten forsvinne fra din personlige kalender på hjemsiden, hvis ikke blir den stående der.</p>
                 </div>
             </div>
         </div>
@@ -50,7 +56,8 @@
                 </div>
                 <div class="card-reveal">
                     <span class="card-title grey-text text-darken-4">Vaktliste<i class="material-icons right">close</i></span>
-                    <p>Her vises en oversikt over alle ansatte som er satt opp på den valgte uken. Vaktene som er markert med blå og/eller merket med «A» er ansvarsvaktene. De grønne som er markert med «???» er vaktene du er satt opp.</p>
+                    <p>Her vises en oversikt over alle ansatte som er satt opp på den valgte uken. Vaktene som er markert med blå og/eller merket med «A» er ansvarsvaktene.
+                        De grønne som er markert med «V» er vaktene du er satt opp.</p>
                 </div>
             </div>
         </div>
@@ -68,8 +75,8 @@
                     <p><a th:href="@{/tilgjengelighet}">Gå til tilgjengelighet her</a></p>
                 </div>
                 <div class="card-reveal">
-                    <span class="card-title grey-text text-darken-4">Vaktliste<i class="material-icons right">close</i></span>
-                    <p>Her vises en oversikt over alle ansatte som er satt opp på den valgte uken. Vaktene som er markert med blå og/eller merket med «A» er ansvarsvaktene. De grønne som er markert med «???» er vaktene du er satt opp.</p>
+                    <span class="card-title grey-text text-darken-4">Tilgjengelighet<i class="material-icons right">close</i></span>
+                    <p>Her har du muligheten til å se alle ansatte sin tilgjengelighet. Du kan også lett komme deg til din tilgjengelighet ved å klikke på «Min tilgjengelighet».</p>
                 </div>
             </div>
         </div>
@@ -78,6 +85,32 @@
 </div>
 
 <div class="second_row row">
+
+    <div class="col s3">
+        <div class="shift_card">
+            <div class="card">
+                <div class="icon">
+                    <i class="medium material-icons blue-text text-darken-4">event_available</i>
+                    <!--<img class="activator" src="images/office.jpg">-->
+                </div>
+                <div class="card-content">
+                    <span class="header card-title activator grey-text text-darken-4">Min tilgjengelighet<i class="material-icons right" id="more">more_vert</i></span>
+                    <p><a th:href="@{/tilgjengelighet}">Gå til din tilgjengelighet her</a></p>
+                </div>
+                <div class="card-reveal">
+                    <span class="card-title grey-text text-darken-4">Min tilgjengelighet<i class="material-icons right">close</i></span>
+                    <p>Her har du muligheten til å sette deg tilgjengelig og utilgjengelig ut i fra når du kan jobbe/ikke jobbe.
+                        Dette gjør du ved å dra boksene som ligger under overskriften «Vakter» eller «Fravær» og plasserer de på den rette dagen.
+                        Der tidspunktene under oversikften«Vakter» er de du bruker for å sette deg tilgjengelig, og tidspunktene under «Fravær» bruker du til å sette deg utilgjengelig.
+                        Her er rød vaktene du har satt deg utilgjengelig på og grønn de du har satt deg tilgjengelig på.
+                        Ved feil kan du slette vakten ve då trykke på «X».
+                        Dermed trykker du «lagre» når du er ferdig.
+                        Dermed får du bekreftelse på at alt gikk bra.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="col s3">
         <div class="shift_card">
             <div class="card">
@@ -91,7 +124,9 @@
                 </div>
                 <div class="card-reveal">
                     <span class="card-title grey-text text-darken-4">Ansatte<i class="material-icons right">close</i></span>
-                    <p>Her vises en oversikt over alle ansatte som er satt opp på den valgte uken. Vaktene som er markert med blå og/eller merket med «A» er ansvarsvaktene. De grønne som er markert med «???» er vaktene du er satt opp.</p>
+                    <p>Her har du muligheten til å se en oversikt over alle ansatte med informasjon som navn, stilling, stillingsprosent, telefonnr., antall timer per uke som denne personen har jobbet og e-post.
+                        Du kan også sortere etter valgt kategori ut i fra å trykke på overskiftene, f.eks. overskriften «Fornavn».
+                    </p>
                 </div>
             </div>
         </div>
@@ -110,12 +145,21 @@
                 </div>
                 <div class="card-reveal">
                     <span class="card-title grey-text text-darken-4">Ledige vakter<i class="material-icons right">close</i></span>
-                    <p>Her vises en oversikt over alle ansatte som er satt opp på den valgte uken. Vaktene som er markert med blå og/eller merket med «A» er ansvarsvaktene. De grønne som er markert med «???» er vaktene du er satt opp.</p>
+                    <p>Her får du en oversikt over alle de ledige vaktene med dato, klokkeslett og hvilken avdeling vaktene er på.
+                        Når du klikker på en vakt får du mulighet til å ønske deg denne vakten ved å trykke «Ja».
+                        Eller «Nei» hvis ikke ønsket.
+                        Hvis «Ja» får du bekreftelse på at vaktønske er registert.
+                        Dette kommer inn når admin. skal ordne med timeliste, da står du på denne vakten som tilgjengelig. </p>
                 </div>
             </div>
         </div>
     </div>
 
+
+</div>
+
+
+<div class="third_row row">
     <div class="col s3">
         <div class="shift_card">
             <div class="card">
@@ -129,30 +173,11 @@
                 </div>
                 <div class="card-reveal">
                     <span class="card-title grey-text text-darken-4">Fravær<i class="material-icons right">close</i></span>
-                    <p>Her vises en oversikt over alle ansatte som er satt opp på den valgte uken. Vaktene som er markert med blå og/eller merket med «A» er ansvarsvaktene. De grønne som er markert med «???» er vaktene du er satt opp.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<div class="third_row row">
-
-    <div class="col s3">
-        <div class="shift_card">
-            <div class="card">
-                <div class="icon">
-                    <i class="medium material-icons blue-text text-darken-4">notifications</i>
-                    <!--<img class="activator" src="images/office.jpg">-->
-                </div>
-                <div class="card-content">
-                    <span class="header card-title activator grey-text text-darken-4">Varsler<i class="material-icons right" id="more">more_vert</i></span>
-                    <p><a th:href="@{/notification}">Gå til varsler her</a></p>
-                </div>
-                <div class="card-reveal">
-                    <span class="card-title grey-text text-darken-4">Varsler<i class="material-icons right">close</i></span>
-                    <p>Her vises en oversikt over alle ansatte som er satt opp på den valgte uken. Vaktene som er markert med blå og/eller merket med «A» er ansvarsvaktene. De grønne som er markert med «???» er vaktene du er satt opp.</p>
+                    <p>Du melder fravær via hjemsiden/din personlige kalender. Der trykker du på den vakten du vil melde fravær på, dermed får du informasjon om alle ansatte som jobber på den valgte vakten og annet generell informasjon om vakten.
+                        Dermed trykker du «Meld fravær» og får opp en meldingsboks der du må fylle inn en kommentar på fraværet ditt.
+                        Til slutt får du alternativene «Ok» eller «Avbryt».
+                        Ved klikk på «Ok» vil du få en bekreftelse på at fraværet er meldt og admin vil få mail på fraværet.
+                        Vakten slettes fra timelisten din.</p>
                 </div>
             </div>
         </div>
@@ -172,51 +197,15 @@
                 </div>
                 <div class="card-reveal">
                     <span class="card-title grey-text text-darken-4">Hjem<i class="material-icons right">close</i></span>
-                    <p>Her vises en oversikt over alle ansatte som er satt opp på den valgte uken. Vaktene som er markert med blå og/eller merket med «A» er ansvarsvaktene. De grønne som er markert med «???» er vaktene du er satt opp.</p>
+                    <p>Dette er hovedsiden, den siden man blir sendt til etter å ha logget inn. Her er en kalender med oversikt over den innloggede sine vakter.
+                        Og kan lett komme tilbake til hjem-siden ved å trykke på ikonet med et bilde av et hjem.
+                        På denne siden har du muligheter til å holde over en vakt for å få mer informasjon om denne vakten.
+                        Hvis man trykker på vakten får man mulighetene «Bytte vakt» og «Meld fravær».</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="col s3">
-        <div class="shift_card">
-            <div class="card">
-                <div class="icon">
-                    <i class="medium material-icons blue-text text-darken-4">person_add</i>
-                    <!--<img class="activator" src="images/office.jpg">-->
-                </div>
-                <div class="card-content">
-                    <span class="header card-title activator grey-text text-darken-4">Legg til en ansatt<i class="material-icons right" id="more">more_vert</i></span>
-                    <p><a th:href="@{/}">Legg til en ansatt her</a></p>
-                </div>
-                <div class="card-reveal">
-                    <span class="card-title grey-text text-darken-4">Legg til en ansatt<i class="material-icons right">close</i></span>
-                    <p>Her vises en oversikt over alle ansatte som er satt opp på den valgte uken. Vaktene som er markert med blå og/eller merket med «A» er ansvarsvaktene. De grønne som er markert med «???» er vaktene du er satt opp.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="fourth_row row">
-    <div class="col s3">
-        <div class="shift_card">
-            <div class="card">
-                <div class="icon">
-                    <i class="medium material-icons blue-text text-darken-4">note_add</i>
-                    <!--<img class="activator" src="images/office.jpg">-->
-                </div>
-                <div class="card-content">
-                    <span class="header card-title activator grey-text text-darken-4">Lag vaktliste<i class="material-icons right" id="more">more_vert</i></span>
-                    <p><a th:href="@{/}">Lag vaktliste her</a></p>
-                </div>
-                <div class="card-reveal">
-                    <span class="card-title grey-text text-darken-4">Lag vaktliste<i class="material-icons right">close</i></span>
-                    <p>Her vises en oversikt over alle ansatte som er satt opp på den valgte uken. Vaktene som er markert med blå og/eller merket med «A» er ansvarsvaktene. De grønne som er markert med «???» er vaktene du er satt opp.</p>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
 
 <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js' integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
