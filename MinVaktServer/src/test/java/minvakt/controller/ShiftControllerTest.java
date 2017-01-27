@@ -500,6 +500,14 @@ public class ShiftControllerTest {
 
     @Test
     public void getShiftAssignmentByShiftAssignmentId() throws Exception {
+        // Stub
+        when(shiftAssignmentRepo.findOne(shiftAssign1.getId())).thenReturn(shiftAssign1);
+
+        // Get Shift Assignment
+        ShiftAssignment test = shiftController.getShiftAssignmentByShiftAssignmentId(shiftAssign1.getId());
+
+        // Verify
+        verify(shiftAssignmentRepo).findOne(shiftAssign1.getId());
 
     }
 
