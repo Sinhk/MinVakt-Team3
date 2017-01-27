@@ -340,7 +340,7 @@ function getAmountOnShift(shift_id,callback) {
             type: "GET",
 
             success: function (data) {
-            console.log(data);
+            //console.log(data);
                 callback(data);
             },
             error: function (data) {
