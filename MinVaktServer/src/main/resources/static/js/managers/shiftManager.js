@@ -333,12 +333,14 @@ function getShiftAssignmentByShiftAssignmentId(shiftAssignmentId, callback) {
     });
 }
 
-function getMissingPerShiftCategory(shift_id,callback) {
+function getAmountOnShift(shift_id,callback) {
 
     $.ajax({
-           url: "/shifts/"+shift_id+"/getAmountOnShiftWithRequired",
+           url: "/shifts/"+shift_id+"/getAmountOnShiftWithRequired/",
             type: "GET",
+
             success: function (data) {
+            console.log(data);
                 callback(data);
             },
             error: function (data) {

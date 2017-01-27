@@ -136,7 +136,7 @@ $(document).ready(function () { // document ready
         },
 
         eventMouseover: function (calEvent, jsEvent) {
-            var tooltip = '<div class="tooltipevent" style="width:180px;height:70px;background:#e3f2fd;border-style:solid;border-color:#212121;border-width:1px;position:absolute;z-index:10001;">' + ' ' + ' Sykepleiere: <br> Helsefagarbeidere: ' + '</div>';
+            var tooltip = '<div class="tooltipevent" style="width:180px;height:70px;background:#e3f2fd;border-style:solid;border-color:#212121;border-width:1px;position:absolute;z-index:10001;">' + ' ' + calEvent.textPrint + '</div>';
             var $tool = $(tooltip).appendTo('body');
             $(this).mouseover(function (e) {
                 $(this).css('z-index', 10000);
@@ -222,6 +222,15 @@ $(document).ready(function () { // document ready
             getShiftWithId(shiftAssignment.shiftId, function (shift) {
 
                 var responsible = shift.responsibleEmployeeId == shiftAssignment.employeeId;
+                getAmountOnShift(shift.shiftId, function(missingList) {
+                     let text;
+                     for (var i = 0; i < missingList.length; i++) {
+                        if(missingList[i].categoryId == 2) {
+                           text +="Sykepleiere: " + missingList[i].countAssigned +"/"+ missingList[i].countRequired;
+                        } else if(missingList[i].categoryId==3) {
+                            text +="\nHelsefagarbeider: " + missingList[i].countAssigned +"/"+ missingList[i].countRequired;
+                        }
+                     }
 
                     const event = {
 
@@ -234,7 +243,7 @@ $(document).ready(function () { // document ready
                             : shiftAssignment.assigned ? " V"
                             : !shiftAssignment.available ? " U"
                             : " T"),
-
+                        textPrint: text,
                         backgroundColor: responsible ? "#00bcd4"
                             : shiftAssignment.assigned ? "#2196f3"
                             : !shiftAssignment.available ? "#f44336"
@@ -248,11 +257,11 @@ $(document).ready(function () { // document ready
                 })
 
 
-
-
+            })
         }
+    })
 
-        })
+
 
     /*function renderEvents() {
 

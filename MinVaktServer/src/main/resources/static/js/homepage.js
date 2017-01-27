@@ -35,21 +35,21 @@ $(document).ready(function () {
          },*/
 
         eventMouseover: function (calEvent, jsEvent) {
-            var tooltip = '<div class="tooltipevent" style="width:180px;height:70px;background:#e3f2fd;border-style:solid;border-color:#212121;border-width:1px;position:absolute;z-index:10001;">' + ' ' + ' Tidspunkt: ' + calEvent.title + '<br> Avdeling: ' + calEvent.avdeling + '<br>  Ansvar: ' + calEvent.isResponsible + '</div>';
-            var $tool = $(tooltip).appendTo('body');
-            $(this).mouseover(function (e) {
-                $(this).css('z-index', 10000);
-                $tool.fadeIn('500');
-                $tool.fadeTo('10', 1.9);
-            }).mousemove(function (e) {
-                $tool.css('top', e.pageY + 10);
-                $tool.css('left', e.pageX + 20);
-            });
-        },
-        eventMouseout: function (calEvent, jsEvent) {
-            $(this).css('z-index', 8);
-            $('.tooltipevent').remove();
-        },
+                    var tooltip = '<div class="tooltipevent" style="width:180px;height:70px;background:#e3f2fd;border-style:solid;border-color:#212121;border-width:1px;position:absolute;z-index:10001;">' + ' ' + ' Tidspunkt: ' + calEvent.title + '<br> Avdeling: ' + calEvent.avdeling + '<br>  Ansvar: ' + calEvent.isResponsible + '</div>';
+                    var $tool = $(tooltip).appendTo('body');
+                    $(this).mouseover(function (e) {
+                        $(this).css('z-index', 10000);
+                        $tool.fadeIn('500');
+                        $tool.fadeTo('10', 1.9);
+                    }).mousemove(function (e) {
+                        $tool.css('top', e.pageY + 10);
+                        $tool.css('left', e.pageX + 20);
+                    });
+                },
+                eventMouseout: function (calEvent, jsEvent) {
+                    $(this).css('z-index', 8);
+                    $('.tooltipevent').remove();
+                },
 
 
         eventClick: function (event, jsEvent) {
