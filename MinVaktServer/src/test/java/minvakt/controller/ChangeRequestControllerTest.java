@@ -144,17 +144,56 @@ public class ChangeRequestControllerTest {
     }
     @Test
     public void requestChangeForShift() throws Exception {
+        // Stub
+        when(employeeRepo.findOne(emp1.getEmployeeId())).thenReturn(emp1);
+        when(employeeRepo.findOne(emp2.getEmployeeId())).thenReturn(emp2);
+        when(shiftRepo.findOne(shift1.getShiftId())).thenReturn(shift1);
+        when(employeeRepo.findAll()).thenReturn(Arrays.asList(emp1, emp2));
 
+        // Run method
+        changeRequestController.requestChangeForShift(shift1.getShiftId(), emp1.getEmployeeId(), emp2.getEmployeeId());
+
+        // Verify
+        verify(employeeRepo, atLeastOnce()).findOne(emp1.getEmployeeId());
+        verify(employeeRepo, atLeastOnce()).findOne(emp2.getEmployeeId());
+        verify(shiftRepo, atLeastOnce()).findOne(shift1.getShiftId());
+        verify(employeeRepo, atLeastOnce()).findAll();
     }
 
     @Test
     public void acceptChangeRequest() throws Exception {
+        // Stub
+        when(changeRequestRepository.findOne(change1.getRequestId())).thenReturn(change1);
+        when(employeeRepo.findOne(emp1.getEmployeeId())).thenReturn(emp1);
+        when(employeeRepo.findOne(emp2.getEmployeeId())).thenReturn(emp2);
+        when(shiftRepo.findOne(shift1.getShiftId())).thenReturn(shift1);
 
+        // Run method
+        changeRequestController.acceptChangeRequest(change1.getRequestId());
+
+        // Verify
+        verify(changeRequestRepository, atLeastOnce()).findOne(change1.getRequestId());
+        verify(employeeRepo, atLeastOnce()).findOne(emp1.getEmployeeId());
+        verify(employeeRepo, atLeastOnce()).findOne(emp1.getEmployeeId());
+        verify(shiftRepo, atLeastOnce()).findOne(shift1.getShiftId());
     }
 
     @Test
     public void declineChangeRequest() throws Exception {
+        // When
+        when(changeRequestRepository.findOne(change1.getRequestId())).thenReturn(change1);
+        when(employeeRepo.findOne(emp1.getEmployeeId())).thenReturn(emp1);
+        when(employeeRepo.findOne(emp2.getEmployeeId())).thenReturn(emp2);
+        when(shiftRepo.findOne(shift1.getShiftId())).thenReturn(shift1);
 
+
+        // Run method
+        changeRequestController.declineChangeRequest(change1.getRequestId());
+
+        // Verify
+        verify(changeRequestRepository, atLeastOnce()).findOne(change1.getRequestId());
+        verify(employeeRepo, atLeastOnce()).findOne(emp1.getEmployeeId());
+        verify(employeeRepo, atLeastOnce()).findOne(emp2.getEmployeeId());
     }
 
 }
