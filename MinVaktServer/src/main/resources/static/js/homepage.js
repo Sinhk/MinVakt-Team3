@@ -35,7 +35,7 @@ $(document).ready(function () {
          },*/
 
         eventMouseover: function (calEvent, jsEvent) {
-                    var tooltip = '<div class="tooltipevent" style="width:180px;height:70px;background:#e3f2fd;border-style:solid;border-color:#212121;border-width:1px;position:absolute;z-index:10001;">' + ' ' + ' Tidspunkt: ' + calEvent.title + '<br> Avdeling: ' + calEvent.avdeling + '<br>  Ansvar: ' + calEvent.isResponsible + '</div>';
+                    var tooltip = '<div class="tooltipevent" style="width:180px;height:70px;background:#e3f2fd;border-style:solid;border-color:#212121;border-width:1px;position:absolute;z-index:10001;">' + ' ' + ' Tidspunkt: ' + calEvent.title + '<br> Avdeling: ' + calEvent.avdeling + '<br>'+ (calEvent.isResponsible != undefined ? 'Ansvar: ' + calEvent.isResponsible + '</div>' : "");
                     var $tool = $(tooltip).appendTo('body');
                     $(this).mouseover(function (e) {
                         $(this).css('z-index', 10000);
@@ -91,6 +91,8 @@ function switchAdminViewHomePage() {
         getScheduledShiftsForCurrentUser(function (shifts) {
             for (let i = 0; i<shifts.length; i++){
                 const shift = shifts[i];
+
+                //console.log(shift);
 
                 toFullCalendarEvent(shift, function (fullCalendarEvent) {
                     calendar.fullCalendar('renderEvent', fullCalendarEvent, /*sticky*/true);

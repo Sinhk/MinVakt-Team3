@@ -13,7 +13,6 @@ $(document).ready(function () { // document ready
 
         title = title.replace("A: ","");
 
-
         $(this).data('event', {
             title: theTitle, // use the element's text as the event title
             responsible: this.id.includes("ANSVAR"),
@@ -136,7 +135,6 @@ $(document).ready(function () { // document ready
                 console.log(event);
 
             })
-
 
             swal({  title: "Er du sikker på at du vil slette vakten?",
                     type: "warning",
@@ -269,14 +267,6 @@ $("#save").click(function () {
 
                 // Samme tid, samme dag
 
-                if (event.save && event_date == shift_date) {
-
-                    console.log(event)
-                    console.log(shift);
-
-                    console.log(sameTime);
-
-                }
                 /*console.log(event.start._d);
                  console.log(event.start._d.getDate());
                  console.log(event.start.toISOString());*/
@@ -290,14 +280,10 @@ $("#save").click(function () {
                     const user_id = event.resourceId;
                     const shift_id = shift.shiftId;
 
-                    console.log(user_id +" - "+shift_id);
-
-
                     if (event.responsible) {
 
                         changeUserAssignment(user_id, shift_id, true, true, true, false, "", function (data) {
 
-                            console.log(data);
                             console.log("user: " + user_id + " - shift: " + shift_id + " RESPONSIBLE")
 
                         })
@@ -306,7 +292,6 @@ $("#save").click(function () {
 
                         changeUserAssignment(user_id, shift_id, true, false, true, false, "", function (data) {
 
-                            console.log(data);
                             console.log("user: " + user_id + " - shift: " + shift_id + "IKKE RESPONSIBLE")
                         })
                     }
