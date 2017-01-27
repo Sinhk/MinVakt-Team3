@@ -37,8 +37,7 @@ public class SendMailTLS {
 
         try {
             Transport.send(message);
-        } catch (MessagingException e) {
-            throw new RuntimeException(e);
+        } catch (MessagingException ignored) {
         }
 
     }
