@@ -52,6 +52,8 @@ function toFullCalendarEventPromise(shift) {
                 title: "",//start.split("T")[1].substr(0, 5) + " - " + end.split("T")[1].substr(0, 5),// + ": " + resFullName,
                 start: dateStart,
                 end: dateEnd,
+            dateStart: dateStart,
+            dateEnd: dateEnd,
                 //backgroundColor: available ? "#9B0300" : "#3E9B85",
                 //available: available,
                 avdeling: department

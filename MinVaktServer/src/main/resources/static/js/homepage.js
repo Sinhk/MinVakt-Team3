@@ -35,7 +35,7 @@ $(document).ready(function () {
          },*/
 
         eventMouseover: function (calEvent, jsEvent) {
-                    var tooltip = '<div class="tooltipevent" style="width:180px;height:70px;background:#e3f2fd;border-style:solid;border-color:#212121;border-width:1px;position:absolute;z-index:10001;">' + ' ' + ' Tidspunkt: ' + calEvent.title + '<br> Avdeling: ' + calEvent.avdeling + '<br>'+ (calEvent.isResponsible != undefined ? 'Ansvar: ' + calEvent.isResponsible + '</div>' : "");
+                    var tooltip = '<div class="tooltipevent" style="width:180px;height:70px;background:#e3f2fd;border-style:solid;border-color:#212121;border-width:1px;position:absolute;z-index:10001;">' + ' ' + ' Tidspunkt: ' +calEvent.start.format("HH:mm")+"-"+calEvent.end.format("HH:mm")+ '<br> Avdeling: ' + calEvent.avdeling + '<br>'+ 'Ansvar: ' + ((calEvent.isResponsible != undefined) ? (calEvent.isResponsible) : ("Ingen")) + '</div>';
                     var $tool = $(tooltip).appendTo('body');
                     $(this).mouseover(function (e) {
                         $(this).css('z-index', 10000);
