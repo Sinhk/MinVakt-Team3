@@ -1,6 +1,5 @@
 $(document).ready(function () {
 
-
     getCategories().then((categories) => {
 
         getAllUsers(function (employees) {

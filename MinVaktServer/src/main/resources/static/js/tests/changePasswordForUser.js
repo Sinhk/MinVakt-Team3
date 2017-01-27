@@ -13,7 +13,7 @@ $("#changePasswordForUser").click(function () {
 
 
     $.ajax({
-        url: "users/"+user_id+"/changepassword",
+        url: "/users/"+user_id+"/changepassword",
         type: "PUT",
         contentType: "Application/JSON",
         data: JSON.stringify({

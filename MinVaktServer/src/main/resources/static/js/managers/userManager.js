@@ -170,7 +170,7 @@ function getScheduledShiftsForCurrentUser(callback) {
 
 function getUsersThatCanBeResponsibleForShift(shift_id, callback) {
 
-    $.getJSON("users/"+shift_id+"/responsible", function(data){callback(data)});
+    $.getJSON("/users/"+shift_id+"/responsible", function(data){callback(data)});
 
 }
 
@@ -179,7 +179,7 @@ function getHoursThisWeekForUser(user_id, callback) {
 
 
     $.ajax({
-        url: "users/"+user_id+"/hours",
+        url: "/users/"+user_id+"/hours",
         type: "GET",
         success: function (data) {
             callback(data);

@@ -130,28 +130,25 @@ public class SpringWebConfig
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/login").setViewName("login");
         registry.addViewController("/").setViewName("homepage");
-        registry.addViewController("/ansatte").setViewName("employee");
-        registry.addViewController("/ansatte/ny").setViewName("newUser");
+        registry.addViewController("/login").setViewName("login");
+        registry.addViewController("/ansatte").setViewName("employeeE");
         registry.addViewController("/vaktliste").setViewName("vaktliste");
-        registry.addViewController("/teststuff").setViewName("index");
         registry.addViewController("/tilgjengelighet").setViewName("availability");
-        registry.addViewController("/changeShift").setViewName("changeShift");
-        registry.addViewController("/absence").setViewName("absence");
         registry.addViewController("/endreBruker").setViewName("changeUser");
         registry.addViewController("/endrePassord").setViewName("changePassword");
-        registry.addViewController("/notification").setViewName("notification");
-        registry.addViewController("/makeSheet").setViewName("makeSheet");
-        registry.addViewController("/shiftChange").setViewName("shiftChange");
-        registry.addViewController("/endreBrukerAdmin").setViewName("changeUserAdmin");
+        registry.addViewController("/byttVakt").setViewName("shiftChange");
         registry.addViewController("/ledigeVakter").setViewName("availableShifts");
-        registry.addViewController("/ledigeVakterAdmin").setViewName("availableShiftsAdmin");
-        registry.addViewController("/employeeE").setViewName("employeeE");
-        registry.addViewController("/help").setViewName("help");
-        registry.addViewController("/helpAdmin").setViewName("helpAdmin");
-        registry.addViewController("/availabilityAdmin").setViewName("availabilityAdmin");
-        registry.addViewController("/testGetMonthlyReport").setViewName("testGetMonthlyReport");
+        registry.addViewController("/hjelp").setViewName("help");
+        registry.addViewController("/admin/vaktliste/ny").setViewName("admin/makeSheet");
+        registry.addViewController("/admin/ansatte").setViewName("admin/employee");
+        registry.addViewController("/admin/nyAnsatt/").setViewName("admin/newUser");
+        registry.addViewController("/admin/varsler").setViewName("admin/notification");
+        registry.addViewController("/admin/endreBruker").setViewName("admin/changeUserAdmin");
+        registry.addViewController("/admin/ledigeVakter").setViewName("admin/availableShiftsAdmin");
+        registry.addViewController("/admin/hjelp").setViewName("admin/helpAdmin");
+        registry.addViewController("/admin/tilgjengelighet").setViewName("admin/availabilityAdmin");
+        registry.addViewController("/admin/maanedsrapport").setViewName("admin/testGetMonthlyReport");
         registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
     }
 

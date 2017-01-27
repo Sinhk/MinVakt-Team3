@@ -135,6 +135,7 @@ function renderDet(event) {
     if(event.start.isBefore(moment().add(2,'h'))) {
         $('#absent_btn').addClass('disabled');
     }
+    switchAdminView();
 }
 
 function openDetails(event) {

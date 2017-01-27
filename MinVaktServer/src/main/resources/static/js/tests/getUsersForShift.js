@@ -8,7 +8,7 @@ $("#getUsersForShiftButton").click(function () {
 
 
     $.ajax({
-        url: "shifts/"+shift_id+"/users",
+        url: "/shifts/"+shift_id+"/users",
         type: "GET",
         contentType: "Application/JSON",
 

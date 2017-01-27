@@ -26,14 +26,13 @@ import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.web.bind.annotation.*;
 
 import javax.ws.rs.core.Response;
+import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalField;
 import java.time.temporal.WeekFields;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -208,16 +207,26 @@ public class EmployeeController {
         return catRepo.findOne(employee.getCategoryId());
     }
 
-    @GetMapping("/{user_id}/hours")
-    public long getHoursThisWeekForUser(@PathVariable int user_id) {
-        Collection<Shift> shiftsForUser = shiftRepo.findAssignedByShiftEmployeeId(user_id);
 
-        WeekFields weekFields = WeekFields.of(Locale.getDefault());
+    @GetMapping("/hours")
+    public Map<Integer, Duration> getHoursThisWeek() {
         LocalDate now = LocalDate.now();
-        int week = now.get(weekFields.weekOfWeekBasedYear());
-        int year = now.getYear();
-        Duration worked = jooqRepo.getHoursWorked(user_id, week, year);
-        return worked.toHours();
+        LocalDate date = now.with(DayOfWeek.MONDAY);
+        return jooqRepo.getHoursWorked(date, date.plus(6, ChronoUnit.DAYS));
+    }
+
+    @GetMapping("/{user_id}/hours")
+    public int getHoursThisWeekForUser(@PathVariable int user_id){
+        Collection<Shift> shiftsForUser = shiftRepo.findAssignedByShiftEmployeeId(user_id);
+        return shiftsForUser
+                .stream()
+                .filter(shift -> {
+                    WeekDateInterval of = WeekDateInterval.of(shift.getFromTime().toLocalDate());
+
+                    return TimeUtil.isInDateInterval(of.getStart(), of.getEnd(), shift.getToTime().toLocalDate());
+                })
+                .mapToInt(shift -> (int) ChronoUnit.HOURS.between(shift.getFromTime(), shift.getToTime()))
+                .sum();
     }
 
     @PutMapping(value = "/{email}/getNewPassword")

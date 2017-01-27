@@ -10,7 +10,7 @@ $("#getEmailButton").click(function () {
     var getEmail = $("#getEmail").val();
 
     $.ajax({
-        url: "users/"+getEmail+"/",
+        url: "/users/"+getEmail+"/",
         type: "GET",
         contentType: "Text/plain",
 

@@ -5,7 +5,7 @@ function parseLocalDateTimeToDate(localdatetime) {
 }
 
 function isAdmin() {
-    return sessionStorage.admin;
+    return JSON.parse(sessionStorage.user);
 }
 
 function toFullCalendarEventWithResource(event, resource) {

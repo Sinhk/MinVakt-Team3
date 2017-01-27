@@ -10,7 +10,7 @@ $("#changeShiftFromUserToUser").click(function () {
 
 
     $.ajax({
-        url: "shifts/"+shift_id,
+        url: "/shifts/"+shift_id,
         type: "PUT",
         contentType: "Application/JSON",
         data: JSON.stringify({
