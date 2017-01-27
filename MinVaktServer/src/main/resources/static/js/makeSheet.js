@@ -256,7 +256,11 @@ $("#save").click(function () {
 
     console.log("---------------------------------------------SAVING---------------------------------------------");
 
-    swal("Den nye timelisten ble lagret", "", "success")
+    swal({
+        title: "Den nye timelisten ble lagret",
+        type: "success",
+        confirmButtonColor: "#0d47a1"
+    })
 
     var events = $('#calendar').fullCalendar('clientEvents');
 

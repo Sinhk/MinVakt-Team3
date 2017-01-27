@@ -38,7 +38,7 @@ function newWish(event) {
     console.log(event.start.dayOfYear());
     swal({
             title: "Vil du ønske deg denne vakten?",
-            text: "Vakt: " + event.start.format('DD/MM') + event.start.format("HH:mm") + " - " + event.end.format("HH:mm"),
+            text: "Vakt: " + event.start.format('DD/MM') + " " + event.start.format("HH:mm") + " - " + event.end.format("HH:mm"),
             showCancelButton: true,
             confirmButtonColor: "#0d47a1",
             confirmButtonText: "JA",
