@@ -23,8 +23,8 @@ import static minvakt.Application.HOURS_IN_WEEK;
 
 /**
  * Created by OlavH on 23-Jan-17.
+ * Controller to handle change-requests. AKA requests to change shifts from one user to another
  */
-
 @RestController
 @RequestMapping("/requestchange")
 public class ChangeRequestController {
@@ -41,6 +41,16 @@ public class ChangeRequestController {
     private ShiftController shiftController;
     private SendMailTLS sendMail;
 
+    /**
+     * Autowired by Spring to gain access to all the specified controllers and repos
+     * @param jooqRepository
+     * @param shiftRepo
+     * @param employeeRepository
+     * @param shiftAssignmentRepo
+     * @param changeRequestRepository
+     * @param catRepo
+     * @param shiftController
+     */
     @Autowired
     public ChangeRequestController(JooqRepository jooqRepository, ShiftRepository shiftRepo, EmployeeRepository employeeRepository, ShiftAssignmentRepository shiftAssignmentRepo, ChangeRequestRepository changeRequestRepository, CategoryRepository catRepo, ShiftController shiftController) {
         this.shiftRepo = shiftRepo;
@@ -53,6 +63,11 @@ public class ChangeRequestController {
         sendMail  = new SendMailTLS();
     }
 
+    /**
+     * Gets all the changerequests
+     * @param count
+     * @return
+     */
     @GetMapping
     public ResponseEntity<?> getChangeRequests(@RequestParam(defaultValue = "false") boolean count) {
         if (count) {
@@ -70,6 +85,12 @@ public class ChangeRequestController {
         return ResponseEntity.ok(requests);
     }
 
+    /**
+     * Makes a changerequest and saves it to the repo
+     * @param shift_id Shift to change
+     * @param user1_id User that wants to change
+     * @param user2_id User to recieve shift
+     */
     @Transactional
     @PostMapping
     void requestChangeForShift(@RequestParam int shift_id, @RequestParam int user1_id, @RequestParam int user2_id) {
@@ -99,11 +120,20 @@ public class ChangeRequestController {
         }
     }
 
+    /**
+     * Makes a shift into a readable date String
+     * @param shift
+     * @return
+     */
     private String toDateString(Shift shift) {
         return "\n" + shift.getDepartmentId() + ":\nFra " + shift.getFromTime().toString() +
                     "\nTil " + shift.getToTime().toString();
     }
 
+    /**
+     * Accepts the already created changerequest
+     * @param request_id The ID to accept
+     */
     @PutMapping("/{request_id}")
     public void acceptChangeRequest(@PathVariable int request_id) {
 
@@ -129,6 +159,10 @@ public class ChangeRequestController {
 
     }
 
+    /**
+     * Denies the already created changerequest
+     * @param request_id Request to deny
+     */
     @DeleteMapping("/{request_id}")
     public void declineChangeRequest(@PathVariable int request_id) {
         String emailOld = employeeRepo.findOne(changeRequestRepository.findOne(request_id).getOldEmployeeId()).getEmail();
@@ -146,6 +180,11 @@ public class ChangeRequestController {
     }
 
 
+    /**
+     *
+     * @param one The changerequest to check
+     * @param shift The shift to check
+     */
     protected void checkIsOkChangeRequest(ChangeRequest one, Shift shift) {
         if(shiftAssignmentRepo.findByShiftIdAndEmployeeId(shift.getShiftId(), one.getNewEmployeeId()).isPresent()){
             one.setAllowed(false);

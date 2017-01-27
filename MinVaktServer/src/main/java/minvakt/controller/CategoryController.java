@@ -23,6 +23,10 @@ public class CategoryController {
         this.categoryRepo = categoryRepo;
     }
 
+    /**
+     * Gets all the categories
+     * @return
+     */
     @GetMapping
     public List<EmployeeCategory> getCategories() {
         return categoryRepo.findAll();
