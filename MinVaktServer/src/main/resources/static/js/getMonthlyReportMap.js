@@ -35,8 +35,10 @@ $(document).ready(function(){
                     type: "input",
                     input: "email",
                     showCancelButton: true,
-                    cancelButtonText: "Avbryt",
-                    confirmButtonText: "Send",
+                    cancelButtonText: "AVBRYT",
+                    cancelButtonColor: "#9e9e9e",
+                    confirmButtonText: "SEND",
+                    confirmButtonColor: "#0d47a1",
                     closeOnConfirm: false,
                     animation: "slide-from-top",
                     inputPlaceholder: "Skriv e-postadresse her"
@@ -48,7 +50,12 @@ $(document).ready(function(){
                         return false
                     }
                     email =inputValue;
-                    swal("Månedlig rapport innsendt", "Du skrev: " + inputValue, "success");
+                    swal ({
+                        title: "Månedlig rapport innsendt",
+                        text: "Du skrev: " + inputValue,
+                        type: "success",
+                        confirmButtonColor: "#0d47a1"
+                    })
                 }
         ),
 
