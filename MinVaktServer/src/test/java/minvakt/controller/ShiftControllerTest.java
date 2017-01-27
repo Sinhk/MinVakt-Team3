@@ -477,7 +477,10 @@ public class ShiftControllerTest {
 
     @Test
     public void removeShiftAssignment() throws Exception {
+        shiftController.removeShiftAssignment(shiftAssign1.getId());
 
+        // Verify
+        verify(shiftAssignmentRepo, atLeastOnce()).delete(shiftAssign1.getId());
     }
 
     @Test
