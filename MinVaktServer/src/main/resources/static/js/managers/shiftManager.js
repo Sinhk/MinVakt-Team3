@@ -364,3 +364,18 @@ function getMonthlyReportMap(month,callback) {
     })
 
 }
+
+function sendTotalHours(email,text) {
+
+    $.ajax({
+           url: "/shifts/"+email+"/sendTotalHours/",
+            type: "GET",
+
+            success: function (data) {
+            //console.log(data);
+            },
+            error: function (data) {
+                console.log("Error: " + data);
+            }
+    });
+}

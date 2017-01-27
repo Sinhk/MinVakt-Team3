@@ -95,4 +95,11 @@ public class SendMailTLS {
         buildMessage(message, email, subject, text1);
         sendMail(message);
     }
+
+    public void sendTotalHoursToThePayrollOffice(String email,String text) {
+        Message message = new MimeMessage(session);
+        String subject = "Timelisten for Minvakt";
+        buildMessage(message, email, subject, text);
+        sendMail(message);
+    }
 }

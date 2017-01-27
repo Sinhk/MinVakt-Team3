@@ -92,10 +92,8 @@ public class EmployeeController {
 
         String password = createPassword();
         log.info("Generated password: {}", password);
-        // TODO: 16-Jan-17 send email
-        /*
+
         sendMail.sendPassword(employee.getEmail(),password);
-        */
 
         employeeRepo.saveAndFlush(employee);
         User user = new User(employee.getEmail(), password, new ArrayList<SimpleGrantedAuthority>() {{
@@ -277,6 +275,7 @@ public class EmployeeController {
                 .sum();
 
     }
+
     @PutMapping(value = "/{email}/getNewPassword")
     public boolean sendNewPassword(@PathVariable(value = "email") String email) {
         Employee employee = employeeRepo.findByEmail(email);

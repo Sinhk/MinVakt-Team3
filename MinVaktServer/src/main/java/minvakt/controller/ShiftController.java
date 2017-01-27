@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.Path;
 import java.security.Principal;
 import java.sql.Date;
 import java.time.*;
@@ -398,6 +399,12 @@ public class ShiftController {
 
         return integerLongMap;
 
+    }
+
+    @GetMapping("/{eMail}/sendTotalHours")
+    public void sendTotalHours(@PathVariable String eMail, @RequestBody String text ){
+        SendMailTLS sendMail = new SendMailTLS();
+        sendMail.sendTotalHoursToThePayrollOffice(eMail,text);
     }
 
 }

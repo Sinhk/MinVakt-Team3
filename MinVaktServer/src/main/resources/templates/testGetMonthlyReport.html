@@ -49,62 +49,11 @@
 <script th:src="@{/js/managers/common.js}"></script>
 <script th:src="@{/js/managers/userManager.js}"></script>
 <script th:src="@{/js/managers/shiftManager.js}"></script>
-
+<script th:src="@{/js/getMonthlyReportMap.js"></script>
 <script src="/js/managers/shiftManager.js"></script>
 <script src="/js/managers/userManager.js"></script>
+<script src="/js/getMonthlyReportMap.js"></script>
 
-<script>
-
-    getMonthlyReportMap(new Date().getMonth()+1, function (map) {
-
-        console.log(map);
-
-        getAllUsers(function (employees) {
-
-
-            const div = document.getElementById("users");
-
-            for (let i = 0; i < employees.length; i++) {
-
-                let employee = employees[i]; // Uten const faile alt
-
-                var nr = employee.employeeId;
-
-                div.innerHTML +=
-                        "<tr>" +
-                        "<td>" + employee.firstName + "</td>" +
-                        "<td>" + employee.lastName + "</td>" +
-                        "<td>" + employee.email + "</td>" +
-                        "<td>" + (map[nr] == undefined ? "0" : map[nr])  + "</td>" +
-                        "</tr>";
-            }
-        })
-    })
-
-    $("#new").click(function () {
-
-        swal({
-                    title: "Klar for innsending",
-                    text: "Skriv inn e-posten til mottaker av den måndelige rapporten.",
-                    type: "input",
-                    showCancelButton: true,
-                    cancelButtonText: "Avbryt",
-                    confirmButtonText: "Send",
-                    closeOnConfirm: false,
-                    animation: "slide-from-top",
-                    inputPlaceholder: "Skriv e-postadresse her"
-                },
-                function (inputValue) {
-                    if (inputValue === false) return false;
-                    if (inputValue === "") {
-                        swal.showInputError("Du må skrive noe");
-                        return false
-                    }
-                    swal("Månedlig rapport innsendt", "Du skrev: " + inputValue, "success");
-                }
-        );
-    })
-</script>
 
 
 <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js' integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
