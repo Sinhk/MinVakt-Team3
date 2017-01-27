@@ -146,7 +146,7 @@ public class ChangeRequestController {
     }
 
 
-    private void checkIsOkChangeRequest(ChangeRequest one, Shift shift) {
+    protected void checkIsOkChangeRequest(ChangeRequest one, Shift shift) {
         if(shiftAssignmentRepo.findByShiftIdAndEmployeeId(shift.getShiftId(), one.getNewEmployeeId()).isPresent()){
             one.setAllowed(false);
             return;
@@ -161,7 +161,7 @@ public class ChangeRequestController {
         }
 
         int oldUserCategory = employeeRepo.findOne(one.getOldEmployeeId()).getCategoryId();
-        int newUserCategory = employeeRepo.findOne(one.getOldEmployeeId()).getCategoryId();
+        int newUserCategory = employeeRepo.findOne(one.getNewEmployeeId()).getCategoryId();
         if (oldUserCategory != newUserCategory) {
             List<MissingPerShiftCategory> missingForShift = jooqRepository.getMissingForShift(shift.getShiftId());
             for (MissingPerShiftCategory perShiftCategory : missingForShift) {

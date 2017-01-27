@@ -9,10 +9,17 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.http.ResponseEntity;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.temporal.WeekFields;
+import java.util.Arrays;
+import java.util.Locale;
+import java.util.Optional;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 /**
  * Created by magnu on 27.01.2017.
@@ -82,9 +89,59 @@ public class ChangeRequestControllerTest {
 
     @Test
     public void getChangeRequests() throws Exception {
+        WeekFields weekFields = WeekFields.of(Locale.getDefault());
+        Duration duration = Duration.ofHours(8);
+        MissingPerShiftCategory missing = mock(MissingPerShiftCategory.class);
 
+
+        // Stub
+        when(changeRequestRepository.count()).thenReturn(2L);
+        when(changeRequestRepository.findAll()).thenReturn(Arrays.asList(change1, change2));
+        when(shiftRepo.findOne(change1.getShiftId())).thenReturn(shift1);
+        when(shiftRepo.findOne(change2.getShiftId())).thenReturn(shift2);
+        when(employeeRepo.findOne(change1.getNewEmployeeId())).thenReturn(emp2);
+        when(employeeRepo.findOne(change2.getNewEmployeeId())).thenReturn(emp1);
+        when(employeeRepo.findOne(change1.getOldEmployeeId())).thenReturn(emp1);
+        when(employeeRepo.findOne(change2.getOldEmployeeId())).thenReturn(emp2);
+        when(shiftAssignmentRepo.findByShiftIdAndEmployeeId(shift1.getShiftId(), emp2.getEmployeeId())).thenReturn(Optional.empty());
+        when(shiftAssignmentRepo.findByShiftIdAndEmployeeId(shift2.getShiftId(), emp1.getEmployeeId())).thenReturn(Optional.of(shiftAssign2));
+        when(jooqRepository.getHoursWorked(change1.getNewEmployeeId(), shift1.getFromTime().get(weekFields.weekOfWeekBasedYear()), shift1.getFromTime().getYear())).thenReturn(duration);
+        //when(jooqRepository.getHoursWorked(change2.getNewEmployeeId(), shift2.getFromTime().get(weekFields.weekOfWeekBasedYear()), shift2.getFromTime().getYear())).thenReturn(duration);
+        when(jooqRepository.getMissingForShift(shift1.getShiftId())).thenReturn(Arrays.asList(missing));
+        //when(catRepo.findOne((short)1)).thenReturn(new EmployeeCategory((short)1, "admin", true, (short)5, true));
+        //when(catRepo.findOne((short)2)).thenReturn(new EmployeeCategory((short)2, "Sykepleier", true, (short)5, true));
+
+        // Get count - (if (count)) test
+        ResponseEntity<?> response = changeRequestController.getChangeRequests(true);
+
+        // Assert
+        assertEquals(ResponseEntity.ok(2L), response);
+
+
+        // Get on (return ResponseEntity.ok(requests))
+        response = changeRequestController.getChangeRequests(false);
+
+        // Assert
+        assertEquals(ResponseEntity.ok(Arrays.asList(change1, change2)), response);
+
+
+        // Verify
+        verify(changeRequestRepository, atLeastOnce()).count();
+        verify(changeRequestRepository, atLeastOnce()).findAll();
+        verify(shiftRepo, atLeastOnce()).findOne(change1.getShiftId());
+        verify(shiftRepo, atLeastOnce()).findOne(change2.getShiftId());
+        verify(employeeRepo, atLeastOnce()).findOne(change1.getNewEmployeeId());
+        verify(employeeRepo, atLeastOnce()).findOne(change2.getNewEmployeeId());
+        verify(employeeRepo, atLeastOnce()).findOne(change1.getOldEmployeeId());
+        verify(employeeRepo, atLeastOnce()).findOne(change2.getOldEmployeeId());
+        verify(shiftAssignmentRepo, atLeastOnce()).findByShiftIdAndEmployeeId(shift1.getShiftId(), emp2.getEmployeeId());
+        verify(shiftAssignmentRepo, atLeastOnce()).findByShiftIdAndEmployeeId(shift2.getShiftId(), emp1.getEmployeeId());
+        //verify(jooqRepository, atLeastOnce()).getHoursWorked(change1.getNewEmployeeId(), shift1.getFromTime().get(weekFields.weekOfWeekBasedYear()), shift1.getFromTime().getYear());
+        //verify(jooqRepository, atLeastOnce()).getHoursWorked(change2.getNewEmployeeId(), shift2.getFromTime().get(weekFields.weekOfWeekBasedYear()), shift2.getFromTime().getYear());
+        verify(jooqRepository, atLeastOnce()).getMissingForShift(shift1.getShiftId());
+        //verify(catRepo, atLeastOnce()).findOne((short)1);
+        //verify(catRepo, atLeastOnce()).findOne((short)2);
     }
-
     @Test
     public void requestChangeForShift() throws Exception {
 
