@@ -13,6 +13,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -35,9 +37,6 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by magnu on 16.01.2017.
- */
 @RunWith(MockitoJUnitRunner.class)
 public class EmployeeControllerTest {
     @InjectMocks
@@ -61,6 +60,8 @@ public class EmployeeControllerTest {
     @Mock
     private UserDetailsManager userDetailsManager;
 
+    @Captor
+    ArgumentCaptor<User> captor;
 
 
     // Employees and Shifts for tests
@@ -113,9 +114,9 @@ public class EmployeeControllerTest {
 
     }
 
-    @Test //TODO Sindre fix
+    @Test
     public void addEmployee() throws Exception {
- /*
+
         // Stubbing method
         when(employeeRepo.saveAndFlush(emp2)).thenReturn(emp2);
 
@@ -125,9 +126,10 @@ public class EmployeeControllerTest {
         // assert
         assertNotNull(test);
 
+        verify(userDetailsManager).updateUser(captor.capture());
+        assertEquals(captor.getValue().getUsername(),emp2.getEmail());
         // Verify method use
-        verify(employeeRepo, atLeastOnce()).save(emp2);
-*/
+        verify(employeeRepo, atLeastOnce()).saveAndFlush(emp2);
     }
 
     @Test
