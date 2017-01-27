@@ -13,6 +13,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.http.ResponseEntity;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
@@ -117,16 +118,27 @@ public class ShiftControllerTest {
     @Test
     public void getShift() throws Exception {
         // Stubbing method
-        when(shiftRepo.findOne(2)).thenReturn(shift2);
+        when(shiftRepo.findOne(shift2.getShiftId())).thenReturn(shift2);
+        when(jooqRepo.getShiftDetailed(shift2.getShiftId())).thenReturn(detailed);
 
         // Get Shift for test
-        Shift testShift = shiftController.getShift(2);
+        Shift testShift = shiftController.getShift(2, false);
 
         // Verify method use
         verify(shiftRepo, atLeastOnce()).findOne(2);
 
-        // Compare
+        // Assert
         assertEquals(shift2, testShift);
+
+
+        // Get Detailed
+        testShift = shiftController.getShift(2, true);
+
+        // Assert
+        assertEquals(detailed, testShift);
+
+        // Verify
+        verify(jooqRepo, atLeastOnce()).getShiftDetailed(shift2.getShiftId());
     }
 
     @Test
@@ -277,27 +289,25 @@ public class ShiftControllerTest {
         // Stub
         when(shiftRepo.findOne(shift1.getShiftId())).thenReturn(shift1);
         when(shiftRepo.save(shift1)).thenReturn(shift1);
-        when(employeeRepo.findResponsibleForShift(shift1.getShiftId())).thenReturn(emp2);
 
         // Set responsible
         shiftController.setUserIsResponsibleForShift(shift1.getShiftId(), emp2.getEmployeeId());
 
         // Assert
-        assertEquals(emp2, shiftController.getResponsibleUserForShift(shift1.getShiftId()));
+        assertEquals(emp2.getEmployeeId(), shift1.getResponsibleEmployeeId());
 
         // Verify
         verify(shiftRepo, atLeastOnce()).findOne(shift1.getShiftId());
         verify(shiftRepo, atLeastOnce()).save(shift1);
-        verify(employeeRepo, atLeastOnce()).findResponsibleForShift(shift1.getShiftId());
     }
 
     @Test
     public void getResponsibleUserForShift() throws Exception {
         // Stub
-        when(employeeRepo.findResponsibleForShift(shift1.getShiftId())).thenReturn(emp1);
+        when(employeeRepo.findResponsibleForShift(shift1.getShiftId())).thenReturn(Optional.of(emp1));
 
         // Assert
-        assertEquals(emp1, shiftController.getResponsibleUserForShift(shift1.getShiftId()));
+        assertEquals(ResponseEntity.ok(emp1), shiftController.getResponsibleUserForShift(shift1.getShiftId()));
     }
 
     @Test
@@ -368,12 +378,56 @@ public class ShiftControllerTest {
 
     @Test
     public void getShiftAssignmentForShiftAndUser() throws Exception {
+        // Stub
+        when(shiftAssignmentRepo.findByShiftIdAndEmployeeId(shift1.getShiftId(), emp1.getEmployeeId())).thenReturn(Optional.of(shiftAssign1));
 
+        // Get Shift Assignment
+        ShiftAssignment testAssign = shiftController.getShiftAssignmentForShiftAndUser(shift1.getShiftId(), emp1.getEmployeeId());
+
+        // Assert
+        assertEquals(shiftAssign1, testAssign);
+
+        // Verify
+        verify(shiftAssignmentRepo, atLeastOnce()).findByShiftIdAndEmployeeId(shift1.getShiftId(), emp1.getEmployeeId());
     }
 
     @Test
     public void changeUserAssignment() throws Exception {
+        // Stub
+        when(shiftAssignmentRepo.findByShiftIdAndEmployeeId(shift1.getShiftId(), emp1.getEmployeeId())).thenReturn(Optional.of(shiftAssign1));
+        when(shiftRepo.findOne(shift1.getShiftId())).thenReturn(shift1);
+        when(shiftRepo.save(shift1)).thenReturn(shift1);
+        when(shiftAssignmentRepo.save(shiftAssign1)).thenReturn(shiftAssign1);
+        when(employeeRepo.findOne(emp1.getEmployeeId())).thenReturn(emp1);
+        when(employeeRepo.findAll()).thenReturn(Arrays.asList(emp1, emp2));
 
+        // Call method
+        shiftController.changeUserAssignment(shift1.getShiftId(),emp1.getEmployeeId(), true, true, true, true, "");
+
+        // Verify
+        verify(shiftAssignmentRepo, atLeastOnce()).findByShiftIdAndEmployeeId(shift1.getShiftId(), emp1.getEmployeeId());
+        verify(shiftRepo, atLeastOnce()).findOne(shift1.getShiftId());
+        verify(shiftRepo, atLeastOnce()).save(shift1);
+        verify(shiftAssignmentRepo, atLeastOnce()).save(shiftAssign1);
+        verify(employeeRepo, atLeastOnce()).findOne(emp1.getEmployeeId());
+        verify(employeeRepo, atLeastOnce()).findAll();
+
+
+
+        // If else stuff
+
+        // Stub
+        when(shiftAssignmentRepo.findByShiftIdAndEmployeeId(100, emp1.getEmployeeId())).thenReturn(Optional.empty());
+        when(shiftRepo.findOne(100)).thenReturn(shift1);
+        when(shiftRepo.save(shift1)).thenReturn(shift1);
+
+        // Call method
+        shiftController.changeUserAssignment(100, emp1.getEmployeeId(), true, true, true, false, "");
+
+        // Verify
+        verify(shiftAssignmentRepo, atLeastOnce()).findByShiftIdAndEmployeeId(100, emp1.getEmployeeId());
+        verify(shiftRepo, atLeastOnce()).findOne(100);
+        verify(shiftRepo, atLeastOnce()).save(shift1);
     }
 
     @Test
@@ -388,6 +442,41 @@ public class ShiftControllerTest {
 
     @Test
     public void removeShiftAssignment() throws Exception {
+
+    }
+
+    @Test
+    public void getShiftsBetween() throws Exception {
+
+    }
+
+    @Test
+    public void addWish() throws Exception {
+
+    }
+
+    @Test
+    public void getAllShiftAssignments() throws Exception {
+
+    }
+
+    @Test
+    public void getShiftAssignmentByShiftAssignmentId() throws Exception {
+
+    }
+
+    @Test
+    public void getShiftAssignmentsForUser() throws Exception {
+
+    }
+
+    @Test
+    public void getAmountOnShift() throws Exception {
+
+    }
+
+    @Test
+    public void getTotalHoursForMonth() throws Exception {
 
     }
 }
