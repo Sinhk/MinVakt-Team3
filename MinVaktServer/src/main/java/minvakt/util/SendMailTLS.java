@@ -34,12 +34,12 @@ public class SendMailTLS {
     }
 
     private void sendMail(Message message) {
-
+        /*
         try {
             Transport.send(message);
         } catch (MessagingException ignored) {
         }
-
+        */
     }
 
     private void buildMessage(Message m, String email, String subj, String text) {
