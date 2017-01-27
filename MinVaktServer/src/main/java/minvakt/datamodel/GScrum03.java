@@ -13,7 +13,6 @@ import javax.annotation.Generated;
 import minvakt.datamodel.tables.AssignedPerShift;
 import minvakt.datamodel.tables.ChangeRequest;
 import minvakt.datamodel.tables.Department;
-import minvakt.datamodel.tables.DepartmentRequiredEmployeesPerCategory;
 import minvakt.datamodel.tables.Employee;
 import minvakt.datamodel.tables.EmployeeCategory;
 import minvakt.datamodel.tables.EmployeeTimeWorkedWeek;
@@ -61,11 +60,6 @@ public class GScrum03 extends SchemaImpl {
      * The table <code>g_scrum03.department</code>.
      */
     public final Department DEPARTMENT = minvakt.datamodel.tables.Department.DEPARTMENT;
-
-    /**
-     * The table <code>g_scrum03.department_required_employees_per_category</code>.
-     */
-    public final DepartmentRequiredEmployeesPerCategory DEPARTMENT_REQUIRED_EMPLOYEES_PER_CATEGORY = minvakt.datamodel.tables.DepartmentRequiredEmployeesPerCategory.DEPARTMENT_REQUIRED_EMPLOYEES_PER_CATEGORY;
 
     /**
      * The table <code>g_scrum03.employee</code>.
@@ -130,7 +124,6 @@ public class GScrum03 extends SchemaImpl {
             AssignedPerShift.ASSIGNED_PER_SHIFT,
             ChangeRequest.CHANGE_REQUEST,
             Department.DEPARTMENT,
-            DepartmentRequiredEmployeesPerCategory.DEPARTMENT_REQUIRED_EMPLOYEES_PER_CATEGORY,
             Employee.EMPLOYEE,
             EmployeeCategory.EMPLOYEE_CATEGORY,
             EmployeeTimeWorkedWeek.EMPLOYEE_TIME_WORKED_WEEK,

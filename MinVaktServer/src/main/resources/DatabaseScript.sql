@@ -92,14 +92,14 @@ CREATE TABLE IF NOT EXISTS shift_department (
 );
 */
 
-CREATE TABLE IF NOT EXISTS department_required_employees_per_category (
+/*CREATE TABLE IF NOT EXISTS department_required_employees_per_category (
   id                  INT           AUTO_INCREMENT PRIMARY KEY,
   department_id   SMALLINT       NOT NULL,
   category_id     SMALLINT       NOT NULL,
   amount          SMALLINT     NOT NULL,
   CONSTRAINT department_required_employees_department_id_fk FOREIGN KEY (department_id) REFERENCES department (department_id),
   CONSTRAINT department_required_employees_category_id_fk FOREIGN KEY (category_id) REFERENCES employee_category (category_id)
-);
+);*/
 
 /*CREATE TABLE IF NOT EXISTS department_required_per_shift (
   id                  INT           AUTO_INCREMENT PRIMARY KEY,
