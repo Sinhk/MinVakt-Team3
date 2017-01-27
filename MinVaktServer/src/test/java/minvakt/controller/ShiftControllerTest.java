@@ -13,6 +13,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.ResponseEntity;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -589,7 +590,7 @@ public class ShiftControllerTest {
         // Mock
         MissingPerShiftCategory missing = mock(MissingPerShiftCategory.class);
 
-        // When
+        // Stub
         when(jooqRepo.getMissingForShift(shift1.getShiftId())).thenReturn(Arrays.asList(missing));
 
         // Get list
@@ -605,6 +606,18 @@ public class ShiftControllerTest {
 
     @Test
     public void getTotalHoursForMonth() throws Exception {
+        LocalDate startOfMonth = LocalDate.of(LocalDate.now().getYear(), 1, 1);
+        Map<Integer, Duration> map = new HashMap<>();
 
+        map.put(1, Duration.ofSeconds(28800));         // 8 hours in seconds
+
+        // Stub
+        when(jooqRepo.getHoursWorked(startOfMonth, startOfMonth.plusDays(startOfMonth.getMonth().length(LocalDate.now().isLeapYear())))).thenReturn(map);
+
+        // Get map
+        Map<Integer, Long> testMap = shiftController.getTotalHoursForMonth(1);
+
+        // Assert
+        assertEquals(8, (long)testMap.get(1));
     }
 }
