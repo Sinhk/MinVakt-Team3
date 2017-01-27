@@ -197,4 +197,24 @@ public class Employee implements Serializable {
         sb.append(")");
         return sb.toString();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Employee employee = (Employee) o;
+
+        if (!employeeId.equals(employee.employeeId)) return false;
+        if (!email.equals(employee.email)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = employeeId.hashCode();
+        result = 31 * result + email.hashCode();
+        return result;
+    }
 }

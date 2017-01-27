@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
+import java.sql.Date;
 import java.time.*;
 import java.util.HashMap;
 import java.util.List;
@@ -267,7 +268,11 @@ public class ShiftController {
     @GetMapping(value = "/{shift_id}/possible_users")
     public List<Employee> getAvailableForShift(@PathVariable int shift_id) {
         Shift shift = shiftRepo.findOne(shift_id);
-        return jooqRepo.getEmployeesAvailableForShift(shift);
+        List<Employee> availableForShift = jooqRepo.getCandidatesForShift(shift);
+        LocalDate date = shift.getFromTime().toLocalDate();
+        List<Employee> shiftDate = employeeRepo.findByShiftDate(Date.valueOf(date));
+        availableForShift.removeAll(shiftDate);
+        return availableForShift;
     }
 
     @GetMapping(value = "/available")

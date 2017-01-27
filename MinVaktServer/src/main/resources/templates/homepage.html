@@ -122,15 +122,27 @@
 <script id="shiftChangeTemplate" type="text/x-handlebars-template">
     <div class="modal-content">
         <h4>Vakt:  {{date}} {{from}}  - {{to}}  Avdeling: {{department}}</h4>
-    <ul>
-        {{#each employees}}
-        <li>{{this.firstName}} {{this.lastName}} {{this.phone}}</li>
-        {{/each}}
-    </ul>
+        <div class="row">
+            <div class="col s12 m6">
+        <div>
+            <label>
+                <select id="employee-box" class="browser-default white">
+                    <option value="" disabled selected>Velg ansatt</option>
+                    {{#each employees}}
+                    <option value='{{this.employeeId}}' id='user{{this.employeeId}}'>{{this.firstName}} {{this.lastName}}</option>
+                    {{/each}}
+                </select>
+            </label>
+        </div>
+            </div>
+        <div class="col s12 m6">
+            Tlf:  <div id="phoneNr"></div>
+        </div>
+    </div>
     </div>
     <div class="modal-footer">
-        <a id="cancel_change_btn" class=" modal-action waves-effect waves-green btn-flat">Avbryt</a>
-        <a id="change_confirm_btn" class= "modal-action waves-effect waves-green btn-flat">Bytt vakt</a>
+        <a id="cancel_change_btn" class=" modal-action waves-effect waves-red btn-flat">Avbryt</a>
+        <a id="change_confirm_btn" class= "modal-action waves-effect waves-green btn-flat disabled">Bytt vakt</a>
     </div>
 </script>
 </body>

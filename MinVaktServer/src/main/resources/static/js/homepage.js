@@ -111,6 +111,21 @@ function switchAdminViewHomePage() {
     }
 }
 
+var htmlDet;
+
+function renderDet(event) {
+    $('#shiftDetail').html(htmlDet);
+    $('#absent_btn').click(() => {
+        registerAbsence(event.id);
+    });
+    $('#change_btn').click(() => {
+        requestChange(event);
+    });
+    $('#close_btn').click(() => {
+        $('#shiftDetail').modal('close');
+    });
+}
+
 function openDetails(event) {
     $('#shiftDetail').modal('open');
 
@@ -134,19 +149,11 @@ if(shift.responsible != undefined) {
             responsible: shift.responsible,
             employees: shift.employees
         };
-        let html = headerTemplate(content);
-        $('#shiftDetail').html(html);
-        $('#absent_btn').click(() => {
-            registerAbsence(event.id);
-        });
-        $('#change_btn').click(() => {
-            requestChange(event);
-        });
-        $('#close_btn').click(() => {
-            $('#shiftDetail').modal('close');
-        });
+        htmlDet = headerTemplate(content);
+        renderDet(event);
     });
 }
+
 function requestChange(event) {
     $('#shiftDetail').html("<div class='modal-content'><div class='progress'><div class='indeterminate'></div></div></div>");
 
@@ -164,13 +171,44 @@ function requestChange(event) {
             responsible: event.responsible,
             employees: employees
         };
+
         let html = shiftChangeTemplate(content);
         $('#shiftDetail').html(html);
 
-        console.log(employees);
-    });
+        $('#employee-box').change(() => {
+            for(let i = 0; i <employees.length;i++) {
+                if(employees[i].employeeId == $('#employee-box').val()){
+                    $('#phoneNr').text(employees[i].phone);
+                }
+            }
+            $('#change_confirm_btn').removeClass('disabled');
+        });
 
-    // requestChangeForShift
+        $('#cancel_change_btn').click(() => {
+            console.log(htmlDet);
+            renderDet(event);
+        });
+        $('#change_confirm_btn').click(() => {
+            getCurrentUser(function (currentUser) {
+                for(let i = 0; i <employees.length;i++) {
+                    if(employees[i].employeeId == $('#employee-box').val()){
+                       var newUser=  employees[i];
+                    }
+                }
+                let date = event.start.format("DD/MM");
+                let from = event.start.format("HH:mm");
+                let to = event.end.format("HH:mm");
+
+                requestChangeForShift(event.id, currentUser.employeeId, newUser.employeeId, function () {
+
+                    swal("Forespørsel sendt", "Vaktbytte for vakt " +date+ " " + from + " -> " + to +
+                        ". Fra "+ currentUser.firstName +" " + currentUser.lastName + " til " + newUser.firstName + " " + newUser.lastName, "success");
+
+                    $('#shiftDetail').modal('close');
+                })
+            });
+        });
+    });
 }
 
 function registerAbsence(shiftId) {
