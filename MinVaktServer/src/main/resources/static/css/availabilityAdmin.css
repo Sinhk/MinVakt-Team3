@@ -10,23 +10,44 @@
     display:none
 }
 
+#circle {
+    margin-left: 5%;
+}
+
 #header {
     margin-top: 3%;
     margin-left: 2%;
 }
 
 #text {
-    margin-left: 2%;
+    margin-left: 5%;
     color: grey;
+}
+
+#text1 {
+    margin-left: 20%;
+    margin-top: -12%;
+}
+#text2 {
+    margin-left: 15%;
+    margin-top: -12%;
+}
+#text3 {
+    margin-left: 15%;
+    margin-top: -12%;
+}
+#text4 {
+    margin-left: 15%;
+    margin-top: -12%;
 }
 
 #calendar {
     float:left;
-    width:85%;
     /*float: right;*/
 }
 
 #btn {
-    margin-top:-11%;
-    margin-left: 76%;
+    float: right;
+    margin-top:-6.5%;
+    margin-right: 3%;
 }

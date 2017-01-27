@@ -36,7 +36,7 @@
 
 #external-events {
     position: fixed;
-    margin-top:3%;
+    margin-top: 8.1%;
     float: left;
     width: 150px;
     height: 260px;
@@ -58,14 +58,14 @@
 #calendar {
     float: right;
     margin-right: 25%;
-    margin-top:3%;
+    margin-top: 2%;
     width: 63%;
 }
 
 #save{
-    position:fixed;
-    width:11.7%;
-    margin-top: 25%;
+    float: right;
+    margin-top: -12.5%;
+    margin-right: 25%;
 }
 
 #header {
@@ -74,12 +74,12 @@
 }
 
 #text {
-    margin-left: 2%;
-    color: darkgrey;
+    margin-left: 2.5%;
+    color: grey;
 }
 
 #circle {
-    margin-left: 4%;
+    margin-left: 6%;
 }
 
 #circle2 {
@@ -87,7 +87,7 @@
 }
 
 #text1 {
-    margin-left: 15%;
+    margin-left: 18%;
     margin-top: -10%;
 }
 
