@@ -40,5 +40,30 @@ aside
     margin-top: -13%;
 }
 
+#close_btn {
+    float: left;
+    margin-left: 2%;
+}
+
+#absent_btn {
+    float: left;
+    margin-left: 2%;
+}
+
+#change_btn {
+    float: left;
+    margin-left: 2%;
+}
+
+#change_confirm_btn {
+    float: left;
+    margin-left: 2%;
+}
+
+#cancel_change_btn {
+    float: left;
+    margin-left: 2%;
+}
+
 
 
