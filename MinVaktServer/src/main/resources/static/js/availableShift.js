@@ -1,5 +1,3 @@
-
-
 $(document).ready(function(){
     const calendar = $('#calendar');
     $.getJSON("/shifts/available").then((shifts) =>{
@@ -42,78 +40,35 @@ function newWish(event) {
             title: "Vil du ønske deg denne vakten?",
             text: "Vakt: " + event.start.format('DD/MM') + event.start.format("HH:mm") + " - " + event.end.format("HH:mm"),
             showCancelButton: true,
-            //confirmButtonColor: "#11dd07",
-            confirmButtonText: "Ja",
-            cancelButtonText: "Nei",
+            confirmButtonColor: "#0d47a1",
+            confirmButtonText: "JA",
+            cancelButtonText: "NEI",
+            cancelButtonColor: "#9e9e9e",
             closeOnConfirm: false,
             showLoaderOnConfirm: true,
         },
         function(){
             $.post("/shifts/"+event.id+"/wish").then(()=> {
-                swal("Vaktønske er registrert","","success");
+                swal({
+                    title: "Vaktønske er registrert",
+                    type: "success",
+                    confirmButtonText: "OK",
+                    confirmButtonColor: "#0d47a1"
+                })
+                /*swal("Vaktønske er registrert","","success");*/
                 $('#calendar').fullCalendar('removeEvents', function (eventa) {
                     return event.start.dayOfYear() === eventa.start.dayOfYear();
                 });
             }).catch(()=>{
-                swal("Noe gikk galt","","error")
+                swal({
+                    title: "Noe gikk galt",
+                    type: "error",
+                    confirmButtonColor: "#0d47a1"
+                })
             });
 
         });
 }
-
-/*
-    getCurrentUser(function (user) {
-
-        getShiftsForUser(user.employeeId, function (shifts) {
-
-            for(var i = 0; i < shifts.length; i++) {
-
-                const shift = shifts[i];
-
-                document.getElementById("category-box").innerHTML +=
-
-                    "<option value= '"+shift.shiftId+"' id = shift"+shift.shiftId+">"+shift.fromTime.split("T")[0]+" "+shift.fromTime.split("T")[1].substr(0,5)+"</option>"
-            }
-        })
-    })
-
-    var body = document.getElementById("table1");
-
-
-    getAvailableShifts(function(data) {
-        var shifts = data
-        for(var i = 0; i<shifts.length; i++) {
-
-            var shift = shifts[i];
-               console.log(shifts);
-            body.innerHTML += "<tr>" +
-                "<td><input type='checkbox' id='test5' />" +
-                "<label for='test5'></label></td>" +
-                "<td>"+shift.fromTime.split('T')[0]+"</td>" +
-                "<td>"+shift.fromTime.split('T')[1].substr(0,5)+"</td>" +
-                "</tr>";
-        }
-    });
-
-
-    $("#button").click(function () {
-
-        var selected = table1.getElementsByClassName('selected');
-
-        console.log(selected);
-
-
-        swal({  title: "Success",
-                text: "Du har ønsket deg vakten",
-                type: "success",   showCancelButton: false,
-                closeOnConfirm: false,
-                animation: "slide-from-top",
-        }
-        );
-
-    });
-*/
-
    
 
 

@@ -64,21 +64,26 @@ SELECT * FROM (SELECT
 
 
 SELECT
-  DISTINCT (employee.employee_id),
+  DISTINCT employee.employee_id,
   ifnull((employee.position_percentage * 40 / 100) -  time_worked, employee.position_percentage * 40 / 100) as time_missing,
   missing,
   NOT ISNULL(wish_asig.shift_id) as wish
   FROM employee
-    LEFT JOIN shift theshift on theshift.shift_id = 2
+    LEFT JOIN shift theshift on theshift.shift_id = 341
     LEFT JOIN employee_category on employee.category_id = employee_category.category_id
     LEFT JOIN employee_time_worked_week etww on (etww.employee_id, etww.week_num) = (employee.employee_id, WEEK(theshift.from_time,3))
-    LEFT JOIN missing_per_shift_category mpsc on (mpsc.shift_id, mpsc.category_id) = (2, employee.category_id)
-    LEFT JOIN shift_assignment wish_asig on (wish_asig.employee_id, wish_asig.shift_id) = (employee.employee_id,2)
-    LEFT JOIN shift_assignment on (employee.employee_id,TRUE) = (shift_assignment.employee_id,shift_assignment.assigned)
-    LEFT JOIN shift ON shift_assignment.shift_id = shift.shift_id
-WHERE available_for_shifts = TRUE AND (NOT (DAYOFYEAR(shift.from_time) = DAYOFYEAR(theshift.from_time)) OR shift.shift_id is null)
+    LEFT JOIN missing_per_shift_category mpsc on (mpsc.shift_id, mpsc.category_id) = (341, employee.category_id)
+    LEFT JOIN shift_assignment wish_asig on (wish_asig.employee_id, wish_asig.shift_id) = (employee.employee_id,341)
+WHERE available_for_shifts = TRUE
 ORDER BY mpsc.missing DESC, wish DESC, time_missing DESC;
 
+SELECT employee
+
+SELECT
+  *
+FROM shift_assignment
+LEFT JOIN shift on shift_assignment.shift_id = shift.shift_id
+WHERE shift.from_time
 
 SELECT
   employee.employee_id,

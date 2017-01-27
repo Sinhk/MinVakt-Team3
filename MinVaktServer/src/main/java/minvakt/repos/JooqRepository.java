@@ -12,9 +12,6 @@ import org.jooq.DSLContext;
 import org.jooq.Record10;
 import org.jooq.Record2;
 import org.jooq.Result;
-import org.modelmapper.ModelMapper;
-import org.modelmapper.convention.NameTokenizers;
-import org.modelmapper.jooq.RecordValueReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,13 +35,10 @@ public class JooqRepository {
     private static final Logger log = LoggerFactory.getLogger(JooqRepository.class);
 
     private final DSLContext create;
-    private final ModelMapper modelMapper = new ModelMapper();
 
     @Autowired
     public JooqRepository(DSLContext dslContext) {
         this.create = dslContext;
-        modelMapper.getConfiguration().addValueReader(new RecordValueReader());
-        modelMapper.getConfiguration().setSourceNameTokenizer(NameTokenizers.UNDERSCORE);
     }
 
     public List<ShiftDetailed> getShiftDetailed() {
@@ -55,18 +49,49 @@ public class JooqRepository {
                 .from(SHIFT).naturalJoin(SHIFT_ASSIGNMENT).naturalJoin(EMPLOYEE)
                 .fetchGroups(SHIFT.SHIFT_ID);
 
-        resultMap.values().forEach(records -> {
-            ShiftDetailed shiftDetailed = modelMapper.map(records.get(0), ShiftDetailed.class);
-            System.out.println(shiftDetailed);
-            records.forEach(record -> {
-                AssignedEmployee employee = modelMapper.map(record, AssignedEmployee.class);
-                if (employee.getEmployeeId().equals(shiftDetailed.getResponsibleEmployeeId())) {
-                    shiftDetailed.setResponsible(employee);
-                }
-                shiftDetailed.addEmployee(employee);
-            });
-            shifts.add(shiftDetailed);
+        resultMap.values().forEach(records -> shifts.add(mapShiftDetailed(records)));
+
+        return shifts;
+    }
+
+    private ShiftDetailed mapShiftDetailed(Result<Record10<Integer, LocalDateTime, LocalDateTime, Integer, Short, Short, Boolean, Integer, String, String>> records) {
+        if(records.isEmpty()) return new ShiftDetailed();
+        Record10<Integer, LocalDateTime, LocalDateTime, Integer, Short, Short, Boolean, Integer, String, String> aRecord = records.get(0);
+        ShiftDetailed shiftDetailed = new ShiftDetailed(aRecord.value1(), aRecord.value4(), aRecord.value2(), aRecord.value3(), aRecord.value5(), aRecord.value6());
+        records.forEach(record -> {
+            AssignedEmployee employee = new AssignedEmployee();
+            employee.setEmployeeId(record.value8());
+            employee.setFirstName(record.value9());
+            employee.setLastName(record.value10());
+            if (employee.getEmployeeId().equals(shiftDetailed.getResponsibleEmployeeId())) {
+                shiftDetailed.setResponsible(employee);
+            }
+            shiftDetailed.addEmployee(employee);
         });
+        return shiftDetailed;
+    }
+
+    public ShiftDetailed getShiftDetailed(int shift_id) {
+        Result<Record10<Integer, LocalDateTime, LocalDateTime, Integer, Short, Short, Boolean, Integer, String, String>> result = this.create
+                .select(SHIFT.SHIFT_ID, SHIFT.TO_TIME, SHIFT.FROM_TIME, SHIFT.RESPONSIBLE_EMPLOYEE_ID, SHIFT.DEPARTMENT_ID, SHIFT.REQUIRED_EMPLOYEES, SHIFT_ASSIGNMENT.ABSENT,
+                        EMPLOYEE.EMPLOYEE_ID, EMPLOYEE.FIRST_NAME, EMPLOYEE.LAST_NAME)
+                .from(SHIFT).naturalJoin(SHIFT_ASSIGNMENT).naturalJoin(EMPLOYEE)
+                .where(SHIFT.SHIFT_ID.eq(shift_id))
+                .fetch();
+
+        return mapShiftDetailed(result);
+    }
+
+    public Iterable<?> getShiftDetailed(LocalDate from, LocalDate to) {
+        List<ShiftDetailed> shifts = new ArrayList<>();
+        Map<Integer, Result<Record10<Integer, LocalDateTime, LocalDateTime, Integer, Short, Short, Boolean, Integer, String, String>>> resultMap = this.create
+                .select(SHIFT.SHIFT_ID, SHIFT.TO_TIME, SHIFT.FROM_TIME, SHIFT.RESPONSIBLE_EMPLOYEE_ID, SHIFT.DEPARTMENT_ID, SHIFT.REQUIRED_EMPLOYEES, SHIFT_ASSIGNMENT.ABSENT,
+                        EMPLOYEE.EMPLOYEE_ID, EMPLOYEE.FIRST_NAME, EMPLOYEE.LAST_NAME)
+                .from(SHIFT).naturalJoin(SHIFT_ASSIGNMENT).naturalJoin(EMPLOYEE)
+                .where(SHIFT.FROM_TIME.between(from.atStartOfDay(),to.atStartOfDay()))
+                .fetchGroups(SHIFT.SHIFT_ID);
+
+        resultMap.values().forEach(records -> shifts.add(mapShiftDetailed(records)));
 
         return shifts;
     }
@@ -91,7 +116,7 @@ public class JooqRepository {
 
     }
 
-    public List<Employee> getEmployeesAvailableForShift(Shift shift) {
+    public List<Employee> getCandidatesForShift(Shift shift) {
         WeekFields weekFields = WeekFields.of(Locale.getDefault());
         int weekNumber = shift.getFromTime().get(weekFields.weekOfWeekBasedYear());
         minvakt.datamodel.tables.MissingPerShiftCategory mis = MISSING_PER_SHIFT_CATEGORY.as("mis");
@@ -110,9 +135,7 @@ public class JooqRepository {
                 .leftJoin(etww).on(etww.EMPLOYEE_ID.eq(EMPLOYEE.EMPLOYEE_ID), etww.WEEK_NUM.eq(weekNumber))
                 .leftJoin(mis).on(mis.SHIFT_ID.eq(shift.getShiftId()), mis.CATEGORY_ID.eq(EMPLOYEE.CATEGORY_ID))
                 .leftJoin(wish).on(wish.EMPLOYEE_ID.eq(EMPLOYEE.EMPLOYEE_ID), wish.SHIFT_ID.eq(shift.getShiftId()))
-                .leftJoin(SHIFT_ASSIGNMENT).on(SHIFT_ASSIGNMENT.EMPLOYEE_ID.eq(EMPLOYEE.EMPLOYEE_ID), SHIFT_ASSIGNMENT.ASSIGNED.eq(Boolean.TRUE))
-                .leftJoin(SHIFT).on(SHIFT.SHIFT_ID.eq(SHIFT_ASSIGNMENT.SHIFT_ID))
-                .where(EMPLOYEE_CATEGORY.AVAILABLE_FOR_SHIFTS.eq(Boolean.TRUE)).and(not(SHIFT.FROM_TIME.between(getStartOfDay(shift.getFromTime()), getEndOfDay(shift.getToTime()))))
+                .where(EMPLOYEE_CATEGORY.AVAILABLE_FOR_SHIFTS.eq(Boolean.TRUE))
                 .orderBy(mis.MISSING.desc(), field((wish.SHIFT_ID).isNotNull()).desc(), field(ifnull(EMPLOYEE.POSITION_PERCENTAGE.mul(HOURS_IN_WEEK / 100).minus(etww.TIME_WORKED), EMPLOYEE.POSITION_PERCENTAGE.mul(HOURS_IN_WEEK / 100))).desc())
                 .fetchInto(Employee.class);
     }

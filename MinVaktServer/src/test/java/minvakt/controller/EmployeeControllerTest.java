@@ -1,57 +1,94 @@
 package minvakt.controller;
 
 
+import minvakt.datamodel.ShiftDetailed;
+import minvakt.datamodel.tables.pojos.ChangeRequest;
+import minvakt.datamodel.tables.pojos.Employee;
+import minvakt.datamodel.tables.pojos.Shift;
+import minvakt.datamodel.tables.pojos.ShiftAssignment;
+
+import minvakt.repos.*;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.core.Response;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.mockito.Mockito.*;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.*;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by magnu on 16.01.2017.
- */
 @RunWith(MockitoJUnitRunner.class)
 public class EmployeeControllerTest {
-
-    // Mock controller
     @InjectMocks
     private EmployeeController employeeController;
 
+    @Mock
+    private EmployeeRepository employeeRepo;
+
+    @Mock
+    private ShiftRepository shiftRepo;
+
+    @Mock
+    private ShiftAssignmentRepository shiftAssignmentRepo;
+
+    @Mock
+    private ChangeRequestRepository changeRequestRepository;
+
+    @Mock
+    private CategoryRepository catRepo;
+
+    @Mock
+    private UserDetailsManager userDetailsManager;
+
+    @Captor
+    ArgumentCaptor<User> captor;
+
+
     // Employees and Shifts for tests
-    /*
     private Employee emp1, emp2;
-    private Shift shift1, shift2;
-    */
+    private Shift shift1, shift2,nonAssignedShift;
+    private ShiftAssignment shiftAssign1, shiftAssign2,shiftAssign3;
+
+
     @Before
     public void setUp() throws Exception {
-        /*
-        // Initialization of Employee objects
-        emp1 = new Employee("Bob", "Bobsen", "bob@bob.bob", 12345678, 100);
-        emp2 = new Employee("Per", "Persson", "per@sverige.se", 11223344, 50);
+        // Setup LocalDateTimes for shifts
+        LocalDateTime fromTime1 = LocalDateTime.of(2017, 1, 17, 6, 0), toTime1 = LocalDateTime.of(2017, 1, 17, 14, 0), toTime2 = LocalDateTime.of(2019, 1, 17, 22, 0, 0);
 
-        // Assign employeeID to test-employees (needed for tests)
-        emp1.setEmployeeId(1);
-        emp2.setEmployeeId(2);
+        // Setup employees based on data from database script
+        emp1 = new Employee(1, (short)1, "admin", "min", 12345678, "admin@minvakt.no", (short)100, "$2a$04$c7YTJkh8TVGsmCNNWW7pXu0f/dmy6E6TdsCgX7dnZlJQP7DBfuKjq", true, true);
+        emp2 = new Employee(2, (short)2, "user", "er", 12345679, "user@minvakt.no", (short)100, "$2a$06$vMO32hhPzSrnvM8tRYwMZ.mzxkrrtXHtsYmRNxESKiClLPtZGRtF6", true, true);
+
+        // Setup shifts based on data from database script
+        shift1 = new Shift(1, 1, fromTime1, toTime1, (short)1, (short)5);
+        shift2 = new Shift(2, 2, toTime1, toTime2, (short)1, (short)5);
+
+        // Setup shift assignments based on data from database script
+        shiftAssign1 = new ShiftAssignment(1, 1, 1, false, true, false, "");
+        shiftAssign2 = new ShiftAssignment(2, 2, 2, true, true, false, "Diarrhea");
+        shiftAssign3 = new ShiftAssignment(3, 1, 1, false, false, true, "");
 
 
-        // LocalDateTime objects for initializing Shift objects
-        LocalDateTime date1 = LocalDateTime.of(2017, 1, 10, 10, 0, 0);
-        LocalDateTime date2 = LocalDateTime.of(2017, 1, 10, 14, 0, 0);
 
-        shift1 = new Shift(date1, date2);
-        shift2 = new Shift(date1.toLocalDate(), PredeterminedIntervals.DAYTIME);
-
-        // Assign ID to shifts, needed for tests
-        shift1.setShiftId(1);
-        shift2.setShiftId(2);
-        */
     }
 
     @After
@@ -60,42 +97,203 @@ public class EmployeeControllerTest {
     }
 
     @Test
+    public void getCurrentUser() throws Exception {
+    //    HttpServletRequest request = mock(HttpServletRequest.class);
+      //  java.security.Principal principal = mock(java.security.Principal.class);
+
+    }
+
+    @Test
     public void getUsers() throws Exception {
+        // Stubbing methods
+        when(employeeRepo.findAll()).thenReturn(Arrays.asList(emp1, emp2));
+
+        // Get all employees
+        List<Employee> allEmp = (List<Employee>) employeeController.getUsers();
+
+        // Assert
+        assertEquals(emp1, allEmp.get(0));
+        assertEquals(emp2, allEmp.get(1));
+        assertNotEquals(emp2, allEmp.get(0));
+
+        // Verify
+        verify(employeeRepo, atLeastOnce()).findAll();
+    }
+
+    @Test //todo sindre fix
+    public void getAsResource() throws Exception {
 
     }
 
     @Test
     public void addEmployee() throws Exception {
 
+        // Stubbing method
+        when(employeeRepo.saveAndFlush(emp2)).thenReturn(emp2);
+
+        // Add employee
+        String test = employeeController.addEmployee(emp2);
+        System.out.println(test);
+        // assert
+        assertNotNull(test);
+
+        verify(userDetailsManager).updateUser(captor.capture());
+        assertEquals(captor.getValue().getUsername(),emp2.getEmail());
+        // Verify method use
+        verify(employeeRepo, atLeastOnce()).saveAndFlush(emp2);
     }
 
     @Test
     public void removeEmployee() throws Exception {
+        // Stubbing method
+        when(employeeRepo.save(emp2)).thenReturn(emp2);
+        when(employeeRepo.findOne(emp2.getEmployeeId())).thenReturn(emp2);
+        when(employeeRepo.findOne(emp1.getEmployeeId())).thenReturn(null);
+
+        // remove employee
+
+        Response response =employeeController.removeEmployee(emp2.getEmployeeId());
+        Response test = Response.ok().build();
+
+        //assert
+        assertEquals(test.getStatus(),response.getStatus());
+
+        // if else
+        response =employeeController.removeEmployee(emp1.getEmployeeId());
+        test = Response.noContent().build();
+
+        //assert
+        assertEquals(test.getStatus(),response.getStatus());
+
+        // Verify method use
+        verify(employeeRepo, atLeastOnce()).save(emp2);
 
     }
 
     @Test
-    public void findUser() throws Exception {
+    public void getUserById() throws Exception {
+        // Stubbing method
+        when(employeeRepo.findOne(emp1.getEmployeeId())).thenReturn(emp1);
+
+        // Get employee by id
+        Employee empTest = employeeController.getUserById(emp1.getEmployeeId());
+
+
+        //assert
+        assertEquals(emp1,empTest);
+
+        // Verify method use
+        verify(employeeRepo, atLeastOnce()).findOne(emp1.getEmployeeId());
 
     }
 
     @Test
+    public void changeEmployee() throws Exception {
+        // Stubbing method
+        when(employeeRepo.findOne(emp1.getEmployeeId())).thenReturn(emp1);
+
+
+        // Get employee by id
+        employeeController.changeEmployee(emp1.getEmployeeId(),emp2);
+
+
+        //assert
+        assertEquals(emp1.getPhone(),emp2.getPhone());
+        assertEquals(emp1.getFirstName(),emp2.getFirstName());
+        assertEquals(emp1.getLastName(),emp2.getLastName());
+
+
+        // Verify method use
+        verify(employeeRepo, atLeastOnce()).findOne(emp1.getEmployeeId());
+
+    }
+
+
+    @Test //TODO sindre fix
     public void changePasswordForUser() throws Exception {
+        // stubbing method
 
     }
 
     @Test
     public void getShiftsForUser() throws Exception {
+        //stubbing methods
+        when(shiftRepo.findByShiftEmployeeId(emp1.getEmployeeId())).thenReturn(Arrays.asList(shift1));
+
+        //Getting list
+        List<Shift> testList = employeeController.getShiftsForUser(emp1.getEmployeeId());
+
+        //asserting
+        assertEquals(shift1,testList.get(0));
+
+        //verify
+        verify(shiftRepo, atLeastOnce()).findByShiftEmployeeId(emp1.getEmployeeId());
+    }
+
+    @Test
+    public void getAssignedShiftsForUser() throws Exception {
+        //stubbing methods
+        when(shiftRepo.findAssignedByShiftEmployeeId(emp1.getEmployeeId())).thenReturn(Arrays.asList(shift1));
+
+        //Getting list
+        List<Shift> testList = employeeController.getAssignedShiftsForUser(emp1.getEmployeeId());
+
+        //asserting
+        assertEquals(shift1,testList.get(0));
+
+        //verify
+        verify(shiftRepo, atLeastOnce()).findAssignedByShiftEmployeeId(emp1.getEmployeeId());
+    }
+
+    @Test
+    public void getAvailableShiftsForUser() throws Exception {
+        //stubbing methods
+        when(shiftAssignmentRepo.findByAvailableTrue()).thenReturn(Arrays.asList(shiftAssign3));
+        when(shiftRepo.findOne(shiftAssign3.getShiftId())).thenReturn(shift1);
+        //Getting list
+        Collection<Shift> testColl = employeeController.getAvailableShiftsForUser(emp1.getEmployeeId());
+        Object[] testList = testColl.toArray();
+        //asserting
+        assertEquals(shift1, testList[0]);
+        //verify
+        verify(shiftAssignmentRepo, atLeastOnce()).findByAvailableTrue();
+        verify(shiftRepo, atLeastOnce()).findOne(shiftAssign3.getShiftId());
 
     }
 
     @Test
     public void getShiftsForUserInRange() throws Exception {
+        //stubbing methods
+        when(shiftRepo.findByShiftEmployeeId(emp1.getEmployeeId())).thenReturn(Arrays.asList(shift1));
+
+        //Getting list
+        Collection<Shift> testColl = employeeController.getShiftsForUserInRange(emp1.getEmployeeId(),"2017-01-17","2017-01-17");
+        Object[] testList = testColl.toArray();
+        //asserting
+        assertEquals(shift1,testList[0]);
+        //verify
+        verify(shiftRepo,atLeastOnce()).findByShiftEmployeeId(emp1.getEmployeeId());
+    }
+
+    @Test
+    public void getEmployeesThatCanBeResponsible() throws Exception {
+
+        //stubbing methods
+
+        //Getting list
+
+        //asserting
+
+        //verify
+    }
+
+    @Test
+    public void getCategory() throws Exception {
 
     }
 
     @Test
-    public void addShiftToUser() throws Exception {
+    public void getHoursThisWeekForUser() throws Exception {
 
     }
 
@@ -103,5 +301,12 @@ public class EmployeeControllerTest {
     public void removeShiftFromUser() throws Exception {
 
     }
+
+    @Test
+    public void sendNewPassword() throws  Exception{
+
+    }
+
+
 
 }

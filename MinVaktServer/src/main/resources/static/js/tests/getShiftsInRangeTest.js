@@ -10,7 +10,7 @@ $("#getShiftsButton").click(function () {
     var endDate = $("#enddateinput").val();
 
     $.ajax({
-        url: "users/"+user_id+"/shifts/inrange",
+        url: "/users/"+user_id+"/shifts/inrange",
         type: "GET",
         data: JSON.stringify({
             "startDate":startDate,

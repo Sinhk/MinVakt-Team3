@@ -53,7 +53,7 @@ function addShift(dateinfo, callback) {
 
 function getUsersForShift(shift_id, callback) {
 
-    $.getJSON("shifts/"+shift_id+"/users", function(data){callback(data)});
+    $.getJSON("/shifts/"+shift_id+"/users", function(data){callback(data)});
 
 }
 
@@ -87,7 +87,7 @@ function changeUserAssignment(user_id, shift_id, available, responsible, assigne
 
 function getShiftAssignmentsForShift(shift_id, callback) {
 
-    $.getJSON("shifts/"+shift_id+"/details", function(data){callback(data)});
+    $.getJSON("/shifts/"+shift_id+"/details", function(data){callback(data)});
 
 }
 
@@ -129,7 +129,7 @@ function getResponsibleUserForShift(shift_id, callback) {
 
 
     $.ajax({
-        url: "shifts/"+shift_id+"/responsible",
+        url: "/shifts/"+shift_id+"/responsible",
         type: "GET",
         contentType: "Application/JSON",
 
@@ -167,7 +167,7 @@ function setResponsibleUserForShift(shift_id, user_id, boolean) {
 
     $.ajax({
         async: false,
-        url: "shifts/"+shift_id+"/"+user_id+"/responsible",
+        url: "/shifts/"+shift_id+"/"+user_id+"/responsible",
         type: "PUT",
         contentType: "Application/JSON",
         data: boolean,
@@ -187,7 +187,7 @@ function changeShiftFromUserToUser(fromUser_id, toUser_id, shift_id) {
 
     $.ajax({
         async: false,
-        url: "shifts/"+shift_id+"/changeUser",
+        url: "/shifts/"+shift_id+"/changeUser",
         type: "PUT",
         contentType: "Application/JSON",
         data: JSON.stringify({
@@ -213,7 +213,7 @@ function getShiftsByDay(day) {
 
     $.ajax({
         async: false,
-        url: "shifts/byday",
+        url: "/shifts/byday",
         type: "GET",
         contentType: "text/plain",
         data: day,
@@ -237,7 +237,7 @@ function eventIsAvailable(event_id) {
     var is;
 
     $.ajax({
-        url: "shifts/"+event_id+"/available",
+        url: "/shifts/"+event_id+"/available",
         type: "GET",
 
         success: function (data) {
@@ -333,12 +333,14 @@ function getShiftAssignmentByShiftAssignmentId(shiftAssignmentId, callback) {
     });
 }
 
-function getMissingPerShiftCategory(shift_id,callback) {
+function getAmountOnShift(shift_id,callback) {
 
     $.ajax({
-           url: "/shifts/"+shift_id+"/getAmountOnShiftWithRequired",
+           url: "/shifts/"+shift_id+"/getAmountOnShiftWithRequired/",
             type: "GET",
+
             success: function (data) {
+            //console.log(data);
                 callback(data);
             },
             error: function (data) {
@@ -352,5 +354,36 @@ function getAllShiftAssignments(callback) {
     $.getJSON("/shifts/shiftassignments", function (data) {
         callback(data);
     })
+
+}
+
+function getMonthlyReportMap(month,callback) {
+
+    $.getJSON("/shifts/totalhours?month="+month, function (data) {
+        callback(data);
+    })
+
+}
+
+function sendTotalHours(email) {
+
+    getMonthlyReportMap(new Date().getMonth(), function (map) {
+
+        $.ajax({
+            url: "/shifts/"+email+"/sendTotalHours/",
+            type: "POST",
+            contentType: "Application/JSON",
+            data: map,
+
+
+            success: function (data) {
+                //console.log(data);
+            },
+            error: function (data) {
+                console.log("Error: " + data);
+            }
+        });
+    })
+
 
 }

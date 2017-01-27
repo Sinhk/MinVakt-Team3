@@ -19,13 +19,8 @@ import org.springframework.util.Assert;
 public class AUserDetailsManager extends JdbcUserDetailsManager {
     @Autowired
     private AuthenticationManager authenticationManager;
-    String usersByUsernameQuery = "select email,passwd,enabled from employee where email=?";
-    String authoritiesByUsernameQuery = "SELECT email, IF(admin,'ADMIN','USER') from employee e Left JOIN employee_category ec ON e.category_id = ec.category_id WHERE email =?;";
     String changePasswordSql = "UPDATE employee SET passwd = ? WHERE email = ?";
-    String createUserSql = "INSERT INTO employee (email,passwd,enabled) VALUES (?,?,?)";
     String updateUserSql = "UPDATE employee SET passwd = ?, enabled = ? WHERE email = ?";
-    String userExistsSql = "SELECT email FROM employee WHERE email= ?";
-
 
 
     @Override

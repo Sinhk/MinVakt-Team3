@@ -13,6 +13,10 @@ $(document).ready(function () {
         sessionStorage.admin = data.target.checked;
         switchAdminView();
     });
+
+    if(isAdmin()){
+        $('#adminSwitch').removeClass('hide');
+    }
     switchAdminView();
 });
 
@@ -24,7 +28,9 @@ function switchAdminView() {
 
     if (admin){
         $(".admin").removeClass('hide');
+        $(".user").addClass('hide');
     }else{
+        $(".user").removeClass('hide');
         $(".admin").addClass('hide');
     }
     document.dispatchEvent(event);

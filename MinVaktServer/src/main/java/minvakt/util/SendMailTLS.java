@@ -37,8 +37,7 @@ public class SendMailTLS {
         /*
         try {
             Transport.send(message);
-        } catch (MessagingException e) {
-            throw new RuntimeException(e);
+        } catch (MessagingException ignored) {
         }
         */
     }
@@ -93,6 +92,13 @@ public class SendMailTLS {
         Message message = new MimeMessage(session);
         String subject = "Minvakt bruker ønsker å bytte vakt", text1 = text + "\nhttps://minvakt.herokuapp.com";
         buildMessage(message, email, subject, text1);
+        sendMail(message);
+    }
+
+    public void sendTotalHoursToThePayrollOffice(String email,String text) {
+        Message message = new MimeMessage(session);
+        String subject = "Timelisten for Minvakt";
+        buildMessage(message, email, subject, text);
         sendMail(message);
     }
 }

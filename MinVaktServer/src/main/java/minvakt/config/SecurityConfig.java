@@ -45,7 +45,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    // TODO: 15.01.2017 Set query to match database
     public JdbcUserDetailsManager userDetailsManager() {
         JdbcUserDetailsManager manager = new AUserDetailsManager();
         manager.setDataSource(dataSource);
@@ -64,23 +63,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsManager()).passwordEncoder(passwordEncoder());
-        /*auth
-                .inMemoryAuthentication()
-                .withUser("user@minvakt.no").password("user").roles("USER")
-                .and().withUser("admin@minvakt.no").password("admin").roles("ADMIN", "USER");
-        *//*auth
-                .jdbcAuthentication()
-                .passwordEncoder(passwordEncoder())
-                .usersByUsernameQuery("select username,password, enabled from users where username=?")
-                .authoritiesByUsernameQuery("select username, role from user_roles where username=?");*/
     }
-
-    /*@Override
-    public void configure(WebSecurity web) throws Exception {
-        web.ignoring()
-                // Spring Security should completely ignore URLs starting with /resources/
-                .anyRequest();
-    }*/
 
     protected void configure(HttpSecurity http) throws Exception {
         CharacterEncodingFilter filter = new CharacterEncodingFilter();

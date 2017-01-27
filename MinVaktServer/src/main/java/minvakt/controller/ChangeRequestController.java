@@ -39,7 +39,7 @@ public class ChangeRequestController {
     private CategoryRepository catRepo;
 
     private ShiftController shiftController;
-    private SendMailTLS sendMail = new SendMailTLS();
+    private SendMailTLS sendMail;
 
     @Autowired
     public ChangeRequestController(JooqRepository jooqRepository, ShiftRepository shiftRepo, EmployeeRepository employeeRepository, ShiftAssignmentRepository shiftAssignmentRepo, ChangeRequestRepository changeRequestRepository, CategoryRepository catRepo, ShiftController shiftController) {
@@ -50,6 +50,7 @@ public class ChangeRequestController {
         this.catRepo = catRepo;
         this.shiftController = shiftController;
         this.jooqRepository = jooqRepository;
+        sendMail  = new SendMailTLS();
     }
 
     @GetMapping
@@ -93,7 +94,6 @@ public class ChangeRequestController {
         List<Employee> all = employeeRepo.findAll();
         for (Employee one : all) {
             if (one.getCategoryId() == 1) {
-                // TODO: 19.01.2017 Send mail
                 sendMail.sendChangeRequstToAdmin(one.getEmail(),text);
             }
         }
@@ -146,7 +146,7 @@ public class ChangeRequestController {
     }
 
 
-    private void checkIsOkChangeRequest(ChangeRequest one, Shift shift) {
+    protected void checkIsOkChangeRequest(ChangeRequest one, Shift shift) {
         if(shiftAssignmentRepo.findByShiftIdAndEmployeeId(shift.getShiftId(), one.getNewEmployeeId()).isPresent()){
             one.setAllowed(false);
             return;
@@ -161,7 +161,7 @@ public class ChangeRequestController {
         }
 
         int oldUserCategory = employeeRepo.findOne(one.getOldEmployeeId()).getCategoryId();
-        int newUserCategory = employeeRepo.findOne(one.getOldEmployeeId()).getCategoryId();
+        int newUserCategory = employeeRepo.findOne(one.getNewEmployeeId()).getCategoryId();
         if (oldUserCategory != newUserCategory) {
             List<MissingPerShiftCategory> missingForShift = jooqRepository.getMissingForShift(shift.getShiftId());
             for (MissingPerShiftCategory perShiftCategory : missingForShift) {

@@ -18,14 +18,20 @@
 
 </head>
 
-
+<body>
 <div id="nav" th:replace="fragments/header :: header"></div>
 <main>
-    <h2 id="header">Ny Timeliste</h2>
+    <h2 id="header">Ny vaktliste</h2>
+
+    <a class="waves-effect waves-light btn blue darken-4" id="save">Lagre vaktliste</a>
+
     <div id="text">
         <h10>Velg vakter fra menyen og dra dem til de forskjellige dagene.<br>
             Vakter merket med en "A" er ansvarsvakt.<br></h10>
     </div>
+
+
+
 <div class="first_row row"><br>
     <div class="col s3"><i class="material-icons light cyan-text" id="circle">brightness_1</i><p id="text1">Ansvarsvakt <b>A</b></p></div>
     <div class="col s3"><i class="material-icons light green-text" id="circle2">brightness_1</i><p id="text2">Tilgjengelig <b>T</b></p></div>
@@ -36,17 +42,9 @@
 
     <div id='wrap'>
 
-        <div class="input-field">
-            <label>
-                <select id="category-box1" class="browser-default white">
-                    <option value="" disabled selected>Velg avdeling</option>
-                </select>
-            </label>
-        </div>
-
         <div id='external-events'>
             <!--Drar ut vakter-->
-            <h5>Vakter:</h5>
+            <h5>Vakter</h5>
             <div class='fc-event' id="06-Vakt">06:00-14:00</div>
             <div class='fc-event' id="14-Vakt">14:00-22:00</div>
             <div class='fc-event' id="22-Vakt">22:00-06:00</div>
@@ -56,7 +54,7 @@
 
         </div>
 
-        <a class="waves-effect waves-light btn blue darken-4" id="save">Lagre timeliste</a>
+
 
 
 
@@ -79,13 +77,13 @@
 <script src='https://fullcalendar.io/js/fullcalendar-scheduler-1.5.0/scheduler.js'></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
-<script th:src="@{js/managers/common.js}"></script>
-<script th:src="@{js/managers/shiftManager.js}"></script>
-<script th:src="@{js/managers/userManager.js}"></script>
-<script th:src="@{js/managers/util.js}"></script>
-<script th:src="@{js/newUser.js}"></script>
+<script th:src="@{/js/managers/common.js}"></script>
+<script th:src="@{/js/managers/shiftManager.js}"></script>
+<script th:src="@{/js/managers/userManager.js}"></script>
+<script th:src="@{/js/managers/util.js}"></script>
+<script th:src="@{/js/newUser.js}"></script>
 
-<script th:src="@{js/makeSheet.js}"></script>
+<script th:src="@{/js/makeSheet.js}"></script>
 
 </body>
 </html>

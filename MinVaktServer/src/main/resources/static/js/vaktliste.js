@@ -77,13 +77,15 @@ $(document).ready(function () { // document ready
 
                 console.log(shift)
 
+
+
                 const event = {
 
                     id: shiftAssignment.shiftId,
                     resourceId: shiftAssignment.employeeId,
                     start: shift.fromTime.split("T")[0],
                     end: shift.toTime.split("T")[0],
-                    title: shift.fromTime.split("T")[1].substr(0, 5) + " - " + shift.toTime.split("T")[1].substr(0, 5),
+                    title: shift.fromTime.split("T")[1].substr(0, 2) + " - " + shift.toTime.split("T")[1].substr(0, 2) + (responsible ? " A":" V" ),
 
                     backgroundColor: responsible ? "#00bcd4" : "#2196f3",
 
@@ -134,9 +136,6 @@ $(document).ready(function () { // document ready
      }
 
      $('#calendar').fullCalendar('renderEvent', event, true);
-
-
-
 
      })
      })

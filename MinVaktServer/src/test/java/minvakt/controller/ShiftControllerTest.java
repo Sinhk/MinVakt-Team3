@@ -1,10 +1,7 @@
 package minvakt.controller;
 
 import minvakt.datamodel.ShiftDetailed;
-import minvakt.datamodel.tables.pojos.ChangeRequest;
-import minvakt.datamodel.tables.pojos.Employee;
-import minvakt.datamodel.tables.pojos.Shift;
-import minvakt.datamodel.tables.pojos.ShiftAssignment;
+import minvakt.datamodel.tables.pojos.*;
 import minvakt.repos.*;
 import org.junit.After;
 import org.junit.Before;
@@ -13,13 +10,17 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.http.ResponseEntity;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.*;
 
 
@@ -43,11 +44,15 @@ public class ShiftControllerTest {
     @Mock
     private JooqRepository jooqRepo;
 
+    @Mock
+    private DepartmentRepository departmentRepo;
+
     private Shift shift1, shift2, nonAssignedShift;
     private ShiftDetailed detailed;
     private Employee emp1, emp2;
     private ShiftAssignment shiftAssign1, shiftAssign2, nonAssigned;
     private ChangeRequest change1, change2;
+    private Department dep;
 
     @Before
     public void setUp() throws Exception {
@@ -74,6 +79,9 @@ public class ShiftControllerTest {
         // Setup change requests based on data from database script
         change1 = new ChangeRequest(1, 1, 1, 2);
         change2 = new ChangeRequest(2, 2, 2, 1);
+
+        // Setup department
+        dep = new Department((short) 1, "Potet");
     }
 
     @After
@@ -117,16 +125,27 @@ public class ShiftControllerTest {
     @Test
     public void getShift() throws Exception {
         // Stubbing method
-        when(shiftRepo.findOne(2)).thenReturn(shift2);
+        when(shiftRepo.findOne(shift2.getShiftId())).thenReturn(shift2);
+        when(jooqRepo.getShiftDetailed(shift2.getShiftId())).thenReturn(detailed);
 
         // Get Shift for test
-        Shift testShift = shiftController.getShift(2);
+        Shift testShift = shiftController.getShift(2, false);
 
         // Verify method use
         verify(shiftRepo, atLeastOnce()).findOne(2);
 
-        // Compare
+        // Assert
         assertEquals(shift2, testShift);
+
+
+        // Get Detailed
+        testShift = shiftController.getShift(2, true);
+
+        // Assert
+        assertEquals(detailed, testShift);
+
+        // Verify
+        verify(jooqRepo, atLeastOnce()).getShiftDetailed(shift2.getShiftId());
     }
 
     @Test
@@ -277,27 +296,25 @@ public class ShiftControllerTest {
         // Stub
         when(shiftRepo.findOne(shift1.getShiftId())).thenReturn(shift1);
         when(shiftRepo.save(shift1)).thenReturn(shift1);
-        when(employeeRepo.findResponsibleForShift(shift1.getShiftId())).thenReturn(emp2);
 
         // Set responsible
         shiftController.setUserIsResponsibleForShift(shift1.getShiftId(), emp2.getEmployeeId());
 
         // Assert
-        assertEquals(emp2, shiftController.getResponsibleUserForShift(shift1.getShiftId()));
+        assertEquals(emp2.getEmployeeId(), shift1.getResponsibleEmployeeId());
 
         // Verify
         verify(shiftRepo, atLeastOnce()).findOne(shift1.getShiftId());
         verify(shiftRepo, atLeastOnce()).save(shift1);
-        verify(employeeRepo, atLeastOnce()).findResponsibleForShift(shift1.getShiftId());
     }
 
     @Test
     public void getResponsibleUserForShift() throws Exception {
         // Stub
-        when(employeeRepo.findResponsibleForShift(shift1.getShiftId())).thenReturn(emp1);
+        when(employeeRepo.findResponsibleForShift(shift1.getShiftId())).thenReturn(Optional.of(emp1));
 
         // Assert
-        assertEquals(emp1, shiftController.getResponsibleUserForShift(shift1.getShiftId()));
+        assertEquals(ResponseEntity.ok(emp1), shiftController.getResponsibleUserForShift(shift1.getShiftId()));
     }
 
     @Test
@@ -317,6 +334,7 @@ public class ShiftControllerTest {
 
     @Test
     public void getAvailableShifts() throws Exception {
+        // Mock
         HttpServletRequest request1 = mock(HttpServletRequest.class);
         HttpServletRequest request2 = mock(HttpServletRequest.class);
         java.security.Principal principal = mock(java.security.Principal.class);
@@ -368,26 +386,243 @@ public class ShiftControllerTest {
 
     @Test
     public void getShiftAssignmentForShiftAndUser() throws Exception {
+        // Stub
+        when(shiftAssignmentRepo.findByShiftIdAndEmployeeId(shift1.getShiftId(), emp1.getEmployeeId())).thenReturn(Optional.of(shiftAssign1));
 
+        // Get Shift Assignment
+        ShiftAssignment testAssign = shiftController.getShiftAssignmentForShiftAndUser(shift1.getShiftId(), emp1.getEmployeeId());
+
+        // Assert
+        assertEquals(shiftAssign1, testAssign);
+
+        // Verify
+        verify(shiftAssignmentRepo, atLeastOnce()).findByShiftIdAndEmployeeId(shift1.getShiftId(), emp1.getEmployeeId());
     }
 
     @Test
     public void changeUserAssignment() throws Exception {
+        // Stub
+        when(shiftAssignmentRepo.findByShiftIdAndEmployeeId(shift1.getShiftId(), emp1.getEmployeeId())).thenReturn(Optional.of(shiftAssign1));
+        when(shiftRepo.findOne(shift1.getShiftId())).thenReturn(shift1);
+        when(shiftRepo.save(shift1)).thenReturn(shift1);
+        when(shiftAssignmentRepo.save(shiftAssign1)).thenReturn(shiftAssign1);
+        when(employeeRepo.findOne(emp1.getEmployeeId())).thenReturn(emp1);
+        when(employeeRepo.findAll()).thenReturn(Arrays.asList(emp1, emp2));
 
+        // Call method
+        shiftController.changeUserAssignment(shift1.getShiftId(),emp1.getEmployeeId(), true, true, true, true, "");
+
+        // Verify
+        verify(shiftAssignmentRepo, atLeastOnce()).findByShiftIdAndEmployeeId(shift1.getShiftId(), emp1.getEmployeeId());
+        verify(shiftRepo, atLeastOnce()).findOne(shift1.getShiftId());
+        verify(shiftRepo, atLeastOnce()).save(shift1);
+        verify(shiftAssignmentRepo, atLeastOnce()).save(shiftAssign1);
+        verify(employeeRepo, atLeastOnce()).findOne(emp1.getEmployeeId());
+        verify(employeeRepo, atLeastOnce()).findAll();
+
+
+
+        // If else stuff
+
+        // Stub
+        when(shiftAssignmentRepo.findByShiftIdAndEmployeeId(100, emp1.getEmployeeId())).thenReturn(Optional.empty());
+        when(shiftRepo.findOne(100)).thenReturn(shift1);
+        when(shiftRepo.save(shift1)).thenReturn(shift1);
+
+        // Call method
+        shiftController.changeUserAssignment(100, emp1.getEmployeeId(), true, true, true, false, "");
+
+        // Verify
+        verify(shiftAssignmentRepo, atLeastOnce()).findByShiftIdAndEmployeeId(100, emp1.getEmployeeId());
+        verify(shiftRepo, atLeastOnce()).findOne(100);
+        verify(shiftRepo, atLeastOnce()).save(shift1);
     }
 
     @Test
     public void getAvailableForShift() throws Exception {
+        // Stub
+        when(shiftRepo.findOne(shift1.getShiftId())).thenReturn(shift1);
+        when(jooqRepo.getCandidatesForShift(shift1)).thenReturn(Arrays.asList(emp1, emp2));
+
+        // Get list
+        List<Employee> list = shiftController.getAvailableForShift(shift1.getShiftId());
+
+        // Assert
+        assertEquals(emp1, list.get(0));
+        assertEquals(emp2, list.get(1));
+        assertNotEquals(emp1, list.get(1));
 
     }
 
     @Test
     public void getDepartmentofShift() throws Exception {
+        // Stub
+        when(shiftRepo.findOne(shift1.getShiftId())).thenReturn(shift1);
+        when(departmentRepo.findOne(shift1.getDepartmentId())).thenReturn(dep);
 
+        // Get department
+        String testDep = shiftController.getDepartmentofShift(shift1.getShiftId());
+
+        // Assert
+        assertEquals(dep.getDepartmentName(), testDep);
+
+        // Verify
+        verify(shiftRepo, atLeastOnce()).findOne(shift1.getShiftId());
+        verify(departmentRepo, atLeastOnce()).findOne(shift1.getDepartmentId());
+    }
+
+    @Test
+    public void addManyShifts() throws Exception {
+        LocalDateTime fromTime = LocalDateTime.of(2017, 1, 17, 6, 0);
+
+        // Run method
+        shiftController.addManyShifts(fromTime);
     }
 
     @Test
     public void removeShiftAssignment() throws Exception {
+        shiftController.removeShiftAssignment(shiftAssign1.getId());
 
+        // Verify
+        verify(shiftAssignmentRepo, atLeastOnce()).delete(shiftAssign1.getId());
+    }
+
+    @Test
+    public void getShiftsBetween() throws Exception {
+        // Setup LocalDateTimes for shifts
+        LocalDateTime fromTime = LocalDateTime.of(2017, 1, 17, 6, 0), toTime = LocalDateTime.of(2019, 1, 17, 22, 0, 0);
+
+        // Stub
+        when(jooqRepo.getShiftDetailed(fromTime.toLocalDate(), toTime.toLocalDate())).thenReturn((Iterable)Arrays.asList(detailed));
+        when(shiftRepo.findBetweenDates(fromTime.toLocalDate().atStartOfDay(), toTime.toLocalDate().atStartOfDay())).thenReturn(Arrays.asList(shift1, shift2, nonAssignedShift));
+
+        // Get Shifts
+        List<ShiftDetailed> listDetail = (List<ShiftDetailed>) shiftController.getShiftsBetween(fromTime.toLocalDate(), toTime.toLocalDate(), true);
+        List<Shift> listShift = (List<Shift>) shiftController.getShiftsBetween(fromTime.toLocalDate(), toTime.toLocalDate(), false);
+
+        // Assert
+        assertEquals(detailed, listDetail.get(0));
+
+        assertEquals(shift1, listShift.get(0));
+        assertEquals(shift2, listShift.get(1));
+        assertEquals(nonAssignedShift, listShift.get(2));
+
+
+        // Verify
+        verify(jooqRepo, atLeastOnce()).getShiftDetailed(fromTime.toLocalDate(), toTime.toLocalDate());
+        verify(shiftRepo, atLeastOnce()).findBetweenDates(fromTime.toLocalDate().atStartOfDay(), toTime.toLocalDate().atStartOfDay());
+    }
+
+    @Test
+    public void addWish() throws Exception {
+        // Mock
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        java.security.Principal principal = mock(java.security.Principal.class);
+
+        // Stub
+        when(request.getUserPrincipal()).thenReturn(principal);
+        when(principal.getName()).thenReturn("admin@minvakt.no");
+        when(employeeRepo.findByEmail(principal.getName())).thenReturn(emp1);
+
+        // Run method
+        ResponseEntity<?> response = shiftController.addWish(request, shift2.getShiftId());
+
+        // Assert
+        assertEquals(ResponseEntity.ok().build(), response);
+
+
+        // Verify
+        verify(request, atLeastOnce()).getUserPrincipal();
+        verify(principal, atLeastOnce()).getName();
+        verify(employeeRepo, atLeastOnce()).findByEmail(principal.getName());
+    }
+
+    @Test
+    public void getAllShiftAssignments() throws Exception {
+        // Stub
+        when(shiftAssignmentRepo.findAll()).thenReturn(Arrays.asList(shiftAssign1, shiftAssign2, nonAssigned));
+
+        // Get list of Shift Assignments
+        List<ShiftAssignment> list = shiftController.getAllShiftAssignments();
+
+        // Assert
+        assertNotNull(list);
+        assertEquals(shiftAssign1, list.get(0));
+        assertEquals(shiftAssign2, list.get(1));
+        assertEquals(nonAssigned, list.get(2));
+        assertEquals(3, list.size());
+
+        // Verify
+        verify(shiftAssignmentRepo).findAll();
+    }
+
+    @Test
+    public void getShiftAssignmentByShiftAssignmentId() throws Exception {
+        // Stub
+        when(shiftAssignmentRepo.findOne(shiftAssign1.getId())).thenReturn(shiftAssign1);
+
+        // Get Shift Assignment
+        ShiftAssignment test = shiftController.getShiftAssignmentByShiftAssignmentId(shiftAssign1.getId());
+
+        // Verify
+        verify(shiftAssignmentRepo).findOne(shiftAssign1.getId());
+
+    }
+
+    @Test
+    public void getShiftAssignmentsForUser() throws Exception {
+        // Stub
+        when(shiftAssignmentRepo.findByEmployeeId(emp1.getEmployeeId())).thenReturn(Arrays.asList(shiftAssign1));
+
+        // Get Shift Assignments
+        List<ShiftAssignment> list = shiftController.getShiftAssignmentsForUser(emp1.getEmployeeId());
+
+        // Assert
+        assertEquals(shiftAssign1, list.get(0));
+
+        // Verify
+        verify(shiftAssignmentRepo, atLeastOnce()).findByEmployeeId(emp1.getEmployeeId());
+
+    }
+
+    @Test
+    public void getAmountOnShift() throws Exception {
+        // Mock
+        MissingPerShiftCategory missing = mock(MissingPerShiftCategory.class);
+
+        // Stub
+        when(jooqRepo.getMissingForShift(shift1.getShiftId())).thenReturn(Arrays.asList(missing));
+
+        // Get list
+        List<MissingPerShiftCategory> list = shiftController.getAmountOnShift(shift1.getShiftId());
+
+        // Assert
+        assertEquals(missing, list.get(0));
+
+
+        // Verify
+        verify(jooqRepo, atLeastOnce()).getMissingForShift(shift1.getShiftId());
+    }
+
+    @Test
+    public void getTotalHoursForMonth() throws Exception {
+        LocalDate startOfMonth = LocalDate.of(LocalDate.now().getYear(), 1, 1);
+        Map<Integer, Duration> map = new HashMap<>();
+
+        map.put(1, Duration.ofSeconds(28800));         // 8 hours in seconds
+
+        // Stub
+        when(jooqRepo.getHoursWorked(startOfMonth, startOfMonth.plusDays(startOfMonth.getMonth().length(LocalDate.now().isLeapYear())))).thenReturn(map);
+
+        // Get map
+        Map<Integer, Long> testMap = shiftController.getTotalHoursForMonth(1);
+
+        // Assert
+        assertEquals(8, (long)testMap.get(1));
+    }
+
+    @Test
+    public void sendTotalHours() throws Exception {
+        assert(shiftController.sendTotalHours("123@123.123", "hei"));
     }
 }

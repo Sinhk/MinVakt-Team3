@@ -1,5 +1,6 @@
 package minvakt.datamodel;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import minvakt.datamodel.tables.pojos.Employee;
 import minvakt.datamodel.tables.pojos.Shift;
 
@@ -12,6 +13,7 @@ import java.util.List;
  * Created by sindr on 23.01.2017.
  * in project: MinVakt-Team3
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ShiftDetailed extends Shift implements Serializable{
     private Employee responsible;
     private List<AssignedEmployee> employees = new ArrayList<>();

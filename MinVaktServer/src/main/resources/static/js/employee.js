@@ -1,5 +1,7 @@
 $(document).ready(function () {
+
     getCategories().then((categories) => {
+
         getAllUsers(function (employees) {
 
             const div = document.getElementById("employeeBody");
@@ -14,18 +16,16 @@ $(document).ready(function () {
                         "<td>" + employee.firstName + "</td>" +
                         "<td>" + employee.lastName + "</td>" +
                         "<td>" + categories.get(employee.categoryId).categoryName + "</td>" +
-                        "<td>" + employee.positionPercentage + "%</td>" +
+                        "<td class='admin'>" + employee.positionPercentage + "%</td>" +
                         "<td>" + employee.phone + "</td>" +
                         "<td>" + hours + " timer</td>" +
-                        "<td>" + employee.email + "</td>" +
-                        "<td> <button class='waves-effect waves-light btn blue darken-4' onClick=\"removeButton("+employee.employeeId+")\">Slett</button>"+"</td>" +
+                        "<td class='admin'>" + employee.email + "</td>" +
+                        "<td> <button class='admin hide waves-effect waves-light btn blue darken-4' onClick=\"removeButton("+employee.employeeId+")\">Slett</button>"+"</td>" +
                         "</tr>";
                 });
             }
         });
     });
-
-
 
 
     function myFunction() {
@@ -46,11 +46,4 @@ $(document).ready(function () {
             }
         }
     }
-
-
-    $("#myTable").tablesorter();
-    $("#myTable").tablesorter({sortList: [[0, 0], [1, 0]]
-
-    });
-
 });

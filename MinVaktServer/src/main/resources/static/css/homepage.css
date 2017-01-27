@@ -12,10 +12,10 @@ aside
     width: 200px;
 }
 
-.cal
-{
+.cal {
     margin-left: 2%;
     margin-right: 2%;
+    margin-bottom: 5%;
 }
 
 .fc-sun {
@@ -39,3 +39,31 @@ aside
     margin-left: 15%;
     margin-top: -13%;
 }
+
+#close_btn {
+    float: left;
+    margin-left: 2%;
+}
+
+#absent_btn {
+    float: left;
+    margin-left: 2%;
+}
+
+#change_btn {
+    float: left;
+    margin-left: 2%;
+}
+
+#change_confirm_btn {
+    float: left;
+    margin-left: 2%;
+}
+
+#cancel_change_btn {
+    float: left;
+    margin-left: 2%;
+}
+
+
+

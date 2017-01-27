@@ -9,7 +9,7 @@ $("#removeButton").click(function () {
 
 
     $.ajax({
-        url: "users/"+user_id+"/shifts/"+shift_id,
+        url: "/users/"+user_id+"/shifts/"+shift_id,
         type: "DELETE",
         contentType: "application/json",
         data: JSON.stringify({

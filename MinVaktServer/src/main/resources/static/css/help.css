@@ -1,5 +1,11 @@
-#shiftchange{
+.icon{
     margin-left: 35%;
+
+}
+#header{
+    margin-left: 2.5%;
+    margin-top:2%;
+
 }
 
 #text_shift{
@@ -14,23 +20,23 @@
 .second_row{
     margin-left: 2%;
 }
+
+.third_row{
+    margin-left: 2%;
+}
+
+.fourth_row{
+    margin-left:2%;
+}
+
+.header{
+    margin-top:3%;
+}
+
+#more{
+    margin-top:5%;
+}
 /*
 .shift_card{
-    width: 23%;
-    height: 30%;
-}
-
-.card2{
-    width: 23%;
-    height: 30%;
-}
-
-.card3{
-    width: 23%;
-    height: 30%;
-}
-
-.card4{
-    width: 23%;
-    height: 30%;
+    width:17%
 }*/

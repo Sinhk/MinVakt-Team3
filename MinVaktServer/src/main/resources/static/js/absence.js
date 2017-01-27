@@ -6,10 +6,10 @@ $(document).ready(function(){
 
     $("#button").click(function(){
 
-
         swal({  title: "Årsak til fravær",
                 text: "Skriv inn årsaken til ditt fravær under",
-                type: "input",   showCancelButton: true,
+                type: "input",
+                showCancelButton: true,
                 cancelButtonText: "Avbryt",
                 closeOnConfirm: false,
                 animation: "slide-from-top",
@@ -20,6 +20,7 @@ $(document).ready(function(){
                     swal.showInputError("Du må skrive noe");
                     return false
                 }
+
                 swal("Kommentar sendt", "Du skrev: " + inputValue, "success");
 
                 getCurrentUser(function (user) {

@@ -9,7 +9,7 @@ $("#changePositionPercentagebutton").click(function () {
     var user_id = $("#user_id").val();
 
     $.ajax({
-        url: "users/"+user_id+"/changePositionPercentage",
+        url: "/users/"+user_id+"/changePositionPercentage",
         type: "PUT",
         data: newPercentage,
 

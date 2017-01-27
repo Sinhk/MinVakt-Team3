@@ -2,19 +2,23 @@ $(document).ready(function () { // document ready
 
     /* initialize the external events
      -----------------------------------------------------------------*/
-    var antEvents = 0;
     $('#external-events .fc-event').each(function () {
 
 
-        // store data so the calendar knows to render an event upon drop
+        var title = $.trim($(this).text());
+        const theTitle  = title;
+
+        title = title.replace("F: ","");
+
         $(this).data('event', {
-            title: $.trim($(this).text()), // use the element's text as the event title
-            id: this.id+antEvents,
-            start_id: $.trim($(this).text()) == "Formiddagsvakt" ? 1 : $.trim($(this).text()) == "Ettermiddagsvakt" ? 2 : $.trim($(this).text()) == "Nattvakt" ? 3 : $.trim($(this).text()) == "FormiddagsFravær" ? 1 : $.trim($(this).text()) == "EttermiddagsFravær" ? 2 : 3,
-            stick: true, // maintain when user navigates (see docs on the renderEvent method)
-            unavailable: this.id.includes("u"),
+            title: theTitle, // use the element's text as the event title
+            available: !this.id.includes("FRAVÆR"),
+            startTime: title.split("-")[0],
+            endTime: title.split("-")[1],
+            //start_id: $.trim($(this).text()) == "Formiddagsvakt" ? 1 : $.trim($(this).text()) == "Ettermiddagsvakt" ? 2 : 3,
+            save: true,
+            stick: true // maintain when user navigates (see docs on the renderEvent method)
         });
-        antEvents++;
         /* console.log("ID: "+this.id);
 
          console.log("UNAVAILABLE: "+this.id.includes("u"))
@@ -77,8 +81,10 @@ $(document).ready(function () { // document ready
                         text: "Du kan ikke angre denne handlingen.",
                         type: "warning",
                         showCancelButton: true,
-                        confirmButtonColor: "#DD6B55",
-                        confirmButtonText: "Ja, slett den!",
+                        cancelButtonText: "AVBRYT",
+                        cancelButtonColor: "#9e9e9e",
+                        confirmButtonColor: "#0d47a1",
+                        confirmButtonText: "SLETT",
                         closeOnConfirm: false
                     },
 
@@ -94,7 +100,15 @@ $(document).ready(function () { // document ready
 
                                 console.log(event1);
 
-                                swal("Slettet!", "Tilgjengeligheten ble slettet.", "success");
+                                swal({
+                                    title: "Slettet",
+                                    text: "Tilgjengeligheten ble slettet",
+                                    type: "success",
+                                    confirmButtonText: "OK",
+                                    confirmButtonColor: "#0d47a1",
+                                })
+
+                                /*swal("Slettet!", "Tilgjengeligheten ble slettet.", "success");*/
 
                                 $('#calendar').fullCalendar('removeEvents', event1.id);
 
@@ -151,17 +165,19 @@ $(document).ready(function () { // document ready
 
                             if (shift.fromTime.split("T")[0] == date /*&& assignment.available*/ && !assignment.assigned) {
 
-                                const title = assignment.available ?
-                                    shift.fromTime.split("T")[1].substr(0, 5) == "06:00" ? "Formiddagsvakt" : shift.fromTime.split("T")[1].substr(0, 5) == "14:00" ? "Ettermiddagsvakt" : "Nattvakt"
-                                    :
-                                    shift.fromTime.split("T")[1].substr(0, 5) == "06:00" ? "FormiddagsFravær" : shift.fromTime.split("T")[1].substr(0, 5) == "14:00" ? "EttermiddagsFravær" : "NattFravær"
+                                console.log(shift);
+                                console.log(assignment);
+
+                                const title = shift.fromTime.split("T")[1].substr(0, 5) + "-"+shift.toTime.split("T")[1].substr(0, 5)
 
                                 $('#calendar').fullCalendar("renderEvent", {
 
-                                    title: title,
-                                    id: assignment.id+"event"/*shift.fromTime.split("T")[1].substr(0, 5) == "06:00" ? 1 : shift.fromTime.split("T")[1].substr(0, 5) == "14:00" ? 2 : 3*/,
+                                    title: title+ (!assignment.available ? " U" : ""),
+                                    id: assignment.id/*shift.fromTime.split("T")[1].substr(0, 5) == "06:00" ? 1 : shift.fromTime.split("T")[1].substr(0, 5) == "14:00" ? 2 : 3*/,
                                     start: shift.fromTime.split("T")[0],
                                     end: shift.toTime.split("T")[0],
+                                    startTime: shift.fromTime.split("T")[1].substr(0, 5),
+                                    endTime: shift.toTime.split("T")[1].substr(0, 5),
                                     doNotSave: true,
                                     assignmentId: assignment.id,
                                     backgroundColor: !assignment.available ? "#f44336" : /*responsible ? "#03a9f4" : */"#4caf50",
@@ -255,7 +271,8 @@ $("#save").click(function () {
         title: "Tilgjengelighet registrert!",
         text: "Din tilgjengelighet er registrert.",
         type: "success",
-        confirmButtonText: "Ok"
+        confirmButtonText: "OK",
+        confirmButtonColor: "#0d47a1"
     });
 
     var events = $('#calendar').fullCalendar('clientEvents');
@@ -273,26 +290,19 @@ $("#save").click(function () {
                 //console.log(event)
                 //console.log(shift)
 
-                const shift_event_id = shift.fromTime.split("T")[1].substr(0, 5) == "06:00" ? 1 : shift.fromTime.split("T")[1].substr(0, 5) == "14:00" ? 2 : 3;
+                const sameTime = event.startTime == shift.fromTime.split("T")[1].substr(0, 5) && event.endTime == shift.toTime.split("T")[1].substr(0, 5);
 
                 const event_date = event.start.toISOString()
                 const shift_date = shift.fromTime.split("T")[0];
+
+                const sameDate = event_date == shift_date;
                 //console.log();
 
                 // Samme tid, samme dag
 
                 //console.log("eventstart: "+event.start+" - type: "+shift_event_id+" - eventdate: "+event_date+" - shiftdate: "+shift_date)
-                console.log("event");
-                console.log(event)
-                console.log("shift");
-                console.log(shift)
 
-                if (event.start_id == shift_event_id && event.start && event_date == shift_date && !event.doNotSave) {
-
-                    console.log("event");
-                    console.log(event)
-                    console.log("shift");
-                    console.log(shift)
+                if (sameTime && sameDate && !event.doNotSave) {
 
                     getCurrentUser(function (currentUser) {
 
@@ -302,7 +312,7 @@ $("#save").click(function () {
                         console.log("***ADDING SHIFT TO USER***")
                         console.log(user_id+" - "+shift_id)
 
-                        if (event.unavailable) {
+                        if (!event.available) {
 
                             addUserToShift(user_id, shift_id, false, false, function (data) {
 
@@ -327,57 +337,6 @@ $("#save").click(function () {
         location.reload();
     })
 })
-
-/*getAllAssignedShifts(function (assignedShifts) {
-
- for (var i = 0; i < assignedShifts.length; i++) {
-
- const nonAssignedShift = assignedShifts[i];
-
- console.log(nonAssignedShift);
-
- getUserById(nonAssignedShift.employeeId, function (user) {
-
- getShiftWithId(nonAssignedShift.shiftId, function (shift) {
-
- console.log(user);
- console.log(shift);
-
- var resource = {
- id: user.employeeId,
- title: user.firstName + " " + user.lastName,
- }
-
- $('#calendar').fullCalendar('addResource', resource)
-
-
- var event = {
-
- id: shift.shiftId,
- resourceId: user.employeeId,
- start: shift.fromTime.split("T")[0],
- end: shift.toTime.split("T")[0],
- title: shift.fromTime.split("T")[1].substr(0, 5) + " - " + shift.toTime.split("T")[1].substr(0, 5),
-
- stick: true
-
- }
-
- $('#calendar').fullCalendar('renderEvent', event, true);
-
-
-
-
- })
- })
- }
- })*/
-/*getAllShifts(function (events) {
- calendar.fullCalendar('addEventSource', listToFullCalendarEventList(events, calendar.fullCalendar('getResources')));
- });*/
-
-// legg til nåværende tilgjengelighet
-
 
 function getUsersAndCreateResourceList(callback) {
 

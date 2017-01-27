@@ -27,7 +27,8 @@ function submitPwChange() {
                         title: "Oppdatert!",
                         text: "Ditt passord er endret.",
                         type: "success",
-                        confirmButtonText: "Ok"
+                        confirmButtonText: "OK",
+                        confirmButtonColor: "#0d47a1"
                     });
                 } else { //if (data.status == 304) 
                     swal({
@@ -35,7 +36,8 @@ function submitPwChange() {
                         text: "Gammelt passord er feil",
                         type: "error",
                         //imageUrl: "images/teapot.jpg",
-                        confirmButtonText: "Ok"
+                        confirmButtonText: "OK",
+                        confirmButtonColor: "#0d47a1"
                     });
                 }
             });

@@ -25,27 +25,26 @@
 
 <h2 id="header">Tilgjengelighet</h2>
 <div id="text">
-    <h10>Velg vakter der du er tilgjengelig (vakter) eller utilgjengelig (fravær) fra menyen, og dra de til kalenderen.<br></h10>
+    <h10>Velg vakter der du er tilgjengelig/utilgjengelig, og dra de til kalenderen.<br></h10>
 </div>
 
 <div class="first_row row"><br>
-    <div class="col s3"><i class="material-icons light green-text" id="circle">brightness_1</i><p id="text1">Vakter</p></div>
-    <div class="col s3"><i class="material-icons light red-text" id="circle2">brightness_1</i><p id="text2">Fravær</p></div>
+    <div class="col s3"><i class="material-icons light green-text" id="circle">brightness_1</i><p id="text1">Tilgjengelig</p></div>
+    <div class="col s3"><i class="material-icons light red-text" id="circle2">brightness_1</i><p id="text2">Utilgjengelig <b>U</b></p></div>
 </div>
 
     <div id='external-events'>
-        <h5>Vakter</h5>
-        <div class='fc-event' id="06-Vakt">Formiddagsvakt</div>
-        <div class='fc-event' id="14-Vakt">Ettermiddagsvakt</div>
-        <div class='fc-event' id="22-Vakt"> Nattvakt</div>
-
-        <h5>Fravær</h5>
-        <div class='fc-event' id="06-Vakt-u">FormiddagsFravær</div>
-        <div class='fc-event' id="14-Vakt-u">EttermiddagsFravær</div>
-        <div class='fc-event' id="22-Vakt-u"> NattFravær</div>
+        <h6><b>Tilgjengelig</b></h6>
+        <div class='fc-event' id="06-Vakt">06:00-14:00</div>
+        <div class='fc-event' id="14-Vakt">14:00-22:00</div>
+        <div class='fc-event' id="22-Vakt">22:00-06:00</div>
+        <br><h6><b>Utilgjengelig</b></h6>
+        <div class='fc-event' id="06-VaktFRAVÆR">U: 06:00-14:00</div>
+        <div class='fc-event' id="14-VaktFRAVÆR">U: 14:00-22:00</div>
+        <div class='fc-event' id="22-VaktFRAVÆR">U: 22:00-06:00</div>
     </div>
 
-<a class="waves-effect waves-light btn blue darken-4" id="save">Lagre</a>
+<a class="waves-effect waves-light btn blue darken-4" id="save">Lagre tilgjengelighet</a>
 
 
     <div id='calendar'></div>

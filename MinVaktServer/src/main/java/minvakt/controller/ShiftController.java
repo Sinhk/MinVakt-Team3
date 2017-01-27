@@ -15,11 +15,13 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.Path;
 import java.security.Principal;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.sql.Date;
+import java.time.*;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -38,7 +40,7 @@ public class ShiftController {
     private DepartmentRepository departmentRepo;
 
     @Autowired
-    public ShiftController(ShiftRepository shiftRepo, EmployeeRepository employeeRepository, ShiftAssignmentRepository shiftAssignmentRepo, ChangeRequestRepository changeRequestRepository, JooqRepository jooqRepo,DepartmentRepository departmentRepo) {
+    public ShiftController(ShiftRepository shiftRepo, EmployeeRepository employeeRepository, ShiftAssignmentRepository shiftAssignmentRepo, ChangeRequestRepository changeRequestRepository, JooqRepository jooqRepo, DepartmentRepository departmentRepo) {
         this.shiftRepo = shiftRepo;
         this.employeeRepo = employeeRepository;
         this.shiftAssignmentRepo = shiftAssignmentRepo;
@@ -48,7 +50,7 @@ public class ShiftController {
     }
 
     @GetMapping
-    public Iterable<?> getShifts(@RequestParam(defaultValue = "false") boolean detailed){
+    public Iterable<?> getShifts(@RequestParam(defaultValue = "false") boolean detailed) {
         if (detailed) {
             return jooqRepo.getShiftDetailed();
         }
@@ -56,23 +58,24 @@ public class ShiftController {
     }
 
     @GetMapping("/limited")
-    public Iterable<?> getShiftsBetween(@RequestParam("from")
-                                            @DateTimeFormat( iso = DateTimeFormat.ISO.DATE )LocalDate from,
-                                         @RequestParam("to") @DateTimeFormat( iso = DateTimeFormat.ISO.DATE ) LocalDate to) {
-
-            return shiftRepo.findBetweenDates(from.atStartOfDay(), to.atStartOfDay());
+    public Iterable<?> getShiftsBetween(@RequestParam("from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from, @RequestParam("to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to,@RequestParam(defaultValue = "false") boolean detailed) {
+        if (detailed) {
+            return jooqRepo.getShiftDetailed(from,to);
+        }
+        return shiftRepo.findBetweenDates(from.atStartOfDay(), to.atStartOfDay());
     }
 
 
-    // TODO: 19.01.2017 do this automagically
     @PostMapping
     public void addShift(@RequestBody Shift shift) {
         shiftRepo.save(shift);
     }
 
     @GetMapping(value = "/{shift_id}")
-    public Shift getShift(@PathVariable int shift_id) {
-
+    public Shift getShift(@PathVariable int shift_id,@RequestParam(defaultValue = "false") boolean detailed) {
+        if (detailed) {
+            return jooqRepo.getShiftDetailed(shift_id);
+        }
         return shiftRepo.findOne(shift_id);
     }
 
@@ -103,7 +106,7 @@ public class ShiftController {
 
     @PostMapping("/{shift_id}/wish")
     @Transactional
-    public ResponseEntity<?> addWish(HttpServletRequest request, @PathVariable int shift_id){
+    public ResponseEntity<?> addWish(HttpServletRequest request, @PathVariable int shift_id) {
         Employee employee = employeeRepo.findByEmail(request.getUserPrincipal().getName());
         ShiftAssignment assignment = new ShiftAssignment();
         assignment.setAssigned(false);
@@ -167,18 +170,15 @@ public class ShiftController {
 
             shiftAssignmentRepo.save(assignment);
         }
-        if(absent = true) {
+        if (absent = true) {
             SendMailTLS sendMailTLS = new SendMailTLS();
-            List<Employee> eMails =getAvailableForShift(shift_id);
-            sendMailTLS.sendFreeShiftToGroup("https://minvakt.herokuapp.com/ledigeVakter",eMails);
-            String text ="Bruker: "+ employeeRepo.findOne(user_id).getFirstName() + " " + employeeRepo.findOne(user_id).getLastName() +
-                    "\nHar tatt fri på vakten: "+ shiftRepo.findOne(shift_id).getFromTime().toString()+
-                    "Kommentar: " + comment;
+            List<Employee> eMails = getAvailableForShift(shift_id);
+            sendMailTLS.sendFreeShiftToGroup("https://minvakt.herokuapp.com/ledigeVakter", eMails);
+            String text = "Bruker: " + employeeRepo.findOne(user_id).getFirstName() + " " + employeeRepo.findOne(user_id).getLastName() + "\nHar tatt fri på vakten: " + shiftRepo.findOne(shift_id).getFromTime().toString() + "Kommentar: " + comment;
             List<Employee> all = employeeRepo.findAll();
             for (Employee one : all) {
                 if (one.getCategoryId() == 1) {
-                    // TODO: 19.01.2017 Send mail
-                    sendMailTLS.sendMessageAbsent(one.getEmail(),text);
+                    sendMailTLS.sendMessageAbsent(one.getEmail(), text);
                 }
             }
 
@@ -216,9 +216,9 @@ public class ShiftController {
 
     @GetMapping(value = "/{shift_id}/responsible")
     @Transactional
-    public Employee getResponsibleUserForShift(@PathVariable int shift_id) {
-
-        return employeeRepo.findResponsibleForShift(shift_id);
+    public ResponseEntity<?> getResponsibleUserForShift(@PathVariable int shift_id) {
+        Optional<Employee> employee = employeeRepo.findResponsibleForShift(shift_id);
+        return employee.isPresent() ? ResponseEntity.ok(employee.get()) : ResponseEntity.ok().build();
     }
 
     @PutMapping(value = "/{shift_id}/responsible")
@@ -248,26 +248,14 @@ public class ShiftController {
         });
     }
 
-    /*@GetMapping(value = "/byday")
-    public List<Shift> getShiftsByDay(@RequestBody String day){
-
-        LocalDate date = LocalDate.parse(day);
-
-        Iterable<Shift> all = shiftRepo.findAll();
-
-        List<Shift> shiftList = new ArrayList<>((Collection<? extends Shift>) all);
-
-        return shiftList
-                .stream()
-                .filter(shift -> shift.getStartDateTime().toLocalDate().isEqual(date))
-                .collect(Collectors.toList());
-
-    }*/
-
     @GetMapping(value = "/{shift_id}/possible_users")
     public List<Employee> getAvailableForShift(@PathVariable int shift_id) {
         Shift shift = shiftRepo.findOne(shift_id);
-        return jooqRepo.getEmployeesAvailableForShift(shift);
+        List<Employee> availableForShift = jooqRepo.getCandidatesForShift(shift);
+        LocalDate date = shift.getFromTime().toLocalDate();
+        List<Employee> shiftDate = employeeRepo.findByShiftDate(Date.valueOf(date));
+        availableForShift.removeAll(shiftDate);
+        return availableForShift;
     }
 
     @GetMapping(value = "/available")
@@ -287,14 +275,9 @@ public class ShiftController {
         List<Shift> availableShifts = jooqRepo.getAvailableShiftsForCategory(categoryId);
         availableShifts.removeAll(assignedShifts);
 
-        return availableShifts.stream()
-                .filter(shift -> assignedShifts.stream()
-                        .noneMatch(shift1 -> shift1.getFromTime().toLocalDate()
-                                .equals(shift.getFromTime().toLocalDate())))
-                .collect(Collectors.toList());
+        return availableShifts.stream().filter(shift -> assignedShifts.stream().noneMatch(shift1 -> shift1.getFromTime().toLocalDate().equals(shift.getFromTime().toLocalDate()))).collect(Collectors.toList());
     }
 
-    // TODO: 19-Jan-17 Fix/Remove :  Do we ever need just one?
     @GetMapping(value = "/{shift_id}/available")
     public boolean shiftIsAvailable(@PathVariable int shift_id) {
         return shiftAssignmentRepo.findByShiftId(shift_id).stream()
@@ -310,16 +293,14 @@ public class ShiftController {
     }
 
     // Winner of the Worst Method of 2017 Award goes to:
-    private void addManyShifts(LocalDateTime start) {
-        LocalDateTime morning = LocalDateTime.of(start.toLocalDate(), LocalTime.of(6,0)),
-                      evening = LocalDateTime.of(start.toLocalDate(), LocalTime.of(14,0)),
-                      night = LocalDateTime.of(start.toLocalDate(), LocalTime.of(22,0));
+    protected void addManyShifts(LocalDateTime start) {
+        LocalDateTime morning = LocalDateTime.of(start.toLocalDate(), LocalTime.of(6, 0)), evening = LocalDateTime.of(start.toLocalDate(), LocalTime.of(14, 0)), night = LocalDateTime.of(start.toLocalDate(), LocalTime.of(22, 0));
         Shift shift;
 
         for (int i = 0; i < 30; i++) {
             shift = new Shift();
             shift.setDepartmentId((short) 1);
-            shift.setRequiredEmployees((short)10);
+            shift.setRequiredEmployees((short) 10);
 
             shift.setFromTime(morning.plusDays(i));
             shift.setToTime(evening.plusDays(i));
@@ -329,7 +310,7 @@ public class ShiftController {
 
             shift = new Shift();
             shift.setDepartmentId((short) 1);
-            shift.setRequiredEmployees((short)10);
+            shift.setRequiredEmployees((short) 10);
 
             shift.setFromTime(evening.plusDays(i));
             shift.setToTime(night.plusDays(i));
@@ -339,35 +320,37 @@ public class ShiftController {
 
             shift = new Shift();
             shift.setDepartmentId((short) 1);
-            shift.setRequiredEmployees((short)10);
+            shift.setRequiredEmployees((short) 10);
 
             shift.setFromTime(night.plusDays(i));
-            shift.setFromTime(morning.plusDays(i+1));
+            shift.setFromTime(morning.plusDays(i + 1));
 
             shiftRepo.save(shift);
         }
     }
 
     @GetMapping("/shiftassignments")
-    public List<ShiftAssignment> getAllShiftAssignments(){
+    public List<ShiftAssignment> getAllShiftAssignments() {
         return shiftAssignmentRepo.findAll();
     }
 
     @DeleteMapping("/shiftassignments/{shiftAssignment_id}")
-    public void removeShiftAssignment(@PathVariable int shiftAssignment_id){
+    public void removeShiftAssignment(@PathVariable int shiftAssignment_id) {
 
         shiftAssignmentRepo.delete(shiftAssignment_id);
 
     }
+
     @GetMapping("/shiftassignments/{shiftAssignment_id}")
-    public ShiftAssignment getShiftAssignmentByShiftAssignmentId(@PathVariable int shiftAssignment_id){
+    public ShiftAssignment getShiftAssignmentByShiftAssignmentId(@PathVariable int shiftAssignment_id) {
 
 
         return shiftAssignmentRepo.findOne(shiftAssignment_id);
 
     }
+
     @GetMapping("/shiftassignments/")
-    public List<ShiftAssignment> getShiftAssignmentsForUser(@RequestParam int user_id){
+    public List<ShiftAssignment> getShiftAssignmentsForUser(@RequestParam int user_id) {
 
 
         return shiftAssignmentRepo.findByEmployeeId(user_id);
@@ -378,4 +361,31 @@ public class ShiftController {
     public List<MissingPerShiftCategory> getAmountOnShift(@PathVariable int shift_id) {
         return jooqRepo.getMissingForShift(shift_id);
     }
+
+    @GetMapping("/totalhours")
+    public Map<Integer, Long> getTotalHoursForMonth(@RequestParam int month) {
+
+        LocalDate startOfMonth = LocalDate.of(LocalDate.now().getYear(), month, 1);
+
+        Map<Integer, Duration> integerDurationMap = jooqRepo.getHoursWorked(startOfMonth, startOfMonth.plusDays(startOfMonth.getMonth().length(LocalDate.now().isLeapYear())));
+
+        Map<Integer, Long> integerLongMap = new HashMap<>();
+
+        integerDurationMap.forEach((integer, duration) -> {
+
+            integerLongMap.put(integer, duration.toHours());
+
+        });
+
+        return integerLongMap;
+
+    }
+
+    @PostMapping("/{eMail}/sendTotalHours")
+    public boolean sendTotalHours(@PathVariable String eMail, @RequestBody String text ){
+        SendMailTLS sendMail = new SendMailTLS();
+        sendMail.sendTotalHoursToThePayrollOffice(eMail,text);
+        return true;
+    }
+
 }

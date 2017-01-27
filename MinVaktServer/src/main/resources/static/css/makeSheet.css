@@ -1,5 +1,4 @@
-.cal
-{
+.cal {
     margin-left: 2%;
     margin-right: 2%;
 }
@@ -12,7 +11,7 @@
 }
 
 #header {
-    margin-top: 2%;
+    margin-top: 3%;
     margin-left: 2%;
 }
 #text {
@@ -34,7 +33,7 @@
 
 #external-events {
     position: fixed;
-    margin-top:5%;
+    margin-top: 8.5%;
     float: left;
     width: 150px;
     height: 230px;
@@ -78,9 +77,9 @@
 }
 
 #save{
-    position:fixed;
-    width:11.7%;
-    margin-top:25%;
+    float: right;
+    margin-top: -6.5%;
+    margin-right: 2%;
 }
 
 #circle {

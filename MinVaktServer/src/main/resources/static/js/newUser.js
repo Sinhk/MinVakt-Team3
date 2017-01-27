@@ -25,7 +25,8 @@ function addUserForm() {
                   title: "Fullført!",
                   text: "Bruker er opprettet.",
                   type: "success",
-                  confirmButtonText: "Ok"
+                  confirmButtonText: "OK",
+                  confirmButtonColor: "#0d47a1"
               });
 
           },(data) => {
@@ -36,14 +37,16 @@ function addUserForm() {
                 title: "Bruker laget!",
                 text: "Ditt passord sendt på e-post.",
                 type: "success",
-                confirmButtonText: "Ok"
+                confirmButtonText: "OK",
+                confirmButtonColor: "#0d47a1"
             });
         } else { //if (data.status == 304)
             swal({
                 title: "Feil input",
                 text: "Sjekk input linje med rød strek",
                 type: "error",
-                confirmButtonText: "Ok"
+                confirmButtonText: "OK",
+                confirmButtonColor: "#0d47a1"
             });
         }
     });

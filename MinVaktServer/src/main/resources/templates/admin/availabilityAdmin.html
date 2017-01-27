@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Tilgjengelighet</title>
+
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.css' />
+    <link href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.print.min.css' rel='stylesheet' media='print' />
+    <link href='https://fullcalendar.io/js/fullcalendar-scheduler-1.5.0/scheduler.min.css' rel='stylesheet' />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/common.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/availabilityAdmin.css}">
+
+</head>
+
+<body>
+<div id="nav" th:replace="fragments/header :: header"></div>
+    <main>
+        <h2 id="header">Tilgjengelighet</h2>
+        <a class="waves-effect waves-light btn blue darken-4" id="btn" th:href="@{/tilgjengelighet}">Min tilgjengelighet</a>
+
+
+        <div class="first_row row"><br>
+            <div class="col s3"><i class="material-icons light cyan-text" id="circle">brightness_1</i><p id="text1">Ansvarsvakt <b>A</b></p></div>
+            <div class="col s3"><i class="material-icons light green-text" id="circle2">brightness_1</i><p id="text2">Tilgjengelig <b>T</b></p></div>
+            <div class="col s3"><i class="material-icons light blue-text" id="circle3">brightness_1</i><p id="text3">Satt opp på vakt <b>V</b></p></div>
+            <div class="col s3"><i class="material-icons light red-text" id="circle4">brightness_1</i><p id="text4">Utilgjengelig <b>U</b></p></div>
+        </div>
+
+
+        <div id='wrap'>
+
+            <!-- calendar -->
+            <div class="cal">
+                <div class="section"></div>
+                <div id="calendar"></div>
+            </div>
+            <div style='clear:both'></div>
+            <br>
+            <br>
+        </div>
+    </main>
+
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js' integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+<script src ='https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.js'></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/locale/nb.js"></script>
+<script src='https://fullcalendar.io/js/fullcalendar-scheduler-1.5.0/scheduler.js'></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script th:src="@{/js/managers/common.js}"></script>
+<script th:src="@{/js/managers/shiftManager.js}"></script>
+<script th:src="@{/js/managers/userManager.js}"></script>
+<script th:src="@{/js/managers/util.js}"></script>
+<script th:src="@{/js/newUser.js}"></script>
+<script th:src="@{/js/availabilityAdmin.js}"></script>
+</body>
+</html>

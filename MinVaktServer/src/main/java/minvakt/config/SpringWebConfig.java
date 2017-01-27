@@ -73,15 +73,6 @@ public class SpringWebConfig
         }
     }
 
-
-    /* ******************************************************************* */
-    /*  GENERAL CONFIGURATION ARTIFACTS                                    */
-    /*  Static Resources, i18n Messages, Formatters (Conversion Service)   */
-    /* ******************************************************************* */
-
-    /*
-     *  Dispatcher configuration for serving static resources
-     */
     @Override
     public void addResourceHandlers(final ResourceHandlerRegistry registry) {
         super.addResourceHandlers(registry);
@@ -90,43 +81,6 @@ public class SpringWebConfig
         registry.addResourceHandler("/js/**").addResourceLocations("/static/js/");
         registry.addResourceHandler("/**").addResourceLocations("/static/");
     }
-
-    /*
-     *  Message externalization/internationalization
-     */
-  /*  @Bean
-    public ResourceBundleMessageSource messageSource() {
-        ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
-        messageSource.setBasename("Messages");
-        return messageSource;
-    }*/
-
-    /*
-     * Add formatter for class {@link thymeleafexamples.stsm.business.entities.Variety}
-     * and {@link java.util.Date} in addition to the one registered by default
-     */
-    /*@Override
-    public void addFormatters(final FormatterRegistry registry) {
-        super.addFormatters(registry);
-        registry.addFormatter(varietyFormatter());
-        registry.addFormatter(dateFormatter());
-    }*/
-
-    /*@Bean
-    public VarietyFormatter varietyFormatter() {
-        return new VarietyFormatter();
-    }
-
-    @Bean
-    public DateFormatter dateFormatter() {
-        return new DateFormatter();
-    }*/
-
-
-    /* **************************************************************** */
-    /*  THYMELEAF-SPECIFIC ARTIFACTS                                    */
-    /*  TemplateResolver <- TemplateEngine <- ViewResolver              */
-    /* **************************************************************** */
 
     @Bean
     public SpringResourceTemplateResolver templateResolver() {
@@ -153,8 +107,6 @@ public class SpringWebConfig
 
     @Bean
     public SpringTemplateEngine templateEngine() {
-        // SpringTemplateEngine automatically applies SpringStandardDialect and
-        // enables Spring's own MessageSource message resolution mechanisms.
         SpringTemplateEngine templateEngine = new SpringTemplateEngine();
         templateEngine.addTemplateResolver(templateResolver());
         templateEngine.addTemplateResolver(urlTemplateResolver());
@@ -178,25 +130,25 @@ public class SpringWebConfig
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/login").setViewName("login");
         registry.addViewController("/").setViewName("homepage");
-        registry.addViewController("/ansatte").setViewName("employee");
-        registry.addViewController("/ansatte/ny").setViewName("newUser");
+        registry.addViewController("/login").setViewName("login");
+        registry.addViewController("/ansatte").setViewName("employeeE");
         registry.addViewController("/vaktliste").setViewName("vaktliste");
-        registry.addViewController("/teststuff").setViewName("index");
         registry.addViewController("/tilgjengelighet").setViewName("availability");
-        registry.addViewController("/changeShift").setViewName("changeShift");
-        registry.addViewController("/absence").setViewName("absence");
         registry.addViewController("/endreBruker").setViewName("changeUser");
         registry.addViewController("/endrePassord").setViewName("changePassword");
-        registry.addViewController("/notification").setViewName("notification");
-        registry.addViewController("/makeSheet").setViewName("makeSheet");
-        registry.addViewController("/shiftChange").setViewName("shiftChange");
-        registry.addViewController("/endreBrukerAdmin").setViewName("changeUserAdmin");
+        registry.addViewController("/byttVakt").setViewName("shiftChange");
         registry.addViewController("/ledigeVakter").setViewName("availableShifts");
-        registry.addViewController("/employeeE").setViewName("employeeE");
-        registry.addViewController("/help").setViewName("help");
-        registry.addViewController("/availabilityAdmin").setViewName("availabilityAdmin");
+        registry.addViewController("/hjelp").setViewName("help");
+        registry.addViewController("/admin/vaktliste/ny").setViewName("admin/makeSheet");
+        registry.addViewController("/admin/ansatte").setViewName("admin/employee");
+        registry.addViewController("/admin/nyAnsatt/").setViewName("admin/newUser");
+        registry.addViewController("/admin/varsler").setViewName("admin/notification");
+        registry.addViewController("/admin/endreBruker").setViewName("admin/changeUserAdmin");
+        registry.addViewController("/admin/ledigeVakter").setViewName("admin/availableShiftsAdmin");
+        registry.addViewController("/admin/hjelp").setViewName("admin/helpAdmin");
+        registry.addViewController("/admin/tilgjengelighet").setViewName("admin/availabilityAdmin");
+        registry.addViewController("/admin/maanedsrapport").setViewName("admin/testGetMonthlyReport");
         registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
     }
 
