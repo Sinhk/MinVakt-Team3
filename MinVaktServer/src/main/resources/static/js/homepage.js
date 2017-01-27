@@ -124,6 +124,12 @@ function renderDet(event) {
     $('#close_btn').click(() => {
         $('#shiftDetail').modal('close');
     });
+    if(event.start.isBefore(moment())) {
+        $('#change_btn').addClass('disabled');
+    }
+    if(event.start.isBefore(moment().add(2,'h'))) {
+        $('#absent_btn').addClass('disabled');
+    }
 }
 
 function openDetails(event) {
