@@ -13,6 +13,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.ResponseEntity;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -486,7 +487,28 @@ public class ShiftControllerTest {
 
     @Test
     public void getShiftsBetween() throws Exception {
+        // Setup LocalDateTimes for shifts
+        LocalDateTime fromTime = LocalDateTime.of(2017, 1, 17, 6, 0), toTime = LocalDateTime.of(2019, 1, 17, 22, 0, 0);
 
+        // Stub
+        when(jooqRepo.getShiftDetailed(fromTime.toLocalDate(), toTime.toLocalDate())).thenReturn((Iterable)Arrays.asList(detailed));
+        when(shiftRepo.findBetweenDates(fromTime.toLocalDate().atStartOfDay(), toTime.toLocalDate().atStartOfDay())).thenReturn(Arrays.asList(shift1, shift2, nonAssignedShift));
+
+        // Get Shifts
+        List<ShiftDetailed> listDetail = (List<ShiftDetailed>) shiftController.getShiftsBetween(fromTime.toLocalDate(), toTime.toLocalDate(), true);
+        List<Shift> listShift = (List<Shift>) shiftController.getShiftsBetween(fromTime.toLocalDate(), toTime.toLocalDate(), false);
+
+        // Assert
+        assertEquals(detailed, listDetail.get(0));
+
+        assertEquals(shift1, listShift.get(0));
+        assertEquals(shift2, listShift.get(1));
+        assertEquals(nonAssignedShift, listShift.get(2));
+
+
+        // Verify
+        verify(jooqRepo, atLeastOnce()).getShiftDetailed(fromTime.toLocalDate(), toTime.toLocalDate());
+        verify(shiftRepo, atLeastOnce()).findBetweenDates(fromTime.toLocalDate().atStartOfDay(), toTime.toLocalDate().atStartOfDay());
     }
 
     @Test
@@ -508,6 +530,9 @@ public class ShiftControllerTest {
         assertEquals(shiftAssign2, list.get(1));
         assertEquals(nonAssigned, list.get(2));
         assertEquals(3, list.size());
+
+        // Verify
+        verify(shiftAssignmentRepo).findAll();
     }
 
     @Test
