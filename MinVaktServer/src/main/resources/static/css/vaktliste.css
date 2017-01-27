@@ -1,23 +1,27 @@
-.cal
-{
+.cal {
     margin-top: -2%;
     margin-left: 2%;
     margin-right: 2%;
 }
 
-.fc-sat { color:red; }
 .fc-sun { color:red;  }
 
 #formID\3A scheduleID table.fc-agenda-slots{
     display:none
 }
+
 #new {
-    margin-top:-13%;
-    margin-left: 82%;
+    margin-top:-11%;
+    margin-left: 81%;
+}
+
+#btn {
+    margin-top:-15%;
+    margin-left: 60%;
 }
 
 #header {
-    margin-top: 2%;
+    margin-top: 3%;
     margin-left: 2%;
 }
 
@@ -32,4 +36,8 @@
 #text2 {
     margin-left: 15%;
     margin-top: -13%;
+}
+
+#info{
+    margin-top: -20%;
 }

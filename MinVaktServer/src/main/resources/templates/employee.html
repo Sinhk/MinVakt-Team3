@@ -20,10 +20,8 @@
 <main>
 
     <h2 id="header">Ansatte</h2>
+    <a th:href="@{/ansatte/ny}" class="admin hide waves-effect waves-light btn blue darken-4" id="btn">Legg til bruker</a>
 
-    <div>
-        <a th:href="@{/ansatte/ny}" class="admin hide waves-effect waves-light btn blue darken-4" id="myButton1">Legg til bruker</a>
-    </div>
 
     <table id="myTable" class="tablesorter">
         <thead>
@@ -41,8 +39,8 @@
         </tr>
         </thead>
 
-            <tbody id="employeeBody">
-
+            <tbody
+                    id="employeeBody">
             </tbody>
     </table>
 

@@ -11,9 +11,10 @@
 }
 
 #header {
-    margin-top: 2%;
+    margin-top: 3%;
     margin-left: 2%;
 }
+
 #text {
     margin-left: 2%;
     color: grey;
@@ -23,4 +24,9 @@
     float:left;
     width:85%;
     /*float: right;*/
+}
+
+#btn {
+    margin-top:-11%;
+    margin-left: 76%;
 }
