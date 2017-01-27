@@ -39,7 +39,7 @@ public class ChangeRequestController {
     private CategoryRepository catRepo;
 
     private ShiftController shiftController;
-    private SendMailTLS sendMail = new SendMailTLS();
+    private SendMailTLS sendMail;
 
     @Autowired
     public ChangeRequestController(JooqRepository jooqRepository, ShiftRepository shiftRepo, EmployeeRepository employeeRepository, ShiftAssignmentRepository shiftAssignmentRepo, ChangeRequestRepository changeRequestRepository, CategoryRepository catRepo, ShiftController shiftController) {
@@ -50,6 +50,7 @@ public class ChangeRequestController {
         this.catRepo = catRepo;
         this.shiftController = shiftController;
         this.jooqRepository = jooqRepository;
+        sendMail  = new SendMailTLS();
     }
 
     @GetMapping
