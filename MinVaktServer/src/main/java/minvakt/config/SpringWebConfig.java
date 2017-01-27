@@ -197,6 +197,7 @@ public class SpringWebConfig
         registry.addViewController("/employeeE").setViewName("employeeE");
         registry.addViewController("/help").setViewName("help");
         registry.addViewController("/availabilityAdmin").setViewName("availabilityAdmin");
+        registry.addViewController("/testGetMonthlyReport").setViewName("testGetMonthlyReport");
         registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
     }
 
