@@ -40,15 +40,22 @@ function newWish(event) {
             title: "Vil du ønske deg denne vakten?",
             text: "Vakt: " + event.start.format('DD/MM') + event.start.format("HH:mm") + " - " + event.end.format("HH:mm"),
             showCancelButton: true,
-            //confirmButtonColor: "#11dd07",
+            confirmButtonColor: "#0d47a1",
             confirmButtonText: "Ja",
             cancelButtonText: "Nei",
+            cancelButtonColor: "#9e9e9e",
             closeOnConfirm: false,
             showLoaderOnConfirm: true,
         },
         function(){
             $.post("/shifts/"+event.id+"/wish").then(()=> {
-                swal("Vaktønske er registrert","","success");
+                swal({
+                    title: "Vaktønske er registrert",
+                    type: "success",
+                    confirmButtonText: "OK",
+                    confirmButtonColor: "#0d47a1"
+                })
+                /*swal("Vaktønske er registrert","","success");*/
                 $('#calendar').fullCalendar('removeEvents', function (eventa) {
                     return event.start.dayOfYear() === eventa.start.dayOfYear();
                 });

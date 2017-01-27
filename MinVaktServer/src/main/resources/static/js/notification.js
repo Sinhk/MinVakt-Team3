@@ -38,7 +38,14 @@ $(document).ready(function () {
 
 function acceptChange(id) {
     acceptChangeRequest(id).then(() => {
-        swal("Vakten ble byttet", "", "success");
+        swal ({
+            title: "Vakten ble byttet",
+            type: "success",
+            showCancelButton: true,
+            confirmButtonColor: "#0d47a1",
+            confirmButtonText: "OK",
+        })
+        /*swal("Vakten ble byttet", "", "success");*/
         $("#" + id + "collapse").hide();
     });
 
@@ -46,8 +53,14 @@ function acceptChange(id) {
 
 function declineChange(id) {
     declineRequestChange(id);
+    swal ({
+        title: "Vakten ble ikke byttet",
+        type: "error",
+        confirmButtonText: "OK",
+        confirmButtonColor: "#0d47a1",
+    })
 
-    swal("Vakten ble ikke byttet", "", "error");
+    /*swal("Vakten ble ikke byttet", "", "error");*/
     $("#" + id + "collapse").hide();
 }
 

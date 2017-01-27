@@ -81,7 +81,9 @@ $(document).ready(function () { // document ready
                         text: "Du kan ikke angre denne handlingen.",
                         type: "warning",
                         showCancelButton: true,
-                        confirmButtonColor: "#DD6B55",
+                        cancelButtonText: "Avbryt",
+                        cancelButtonColor: "#9e9e9e",
+                        confirmButtonColor: "#0d47a1",
                         confirmButtonText: "Ja, slett den!",
                         closeOnConfirm: false
                     },
@@ -98,7 +100,15 @@ $(document).ready(function () { // document ready
 
                                 console.log(event1);
 
-                                swal("Slettet!", "Tilgjengeligheten ble slettet.", "success");
+                                swal({
+                                    title: "Slettet",
+                                    text: "Tilgjengeligheten ble slettet",
+                                    type: "success",
+                                    confirmButtonText: "OK",
+                                    confirmButtonColor: "#0d47a1",
+                                })
+
+                                /*swal("Slettet!", "Tilgjengeligheten ble slettet.", "success");*/
 
                                 $('#calendar').fullCalendar('removeEvents', event1.id);
 
@@ -261,7 +271,8 @@ $("#save").click(function () {
         title: "Tilgjengelighet registrert!",
         text: "Din tilgjengelighet er registrert.",
         type: "success",
-        confirmButtonText: "Ok"
+        confirmButtonText: "OK",
+        confirmButtonColor: "#0d47a1"
     });
 
     var events = $('#calendar').fullCalendar('clientEvents');

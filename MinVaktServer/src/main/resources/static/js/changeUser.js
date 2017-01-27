@@ -41,7 +41,8 @@ function checkChangeUser() {
                     title: "Oppdatert!",
                     text: "Brukerinformasjon er oppdatert.",
                     type: "success",
-                    confirmButtonText: "Ok"
+                    confirmButtonText: "OK",
+                    confirmButtonColor: "#0d47a1"
                 });
                 },(data) => {
 
@@ -52,14 +53,16 @@ function checkChangeUser() {
                            title: "Bruker laget!",
                            text: "Ditt passord sendt på e-post.",
                            type: "success",
-                           confirmButtonText: "Ok"
+                           confirmButtonText: "OK",
+                           confirmButtonColor: "#0d47a1"
                        });
                    } else { //if (data.status == 304)
                        swal({
                            title: "Feil input",
                            text: "Sjekk input linje med rød strek",
                            type: "error",
-                           confirmButtonText: "Ok"
+                           confirmButtonText: "OK",
+                           confirmButtonColor: "#0d47a1"
                        });
                    }
                 }
