@@ -137,9 +137,6 @@ $(document).ready(function () { // document ready
 
      $('#calendar').fullCalendar('renderEvent', event, true);
 
-
-
-
      })
      })
      }
