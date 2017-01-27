@@ -513,6 +513,17 @@ public class ShiftControllerTest {
 
     @Test
     public void getShiftAssignmentsForUser() throws Exception {
+        // Stub
+        when(shiftAssignmentRepo.findByEmployeeId(emp1.getEmployeeId())).thenReturn(Arrays.asList(shiftAssign1));
+
+        // Get Shift Assignments
+        List<ShiftAssignment> list = shiftController.getShiftAssignmentsForUser(emp1.getEmployeeId());
+
+        // Assert
+        assertEquals(shiftAssign1, list.get(0));
+
+        // Verify
+        verify(shiftAssignmentRepo, atLeastOnce()).findByEmployeeId(emp1.getEmployeeId());
 
     }
 

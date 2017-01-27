@@ -377,10 +377,7 @@ public class ShiftController {
 
     @GetMapping("/{shift_id}/getAmountOnShiftWithRequired/")
     public List<MissingPerShiftCategory> getAmountOnShift(@PathVariable int shift_id) {
-        List<MissingPerShiftCategory> list =jooqRepo.getMissingForShift(shift_id);
-
-        return list;
-
+        return jooqRepo.getMissingForShift(shift_id);
     }
 
     @GetMapping("/totalhours")
