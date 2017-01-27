@@ -26,7 +26,7 @@ import static minvakt.Application.HOURS_IN_WEEK;
  * Controller to handle change-requests. AKA requests to change shifts from one user to another
  */
 @RestController
-@RequestMapping("/requestchange")
+    @RequestMapping("/requestchange")
 public class ChangeRequestController {
 
     private static final Logger log = LoggerFactory.getLogger(EmployeeController.class);
