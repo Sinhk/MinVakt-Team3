@@ -1,10 +1,7 @@
 package minvakt.controller;
 
 import minvakt.datamodel.ShiftDetailed;
-import minvakt.datamodel.tables.pojos.ChangeRequest;
-import minvakt.datamodel.tables.pojos.Employee;
-import minvakt.datamodel.tables.pojos.Shift;
-import minvakt.datamodel.tables.pojos.ShiftAssignment;
+import minvakt.datamodel.tables.pojos.*;
 import minvakt.repos.*;
 import org.junit.After;
 import org.junit.Before;
@@ -44,11 +41,15 @@ public class ShiftControllerTest {
     @Mock
     private JooqRepository jooqRepo;
 
+    @Mock
+    private DepartmentRepository departmentRepo;
+
     private Shift shift1, shift2, nonAssignedShift;
     private ShiftDetailed detailed;
     private Employee emp1, emp2;
     private ShiftAssignment shiftAssign1, shiftAssign2, nonAssigned;
     private ChangeRequest change1, change2;
+    private Department dep;
 
     @Before
     public void setUp() throws Exception {
@@ -75,6 +76,9 @@ public class ShiftControllerTest {
         // Setup change requests based on data from database script
         change1 = new ChangeRequest(1, 1, 1, 2);
         change2 = new ChangeRequest(2, 2, 2, 1);
+
+        // Setup department
+        dep = new Department((short) 1, "Potet");
     }
 
     @After
@@ -432,12 +436,35 @@ public class ShiftControllerTest {
 
     @Test
     public void getAvailableForShift() throws Exception {
+        // Stub
+        when(shiftRepo.findOne(shift1.getShiftId())).thenReturn(shift1);
+        when(jooqRepo.getEmployeesAvailableForShift(shift1)).thenReturn(Arrays.asList(emp1, emp2));
+
+        // Get list
+        List<Employee> list = shiftController.getAvailableForShift(shift1.getShiftId());
+
+        // Assert
+        assertEquals(emp1, list.get(0));
+        assertEquals(emp2, list.get(1));
+        assertNotEquals(emp1, list.get(1));
 
     }
 
     @Test
     public void getDepartmentofShift() throws Exception {
+        // Stub
+        when(shiftRepo.findOne(shift1.getShiftId())).thenReturn(shift1);
+        when(departmentRepo.findOne(shift1.getDepartmentId())).thenReturn(dep);
 
+        // Get department
+        String testDep = shiftController.getDepartmentofShift(shift1.getShiftId());
+
+        // Assert
+        assertEquals(dep.getDepartmentName(), testDep);
+
+        // Verify
+        verify(shiftRepo, atLeastOnce()).findOne(shift1.getShiftId());
+        verify(departmentRepo, atLeastOnce()).findOne(shift1.getDepartmentId());
     }
 
     @Test
