@@ -11,12 +11,11 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.ResponseEntity;
 
+import java.math.BigInteger;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.temporal.WeekFields;
-import java.util.Arrays;
-import java.util.Locale;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -180,7 +179,7 @@ public class ChangeRequestControllerTest {
 
     @Test
     public void declineChangeRequest() throws Exception {
-        // When
+        // Stub
         when(changeRequestRepository.findOne(change1.getRequestId())).thenReturn(change1);
         when(employeeRepo.findOne(emp1.getEmployeeId())).thenReturn(emp1);
         when(employeeRepo.findOne(emp2.getEmployeeId())).thenReturn(emp2);
@@ -196,4 +195,19 @@ public class ChangeRequestControllerTest {
         verify(employeeRepo, atLeastOnce()).findOne(emp2.getEmployeeId());
     }
 
+    @Test
+    public void checkIsOkChangeRequest() throws Exception {
+        WeekFields weekFields = WeekFields.of(Locale.getDefault());
+        Duration duration = Duration.ofHours(8);
+        List<MissingPerShiftCategory> missingList = Arrays.asList(mock(MissingPerShiftCategory.class), mock(MissingPerShiftCategory.class));
+
+        // Stub
+        when(shiftAssignmentRepo.findByShiftIdAndEmployeeId(shift1.getShiftId(), emp1.getEmployeeId())).thenReturn(Optional.of(shiftAssign1));
+        when(jooqRepository.getHoursWorked(change1.getNewEmployeeId(), shift1.getFromTime().get(weekFields.weekOfWeekBasedYear()), shift1.getFromTime().getYear())).thenReturn(duration);
+        when(employeeRepo.findOne(emp1.getEmployeeId())).thenReturn(emp1);
+        when(employeeRepo.findOne(emp2.getEmployeeId())).thenReturn(emp2);
+        when(missingList.get(0).getCategoryId()).thenReturn((short) 1);
+        when(jooqRepository.getMissingForShift(shift1.getShiftId())).thenReturn(missingList);
+
+    }
 }
