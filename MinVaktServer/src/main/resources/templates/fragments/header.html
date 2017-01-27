@@ -15,31 +15,17 @@
 
 </head>
 <body>
-<header th:fragment="header">
+<header th:fragment="header (title)">
     <div class="navbar-fixed">
         <nav>
             <div class="nav-wrapper blue darken-4 z-depth-3">
-                <a th:href="@{/}" class="brand-logo"><i class="material-icons">home</i>MinVakt</a>
+                <a th:href="@{/}" class="brand-logo"><i class="material-icons">home</i><b>MinVakt</b>< class="hide-on-small-only" th:text="' - '${title}"></span></a>
                 <!--<a href="#" class="large material-icons">home</a>-->
                 <a href="#" data-activates="slide-out" class="button-collapse right"><i class="material-icons">menu</i></a>
                 <ul class="right hide-on-med-and-down">
                     <li class="admin hide"><a th:href="@{/notification}">Varsler <span class="badge" data-badge-caption="ny(e)" id="numberOfNotifications">0</span></a></li>
-                    <li><a th:href="@{/vaktliste}">Vaktliste</a></li>
-                    <li><a th:href="@{/ledigeVakter}">Ledige vakter</a></li>
-                    <li class="user"><a th:href="@{/ansatte}">Ansatte</a></li>
-                    <li class="admin hide"><a th:href="@{/admin/ansatte}">Ansatte</a></li>
-                    <li class="user"><a th:href="@{/availabilityAdmin}">Tilgjengelighet</a></li>
-                    <li class="admin hide"><a th:href="@{/admin/availabilityAdmin}">Tilgjengelighet</a></li>
-                    <li class="user"><a th:href="@{/help}"><i class="small material-icons">help_outline</i></a></li>
-                    <li class="admin hide"><a th:href="@{/help}"><i class="small material-icons">help_outline</i></a></li>
+                    <li th:include=" :: links"></li>
                 </ul>
-                <!--<ul class="side-nav" id="sideNav">
-                    <li><a th:href="@{/vaktliste}">Vaktliste</a></li>
-                    <li><a th:href="@{/tilgjengelighet}">Tilgjengelighet</a></li>
-                    <li><a th:href="@{/vakter}">Ledige vakter</a></li>
-                    <li><a th:href="@{/ansatte}">Ansatte</a></li>
-                    <a><i class="small material-icons">help_outline</i></a>
-                </ul>-->
             </div>
         </nav>
     </div>
@@ -63,6 +49,9 @@
                 <hr/>
             </form>
             <div class="row">
+                <ul class="hide-on-large-only">
+                    <li th:include=" :: links"></li>
+                </ul>
                 <a href="https://www.trondheim.kommune.no/" class="waves-effect waves-light btn blue darken-4" id="myButton">Trondheim kommune</a>
 
             </div>
@@ -82,11 +71,15 @@
     <script th:src="@{/js/managers/requestChangeManager.js}"></script>
     <script th:src="@{/js/header.js}"></script>
 </header>
-<div th:fragment="sidebar">
-    <aside>
-        <!-- Sidebar-->
-
-    </aside>
+<div th:fragment="links">
+    <li><a th:href="@{/vaktliste}">Vaktliste</a></li>
+    <li><a th:href="@{/ledigeVakter}">Ledige vakter</a></li>
+    <li class="user"><a th:href="@{/ansatte}">Ansatte</a></li>
+    <li class="admin hide"><a th:href="@{/admin/ansatte}">Ansatte</a></li>
+    <li class="user"><a th:href="@{/availabilityAdmin}">Tilgjengelighet</a></li>
+    <li class="admin hide"><a th:href="@{/admin/availabilityAdmin}">Tilgjengelighet</a></li>
+    <li class="user"><a th:href="@{/help}"><i class="small material-icons">help_outline</i></a></li>
+    <li class="admin hide"><a th:href="@{/help}"><i class="small material-icons">help_outline</i></a></li>
 </div>
 
 

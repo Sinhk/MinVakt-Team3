@@ -1,4 +1,6 @@
 $(document).ready(function () {
+
+    //$('#left-nav').sideNav({edge:'left'});
     $(".button-collapse").sideNav({
         menuWidth: 300,
         edge: 'right'
