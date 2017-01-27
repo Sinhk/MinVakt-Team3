@@ -468,6 +468,14 @@ public class ShiftControllerTest {
     }
 
     @Test
+    public void addManyShifts() throws Exception {
+        LocalDateTime fromTime = LocalDateTime.of(2017, 1, 17, 6, 0);
+
+        // Run method
+        shiftController.addManyShifts(fromTime);
+    }
+
+    @Test
     public void removeShiftAssignment() throws Exception {
 
     }
