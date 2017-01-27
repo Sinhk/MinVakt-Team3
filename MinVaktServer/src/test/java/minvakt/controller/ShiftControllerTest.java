@@ -439,7 +439,7 @@ public class ShiftControllerTest {
     public void getAvailableForShift() throws Exception {
         // Stub
         when(shiftRepo.findOne(shift1.getShiftId())).thenReturn(shift1);
-        when(jooqRepo.getEmployeesAvailableForShift(shift1)).thenReturn(Arrays.asList(emp1, emp2));
+        when(jooqRepo.getCandidatesForShift(shift1)).thenReturn(Arrays.asList(emp1, emp2));
 
         // Get list
         List<Employee> list = shiftController.getAvailableForShift(shift1.getShiftId());
