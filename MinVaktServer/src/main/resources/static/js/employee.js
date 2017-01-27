@@ -17,11 +17,11 @@ $(document).ready(function () {
                         "<td>" + employee.firstName + "</td>" +
                         "<td>" + employee.lastName + "</td>" +
                         "<td>" + categories.get(employee.categoryId).categoryName + "</td>" +
-                        "<td>" + employee.positionPercentage + "%</td>" +
+                        "<td class='admin'>" + employee.positionPercentage + "%</td>" +
                         "<td>" + employee.phone + "</td>" +
                         "<td>" + hours + " timer</td>" +
-                        "<td>" + employee.email + "</td>" +
-                        "<td> <button class='waves-effect waves-light btn blue darken-4' onClick=\"removeButton("+employee.employeeId+")\">Slett</button>"+"</td>" +
+                        "<td class='admin'>" + employee.email + "</td>" +
+                        "<td> <button class='admin hide waves-effect waves-light btn blue darken-4' onClick=\"removeButton("+employee.employeeId+")\">Slett</button>"+"</td>" +
                         "</tr>";
                 });
             }
