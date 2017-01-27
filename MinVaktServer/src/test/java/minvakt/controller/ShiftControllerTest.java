@@ -333,6 +333,7 @@ public class ShiftControllerTest {
 
     @Test
     public void getAvailableShifts() throws Exception {
+        // Mock
         HttpServletRequest request1 = mock(HttpServletRequest.class);
         HttpServletRequest request2 = mock(HttpServletRequest.class);
         java.security.Principal principal = mock(java.security.Principal.class);
@@ -513,7 +514,26 @@ public class ShiftControllerTest {
 
     @Test
     public void addWish() throws Exception {
+        // Mock
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        java.security.Principal principal = mock(java.security.Principal.class);
 
+        // Stub
+        when(request.getUserPrincipal()).thenReturn(principal);
+        when(principal.getName()).thenReturn("admin@minvakt.no");
+        when(employeeRepo.findByEmail(principal.getName())).thenReturn(emp1);
+
+        // Run method
+        ResponseEntity<?> response = shiftController.addWish(request, shift2.getShiftId());
+
+        // Assert
+        assertEquals(ResponseEntity.ok().build(), response);
+
+
+        // Verify
+        verify(request, atLeastOnce()).getUserPrincipal();
+        verify(principal, atLeastOnce()).getName();
+        verify(employeeRepo, atLeastOnce()).findByEmail(principal.getName());
     }
 
     @Test
@@ -566,7 +586,21 @@ public class ShiftControllerTest {
 
     @Test
     public void getAmountOnShift() throws Exception {
+        // Mock
+        MissingPerShiftCategory missing = mock(MissingPerShiftCategory.class);
 
+        // When
+        when(jooqRepo.getMissingForShift(shift1.getShiftId())).thenReturn(Arrays.asList(missing));
+
+        // Get list
+        List<MissingPerShiftCategory> list = shiftController.getAmountOnShift(shift1.getShiftId());
+
+        // Assert
+        assertEquals(missing, list.get(0));
+
+
+        // Verify
+        verify(jooqRepo, atLeastOnce()).getMissingForShift(shift1.getShiftId());
     }
 
     @Test
