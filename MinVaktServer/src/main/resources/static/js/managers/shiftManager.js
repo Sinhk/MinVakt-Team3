@@ -371,7 +371,7 @@ function sendTotalHours(email) {
 
         $.ajax({
             url: "/shifts/"+email+"/sendTotalHours/",
-            type: "GET",
+            type: "POST",
             contentType: "Application/JSON",
             data: map,
 
