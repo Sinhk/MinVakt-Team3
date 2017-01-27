@@ -311,7 +311,7 @@ public class ShiftController {
     }
 
     // Winner of the Worst Method of 2017 Award goes to:
-    private void addManyShifts(LocalDateTime start) {
+    protected void addManyShifts(LocalDateTime start) {
         LocalDateTime morning = LocalDateTime.of(start.toLocalDate(), LocalTime.of(6, 0)), evening = LocalDateTime.of(start.toLocalDate(), LocalTime.of(14, 0)), night = LocalDateTime.of(start.toLocalDate(), LocalTime.of(22, 0));
         Shift shift;
 
