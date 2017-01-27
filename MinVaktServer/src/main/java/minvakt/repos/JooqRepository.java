@@ -13,6 +13,7 @@ import org.jooq.Record10;
 import org.jooq.Record2;
 import org.jooq.Result;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.PropertyMap;
 import org.modelmapper.convention.NameTokenizers;
 import org.modelmapper.jooq.RecordValueReader;
 import org.slf4j.Logger;
@@ -38,13 +39,19 @@ public class JooqRepository {
     private static final Logger log = LoggerFactory.getLogger(JooqRepository.class);
 
     private final DSLContext create;
-    private final ModelMapper modelMapper = new ModelMapper();
 
     @Autowired
     public JooqRepository(DSLContext dslContext) {
         this.create = dslContext;
+    }
+
+    private ModelMapper getModelMapper() {
+
+        ModelMapper modelMapper = new ModelMapper();
         modelMapper.getConfiguration().addValueReader(new RecordValueReader());
         modelMapper.getConfiguration().setSourceNameTokenizer(NameTokenizers.UNDERSCORE);
+        modelMapper.addMappings(new PropMap());
+        return modelMapper;
     }
 
     public List<ShiftDetailed> getShiftDetailed() {
@@ -55,18 +62,45 @@ public class JooqRepository {
                 .from(SHIFT).naturalJoin(SHIFT_ASSIGNMENT).naturalJoin(EMPLOYEE)
                 .fetchGroups(SHIFT.SHIFT_ID);
 
-        resultMap.values().forEach(records -> {
-            ShiftDetailed shiftDetailed = modelMapper.map(records.get(0), ShiftDetailed.class);
-            System.out.println(shiftDetailed);
-            records.forEach(record -> {
-                AssignedEmployee employee = modelMapper.map(record, AssignedEmployee.class);
-                if (employee.getEmployeeId().equals(shiftDetailed.getResponsibleEmployeeId())) {
-                    shiftDetailed.setResponsible(employee);
-                }
-                shiftDetailed.addEmployee(employee);
-            });
-            shifts.add(shiftDetailed);
+        resultMap.values().forEach(records -> shifts.add(mapShiftDetailed(records,getModelMapper())));
+
+        return shifts;
+    }
+
+    private ShiftDetailed mapShiftDetailed(Result<Record10<Integer, LocalDateTime, LocalDateTime, Integer, Short, Short, Boolean, Integer, String, String>> records,ModelMapper modelMapper) {
+        if(records.isEmpty()) return new ShiftDetailed();
+        ShiftDetailed shiftDetailed = modelMapper.map(records.get(0), ShiftDetailed.class);
+        records.forEach(record -> {
+            AssignedEmployee employee = modelMapper.map(record, AssignedEmployee.class);
+            if (employee.getEmployeeId().equals(shiftDetailed.getResponsibleEmployeeId())) {
+                shiftDetailed.setResponsible(employee);
+            }
+            shiftDetailed.addEmployee(employee);
         });
+        return shiftDetailed;
+    }
+
+    public ShiftDetailed getShiftDetailed(int shift_id) {
+        Result<Record10<Integer, LocalDateTime, LocalDateTime, Integer, Short, Short, Boolean, Integer, String, String>> result = this.create
+                .select(SHIFT.SHIFT_ID, SHIFT.TO_TIME, SHIFT.FROM_TIME, SHIFT.RESPONSIBLE_EMPLOYEE_ID, SHIFT.DEPARTMENT_ID, SHIFT.REQUIRED_EMPLOYEES, SHIFT_ASSIGNMENT.ABSENT,
+                        EMPLOYEE.EMPLOYEE_ID, EMPLOYEE.FIRST_NAME, EMPLOYEE.LAST_NAME)
+                .from(SHIFT).naturalJoin(SHIFT_ASSIGNMENT).naturalJoin(EMPLOYEE)
+                .where(SHIFT.SHIFT_ID.eq(shift_id))
+                .fetch();
+
+        return mapShiftDetailed(result,getModelMapper());
+    }
+
+    public Iterable<?> getShiftDetailed(LocalDate from, LocalDate to) {
+        List<ShiftDetailed> shifts = new ArrayList<>();
+        Map<Integer, Result<Record10<Integer, LocalDateTime, LocalDateTime, Integer, Short, Short, Boolean, Integer, String, String>>> resultMap = this.create
+                .select(SHIFT.SHIFT_ID, SHIFT.TO_TIME, SHIFT.FROM_TIME, SHIFT.RESPONSIBLE_EMPLOYEE_ID, SHIFT.DEPARTMENT_ID, SHIFT.REQUIRED_EMPLOYEES, SHIFT_ASSIGNMENT.ABSENT,
+                        EMPLOYEE.EMPLOYEE_ID, EMPLOYEE.FIRST_NAME, EMPLOYEE.LAST_NAME)
+                .from(SHIFT).naturalJoin(SHIFT_ASSIGNMENT).naturalJoin(EMPLOYEE)
+                .where(SHIFT.FROM_TIME.between(from.atStartOfDay(),to.atStartOfDay()))
+                .fetchGroups(SHIFT.SHIFT_ID);
+
+        resultMap.values().forEach(records -> shifts.add(mapShiftDetailed(records,getModelMapper())));
 
         return shifts;
     }
@@ -170,5 +204,14 @@ public class JooqRepository {
         return create.selectFrom(MISSING_PER_SHIFT_CATEGORY)
                 .where(MISSING_PER_SHIFT_CATEGORY.SHIFT_ID.eq(shift_id))
                 .fetchInto(MissingPerShiftCategory.class);
+    }
+
+
+
+    private class PropMap extends PropertyMap<Record10<Integer, LocalDateTime, LocalDateTime, Integer, Short, Short, Boolean, Integer, String, String>, ShiftDetailed> {
+        @Override
+        protected void configure() {
+            map().setResponsibleEmployeeId(source.value4());
+        }
     }
 }

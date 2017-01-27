@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    $('.modal-trigger').modal();
+    $('.modal').modal();
     // $(".side-nav").css("margin-top", $(".nav-wrapper").height());
 
     $('#calendar').fullCalendar({
@@ -53,16 +53,8 @@ $(document).ready(function () {
 
 
         eventClick: function (event, jsEvent) {
-            console.log(event);
+            location.href = "#shiftDetailed";
             openDetails(event);
-            /*var eventId = event.id;
-
-            getShiftWithId(eventId, function (data) {
-
-                console.log(data);
-
-            });*/
-
         },
         /*eventMouseout: function(calEvent,jsEvent) {
          $("#tooltip").remove();
@@ -88,17 +80,11 @@ function switchAdminViewHomePage() {
     if(admin){
         let from = calendar.fullCalendar('getView').intervalStart;
         let to = calendar.fullCalendar('getView').intervalEnd;
-        console.log(from.toISOString());
-        /*$.ajaxSetup({
-            scriptCharset: "utf-8",
-            contentType: "application/json; charset=utf-8"
-        });*/
         $.getJSON("/shifts/limited", {from: from.toISOString(), to: to.toISOString()}).then((shifts) => {
-                let eventsPr = shifts.map(toFullCalendarEventPromise);
-            Promise.all(eventsPr).then((events) => {
+            let eventsPr = shifts.map(toFullCalendarEventPromise);
+                Promise.all(eventsPr).then((events) => {
                 calendar.fullCalendar('addEventSource', events);
             });
-
             }
         );
     }else{
@@ -126,7 +112,94 @@ function switchAdminViewHomePage() {
 }
 
 function openDetails(event) {
-    $('#calendar').addClass('hide');
-    $('#shiftDetail').removeClass('hide');
-    console.log(event);
+    $('#shiftDetail').modal('open');
+
+    $.getJSON("/shifts/" + event.id, {detailed: true}).then((shift) => {
+        if (headerTemplate == null) {
+            let headerTemplateSource = $('#detailTitleTemplate').html();
+            var headerTemplate = Handlebars.compile(headerTemplateSource);
+        }
+if(shift.responsible != undefined) {
+    for (let i = shift.employees.length - 1; i >= 0; i--) {
+        if (shift.employees[i].employeeId == shift.responsible.employeeId) {
+            shift.employees.splice(i, 1);
+        }
+    }
+}
+        let content = {
+            date: event.start.format("DD/MM"),
+            from: event.start.format("HH:mm"),
+            to: event.end.format("HH:mm"),
+            department: event.avdeling,
+            responsible: shift.responsible,
+            employees: shift.employees
+        };
+        let html = headerTemplate(content);
+        $('#shiftDetail').html(html);
+        $('#absent_btn').click(() => {
+            registerAbsence(event.id);
+        });
+        $('#change_btn').click(() => {
+            requestChange(event);
+        });
+        $('#close_btn').click(() => {
+            $('#shiftDetail').modal('close');
+        });
+    });
+}
+function requestChange(event) {
+    $('#shiftDetail').html("<div class='modal-content'><div class='progress'><div class='indeterminate'></div></div></div>");
+
+    $.getJSON("/shifts/" + event.id + "/possible_users").then((employees)=>{
+        if (shiftChangeTemplate == null) {
+            let shiftChangeTemplateSource = $('#shiftChangeTemplate').html();
+            var shiftChangeTemplate = Handlebars.compile(shiftChangeTemplateSource);
+        }
+
+        let content = {
+            date: event.start.format("DD/MM"),
+            from: event.start.format("HH:mm"),
+            to: event.end.format("HH:mm"),
+            department: event.avdeling,
+            responsible: event.responsible,
+            employees: employees
+        };
+        let html = shiftChangeTemplate(content);
+        $('#shiftDetail').html(html);
+
+        console.log(employees);
+    });
+
+    // requestChangeForShift
+}
+
+function registerAbsence(shiftId) {
+    swal({
+            title: "Årsak til fravær",
+            text: "Skriv inn årsaken til ditt fravær under",
+            type: "input",
+            showCancelButton: true,
+            cancelButtonText: "Avbryt",
+            closeOnConfirm: false,
+            animation: "slide-from-top",
+            inputPlaceholder: "Skriv her",
+            showLoaderOnConfirm: true
+        },
+        function (inputValue) {
+            if (inputValue === false) return false;
+            if (inputValue === "") {
+                swal.showInputError("Du må skrive noe");
+                return false
+            }
+
+            getCurrentUser(function (user) {
+                changeUserAssignment(user.employeeId, shiftId, false, false, false, true, inputValue, function (data) {
+                    console.log(data);
+                    swal("Fravær meldt", "Kommentar: " + inputValue, "success");
+                    $('#calendar').fullCalendar('removeEvents', shiftId);
+                    $('#shiftDetail').modal('close');
+                });
+            });
+        }
+    );
 }

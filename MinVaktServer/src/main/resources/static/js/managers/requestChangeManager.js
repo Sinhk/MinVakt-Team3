@@ -37,14 +37,12 @@ function declineRequestChange(change_id) {
 }
 
 function requestChangeForShift(shift_id, user1_id, user2_id, callback) {
-    
     $.ajax({
         url: "requestchange/?shift_id="+shift_id+"&user1_id="+user1_id+"&user2_id="+user2_id,
         type: "POST",
         contentType: "Application/JSON",
 
         success: function (data) {
-
             callback(data);
         },
         error: function (data) {

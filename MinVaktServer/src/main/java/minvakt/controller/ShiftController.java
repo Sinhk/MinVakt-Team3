@@ -56,8 +56,10 @@ public class ShiftController {
     }
 
     @GetMapping("/limited")
-    public Iterable<?> getShiftsBetween(@RequestParam("from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from, @RequestParam("to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to) {
-
+    public Iterable<?> getShiftsBetween(@RequestParam("from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from, @RequestParam("to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to,@RequestParam(defaultValue = "false") boolean detailed) {
+        if (detailed) {
+            return jooqRepo.getShiftDetailed(from,to);
+        }
         return shiftRepo.findBetweenDates(from.atStartOfDay(), to.atStartOfDay());
     }
 
@@ -69,8 +71,10 @@ public class ShiftController {
     }
 
     @GetMapping(value = "/{shift_id}")
-    public Shift getShift(@PathVariable int shift_id) {
-
+    public Shift getShift(@PathVariable int shift_id,@RequestParam(defaultValue = "false") boolean detailed) {
+        if (detailed) {
+            return jooqRepo.getShiftDetailed(shift_id);
+        }
         return shiftRepo.findOne(shift_id);
     }
 
@@ -212,9 +216,9 @@ public class ShiftController {
 
     @GetMapping(value = "/{shift_id}/responsible")
     @Transactional
-    public Employee getResponsibleUserForShift(@PathVariable int shift_id) {
-
-        return employeeRepo.findResponsibleForShift(shift_id);
+    public ResponseEntity<?> getResponsibleUserForShift(@PathVariable int shift_id) {
+        Optional<Employee> employee = employeeRepo.findResponsibleForShift(shift_id);
+        return employee.isPresent() ? ResponseEntity.ok(employee.get()) : ResponseEntity.ok().build();
     }
 
     @PutMapping(value = "/{shift_id}/responsible")

@@ -60,28 +60,30 @@ function toFullCalendarEventWithResource(event, resource) {
 }
 
 
-function toFullCalendarEventPromise(event) {
-        const start = event.fromTime;
-        const end = event.toTime;
+function toFullCalendarEventPromise(shift) {
+    const start = shift.fromTime;
+    const end = shift.toTime;
 
-        const dateStart = moment(start);
-        const dateEnd = moment(end);
-        return getDepartmentName(event.departmentId).then((department)=>{
-            //return getResponsibleUserForShift(event.shiftId).then((responsible) => {
-
-                //const resFullName = responsible.firstName + " " + responsible.lastName;
-                return Promise.resolve( {
-                    id: event.shiftId,
-                    title: start.split("T")[1].substr(0, 5) + " - " + end.split("T")[1].substr(0, 5),// + ": " + resFullName,
-                    start: dateStart,
-                    end: dateEnd,
-                    //backgroundColor: available ? "#9B0300" : "#3E9B85",
-                    //available: available,
-                    avdeling: department
-                    //isResponsible: responsible != undefined ? resFullName : "Ingen"
-                });
-           // });
-        });
+    const dateStart = moment(start);
+    const dateEnd = moment(end);
+    return getDepartmentName(shift.departmentId).then((department) => {
+        //return $.getJSON("shifts/"+shift.shiftId+"/responsible").then((responsible) => {
+            //console.log(responsible);
+        return Promise.resolve({
+                id: shift.shiftId,
+                title: start.split("T")[1].substr(0, 5) + " - " + end.split("T")[1].substr(0, 5),// + ": " + resFullName,
+                start: dateStart,
+                end: dateEnd,
+                //backgroundColor: available ? "#9B0300" : "#3E9B85",
+                //available: available,
+                avdeling: department
+                //isResponsible: (responsible != null ? responsible.firstName + " " + responsible.lastName : "Ingen")
+            });
+             });/*.catch((error)=>{
+            console.log(error);
+        });*/
+        //});
+    //});
 }
 function toAvailableEventPromise(event) {
         const dateStart = moment(event.fromTime);

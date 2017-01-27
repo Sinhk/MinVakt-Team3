@@ -24,48 +24,18 @@
     <title>Hjem</title>
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.css' />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300" rel="stylesheet">
     <link rel="stylesheet" type="text/css" th:href="@{/css/common.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/css/homepage.css}">
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js'
-            integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js' integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
     <script th:src="@{js/managers/common.js}"></script>
-
-    <!-- CSS -->
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/alertifyjs/1.8.0/css/alertify.min.css"/>
-    <!-- Default theme -->
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/alertifyjs/1.8.0/css/themes/default.min.css"/>
-    <!-- Semantic UI theme -->
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/alertifyjs/1.8.0/css/themes/semantic.min.css"/>
-
-    <!--
-        RTL version
-    -->
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/alertifyjs/1.8.0/css/alertify.rtl.min.css"/>
-    <!-- Default theme -->
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/alertifyjs/1.8.0/css/themes/default.rtl.min.css"/>
-    <!-- Semantic UI theme -->
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/alertifyjs/1.8.0/css/themes/semantic.rtl.min.css"/>
-    <!-- Bootstrap theme -->
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/alertifyjs/1.8.0/css/themes/bootstrap.rtl.min.css"/>
 
 </head>
 <body>
 
 <div id="nav" th:replace="fragments/header :: header"></div>
-<!-- Modal Trigger -->
-<a class="waves-effect waves-light btn" href="#modal1">Modal</a>
-
-<!-- Modal Structure -->
-<div id="modal1" class="modal">
-    <div class="modal-content">
-        <h4>Modal Header</h4>
-        <p>A bunch of text</p>
-    </div>
-    <div class="modal-footer">
-        <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
-    </div>
-</div>
 <main>
     <h2 id="header">Personlig kalender</h2>
 
@@ -80,18 +50,13 @@
     <div id="calendar"></div>
 
     <!-- Aditional Styles -->
-    <link href="https://fonts.googleapis.com/css?family=Roboto:300" rel="stylesheet">
 
 </div>
-<br>
-<br>
-    <div id="shiftDetail" class="hide">
+    <div id="shiftDetail" class="modal">
         <div class="modal-content">
-            <h4>Detaljer</h4>
-            <p>A bunch of text</p>
-        </div>
-        <div class="modal-footer">
-            <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+            <div class="progress">
+                <div class="indeterminate"></div>
+            </div>
         </div>
     </div>
 </main>
@@ -101,11 +66,47 @@
 <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.js'></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/locale/nb.js'></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.6/handlebars.min.js"></script>
 <script th:src="@{js/managers/util.js}"></script>
 <script th:src="@{js/managers/shiftManager.js}"></script>
 <script th:src="@{js/managers/userManager.js}"></script>
 <script th:src="@{js/homepage.js}"></script>
+<script id="detailTitleTemplate" type="text/x-handlebars-template">
+        <div class="modal-content">
+            <h4>Vakt:  {{date}} {{from}}  - {{to}}  Avdeling: {{department}}</h4>
+
+            <h5>Ansatte:</h5>
+            <ul>
+                {{#if responsible}}
+                <b>Ansvar: {{responsible.firstName}} {{responsible.lastName}}</b>
+                {{/if}}
+                {{#each employees}}
+                <li>{{this.firstName}} {{this.lastName}}</li>
+                {{/each}}
+            </ul>
 
 
+        </div>
+        <div class="modal-footer">
+            <a id="close_btn" class=" modal-action modal-close waves-effect waves-green btn-flat">Lukk</a>
+            <a id="absent_btn" class= "modal-action waves-effect waves-green btn-flat">Meld fravær</a>
+            <a id="change_btn" class= "modal-action waves-effect waves-green btn-flat">Bytt vakt</a>
+        </div>
+</script>
+<script id="shiftChangeTemplate" type="text/x-handlebars-template">
+    <div class="modal-content">
+        <h4>Vakt:  {{date}} {{from}}  - {{to}}  Avdeling: {{department}}</h4>
+    <ul>
+        {{#each employees}}
+        <li>{{this.firstName}} {{this.lastName}} {{this.phone}}</li>
+        {{/each}}
+    </ul>
+    </div>
+    <div class="modal-footer">
+        <a id="cancel_change_btn" class=" modal-action waves-effect waves-green btn-flat">Avbryt</a>
+        <a id="change_confirm_btn" class= "modal-action waves-effect waves-green btn-flat">Bytt vakt</a>
+    </div>
+</script>
 </body>
 </html>
