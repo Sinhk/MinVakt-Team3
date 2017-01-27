@@ -18,6 +18,7 @@ import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.*;
 
 
@@ -495,7 +496,18 @@ public class ShiftControllerTest {
 
     @Test
     public void getAllShiftAssignments() throws Exception {
+        // Stub
+        when(shiftAssignmentRepo.findAll()).thenReturn(Arrays.asList(shiftAssign1, shiftAssign2, nonAssigned));
 
+        // Get list of Shift Assignments
+        List<ShiftAssignment> list = shiftController.getAllShiftAssignments();
+
+        // Assert
+        assertNotNull(list);
+        assertEquals(shiftAssign1, list.get(0));
+        assertEquals(shiftAssign2, list.get(1));
+        assertEquals(nonAssigned, list.get(2));
+        assertEquals(3, list.size());
     }
 
     @Test
