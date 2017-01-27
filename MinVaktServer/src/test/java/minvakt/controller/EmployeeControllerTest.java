@@ -2,10 +2,7 @@ package minvakt.controller;
 
 
 import minvakt.datamodel.ShiftDetailed;
-import minvakt.datamodel.tables.pojos.ChangeRequest;
-import minvakt.datamodel.tables.pojos.Employee;
-import minvakt.datamodel.tables.pojos.Shift;
-import minvakt.datamodel.tables.pojos.ShiftAssignment;
+import minvakt.datamodel.tables.pojos.*;
 
 import minvakt.repos.*;
 
@@ -30,8 +27,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.mockito.Mockito.*;
 
+import java.time.DayOfWeek;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 import static org.junit.Assert.*;
@@ -59,6 +59,10 @@ public class EmployeeControllerTest {
     @Mock
     private UserDetailsManager userDetailsManager;
 
+    @Mock
+    private JooqRepository jooqRepo;
+
+
     @Captor
     ArgumentCaptor<User> captor;
 
@@ -67,7 +71,7 @@ public class EmployeeControllerTest {
     private Employee emp1, emp2;
     private Shift shift1, shift2,nonAssignedShift;
     private ShiftAssignment shiftAssign1, shiftAssign2,shiftAssign3;
-
+    private EmployeeCategory empCat;
 
     @Before
     public void setUp() throws Exception {
@@ -87,8 +91,7 @@ public class EmployeeControllerTest {
         shiftAssign2 = new ShiftAssignment(2, 2, 2, true, true, false, "Diarrhea");
         shiftAssign3 = new ShiftAssignment(3, 1, 1, false, false, true, "");
 
-
-
+        empCat = new EmployeeCategory((short)1,"Administrasjon",true,(short)2,true);
     }
 
     @After
@@ -276,33 +279,54 @@ public class EmployeeControllerTest {
     }
 
     @Test
-    public void getEmployeesThatCanBeResponsible() throws Exception {
-
+    public void getCategory() throws Exception {
         //stubbing methods
-
+        when(employeeRepo.findByEmail(emp1.getEmail())).thenReturn(emp1);
+        when(catRepo.findOne(emp1.getCategoryId())).thenReturn(empCat);
         //Getting list
-
+        EmployeeCategory catTest = employeeController.getCategory(emp1.getEmail());
         //asserting
-
+        assertEquals(empCat,catTest);
         //verify
+        verify(employeeRepo, atLeastOnce()).findByEmail(emp1.getEmail());
+        verify(catRepo, atLeastOnce()).findOne(emp1.getCategoryId());
+
     }
 
     @Test
-    public void getCategory() throws Exception {
+    public void getHoursThisWeek() throws Exception {
+        Map<Integer,Duration> mockMap = new HashMap<>();
+
+        Duration dur = Duration.ofHours(8L);
+        mockMap.put(1,dur);
+
+        LocalDate date = LocalDate.now().with(DayOfWeek.MONDAY);
+        //stubbing methods
+        when(jooqRepo.getHoursWorked(date,date.plus(6, ChronoUnit.DAYS))).thenReturn(mockMap);
+
+        //Getting map
+        Map<Integer,Duration> testMap = employeeController.getHoursThisWeek();
+        //asserting
+        assertEquals(mockMap,testMap);
+        //verify
+        verify(jooqRepo, atLeastOnce()).getHoursWorked(date,date.plus(6, ChronoUnit.DAYS));
 
     }
 
     @Test
     public void getHoursThisWeekForUser() throws Exception {
+        //stubbing methods
+        when(shiftRepo.findAssignedByShiftEmployeeId(emp1.getEmployeeId())).thenReturn(Arrays.asList(shift1));
 
+        //Getting map
+        int hours = employeeController.getHoursThisWeekForUser(emp1.getEmployeeId());
+        //asserting
+        assertEquals(8,hours);
+        //verify
+        verify(shiftRepo, atLeastOnce()).findAssignedByShiftEmployeeId(emp1.getEmployeeId());
     }
 
-    @Test
-    public void removeShiftFromUser() throws Exception {
-
-    }
-
-    @Test
+    @Test //TODO sindre fix
     public void sendNewPassword() throws  Exception{
 
     }
