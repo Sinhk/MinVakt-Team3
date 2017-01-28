@@ -4,9 +4,6 @@ function parseLocalDateTimeToDate(localdatetime) {
 
 }
 
-function isAdmin() {
-    return JSON.parse(sessionStorage.user);
-}
 
 function toFullCalendarEventWithResource(event, resource) {
     var start = event.fromTime;
@@ -41,12 +38,11 @@ function toFullCalendarEventPromise(shift) {
     const dateStart = moment(start);
     const dateEnd = moment(end);
     return getDepartmentName(shift.departmentId).then((department) => {
-
-        getResponsibleUserForShift(shift.shiftId, function (responsible) {
-
-        });
-        //return $.getJSON("shifts/"+shift.shiftId+"/responsible").then((responsible) => {
-            //console.log(responsible);
+        let responsible = "Ingen";
+        if (shift.hasOwnProperty('responsible')){
+            responsible = shift.responsible.firstName + " " + shift.responsible.lastName;
+        }
+        
         return Promise.resolve({
                 id: shift.shiftId,
                 title: "",//start.split("T")[1].substr(0, 5) + " - " + end.split("T")[1].substr(0, 5),// + ": " + resFullName,
@@ -54,8 +50,8 @@ function toFullCalendarEventPromise(shift) {
                 end: dateEnd,
                 //backgroundColor: available ? "#9B0300" : "#3E9B85",
                 //available: available,
-                avdeling: department
-                //isResponsible: (responsible != null ? responsible.firstName + " " + responsible.lastName : "Ingen")
+                avdeling: department,
+                responsible: responsible
             });
              });/*.catch((error)=>{
             console.log(error);
@@ -66,7 +62,6 @@ function toFullCalendarEventPromise(shift) {
 function toAvailableEventPromise(event) {
         const dateStart = moment(event.fromTime);
         const dateEnd = moment(event.toTime);
-    console.log(event)
 
         return getDepartmentName(event.departmentId).then((department)=>{
                 return Promise.resolve( {
@@ -215,7 +210,7 @@ function toFullCalendarEvent(event, callback) {
                         //backgroundColor: available ? "#9B0300" : "#3E9B85",
                         //available: available,
                         avdeling: department,
-                        isResponsible: (responsible != undefined ? resFullName : "Ingen"),
+                        responsible: (responsible != undefined ? resFullName : "Ingen"),
                         backgroundColor: res ? "#00bcd4" : "#2196f3",
 
                     });

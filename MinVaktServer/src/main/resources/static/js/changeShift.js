@@ -75,7 +75,7 @@ $(document).ready(function () {
                     /*type: "warning",*/
                     showCancelButton: true,
                     confirmButtonColor: "#4caf50 ",
-                    confirmButtonText: "Ja",
+                    confirmButtonText: "JA",
                     closeOnConfirm: false
                 },
                 function () {

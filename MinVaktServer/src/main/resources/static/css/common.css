@@ -8,7 +8,7 @@ main, footer {
     }
 }
 @media only screen and (min-width: 992px) {
-    .side-nav{
+    #slide-out{
         margin-top: 64px
     }
 }

@@ -367,13 +367,13 @@ function getMonthlyReportMap(month,callback) {
 
 function sendTotalHours(email) {
 
-    getMonthlyReportMap(new Date().getMonth(), function (map) {
+    getMonthlyReportMap(new Date().getMonth()+1, function (map) {
 
         $.ajax({
             url: "/shifts/"+email+"/sendTotalHours/",
             type: "POST",
             contentType: "Application/JSON",
-            data: map,
+            data: JSON.stringify(map),
 
 
             success: function (data) {

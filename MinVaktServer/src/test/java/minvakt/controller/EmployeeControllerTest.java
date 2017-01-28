@@ -1,11 +1,10 @@
 package minvakt.controller;
 
 
+import minvakt.controller.data.CalenderResource;
+import minvakt.controller.data.TwoStringsData;
 import minvakt.datamodel.ShiftDetailed;
-import minvakt.datamodel.tables.pojos.ChangeRequest;
-import minvakt.datamodel.tables.pojos.Employee;
-import minvakt.datamodel.tables.pojos.Shift;
-import minvakt.datamodel.tables.pojos.ShiftAssignment;
+import minvakt.datamodel.tables.pojos.*;
 
 import minvakt.repos.*;
 
@@ -18,7 +17,12 @@ import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -30,8 +34,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.mockito.Mockito.*;
 
+import java.time.DayOfWeek;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 import static org.junit.Assert.*;
@@ -59,6 +66,10 @@ public class EmployeeControllerTest {
     @Mock
     private UserDetailsManager userDetailsManager;
 
+    @Mock
+    private JooqRepository jooqRepo;
+
+
     @Captor
     ArgumentCaptor<User> captor;
 
@@ -67,7 +78,7 @@ public class EmployeeControllerTest {
     private Employee emp1, emp2;
     private Shift shift1, shift2,nonAssignedShift;
     private ShiftAssignment shiftAssign1, shiftAssign2,shiftAssign3;
-
+    private EmployeeCategory empCat;
 
     @Before
     public void setUp() throws Exception {
@@ -87,20 +98,7 @@ public class EmployeeControllerTest {
         shiftAssign2 = new ShiftAssignment(2, 2, 2, true, true, false, "Diarrhea");
         shiftAssign3 = new ShiftAssignment(3, 1, 1, false, false, true, "");
 
-
-
-    }
-
-    @After
-    public void tearDown() throws Exception {
-
-    }
-
-    @Test
-    public void getCurrentUser() throws Exception {
-    //    HttpServletRequest request = mock(HttpServletRequest.class);
-      //  java.security.Principal principal = mock(java.security.Principal.class);
-
+        empCat = new EmployeeCategory((short)1,"Administrasjon",true,(short)2,true);
     }
 
     @Test
@@ -120,9 +118,18 @@ public class EmployeeControllerTest {
         verify(employeeRepo, atLeastOnce()).findAll();
     }
 
-    @Test //todo sindre fix
+    @Test
     public void getAsResource() throws Exception {
+        // Stub
+        when(employeeRepo.findAll()).thenReturn(Arrays.asList(emp1, emp2));
 
+        // Get list
+        List<CalenderResource> list = employeeController.getAsResource();
+
+        // Assert
+        assertNotNull(list);
+        // Verify
+        verify(employeeRepo, atLeastOnce()).findAll();
     }
 
     @Test
@@ -209,10 +216,34 @@ public class EmployeeControllerTest {
     }
 
 
-    @Test //TODO sindre fix
+    @Test
     public void changePasswordForUser() throws Exception {
-        // stubbing method
+        // Setup string things
+        TwoStringsData strings1 = new TwoStringsData(), strings2 = new TwoStringsData(), strings3 = new TwoStringsData();
 
+        strings1.setString1("123");
+        strings1.setString2("1234");
+
+        strings2.setString1("Ost");
+        strings2.setString2("Potet");
+
+        strings3.setString1("Melk");
+        strings3.setString2("Eple");
+
+        // Stub
+        doThrow(new AccessDeniedException("ok")).when(userDetailsManager).changePassword(strings2.getString1(), strings2.getString2());
+        doThrow(new BadCredentialsException("ok")).when(userDetailsManager).changePassword(strings3.getString1(), strings3.getString2());
+
+
+        // Setup ResponseEntities
+        ResponseEntity response1 = ResponseEntity.ok().build();
+        ResponseEntity response2 = ResponseEntity.status(403).build();
+        ResponseEntity response3 = ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).body("Wrong password");
+
+        // Run method and assert
+        assertEquals(response1, employeeController.changePasswordForUser(strings1));
+        assertEquals(response2, employeeController.changePasswordForUser(strings2));
+        assertEquals(response3, employeeController.changePasswordForUser(strings3));
     }
 
     @Test
@@ -276,37 +307,61 @@ public class EmployeeControllerTest {
     }
 
     @Test
-    public void getEmployeesThatCanBeResponsible() throws Exception {
-
+    public void getCategory() throws Exception {
         //stubbing methods
-
+        when(employeeRepo.findByEmail(emp1.getEmail())).thenReturn(emp1);
+        when(catRepo.findOne(emp1.getCategoryId())).thenReturn(empCat);
         //Getting list
-
+        EmployeeCategory catTest = employeeController.getCategory(emp1.getEmail());
         //asserting
-
+        assertEquals(empCat,catTest);
         //verify
+        verify(employeeRepo, atLeastOnce()).findByEmail(emp1.getEmail());
+        verify(catRepo, atLeastOnce()).findOne(emp1.getCategoryId());
+
     }
 
     @Test
-    public void getCategory() throws Exception {
+    public void getHoursThisWeek() throws Exception {
+        Map<Integer,Duration> mockMap = new HashMap<>();
+
+        Duration dur = Duration.ofHours(8L);
+        mockMap.put(1,dur);
+
+        LocalDate date = LocalDate.now().with(DayOfWeek.MONDAY);
+        //stubbing methods
+        when(jooqRepo.getHoursWorked(date,date.plus(6, ChronoUnit.DAYS))).thenReturn(mockMap);
+
+        //Getting map
+        Map<Integer,Duration> testMap = employeeController.getHoursThisWeek();
+        //asserting
+        assertEquals(mockMap,testMap);
+        //verify
+        verify(jooqRepo, atLeastOnce()).getHoursWorked(date,date.plus(6, ChronoUnit.DAYS));
 
     }
 
     @Test
     public void getHoursThisWeekForUser() throws Exception {
+        //stubbing methods
+        when(shiftRepo.findAssignedByShiftEmployeeId(emp1.getEmployeeId())).thenReturn(Arrays.asList(shift1));
 
-    }
-
-    @Test
-    public void removeShiftFromUser() throws Exception {
-
+        //Getting map
+        int hours = employeeController.getHoursThisWeekForUser(emp1.getEmployeeId());
+        //asserting
+        assertEquals(8,hours);
+        //verify
+        verify(shiftRepo, atLeastOnce()).findAssignedByShiftEmployeeId(emp1.getEmployeeId());
     }
 
     @Test
     public void sendNewPassword() throws  Exception{
+        // Stub
+        when(employeeRepo.findByEmail(emp1.getEmail())).thenReturn(emp1);
+        when(employeeRepo.findByEmail(emp2.getEmail())).thenReturn(null);
 
+        // Run method and assert
+        assert(employeeController.sendNewPassword(emp1.getEmail()));
+        assertEquals(false, employeeController.sendNewPassword(emp2.getEmail()));
     }
-
-
-
 }

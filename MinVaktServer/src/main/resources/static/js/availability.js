@@ -8,7 +8,7 @@ $(document).ready(function () { // document ready
         var title = $.trim($(this).text());
         const theTitle  = title;
 
-        title = title.replace("F: ","");
+        title = title.replace("U: ","");
 
         $(this).data('event', {
             title: theTitle, // use the element's text as the event title
@@ -78,7 +78,7 @@ $(document).ready(function () { // document ready
 
                 swal({
                         title: "Er du sikker?",
-                        text: "Du kan ikke angre denne handlingen.",
+                        text: "Du kan ikke angre denne handlingen",
                         type: "warning",
                         showCancelButton: true,
                         cancelButtonText: "AVBRYT",
@@ -106,7 +106,7 @@ $(document).ready(function () { // document ready
                                     type: "success",
                                     confirmButtonText: "OK",
                                     confirmButtonColor: "#0d47a1",
-                                })
+                                });
 
                                 /*swal("Slettet!", "Tilgjengeligheten ble slettet.", "success");*/
 
@@ -149,7 +149,7 @@ $(document).ready(function () { // document ready
                 if (!changed) {
                     cell.css("background-color", "#e0e0e0"); // GREY
                 }
-            })
+            });
 
             getCurrentUser(function (currentUser) {
 
@@ -168,7 +168,7 @@ $(document).ready(function () { // document ready
                                 console.log(shift);
                                 console.log(assignment);
 
-                                const title = shift.fromTime.split("T")[1].substr(0, 5) + "-"+shift.toTime.split("T")[1].substr(0, 5)
+                                const title = shift.fromTime.split("T")[1].substr(0, 5) + "-"+shift.toTime.split("T")[1].substr(0, 5);
 
                                 $('#calendar').fullCalendar("renderEvent", {
 
@@ -292,7 +292,7 @@ $("#save").click(function () {
 
                 const sameTime = event.startTime == shift.fromTime.split("T")[1].substr(0, 5) && event.endTime == shift.toTime.split("T")[1].substr(0, 5);
 
-                const event_date = event.start.toISOString()
+                const event_date = event.start.toISOString();
                 const shift_date = shift.fromTime.split("T")[0];
 
                 const sameDate = event_date == shift_date;
@@ -309,8 +309,8 @@ $("#save").click(function () {
                         var user_id = currentUser.employeeId;
                         var shift_id = shift.shiftId;
 
-                        console.log("***ADDING SHIFT TO USER***")
-                        console.log(user_id+" - "+shift_id)
+                        console.log("***ADDING SHIFT TO USER***");
+                        console.log(user_id+" - "+shift_id);
 
                         if (!event.available) {
 
@@ -336,7 +336,7 @@ $("#save").click(function () {
         }
         location.reload();
     })
-})
+});
 
 function getUsersAndCreateResourceList(callback) {
 

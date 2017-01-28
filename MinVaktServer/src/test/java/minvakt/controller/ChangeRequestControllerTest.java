@@ -11,12 +11,11 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.ResponseEntity;
 
+import java.math.BigInteger;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.temporal.WeekFields;
-import java.util.Arrays;
-import java.util.Locale;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -58,6 +57,7 @@ public class ChangeRequestControllerTest {
     private Employee emp1, emp2;
     private ShiftAssignment shiftAssign1, shiftAssign2, nonAssigned;
     private ChangeRequest change1, change2;
+    private EmployeeCategory cat1;
 
     @Before
     public void setUp() throws Exception {
@@ -85,6 +85,8 @@ public class ChangeRequestControllerTest {
         change1 = new ChangeRequest(1, 1, 1, 2);
         change2 = new ChangeRequest(2, 2, 2, 1);
 
+        // Setup Employee category
+        cat1 = new EmployeeCategory((short) 1, "Admin", true, (short)5, true);
     }
 
     @Test
@@ -144,17 +146,78 @@ public class ChangeRequestControllerTest {
     }
     @Test
     public void requestChangeForShift() throws Exception {
+        // Stub
+        when(employeeRepo.findOne(emp1.getEmployeeId())).thenReturn(emp1);
+        when(employeeRepo.findOne(emp2.getEmployeeId())).thenReturn(emp2);
+        when(shiftRepo.findOne(shift1.getShiftId())).thenReturn(shift1);
+        when(employeeRepo.findAll()).thenReturn(Arrays.asList(emp1, emp2));
 
+        // Run method
+        changeRequestController.requestChangeForShift(shift1.getShiftId(), emp1.getEmployeeId(), emp2.getEmployeeId());
+
+        // Verify
+        verify(employeeRepo, atLeastOnce()).findOne(emp1.getEmployeeId());
+        verify(employeeRepo, atLeastOnce()).findOne(emp2.getEmployeeId());
+        verify(shiftRepo, atLeastOnce()).findOne(shift1.getShiftId());
+        verify(employeeRepo, atLeastOnce()).findAll();
     }
 
     @Test
     public void acceptChangeRequest() throws Exception {
+        // Stub
+        when(changeRequestRepository.findOne(change1.getRequestId())).thenReturn(change1);
+        when(employeeRepo.findOne(emp1.getEmployeeId())).thenReturn(emp1);
+        when(employeeRepo.findOne(emp2.getEmployeeId())).thenReturn(emp2);
+        when(shiftRepo.findOne(shift1.getShiftId())).thenReturn(shift1);
 
+        // Run method
+        changeRequestController.acceptChangeRequest(change1.getRequestId());
+
+        // Verify
+        verify(changeRequestRepository, atLeastOnce()).findOne(change1.getRequestId());
+        verify(employeeRepo, atLeastOnce()).findOne(emp1.getEmployeeId());
+        verify(employeeRepo, atLeastOnce()).findOne(emp1.getEmployeeId());
+        verify(shiftRepo, atLeastOnce()).findOne(shift1.getShiftId());
     }
 
     @Test
     public void declineChangeRequest() throws Exception {
+        // Stub
+        when(changeRequestRepository.findOne(change1.getRequestId())).thenReturn(change1);
+        when(employeeRepo.findOne(emp1.getEmployeeId())).thenReturn(emp1);
+        when(employeeRepo.findOne(emp2.getEmployeeId())).thenReturn(emp2);
+        when(shiftRepo.findOne(shift1.getShiftId())).thenReturn(shift1);
 
+
+        // Run method
+        changeRequestController.declineChangeRequest(change1.getRequestId());
+
+        // Verify
+        verify(changeRequestRepository, atLeastOnce()).findOne(change1.getRequestId());
+        verify(employeeRepo, atLeastOnce()).findOne(emp1.getEmployeeId());
+        verify(employeeRepo, atLeastOnce()).findOne(emp2.getEmployeeId());
     }
 
+    @Test
+    public void checkIsOkChangeRequest() throws Exception {
+        WeekFields weekFields = WeekFields.of(Locale.getDefault());
+        Duration duration = Duration.ofHours(8);
+        List<MissingPerShiftCategory> missingList = Arrays.asList(mock(MissingPerShiftCategory.class), mock(MissingPerShiftCategory.class));
+
+        // Stub
+        //when(shiftAssignmentRepo.findByShiftIdAndEmployeeId(shift1.getShiftId(), emp1.getEmployeeId())).thenReturn(Optional.of(shiftAssign1));
+        when(jooqRepository.getHoursWorked(change1.getNewEmployeeId(), shift1.getFromTime().get(weekFields.weekOfWeekBasedYear()), shift1.getFromTime().getYear())).thenReturn(duration);
+        when(jooqRepository.getHoursWorked(change2.getNewEmployeeId(), shift2.getFromTime().get(weekFields.weekOfWeekBasedYear()), shift2.getFromTime().getYear())).thenReturn(duration);
+        when(employeeRepo.findOne(emp1.getEmployeeId())).thenReturn(emp1);
+        when(employeeRepo.findOne(emp2.getEmployeeId())).thenReturn(emp2);
+        when(missingList.get(0).getCategoryId()).thenReturn((short) 1);
+        //when(missingList.get(1).getCategoryId()).thenReturn((short) 2);
+        when(jooqRepository.getMissingForShift(shift1.getShiftId())).thenReturn(missingList);
+        when(catRepo.findOne(emp1.getCategoryId())).thenReturn(cat1);
+
+
+        // Run method
+        changeRequestController.checkIsOkChangeRequest(change1, shift1);
+        changeRequestController.checkIsOkChangeRequest(change2, shift2);
+    }
 }

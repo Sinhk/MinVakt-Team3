@@ -1,4 +1,3 @@
-
 .fc-sun { color:red;  }
 
 #formID\3A scheduleID table.fc-agenda-slots{
@@ -64,17 +63,14 @@
 
 #save{
     float: right;
-    margin-top: -12.5%;
+    margin-top: -8%;
     margin-right: 25%;
 }
 
-#header {
-    margin-top: 2%;
-    margin-left: 2%;
-}
 
 #text {
     margin-left: 2.5%;
+    margin-top: 3%;
     color: grey;
 }
 

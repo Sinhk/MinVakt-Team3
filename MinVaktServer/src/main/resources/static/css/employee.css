@@ -1,55 +1,12 @@
-#search-bar {
-     border-bottom: 1.5px solid #009688;
- }
-
-.search-container{
-    width: 95%;
-    margin-top: 3%;
-    margin-right: 130px;
-
-
-}
-
-.h2 {
-    margin-left: 2%;
-}
-
-#header {
-    margin-top: 3%;
-    margin-left: 2%;
-}
-
-#icon{
-    position: relative;
-    float: right;
-    width: 75px;
-    height: 75px;
-    top: -50px;
-    right: -45px;
-}
-
-.table {
-    margin-top: 1%;
-}
-
-
 #myTable {
     width: 96.5%;
     margin-left:2%;
-    margin-right:20%;
     margin-top: 5%;
     vertical-align: top;
 }
 
 #btn {
     float: right;
-    margin-top:-6.5%;
+    margin-top:2%;
     margin-right: 2%;
-}
-
-#home {
-    position: relative;
-    float: left;
-    top: 5px;
-
 }

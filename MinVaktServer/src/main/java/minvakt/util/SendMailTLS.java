@@ -3,16 +3,11 @@ package minvakt.util; /**
  */
 import minvakt.datamodel.tables.pojos.Employee;
 
-import java.util.List;
-import java.util.Properties;
-
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
-import javax.mail.Transport;
+import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import java.util.List;
+import java.util.Properties;
 
 public class SendMailTLS {
     Session session;
@@ -34,12 +29,10 @@ public class SendMailTLS {
     }
 
     private void sendMail(Message message) {
-        /*
         try {
             Transport.send(message);
         } catch (MessagingException ignored) {
         }
-        */
     }
 
     private void buildMessage(Message m, String email, String subj, String text) {
@@ -49,8 +42,8 @@ public class SendMailTLS {
                     InternetAddress.parse(email));
             m.setSubject(subj);
             m.setText(text);
-        } catch (MessagingException e) {
-            throw new RuntimeException(e);
+        } catch (MessagingException ignored) {
+
         }
     }
 

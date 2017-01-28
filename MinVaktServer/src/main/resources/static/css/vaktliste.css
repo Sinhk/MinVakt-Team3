@@ -1,5 +1,5 @@
 .cal {
-    margin-top: -2%;
+    margin-top: 2%;
     margin-left: 2%;
     margin-right: 2%;
 }
@@ -10,34 +10,16 @@
     display:none
 }
 
-#new {
-    margin-top:-12%;
-    margin-left: 81%;
+.btn {
+    margin-top: 2%;
+    margin-right: 2%;
 }
 
-#btn {
-    margin-top:-16.5%;
-    margin-left: 58%;
-}
-
-#header {
-    margin-top: 3%;
-    margin-left: 2%;
-}
 
 #circle {
     margin-left: 2%;
 }
-#text1 {
-    margin-left: 15%;
-    margin-top: -13%;
-}
 
-#text2 {
-    margin-left: 15%;
-    margin-top: -13%;
-}
-
-#info{
-    margin-top: -20%;
+.material-icons, .icon-text {
+    vertical-align: middle;
 }

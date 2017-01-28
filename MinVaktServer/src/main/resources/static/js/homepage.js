@@ -4,7 +4,7 @@ $(document).ready(function () {
 
     $('#calendar').fullCalendar({
 
-        locale: "no",
+        locale: "nb",
         selectable: true,
         header: {
             left: 'prev, today',
@@ -35,7 +35,7 @@ $(document).ready(function () {
          },*/
 
         eventMouseover: function (calEvent, jsEvent) {
-                    var tooltip = '<div class="tooltipevent" style="width:180px;height:70px;background:#e3f2fd;border-style:solid;border-color:#212121;border-width:1px;position:absolute;z-index:10001;">' + ' ' + ' Tidspunkt: ' + calEvent.title + '<br> Avdeling: ' + calEvent.avdeling + '<br>'+ (calEvent.isResponsible != undefined ? 'Ansvar: ' + calEvent.isResponsible + '</div>' : "");
+                    var tooltip = '<div class="tooltipevent" style="width:180px;height:70px;background:#e3f2fd;border-style:solid;border-color:#212121;border-width:1px;position:absolute;z-index:10001;">' + ' ' + ' Tidspunkt: ' +calEvent.start.format("HH:mm")+"-"+calEvent.end.format("HH:mm")+ '<br> Avdeling: ' + calEvent.avdeling + '<br>'+ 'Ansvar: ' +calEvent.responsible + '</div>';
                     var $tool = $(tooltip).appendTo('body');
                     $(this).mouseover(function (e) {
                         $(this).css('z-index', 10000);
@@ -46,36 +46,24 @@ $(document).ready(function () {
                         $tool.css('left', e.pageX + 20);
                     });
                 },
-                eventMouseout: function (calEvent, jsEvent) {
-                    $(this).css('z-index', 8);
-                    $('.tooltipevent').remove();
-                },
+        eventMouseout: function (calEvent, jsEvent) {
+                $(this).css('z-index', 8);
+                $('.tooltipevent').remove();
+        },
 
 
         eventClick: function (event, jsEvent) {
             location.href = "#shiftDetailed";
             openDetails(event);
         },
-        /*eventMouseout: function(calEvent,jsEvent) {
-         $("#tooltip").remove();
-         }
-
-         var eventId = event.id;
-
-         var eventDB = getEventViaID(eventId);
-
-         console.log(eventDB);
-
-         }*/
+        viewRender: function( ){
+            renderStuff();
+        }
     });
-    switchAdminViewHomePage();
-    document.addEventListener('viewChange', switchAdminViewHomePage);
-
-
-
+    document.addEventListener('viewChange', renderStuff);
 });
 
-function switchAdminViewHomePage() {
+function renderStuff() {
     let admin = JSON.parse(sessionStorage.admin);
 
     let calendar = $('#calendar');
@@ -92,15 +80,12 @@ function switchAdminViewHomePage() {
         );
     }else{
         getScheduledShiftsForCurrentUser(function (shifts) {
-            for (let i = 0; i<shifts.length; i++){
-                const shift = shifts[i];
 
-                //console.log(shift);
+                let eventsPr = shifts.map(toFullCalendarEventPromise);
+                Promise.all(eventsPr).then((events) => {
+                    calendar.fullCalendar('addEventSource', events);
+                });
 
-                toFullCalendarEvent(shift, function (fullCalendarEvent) {
-                    calendar.fullCalendar('renderEvent', fullCalendarEvent, /*sticky*/true);
-                })
-            }
             /*  getShiftsWithRequestChange(function (ch) {
 
              var shifts = shifts1.concat(ch);
@@ -142,7 +127,7 @@ function openDetails(event) {
     $('#shiftDetail').modal('open');
 
     $.getJSON("/shifts/" + event.id, {detailed: true}).then((shift) => {
-        if (headerTemplate == null) {
+        if (headerTemplate == undefined) {
             let headerTemplateSource = $('#detailTitleTemplate').html();
             var headerTemplate = Handlebars.compile(headerTemplateSource);
         }
@@ -170,7 +155,7 @@ function requestChange(event) {
     $('#shiftDetail').html("<div class='modal-content'><div class='progress'><div class='indeterminate'></div></div></div>");
 
     $.getJSON("/shifts/" + event.id + "/possible_users").then((employees)=>{
-        if (shiftChangeTemplate == null) {
+        if (shiftChangeTemplate == undefined) {
             let shiftChangeTemplateSource = $('#shiftChangeTemplate').html();
             var shiftChangeTemplate = Handlebars.compile(shiftChangeTemplateSource);
         }
@@ -212,9 +197,15 @@ function requestChange(event) {
                 let to = event.end.format("HH:mm");
 
                 requestChangeForShift(event.id, currentUser.employeeId, newUser.employeeId, function () {
+                    swal ({
+                        title: "Forespørsel sendt",
+                        text: "Vaktbytte for vakt " +date+ " " + from + " - " + to + ". Fra " + currentUser.firstName + " " + currentUser.lastName + " til " + newUser.firstName + " " + newUser.lastName,
+                        type: "success",
+                        confirmButtonColor: "#0d47a1"
+                    });
 
-                    swal("Forespørsel sendt", "Vaktbytte for vakt " +date+ " " + from + " -> " + to +
-                        ". Fra "+ currentUser.firstName +" " + currentUser.lastName + " til " + newUser.firstName + " " + newUser.lastName, "success");
+                   /* swal("Forespørsel sendt", "Vaktbytte for vakt " +date+ " " + from + " -> " + to +
+                        ". Fra "+ currentUser.firstName +" " + currentUser.lastName + " til " + newUser.firstName + " " + newUser.lastName, "success");*/
 
                     $('#shiftDetail').modal('close');
                 })
@@ -247,7 +238,12 @@ function registerAbsence(shiftId) {
             getCurrentUser(function (user) {
                 changeUserAssignment(user.employeeId, shiftId, false, false, false, true, inputValue, function (data) {
                     console.log(data);
-                    swal("Fravær meldt", "Kommentar: " + inputValue, "success");
+                    swal ({
+                        title: "Fravær meldt",
+                        text: "Kommentar: " + inputValue,
+                        type: "success",
+                        confirmButtonColor: "#0d47a1"
+                    });
                     $('#calendar').fullCalendar('removeEvents', shiftId);
                     $('#shiftDetail').modal('close');
                 });
@@ -314,4 +310,4 @@ $(document).ready(function () {
 
     }
 
-})
+});

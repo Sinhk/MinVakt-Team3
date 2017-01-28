@@ -8,7 +8,7 @@ $(document).ready(function(){
     });
 
     calendar.fullCalendar({
-        locale: "no",
+        locale: "nb",
         selectable: true,
         header: {
             left: 'prev, today',
@@ -27,18 +27,27 @@ $(document).ready(function(){
         defaultView: 'listMonth',
         noEventsMessage: 'Ingen ledige vakter',
         eventClick: function(calEvent){
-            newWish(calEvent);
+            if(isAdmin()){
+                assignShift(calEvent);
+            }else {
+                newWish(calEvent);
+            }
         }
 
 
     });
 });
+function assignShift(event){
+    $.getJSON("/shifts/" + event.id + "/possible_users").then((employees) => {
 
+        console.log(employees);
+    });
+}
 function newWish(event) {
     console.log(event.start.dayOfYear());
     swal({
             title: "Vil du ønske deg denne vakten?",
-            text: "Vakt: " + event.start.format('DD/MM') + event.start.format("HH:mm") + " - " + event.end.format("HH:mm"),
+            text: "Vakt: " + event.start.format('DD/MM') + " " + event.start.format("HH:mm") + " - " + event.end.format("HH:mm"),
             showCancelButton: true,
             confirmButtonColor: "#0d47a1",
             confirmButtonText: "JA",
@@ -54,7 +63,7 @@ function newWish(event) {
                     type: "success",
                     confirmButtonText: "OK",
                     confirmButtonColor: "#0d47a1"
-                })
+                });
                 /*swal("Vaktønske er registrert","","success");*/
                 $('#calendar').fullCalendar('removeEvents', function (eventa) {
                     return event.start.dayOfYear() === eventa.start.dayOfYear();

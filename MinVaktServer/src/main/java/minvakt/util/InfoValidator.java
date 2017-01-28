@@ -13,7 +13,7 @@ public class InfoValidator {
      */
     public static boolean checkPasswordRequirements(String attempt) {
 
-        if (attempt == null || attempt.equals(null) || attempt.equals("\0")) {
+        if (attempt == null || attempt.equals("\0")) {
             return false;
         }
 
@@ -26,12 +26,12 @@ public class InfoValidator {
     }
 
     /**
-     * @param attempt The email adress to check
-     * @return If the adress has a valid format or not
+     * @param attempt The email address to check
+     * @return If the address has a valid format or not
      */
     public static boolean checkEmailRequirements(String attempt) {
 
-        if (attempt == null || attempt.equals(null) || attempt.equals("\0")) {
+        if (attempt == null || attempt.equals("\0")) {
             return false;
         }
 

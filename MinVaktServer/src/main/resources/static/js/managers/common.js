@@ -1,4 +1,6 @@
 $(document).ready(function () {
+
+    //$('#left-nav').sideNav({edge:'left'});
     $(".button-collapse").sideNav({
         menuWidth: 300,
         edge: 'right'
@@ -21,6 +23,9 @@ $(document).ready(function () {
 });
 
 
+function isAdmin() {
+    return JSON.parse(sessionStorage.user).categoryId == 1;
+}
 
 function switchAdminView() {
     var event = new Event('viewChange');

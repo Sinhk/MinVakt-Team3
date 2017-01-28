@@ -32,14 +32,4 @@ public class WeekDateInterval implements Serializable{
     public LocalDate getEnd() {
         return end;
     }
-
-    public static void main(String[] args) {
-
-        LocalDate jan1 = LocalDate.of(2017, 1, 1);
-
-        WeekDateInterval of = of(jan1);
-
-        System.out.println(of.start +" - "+of.end);
-
-    }
 }

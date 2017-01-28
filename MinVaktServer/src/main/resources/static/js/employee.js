@@ -4,14 +4,15 @@ $(document).ready(function () {
 
         getAllUsers(function (employees) {
 
-            const div = document.getElementById("employeeBody");
+            const div = $('#employeeBody');
+
             for (let i = 0; i < employees.length; i++) {
 
                 let employee = employees[i]; // Uten const faile alt
 
                 getHoursThisWeekForUser(employee.employeeId, function (hours) {
 
-                    div.innerHTML +=
+                    div.append(
                         "<tr>" +
                         "<td>" + employee.firstName + "</td>" +
                         "<td>" + employee.lastName + "</td>" +
@@ -20,10 +21,12 @@ $(document).ready(function () {
                         "<td>" + employee.phone + "</td>" +
                         "<td>" + hours + " timer</td>" +
                         "<td class='admin'>" + employee.email + "</td>" +
-                        "<td> <button class='admin hide waves-effect waves-light btn blue darken-4' onClick=\"removeButton("+employee.employeeId+")\">Slett</button>"+"</td>" +
-                        "</tr>";
+                        "<td> <button class='waves-effect waves-light btn blue darken-4' onClick=\"removeButton("+employee.employeeId+")\">Slett</button>"+"</td>" +
+                        "</tr>");
                 });
             }
+            switchAdminView();
+            $("#myTable").tablesorter();
         });
     });
 

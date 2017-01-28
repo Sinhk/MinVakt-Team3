@@ -2,149 +2,100 @@ $(document).ready(function () { // document ready
     var calendar = $('#calendar');
     calendar.fullCalendar({
         schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
-        displayEventTime: false,
         locale: "nb",
-        timezone: "UTC",
         selectable: true,
-        resourceAreaWidth: 230,
         //editable: true,
-        aspectRatio: 1.5,
         scrollTime: '00:00',
         header: {
             left: 'prev, promptResource today',
             center: 'title',
             right: 'next'
         },
-        firstDay: 1,
         weekNumbers:true,
-        defaultView: 'customWeek',
-        views: {
+        defaultView: 'timelineWeek',
+        slotDuration: {days: 1},
+        /*views: {
             customWeek: {
                 type: 'timeline',
                 duration: {weeks: 1},
-                slotDuration: {days: 1},
                 buttonText: 'Vaktliste'
             }
-        },
-        dayNamesShort: ['Søndag', 'Mandag', 'Tirsdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lørdag'],
-        monthNames: ['Januar', 'Februar', 'Mars', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Desember'],
-        weekNumberTitle: 'Uke',
-        buttonText: {
-            today: 'I dag',
-            month: 'Måned',
-            week: 'Uke',
-            day: 'Dag',
-            list: 'Liste'
-        },
+        },*/
+        displayEventTime: true,
+        displayEventEnd: true,
         resourceLabelText: 'Ansatte',
         resources: function(callback){
             getUsersAndCreateResourceList(function (data) {
                 callback(data);
             })
         },
-
-        eventClick: function (event, jsEvent, view) {
-
-            var eventId = event.id;
-
-            getShiftWithId(eventId, function (shift) {
-
-                console.log(shift);
-                console.log(event);
-
-            })
-
-
-
+        viewRender: function( view ){
+            renderEvents(view);
         },
-
         select: function (start, end, jsEvent, view) {
 
             console.log("Start date: " + moment(start).format() +
                 "\nEnd date: " + moment(end).format());
-        }
+        },
+
+        eventMouseover: function (calEvent, jsEvent) {
+            var tooltip = '<div class="tooltipevent" style="width:180px;height:70px;background:#e3f2fd;border-style:solid;border-color:#212121;border-width:1px;position:absolute;z-index:10001;">' + ' ' + ' Tidspunkt: ' +calEvent.start.format("HH:mm")+"-"+calEvent.end.format("HH:mm")+ '<br> Avdeling: ' + calEvent.department + '<br>'+ 'Ansvar: ' +calEvent.responsible + '</div>';
+            var $tool = $(tooltip).appendTo('body');
+            $(this).mouseover(function (e) {
+                $(this).css('z-index', 10000);
+                $tool.fadeIn('500');
+                $tool.fadeTo('10', 1.9);
+            }).mousemove(function (e) {
+                $tool.css('top', e.pageY + 10);
+                $tool.css('left', e.pageX + 20);
+            });
+        },
+        eventMouseout: function (calEvent, jsEvent) {
+            $(this).css('z-index', 8);
+            $('.tooltipevent').remove();
+        },
+
+
     });
 
-    getAllShiftAssignments(function (shiftAssignments) {
-
-        for (var i = 0; i < shiftAssignments.length; i++) {
-
-            const shiftAssignment = shiftAssignments[i];
-
-            getShiftWithId(shiftAssignment.shiftId, function (shift) {
-
-                const responsible = shift.responsibleEmployeeId == shiftAssignment.employeeId;
-
-                console.log(shift)
-
-
-
-                const event = {
-
-                    id: shiftAssignment.shiftId,
-                    resourceId: shiftAssignment.employeeId,
-                    start: shift.fromTime.split("T")[0],
-                    end: shift.toTime.split("T")[0],
-                    title: shift.fromTime.split("T")[1].substr(0, 2) + " - " + shift.toTime.split("T")[1].substr(0, 2) + (responsible ? " A":" V" ),
-
-                    backgroundColor: responsible ? "#00bcd4" : "#2196f3",
-
-                    stick: true
-                }
-
-                console.log(event);
-
-                $('#calendar').fullCalendar('renderEvent', event, true);
-
-            })
-        }
-    })
-
-    /*getAllAssignedShifts(function (assignedShifts) {
-
-     for (var i = 0; i < assignedShifts.length; i++) {
-
-     const nonAssignedShift = assignedShifts[i];
-
-     console.log(nonAssignedShift);
-
-     getUserById(nonAssignedShift.employeeId, function (user) {
-
-     getShiftWithId(nonAssignedShift.shiftId, function (shift) {
-
-     console.log(user);
-     console.log(shift);
-
-     var resource = {
-     id: user.employeeId,
-     title: user.firstName + " " + user.lastName,
-     }
-
-     $('#calendar').fullCalendar('addResource', resource)
-
-
-     var event = {
-
-     id: shift.shiftId,
-     resourceId: user.employeeId,
-     start: shift.fromTime.split("T")[0],
-     end: shift.toTime.split("T")[0],
-     title: shift.fromTime.split("T")[1].substr(0, 5) + " - " + shift.toTime.split("T")[1].substr(0, 5),
-
-     stick: true
-
-     }
-
-     $('#calendar').fullCalendar('renderEvent', event, true);
-
-     })
-     })
-     }
-     })*/
-    /*getAllShifts(function (events) {
-     calendar.fullCalendar('addEventSource', listToFullCalendarEventList(events, calendar.fullCalendar('getResources')));
-     });*/
 });
+
+function renderEvents(view) {
+    let calendar = $('#calendar');
+    calendar.fullCalendar('removeEvents');
+    let from = view.intervalStart;
+    let to = view.intervalEnd;
+    $.getJSON("/shifts/limited", {from: from.toISOString(), to: to.toISOString(), detailed: true}).then((shifts) => {
+        let events = [];
+            shifts.forEach((shift) => {
+                    const start = moment(shift.fromTime);
+                    const end = moment(shift.toTime);
+                    let responsible = "Ingen";
+                    if (shift.hasOwnProperty('responsible')) {
+                        responsible = shift.responsible.firstName + " " + shift.responsible.lastName;
+                    }
+
+                    shift.employees.forEach((employee) => {
+                        const isResponsible = shift.responsibleEmployeeId == employee.employeeId;
+                        events.push(
+                            {
+                                id: shift.shiftId,
+                                resourceId: employee.employeeId,
+                                start: start,
+                                end: end,
+                                title: (isResponsible ? " A" : " V" ),
+                                department: shift.department.departmentName,
+                                backgroundColor: isResponsible ? "#00bcd4" : "#2196f3",
+                                responsible: responsible,
+                                stick: true
+                            });
+
+                });
+            });
+        calendar.fullCalendar('addEventSource', events);
+        }
+    );
+}
 
 function getUsersAndCreateResourceList(callback) {
 
@@ -160,11 +111,8 @@ function getUsersAndCreateResourceList(callback) {
                 id: user.employeeId,
                 title: user.firstName + " " + user.lastName,
             })
-
         }
         callback(res);
-
-
     })
 
 }

@@ -4,6 +4,8 @@
 package minvakt.datamodel.tables.pojos;
 
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -24,6 +26,7 @@ import javax.persistence.*;
 )
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 @Entity
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @Table(name = "shift", schema = "g_scrum03")
 public class Shift implements Serializable {
 
@@ -31,9 +34,11 @@ public class Shift implements Serializable {
 
     private Integer       shiftId;
     private Integer       responsibleEmployeeId;
+    private Employee responsible;
     private LocalDateTime fromTime;
     private LocalDateTime toTime;
     private Short         departmentId;
+    private Department    department;
     private Short         requiredEmployees;
     private List<MissingPerShiftCategory> missing;
 
@@ -120,6 +125,26 @@ public class Shift implements Serializable {
         this.requiredEmployees = requiredEmployees;
     }
 
+    @ManyToOne
+    @JoinColumn(insertable=false, updatable=false, name = "responsible_employee_id")
+    public Employee getResponsible() {
+        return responsible;
+    }
+
+    public void setResponsible(Employee responsible) {
+        this.responsible = responsible;
+    }
+
+    @ManyToOne
+    @JoinColumn(insertable=false, updatable=false, name = "department_id")
+    public Department getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("Shift (");
@@ -156,6 +181,8 @@ public class Shift implements Serializable {
         result = 31 * result + toTime.hashCode();
         return result;
     }
+
+
 
     @Transient
     public List<MissingPerShiftCategory> getMissing() {

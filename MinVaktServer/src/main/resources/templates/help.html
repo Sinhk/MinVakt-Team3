@@ -9,24 +9,23 @@
     <link rel='stylesheet' href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" type="text/css" th:href="@{/css/common.css}">
-    <link rel="stylesheet" type="text/css" th:href="@{/css/help.css}">
 </head>
 
 <body>
-<div id="nav" th:replace="fragments/header :: header"></div>
-<h2 id="header">Informasjonsside</h2>
-<div class="first_row row">
+<div id="nav" th:replace="fragments/header :: header('Informasjonsside')"></div>
+<main>
+<div class="row">
     <!--First card for "Vaktbytte"-->
-    <div class="col s3">
+    <div class="col s12 m6 l4">
         <div class="shift_card">
-            <div class="card">
-                    <div class="icon">
+            <div class="card grey lighten-4">
+                    <div class="icon center-align">
                         <i class="medium material-icons blue-text text-darken-4">swap_horiz</i>
                     <!--<img class="activator" src="images/office.jpg">-->
                     </div>
                 <div class="card-content">
                     <span class="header card-title activator grey-text text-darken-4">Vaktbytte<i class="material-icons right" id="more">more_vert</i></span>
-                    <p><a th:href="@{/shiftChange}">Bytt vakt her</a></p>
+                    <p><a th:href="@{/}">Bytt vakt her</a></p>
                 </div>
                 <div class="card-reveal">
                     <span class="card-title grey-text text-darken-4">Vaktbytte<i class="material-icons right">close</i></span>
@@ -43,10 +42,10 @@
     </div>
 
     <!--Second card for..-->
-    <div class="col s3">
+    <div class="col s12 m6 l4">
         <div class="shift_card">
-            <div class="card">
-                <div class="icon">
+            <div class="card grey lighten-4">
+                <div class="icon center-align">
                     <i class="medium material-icons blue-text text-darken-4">assignment</i>
                     <!--<img class="activator" src="images/office.jpg">-->
                 </div>
@@ -63,10 +62,10 @@
         </div>
     </div>
 
-    <div class="col s3">
+    <div class="col s12 m6 l4">
         <div class="shift_card">
-            <div class="card">
-                <div class="icon">
+            <div class="card grey lighten-4">
+                <div class="icon center-align">
                     <i class="medium material-icons blue-text text-darken-4">event_available</i>
                     <!--<img class="activator" src="images/office.jpg">-->
                 </div>
@@ -82,14 +81,13 @@
         </div>
     </div>
 
-</div>
 
-<div class="second_row row">
 
-    <div class="col s3">
+
+    <div class="col s12 m6 l4">
         <div class="shift_card">
-            <div class="card">
-                <div class="icon">
+            <div class="card grey lighten-4">
+                <div class="icon center-align">
                     <i class="medium material-icons blue-text text-darken-4">event_available</i>
                     <!--<img class="activator" src="images/office.jpg">-->
                 </div>
@@ -111,10 +109,10 @@
         </div>
     </div>
 
-    <div class="col s3">
+    <div class="col s12 m6 l4">
         <div class="shift_card">
-            <div class="card">
-                <div class="icon">
+            <div class="card grey lighten-4">
+                <div class="icon center-align">
                     <i class="medium material-icons blue-text text-darken-4">group</i>
                     <!--<img class="activator" src="images/office.jpg">-->
                 </div>
@@ -132,10 +130,10 @@
         </div>
     </div>
 
-    <div class="col s3">
+    <div class="col s12 m6 l4">
         <div class="shift_card">
-            <div class="card">
-                <div class="icon">
+            <div class="card grey lighten-4">
+                <div class="icon center-align">
                     <i class="medium material-icons blue-text text-darken-4">date_range</i>
                     <!--<img class="activator" src="images/office.jpg">-->
                 </div>
@@ -156,20 +154,20 @@
     </div>
 
 
-</div>
 
 
-<div class="third_row row">
-    <div class="col s3">
+
+
+    <div class="col s12 m6 l4">
         <div class="shift_card">
-            <div class="card">
-                <div class="icon">
+            <div class="card grey lighten-4">
+                <div class="icon center-align">
                     <i class="medium material-icons blue-text text-darken-4">event_busy</i>
                     <!--<img class="activator" src="images/office.jpg">-->
                 </div>
                 <div class="card-content">
                     <span class="header card-title activator grey-text text-darken-4">Fravær<i class="material-icons right" id="more">more_vert</i></span>
-                    <p><a th:href="@{/absence}">Gå til fravær her</a></p>
+                    <p><a th:href="@{/}">Gå til fravær her</a></p>
                 </div>
                 <div class="card-reveal">
                     <span class="card-title grey-text text-darken-4">Fravær<i class="material-icons right">close</i></span>
@@ -184,10 +182,10 @@
     </div>
 
 
-    <div class="col s3">
+    <div class="col s12 m6 l4">
         <div class="shift_card">
-            <div class="card">
-                <div class="icon">
+            <div class="card grey lighten-4">
+                <div class="icon center-align">
                     <i class="medium material-icons blue-text text-darken-4">home</i>
                     <!--<img class="activator" src="images/office.jpg">-->
                 </div>
@@ -207,7 +205,7 @@
     </div>
 
 </div>
-
+</main>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js' integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.28.4/js/jquery.tablesorter.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>

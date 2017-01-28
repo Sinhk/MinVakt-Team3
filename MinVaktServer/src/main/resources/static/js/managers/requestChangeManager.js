@@ -21,7 +21,7 @@ function getAllChangeRequests(callback) {
 function acceptChangeRequest(change_id) {
 
     return $.ajax({
-        url: "requestchange/"+change_id,
+        url: "/requestchange/"+change_id,
         type: "PUT",
     });
 
@@ -30,7 +30,7 @@ function acceptChangeRequest(change_id) {
 function declineRequestChange(change_id) {
 
     return $.ajax({
-        url: "requestchange/"+change_id,
+        url: "/requestchange/"+change_id,
         type: "DELETE",
     });
 
@@ -38,7 +38,7 @@ function declineRequestChange(change_id) {
 
 function requestChangeForShift(shift_id, user1_id, user2_id, callback) {
     $.ajax({
-        url: "requestchange/?shift_id="+shift_id+"&user1_id="+user1_id+"&user2_id="+user2_id,
+        url: "/requestchange/?shift_id="+shift_id+"&user1_id="+user1_id+"&user2_id="+user2_id,
         type: "POST",
         contentType: "Application/JSON",
 
