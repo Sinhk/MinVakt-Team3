@@ -411,6 +411,7 @@ public class ShiftControllerTest {
         // Stub
         when(shiftAssignmentRepo.findByShiftIdAndEmployeeId(shift1.getShiftId(), emp1.getEmployeeId())).thenReturn(Optional.of(shiftAssign1));
         when(shiftRepo.findOne(shift1.getShiftId())).thenReturn(shift1);
+        when(shiftRepo.findOne(testShift.getShiftId())).thenReturn(testShift);
         when(shiftRepo.save(shift1)).thenReturn(shift1);
         when(shiftAssignmentRepo.save(shiftAssign1)).thenReturn(shiftAssign1);
         when(employeeRepo.findOne(emp1.getEmployeeId())).thenReturn(emp1);
