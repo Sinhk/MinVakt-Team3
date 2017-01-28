@@ -47,7 +47,7 @@ public class SendMailTLS {
                     InternetAddress.parse(email));
             m.setSubject(subj);
             m.setText(text);
-        } catch (MessagingException e) {
+        } catch (MessagingException ignored) {
 
         }
     }
