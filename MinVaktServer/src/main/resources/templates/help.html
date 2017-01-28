@@ -9,17 +9,17 @@
     <link rel='stylesheet' href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" type="text/css" th:href="@{/css/common.css}">
-    <link rel="stylesheet" type="text/css" th:href="@{/css/help.css}">
 </head>
 
 <body>
 <div id="nav" th:replace="fragments/header :: header('Informasjonsside')"></div>
-<div class="first_row row">
+<main>
+<div class="row">
     <!--First card for "Vaktbytte"-->
-    <div class="col s3">
+    <div class="col s12 m6 l4">
         <div class="shift_card">
             <div class="card grey lighten-4">
-                    <div class="icon">
+                    <div class="icon center-align">
                         <i class="medium material-icons blue-text text-darken-4">swap_horiz</i>
                     <!--<img class="activator" src="images/office.jpg">-->
                     </div>
@@ -42,10 +42,10 @@
     </div>
 
     <!--Second card for..-->
-    <div class="col s3">
+    <div class="col s12 m6 l4">
         <div class="shift_card">
             <div class="card grey lighten-4">
-                <div class="icon">
+                <div class="icon center-align">
                     <i class="medium material-icons blue-text text-darken-4">assignment</i>
                     <!--<img class="activator" src="images/office.jpg">-->
                 </div>
@@ -62,10 +62,10 @@
         </div>
     </div>
 
-    <div class="col s3">
+    <div class="col s12 m6 l4">
         <div class="shift_card">
             <div class="card grey lighten-4">
-                <div class="icon">
+                <div class="icon center-align">
                     <i class="medium material-icons blue-text text-darken-4">event_available</i>
                     <!--<img class="activator" src="images/office.jpg">-->
                 </div>
@@ -81,14 +81,13 @@
         </div>
     </div>
 
-</div>
 
-<div class="second_row row">
 
-    <div class="col s3">
+
+    <div class="col s12 m6 l4">
         <div class="shift_card">
             <div class="card grey lighten-4">
-                <div class="icon">
+                <div class="icon center-align">
                     <i class="medium material-icons blue-text text-darken-4">event_available</i>
                     <!--<img class="activator" src="images/office.jpg">-->
                 </div>
@@ -110,10 +109,10 @@
         </div>
     </div>
 
-    <div class="col s3">
+    <div class="col s12 m6 l4">
         <div class="shift_card">
             <div class="card grey lighten-4">
-                <div class="icon">
+                <div class="icon center-align">
                     <i class="medium material-icons blue-text text-darken-4">group</i>
                     <!--<img class="activator" src="images/office.jpg">-->
                 </div>
@@ -131,10 +130,10 @@
         </div>
     </div>
 
-    <div class="col s3">
+    <div class="col s12 m6 l4">
         <div class="shift_card">
             <div class="card grey lighten-4">
-                <div class="icon">
+                <div class="icon center-align">
                     <i class="medium material-icons blue-text text-darken-4">date_range</i>
                     <!--<img class="activator" src="images/office.jpg">-->
                 </div>
@@ -155,14 +154,14 @@
     </div>
 
 
-</div>
 
 
-<div class="third_row row">
-    <div class="col s3">
+
+
+    <div class="col s12 m6 l4">
         <div class="shift_card">
             <div class="card grey lighten-4">
-                <div class="icon">
+                <div class="icon center-align">
                     <i class="medium material-icons blue-text text-darken-4">event_busy</i>
                     <!--<img class="activator" src="images/office.jpg">-->
                 </div>
@@ -183,10 +182,10 @@
     </div>
 
 
-    <div class="col s3">
+    <div class="col s12 m6 l4">
         <div class="shift_card">
             <div class="card grey lighten-4">
-                <div class="icon">
+                <div class="icon center-align">
                     <i class="medium material-icons blue-text text-darken-4">home</i>
                     <!--<img class="activator" src="images/office.jpg">-->
                 </div>
@@ -206,7 +205,7 @@
     </div>
 
 </div>
-
+</main>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js' integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.28.4/js/jquery.tablesorter.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>

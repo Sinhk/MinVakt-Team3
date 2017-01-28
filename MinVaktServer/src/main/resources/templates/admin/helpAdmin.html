@@ -9,21 +9,21 @@
     <link rel='stylesheet' href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" type="text/css" th:href="@{/css/common.css}">
-    <link rel="stylesheet" type="text/css" th:href="@{/css/help.css}">
 </head>
 
 <body>
 <div id="nav" th:replace="fragments/header :: header('Informasjonsside')"></div>
-<div class="first_row row">
-    <div class="col s3">
+<main>
+<div class="row">
+    <div class="col s12 m6 l4">
         <div class="shift_card">
             <div class="card grey lighten-4">
-                <div class="icon">
+                <div class="icon center-align">
                     <i class="medium material-icons blue-text text-darken-4">assignment</i>
                     <!--<img class="activator" src="images/office.jpg">-->
                 </div>
                 <div class="card-content">
-                    <span class="header card-title activator grey-text text-darken-4">Vaktliste<i class="material-icons right" id="more">more_vert</i></span>
+                    <span class="header card-title activator grey-text text-darken-4">Vaktliste<i class="material-icons right" >more_vert</i></span>
                     <p><a th:href="@{/vaktliste}">Gå til vaktliste her</a></p>
                 </div>
                 <div class="card-reveal">
@@ -37,15 +37,15 @@
         </div>
     </div>
 
-    <div class="col s3">
+    <div class="col s12 m6 l4">
         <div class="shift_card">
             <div class="card grey lighten-4">
-                <div class="icon">
+                <div class="icon center-align">
                     <i class="medium material-icons blue-text text-darken-4">note_add</i>
                     <!--<img class="activator" src="images/office.jpg">-->
                 </div>
                 <div class="card-content">
-                    <span class="header card-title activator grey-text text-darken-4">Lag vaktliste<i class="material-icons right" id="more">more_vert</i></span>
+                    <span class="header card-title activator grey-text text-darken-4">Lag vaktliste<i class="material-icons right" >more_vert</i></span>
                     <p><a th:href="@{/admin/vaktliste/ny}">Lag vaktliste her</a></p>
                 </div>
                 <div class="card-reveal">
@@ -61,15 +61,15 @@
         </div>
     </div>
 
-    <div class="col s3">
+    <div class="col s12 m6 l4">
         <div class="shift_card">
             <div class="card grey lighten-4">
-                <div class="icon">
+                <div class="icon center-align">
                     <i class="medium material-icons blue-text text-darken-4">event_available</i>
                     <!--<img class="activator" src="images/office.jpg">-->
                 </div>
                 <div class="card-content">
-                    <span class="header card-title activator grey-text text-darken-4">Tilgjengelighet<i class="material-icons right" id="more">more_vert</i></span>
+                    <span class="header card-title activator grey-text text-darken-4">Tilgjengelighet<i class="material-icons right" >more_vert</i></span>
                     <p><a th:href="@{/tilgjengelighet}">Gå til tilgjengelighet her</a></p>
                 </div>
                 <div class="card-reveal">
@@ -79,18 +79,16 @@
             </div>
         </div>
     </div>
-</div>
 
-<div class="second_row row">
-    <div class="col s3">
+    <div class="col s12 m6 l4">
         <div class="shift_card">
             <div class="card grey lighten-4">
-                <div class="icon">
+                <div class="icon center-align">
                     <i class="medium material-icons blue-text text-darken-4">group</i>
                     <!--<img class="activator" src="images/office.jpg">-->
                 </div>
                 <div class="card-content">
-                    <span class="header card-title activator grey-text text-darken-4">Ansatte<i class="material-icons right" id="more">more_vert</i></span>
+                    <span class="header card-title activator grey-text text-darken-4">Ansatte<i class="material-icons right" >more_vert</i></span>
                     <p><a th:href="@{/ansatte}">Gå til ansatte her</a></p>
                 </div>
                 <div class="card-reveal">
@@ -104,15 +102,15 @@
         </div>
     </div>
 
-    <div class="col s3">
+    <div class="col s12 m6 l4">
         <div class="shift_card">
             <div class="card grey lighten-4">
-                <div class="icon">
+                <div class="icon center-align">
                     <i class="medium material-icons blue-text text-darken-4">person_add</i>
                     <!--<img class="activator" src="images/office.jpg">-->
                 </div>
                 <div class="card-content">
-                    <span class="header card-title activator grey-text text-darken-4">Legg til en ansatt<i class="material-icons right" id="more">more_vert</i></span>
+                    <span class="header card-title activator grey-text text-darken-4">Legg til en ansatt<i class="material-icons right" >more_vert</i></span>
                     <p><a th:href="@{/ansatte/ny}">Legg til en ansatt her</a></p>
                 </div>
                 <div class="card-reveal">
@@ -124,15 +122,15 @@
         </div>
     </div>
 
-    <div class="col s3">
+    <div class="col s12 m6 l4">
         <div class="shift_card">
             <div class="card grey lighten-4">
-                <div class="icon">
+                <div class="icon center-align">
                     <i class="medium material-icons blue-text text-darken-4">date_range</i>
                     <!--<img class="activator" src="images/office.jpg">-->
                 </div>
                 <div class="card-content">
-                    <span class="header card-title activator grey-text text-darken-4">Ledige vakter<i class="material-icons right" id="more">more_vert</i></span>
+                    <span class="header card-title activator grey-text text-darken-4">Ledige vakter<i class="material-icons right" >more_vert</i></span>
                     <p><a th:href="@{/ledigeVakter}">Gå til ledige vakter her</a></p>
                 </div>
                 <div class="card-reveal">
@@ -142,18 +140,17 @@
             </div>
         </div>
     </div>
-</div>
 
-<div class="third_row row">
-    <div class="col s3">
+
+    <div class="col s12 m6 l4">
         <div class="shift_card">
             <div class="card grey lighten-4">
-                <div class="icon">
+                <div class="icon center-align">
                     <i class="medium material-icons blue-text text-darken-4">event_busy</i>
                     <!--<img class="activator" src="images/office.jpg">-->
                 </div>
                 <div class="card-content">
-                    <span class="header card-title activator grey-text text-darken-4">Fravær<i class="material-icons right" id="more">more_vert</i></span>
+                    <span class="header card-title activator grey-text text-darken-4">Fravær<i class="material-icons right" >more_vert</i></span>
                     <p><a th:href="@{/}">Gå til fravær her</a></p>
                 </div>
                 <div class="card-reveal">
@@ -164,15 +161,15 @@
         </div>
     </div>
 
-    <div class="col s3">
+    <div class="col s12 m6 l4">
         <div class="shift_card">
             <div class="card grey lighten-4">
-                <div class="icon">
+                <div class="icon center-align">
                     <i class="medium material-icons blue-text text-darken-4">notifications</i>
                     <!--<img class="activator" src="images/office.jpg">-->
                 </div>
                 <div class="card-content">
-                    <span class="header card-title activator grey-text text-darken-4">Varsler<i class="material-icons right" id="more">more_vert</i></span>
+                    <span class="header card-title activator grey-text text-darken-4">Varsler<i class="material-icons right" >more_vert</i></span>
                     <p><a th:href="@{/notification}">Gå til varsler her</a></p>
                 </div>
                 <div class="card-reveal">
@@ -185,15 +182,15 @@
         </div>
     </div>
 
-    <div class="col s3">
+    <div class="col s12 m6 l4">
         <div class="shift_card">
             <div class="card grey lighten-4">
-                <div class="icon">
+                <div class="icon center-align">
                     <i class="medium material-icons blue-text text-darken-4">home</i>
                     <!--<img class="activator" src="images/office.jpg">-->
                 </div>
                 <div class="card-content">
-                    <span class="header card-title activator grey-text text-darken-4">Hjem<i class="material-icons right" id="more">more_vert</i></span>
+                    <span class="header card-title activator grey-text text-darken-4">Hjem<i class="material-icons right" >more_vert</i></span>
                     <p><a th:href="@{/}">Gå til hjemside her</a></p>
                 </div>
                 <div class="card-reveal">
@@ -204,7 +201,7 @@
         </div>
     </div>
 </div>
-
+</main>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js' integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.28.4/js/jquery.tablesorter.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
