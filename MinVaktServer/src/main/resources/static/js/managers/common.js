@@ -24,7 +24,7 @@ $(document).ready(function () {
 
 
 function isAdmin() {
-    return JSON.parse(sessionStorage.user);
+    return JSON.parse(sessionStorage.user).categoryId == 1;
 }
 
 function switchAdminView() {
