@@ -316,10 +316,11 @@ $("#save").click(function () {
                             console.log("user: " + user_id + " - shift: " + shift_id + "IKKE RESPONSIBLE")
                         })
                     }
-                    //location.reload();
+
 
                 }
             }
+            location.reload();
     }})
 });
 
