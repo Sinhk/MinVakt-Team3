@@ -1,0 +1,11 @@
+minvakt
+minvakt.config
+minvakt.controller
+minvakt.controller.data
+minvakt.datamodel
+minvakt.datamodel.tables
+minvakt.datamodel.tables.pojos
+minvakt.datamodel.tables.records
+minvakt.managers
+minvakt.repos
+minvakt.util
