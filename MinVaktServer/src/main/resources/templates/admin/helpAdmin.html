@@ -10,11 +10,10 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" type="text/css" th:href="@{/css/common.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/css/help.css}">
-    <title>Hjelp</title>
 </head>
+
 <body>
 <div id="nav" th:replace="fragments/header :: header('Informasjonsside')"></div>
-
 <div class="first_row row">
     <div class="col s3">
         <div class="shift_card">
@@ -155,7 +154,7 @@
                 </div>
                 <div class="card-content">
                     <span class="header card-title activator grey-text text-darken-4">Fravær<i class="material-icons right" id="more">more_vert</i></span>
-                    <p><a th:href="@{/absence}">Gå til fravær her</a></p>
+                    <p><a th:href="@{/}">Gå til fravær her</a></p>
                 </div>
                 <div class="card-reveal">
                     <span class="card-title grey-text text-darken-4">Fravær<i class="material-icons right">close</i></span>

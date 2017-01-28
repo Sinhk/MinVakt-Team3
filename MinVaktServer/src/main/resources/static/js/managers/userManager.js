@@ -58,7 +58,22 @@ function removeUser(user_id, callback) {
 }
 
 function removeButton(id) {
-    removeUser(id,function() {
+    swal({
+        title: "Er du sikker?",
+        text: "Du kan ikke angre denne handlingen",
+        type: "warning",
+        showCancelButton: true,
+        cancelButtonText: "AVBRYT",
+        cancelButtonColor: "#9e9e9e",
+        confirmButtonColor: "#0d47a1",
+        confirmButtonText: "SLETT",
+        closeOnConfirm: false
+    },
+        function() {
+            removeUser(id,function() {
+        }
+    )
+
      swal({
         title: "Bruker slettet!",
             type: "success",
@@ -67,6 +82,7 @@ function removeButton(id) {
             confirmButtonText: "OK",
             confirmButtonColor: "#0d47a1"
         });
+
      });
     }
 

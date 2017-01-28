@@ -78,7 +78,7 @@ $(document).ready(function () { // document ready
 
                 swal({
                         title: "Er du sikker?",
-                        text: "Du kan ikke angre denne handlingen.",
+                        text: "Du kan ikke angre denne handlingen",
                         type: "warning",
                         showCancelButton: true,
                         cancelButtonText: "AVBRYT",
