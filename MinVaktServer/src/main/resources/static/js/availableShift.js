@@ -8,7 +8,7 @@ $(document).ready(function(){
     });
 
     calendar.fullCalendar({
-        locale: "no",
+        locale: "nb",
         selectable: true,
         header: {
             left: 'prev, today',

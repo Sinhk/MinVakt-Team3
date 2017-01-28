@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org">
 <head>
     <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
@@ -35,16 +35,29 @@
 </head>
 <body>
 
-<div id="nav" th:replace="fragments/header :: header('Personlig kalender')"></div>
-<main>
-    <div id="text_info">
-        <h10><br>Her her din personlige kalender med oversikt over egne vakter.</h10>
-        <h10><br>Trykk på vakten for å få informasjon, bytte den eller melde fravær.</h10>
+<div sec:authorize="hasRole('ROLE_ADMIN')">
+    <div id="nav" th:replace="fragments/header :: header('Kalender')"></div>
+</div>
+<div sec:authorize="hasRole('ROLE_USER')">
+    <div id="nav" th:replace="fragments/header :: header('Personlig kalender')"></div>
+</div>
 
+<main>
+    <div sec:authorize="hasRole('ROLE_ADMIN')"> <div id="text_info">
+        <h10><br>Her her vaktkalenderen med oversikt over alle vakter.</h10>
+        <h10><br>Trykk på vakten for å få informasjon.</h10>
     </div>
-    <div class="user first_row row"><br>
-        <div class="col s3"><i class="material-icons light cyan-text" id="circle">brightness_1</i><p id="text1">Ansvarsvakt <b>A</b></p></div>
-        <div class="col s3"><i class="material-icons light blue-text" id="circle2">brightness_1</i><p id="text2">Satt opp på vakt <b>V</b></p></div>
+    </div>
+    <div sec:authorize="hasRole('ROLE_USER')">
+        <div id="text_info">
+            <h10><br>Her her din personlige kalender med oversikt over egne vakter.</h10>
+            <h10><br>Trykk på vakten for å få informasjon, bytte den eller melde fravær.</h10>
+
+        </div>
+        <div class="user first_row row"><br>
+            <div class="col s3"><i class="material-icons light cyan-text" id="circle">brightness_1</i><p id="text1">Ansvarsvakt <b>A</b></p></div>
+            <div class="col s3"><i class="material-icons light blue-text" id="circle2">brightness_1</i><p id="text2">Satt opp på vakt <b>V</b></p></div>
+        </div>
     </div>
 
 <!-- calendar -->

@@ -122,7 +122,7 @@ public class JooqRepository {
         return create
                 .select().from(mis)
                 .leftJoin(assi).on(assi.SHIFT_ID.eq(mis.SHIFT_ID))
-                .leftJoin(SHIFT).on(SHIFT.SHIFT_ID.eq(ASSIGNED_PER_SHIFT.SHIFT_ID))
+                .leftJoin(SHIFT).on(SHIFT.SHIFT_ID.eq(mis.SHIFT_ID))
                 .where(mis.CATEGORY_ID.notEqual((short) categoryId))
                 .and(SHIFT.FROM_TIME.greaterThan(LocalDateTime.now()))
                 .groupBy(assi.SHIFT_ID)
