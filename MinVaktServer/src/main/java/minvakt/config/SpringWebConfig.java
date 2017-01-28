@@ -142,7 +142,7 @@ public class SpringWebConfig
         registry.addViewController("/hjelp").setViewName("help");
         registry.addViewController("/admin/vaktliste/ny").setViewName("admin/makeSheet");
         registry.addViewController("/admin/ansatte").setViewName("admin/employee");
-        registry.addViewController("/admin/nyAnsatt/").setViewName("admin/newUser");
+        registry.addViewController("/admin/nyAnsatt").setViewName("admin/newUser");
         registry.addViewController("/admin/varsler").setViewName("admin/notification");
         registry.addViewController("/admin/endreBruker").setViewName("admin/changeUserAdmin");
         registry.addViewController("/admin/ledigeVakter").setViewName("admin/availableShiftsAdmin");
