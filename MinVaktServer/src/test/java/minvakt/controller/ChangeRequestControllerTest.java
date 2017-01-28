@@ -57,6 +57,7 @@ public class ChangeRequestControllerTest {
     private Employee emp1, emp2;
     private ShiftAssignment shiftAssign1, shiftAssign2, nonAssigned;
     private ChangeRequest change1, change2;
+    private EmployeeCategory cat1;
 
     @Before
     public void setUp() throws Exception {
@@ -84,6 +85,8 @@ public class ChangeRequestControllerTest {
         change1 = new ChangeRequest(1, 1, 1, 2);
         change2 = new ChangeRequest(2, 2, 2, 1);
 
+        // Setup Employee category
+        cat1 = new EmployeeCategory((short) 1, "Admin", true, (short)5, true);
     }
 
     @Test
@@ -202,12 +205,19 @@ public class ChangeRequestControllerTest {
         List<MissingPerShiftCategory> missingList = Arrays.asList(mock(MissingPerShiftCategory.class), mock(MissingPerShiftCategory.class));
 
         // Stub
-        when(shiftAssignmentRepo.findByShiftIdAndEmployeeId(shift1.getShiftId(), emp1.getEmployeeId())).thenReturn(Optional.of(shiftAssign1));
+        //when(shiftAssignmentRepo.findByShiftIdAndEmployeeId(shift1.getShiftId(), emp1.getEmployeeId())).thenReturn(Optional.of(shiftAssign1));
         when(jooqRepository.getHoursWorked(change1.getNewEmployeeId(), shift1.getFromTime().get(weekFields.weekOfWeekBasedYear()), shift1.getFromTime().getYear())).thenReturn(duration);
+        when(jooqRepository.getHoursWorked(change2.getNewEmployeeId(), shift2.getFromTime().get(weekFields.weekOfWeekBasedYear()), shift2.getFromTime().getYear())).thenReturn(duration);
         when(employeeRepo.findOne(emp1.getEmployeeId())).thenReturn(emp1);
         when(employeeRepo.findOne(emp2.getEmployeeId())).thenReturn(emp2);
         when(missingList.get(0).getCategoryId()).thenReturn((short) 1);
+        //when(missingList.get(1).getCategoryId()).thenReturn((short) 2);
         when(jooqRepository.getMissingForShift(shift1.getShiftId())).thenReturn(missingList);
+        when(catRepo.findOne(emp1.getCategoryId())).thenReturn(cat1);
 
+
+        // Run method
+        changeRequestController.checkIsOkChangeRequest(change1, shift1);
+        changeRequestController.checkIsOkChangeRequest(change2, shift2);
     }
 }
