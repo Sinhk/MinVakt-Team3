@@ -108,7 +108,7 @@ jacocoTestReport {
         classDirectories = files(classDirectories.files.collect {
             fileTree(dir: it,
                     exclude: ['minvakt/config/**',
-                              'minvakt/controllers/data/**',
+                              'minvakt/controller/data/**',
                               'minvakt/datamodel/**',
                               'minvakt/managers/**',
                               'minvakt/repos/**',
