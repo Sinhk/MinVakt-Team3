@@ -398,7 +398,10 @@ public class ShiftControllerTest {
 
         // Call method
         shiftController.changeUserAssignment(shift1.getShiftId(),emp1.getEmployeeId(), true, true, true, true, "");
+        shiftController.changeUserAssignment(shift1.getShiftId(),emp1.getEmployeeId(), null, null, null, null, null);
         shiftController.changeUserAssignment(testShift.getShiftId(), emp1.getEmployeeId(), true, true, true, false, "");
+        shiftController.changeUserAssignment(testShift.getShiftId(), emp1.getEmployeeId(), null, null, null, null, null);
+
 
         // Verify
         verify(shiftAssignmentRepo, atLeastOnce()).findByShiftIdAndEmployeeId(shift1.getShiftId(), emp1.getEmployeeId());

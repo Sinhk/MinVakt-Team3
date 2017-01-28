@@ -3,7 +3,7 @@
 Employeee_category(<u>category_id</u>, category_name, admin, required_per_shift, available_for_shifts)
 Employee(<u>employee_id</u>, category_id*, first_name, last_name, phone, email, position_percentage, passwd, enabled, change_pw_on_logon)
 <br><br>
-Shifts(<u>shift_id</u>, responsible_employee_id*, from_time, to_time, department_id*, required_employees)
+Shift(<u>shift_id</u>, responsible_employee_id*, from_time, to_time, department_id*, required_employees)
 <br>
 Shift_assignment(<u>id</u>, shift_id*, employee_id*, absent, assigned, available, comment_for_absence)
 <br>
@@ -12,5 +12,3 @@ Shift_overtime(<u>id</u>, shift_assignment_id*, minutes)
 Change_request(<u>request_id</u>, shift_id*, old_employee_id*, new_employee_id*)
 <br><br>
 Department(<u>department_id</u>, department_name)
-<br>
-Department_required_employees_per_category(<u>id</u>, department_id*, category_id*, amount)

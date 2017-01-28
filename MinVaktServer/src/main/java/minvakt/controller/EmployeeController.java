@@ -124,20 +124,18 @@ public class EmployeeController {
      */
     @PostMapping()
     @Secured({"ROLE_ADMIN"})
-    public String addEmployee(@RequestBody Employee employee) {
-
+    public void addEmployee(@RequestBody Employee employee) {
         String password = createPassword();
         log.info("Generated password: {}", password);
 
-        sendMail.sendPassword(employee.getEmail(), password);
-
         employeeRepo.saveAndFlush(employee);
+
         User user = new User(employee.getEmail(), password, new ArrayList<SimpleGrantedAuthority>() {{
             add(new SimpleGrantedAuthority("ROLE_USER"));
         }});
 
         userDetailsManager.updateUser(user);
-        return password;
+        sendMail.sendPassword(employee.getEmail(), password);
     }
 
     /**
