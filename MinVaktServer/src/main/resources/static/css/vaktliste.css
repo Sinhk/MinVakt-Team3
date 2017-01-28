@@ -1,5 +1,5 @@
 .cal {
-    margin-top: -2%;
+    margin-top: 2%;
     margin-left: 2%;
     margin-right: 2%;
 }
@@ -11,13 +11,15 @@
 }
 
 #new {
-    margin-top: 4%;
-    margin-left: 81%;
+    margin-top: 2%;
+    float: right;
+    margin-right: 2%;
 }
 
 #btn {
-    margin-top: -6%;
-    margin-left: 58%;
+    margin-top: 2%;
+    float: right;
+    margin-right: 2%;
 }
 
 #header {
