@@ -196,12 +196,16 @@ public class EmployeeControllerTest {
 
     @Test
     public void changeEmployee() throws Exception {
+        Employee testEmp = new Employee();
+
         // Stubbing method
         when(employeeRepo.findOne(emp1.getEmployeeId())).thenReturn(emp1);
 
 
         // Get employee by id
         employeeController.changeEmployee(emp1.getEmployeeId(),emp2);
+        employeeController.changeEmployee(emp1.getEmployeeId(),testEmp);
+
 
 
         //assert

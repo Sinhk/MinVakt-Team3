@@ -256,7 +256,7 @@ public class ShiftController {
                         sendMailTLS.sendMessageAbsent(one.getEmail(), text);
                     }
                 }
-            }catch (Exception e ){} // FIXME: 27-Jan-17 Hack
+            }catch (Exception e ){}
 
         }
 
