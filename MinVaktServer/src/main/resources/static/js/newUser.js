@@ -57,7 +57,7 @@ function addUserForm() {
         $.getJSON("/category", function (data) {
             var $box = $("#category-box");
             $box.empty();
-            $box.append($("<option disabled selected></option>").attr("value",'').text('Velg stilling'))
+            $box.append($("<option disabled selected></option>").attr("value",'').text('Velg stilling'));
             $.each(data,function (key, value) {
                 $box.append($("<option></option>").val(value.categoryId).text(value.categoryName));
             })

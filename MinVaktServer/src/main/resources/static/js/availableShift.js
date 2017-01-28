@@ -63,7 +63,7 @@ function newWish(event) {
                     type: "success",
                     confirmButtonText: "OK",
                     confirmButtonColor: "#0d47a1"
-                })
+                });
                 /*swal("Vaktønske er registrert","","success");*/
                 $('#calendar').fullCalendar('removeEvents', function (eventa) {
                     return event.start.dayOfYear() === eventa.start.dayOfYear();

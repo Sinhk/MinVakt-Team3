@@ -25,7 +25,7 @@ $(document).ready(function(){
 
                 getCurrentUser(function (user) {
 
-                    var shift_id = $("#category-box").val();
+                    const shift_id = $("#category-box").val();
 
 
                    changeUserAssignment(user.employeeId, shift_id, false, false, false, true, inputValue, function (data) {
@@ -40,14 +40,14 @@ $(document).ready(function(){
             }
         );
 
-    })
+    });
 
 
     getCurrentUser(function (user) {
 
         getShiftsForUser(user.employeeId, function (shifts) {
 
-            for(var i = 0; i < shifts.length; i++) {
+            for(let i = 0; i < shifts.length; i++) {
 
                 const shift = shifts[i];
 

@@ -44,7 +44,7 @@ function acceptChange(id) {
             showCancelButton: true,
             confirmButtonColor: "#0d47a1",
             confirmButtonText: "OK",
-        })
+        });
         /*swal("Vakten ble byttet", "", "success");*/
         $("#" + id + "collapse").hide();
     });
@@ -58,7 +58,7 @@ function declineChange(id) {
         type: "error",
         confirmButtonText: "OK",
         confirmButtonColor: "#0d47a1",
-    })
+    });
 
     /*swal("Vakten ble ikke byttet", "", "error");*/
     $("#" + id + "collapse").hide();

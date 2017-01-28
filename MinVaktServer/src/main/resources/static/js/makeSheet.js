@@ -134,7 +134,7 @@ $(document).ready(function () { // document ready
                 console.log(shift);
                 console.log(event);
 
-            })
+            });
 
             swal({  title: "Er du sikker på at du vil slette vakten?",
                     type: "warning",
@@ -154,7 +154,7 @@ $(document).ready(function () { // document ready
                             type: "success",
                             confirmButtonText: "OK",
                             confirmButtonColor: "#0d47a1",
-                        })
+                        });
                         /*swal( "Slettet", "Vakten din har blitt slettet", "success");*/
 
                         $('#calendar').fullCalendar('removeEvents', event._id);
@@ -241,7 +241,7 @@ $(document).ready(function () { // document ready
 
                         stick: true,
 
-                    }
+                    };
                     $('#calendar').fullCalendar('renderEvent', event, true);
 
                 })
@@ -260,7 +260,7 @@ $("#save").click(function () {
         title: "Den nye vaktlisten ble lagret",
         type: "success",
         confirmButtonColor: "#0d47a1"
-    })
+    });
 
     var events = $('#calendar').fullCalendar('clientEvents');
 
@@ -280,7 +280,7 @@ $("#save").click(function () {
 
                 const sameTime = event.startTime == shift.fromTime.split("T")[1].substr(0, 5) && event.endTime == shift.toTime.split("T")[1].substr(0, 5);
 
-                const event_date = event.start.toISOString()
+                const event_date = event.start.toISOString();
                 const shift_date = shift.fromTime.split("T")[0];
 
                 const sameDate = event_date == shift_date;
@@ -297,7 +297,7 @@ $("#save").click(function () {
 
                 if (sameTime && sameDate && event.save) {
 
-                    console.log("-----SAVING THIS EVENT-----")
+                    console.log("-----SAVING THIS EVENT-----");
                     const user_id = event.resourceId;
                     const shift_id = shift.shiftId;
 
@@ -321,7 +321,7 @@ $("#save").click(function () {
                 }
             }
     }})
-})
+});
 
 function getUsersAndCreateResourceList(callback) {
 

@@ -35,7 +35,7 @@ $(document).ready(function(){
                     })
                 })
             });
-    })
+    });
 
 
     getCurrentUser(function (user) {
@@ -52,7 +52,7 @@ $(document).ready(function(){
                     "<option value= '"+shift.shiftId+"' id = shift"+shift.shiftId+">"+shift.fromTime.split("T")[0]+" "+shift.fromTime.split("T")[1].substr(0,5)+"</option>"
             }
         })
-    })
+    });
 
     getAllUsers(function (users) {
 
@@ -69,4 +69,4 @@ $(document).ready(function(){
 
     })
 
-})
+});

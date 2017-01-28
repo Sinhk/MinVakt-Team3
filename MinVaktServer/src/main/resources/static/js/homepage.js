@@ -127,7 +127,7 @@ function openDetails(event) {
     $('#shiftDetail').modal('open');
 
     $.getJSON("/shifts/" + event.id, {detailed: true}).then((shift) => {
-        if (headerTemplate == null) {
+        if (headerTemplate == undefined) {
             let headerTemplateSource = $('#detailTitleTemplate').html();
             var headerTemplate = Handlebars.compile(headerTemplateSource);
         }
@@ -155,7 +155,7 @@ function requestChange(event) {
     $('#shiftDetail').html("<div class='modal-content'><div class='progress'><div class='indeterminate'></div></div></div>");
 
     $.getJSON("/shifts/" + event.id + "/possible_users").then((employees)=>{
-        if (shiftChangeTemplate == null) {
+        if (shiftChangeTemplate == undefined) {
             let shiftChangeTemplateSource = $('#shiftChangeTemplate').html();
             var shiftChangeTemplate = Handlebars.compile(shiftChangeTemplateSource);
         }
@@ -202,7 +202,7 @@ function requestChange(event) {
                         text: "Vaktbytte for vakt " +date+ " " + from + " - " + to + ". Fra " + currentUser.firstName + " " + currentUser.lastName + " til " + newUser.firstName + " " + newUser.lastName,
                         type: "success",
                         confirmButtonColor: "#0d47a1"
-                    })
+                    });
 
                    /* swal("Forespørsel sendt", "Vaktbytte for vakt " +date+ " " + from + " -> " + to +
                         ". Fra "+ currentUser.firstName +" " + currentUser.lastName + " til " + newUser.firstName + " " + newUser.lastName, "success");*/
@@ -243,7 +243,7 @@ function registerAbsence(shiftId) {
                         text: "Kommentar: " + inputValue,
                         type: "success",
                         confirmButtonColor: "#0d47a1"
-                    })
+                    });
                     $('#calendar').fullCalendar('removeEvents', shiftId);
                     $('#shiftDetail').modal('close');
                 });
@@ -310,4 +310,4 @@ $(document).ready(function () {
 
     }
 
-})
+});

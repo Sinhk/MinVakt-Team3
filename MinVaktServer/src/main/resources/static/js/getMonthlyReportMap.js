@@ -25,7 +25,7 @@ $(document).ready(function(){
              }
          })
     })
-})
+});
 
  $("#new").click(function () {
         var email="";
@@ -70,7 +70,7 @@ $(document).ready(function(){
 
                             sendTotalHours(email,text)
                         })
-                    })
+                    });
 
                     swal ({
                         title: "Månedlig rapport innsendt",
@@ -82,5 +82,5 @@ $(document).ready(function(){
         )
 
 
-    })
+    });
 

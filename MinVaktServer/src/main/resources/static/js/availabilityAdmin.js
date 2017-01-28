@@ -161,7 +161,7 @@ $(document).ready(function () { // document ready
                 console.log(shift);
                 console.log(event);
 
-            })
+            });
 
 
             swal({  title: "Er du sikker på at du vil slette vakten?",
@@ -180,7 +180,7 @@ $(document).ready(function () { // document ready
                             type: "success",
                             confirmButtonText: "OK",
                             confirmButtonColor: "#0d47a1"
-                        })
+                        });
 
                         $('#calendar').fullCalendar('removeEvents', event._id);
 
@@ -209,7 +209,7 @@ $(document).ready(function () { // document ready
                             type: "error",
                             confirmButtonText: "OK",
                             confirmButtonColor: "#0d47a1"
-                        })
+                        });
                         /*swal("Avbrutt", "Vakten din ble ikke slettet", "error"); */
                     }
                 });
@@ -256,7 +256,7 @@ $(document).ready(function () { // document ready
 
                     stick: true,
 
-                }
+                };
                 $('#calendar').fullCalendar('renderEvent', event, true);
 
             })
@@ -266,7 +266,7 @@ $(document).ready(function () { // document ready
 
         }
 
-    })
+    });
 
     /*function renderEvents() {
 
