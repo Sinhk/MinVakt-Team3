@@ -36,7 +36,12 @@ $(document).ready(function () {
     });
 });
 
+
+function showLoadingNotif(id) {
+    $('#' + id + 'collapse').html("<div class='progress'><div class='indeterminate'></div> </div>");
+}
 function acceptChange(id) {
+    showLoadingNotif(id);
     acceptChangeRequest(id).then(() => {
         swal ({
             title: "Vakten ble byttet",
@@ -54,6 +59,7 @@ function acceptChange(id) {
 }
 
 function declineChange(id) {
+    showLoadingNotif(id);
     declineRequestChange(id);
     swal ({
         title: "Vakten ble ikke byttet",
