@@ -244,7 +244,7 @@ public class ShiftController {
 
             shiftAssignmentRepo.save(assignment);
         }
-        if (absent) {
+        if (absent == null || absent) {
             try {
                 SendMailTLS sendMailTLS = new SendMailTLS();
                 List<Employee> eMails = getAvailableForShift(shift_id);

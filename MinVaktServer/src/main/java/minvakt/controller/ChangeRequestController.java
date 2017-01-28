@@ -137,7 +137,6 @@ public class ChangeRequestController {
     @PutMapping("/{request_id}")
     public void acceptChangeRequest(@PathVariable int request_id) {
 
-        System.out.println("accept change: " + request_id);
         Employee fromEmployee = employeeRepo.findOne(changeRequestRepository.findOne(request_id).getOldEmployeeId());
         String emailOld = fromEmployee.getEmail();
         Employee toEmployee = employeeRepo.findOne(changeRequestRepository.findOne(request_id).getNewEmployeeId());
