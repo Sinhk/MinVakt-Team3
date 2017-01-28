@@ -139,10 +139,7 @@ public class EmployeeControllerTest {
         when(employeeRepo.saveAndFlush(emp2)).thenReturn(emp2);
 
         // Add employee
-        String test = employeeController.addEmployee(emp2);
-        System.out.println(test);
-        // assert
-        assertNotNull(test);
+        employeeController.addEmployee(emp2);
 
         verify(userDetailsManager).updateUser(captor.capture());
         assertEquals(captor.getValue().getUsername(),emp2.getEmail());
