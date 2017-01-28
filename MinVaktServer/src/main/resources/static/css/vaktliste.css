@@ -11,8 +11,13 @@
 }
 
 #new {
-    margin-top:-12%;
+    margin-top: 4%;
     margin-left: 81%;
+}
+
+#btn {
+    margin-top: -6%;
+    margin-left: 58%;
 }
 
 #header {
