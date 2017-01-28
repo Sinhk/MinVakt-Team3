@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-    <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
     <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
 
 
@@ -19,11 +18,12 @@
     <div class="navbar-fixed">
         <nav>
             <div class="nav-wrapper blue darken-4 z-depth-3">
-                <a th:href="@{/}" class="brand-logo"><i class="material-icons">home</i><b>MinVakt</b>< class="hide-on-small-only" th:text="' - '${title}"></span></a>
+                <a th:href="@{/}" class="hide-on-small-only brand-logo"><i class="material-icons">home</i><b>MinVakt</b><span th:text="' - ' + ${title}"></span></a>
+                <a th:href="@{/}" class="hide-on-med-and-up brand-logo"><i class="material-icons">home</i><span  th:text="${title}"></span></a>
                 <!--<a href="#" class="large material-icons">home</a>-->
                 <a href="#" data-activates="slide-out" class="button-collapse right"><i class="material-icons">menu</i></a>
                 <ul class="right hide-on-med-and-down">
-                    <li class="admin hide"><a th:href="@{/notification}">Varsler <span class="badge" data-badge-caption="ny(e)" id="numberOfNotifications">0</span></a></li>
+                    <li class="admin hide"><a th:href="@{/admin/varsler}">Varsler <span class="badge" data-badge-caption="ny(e)" id="numberOfNotifications">0</span></a></li>
                     <li th:include=" :: links"></li>
                 </ul>
             </div>
@@ -76,10 +76,10 @@
     <li><a th:href="@{/ledigeVakter}">Ledige vakter</a></li>
     <li class="user"><a th:href="@{/ansatte}">Ansatte</a></li>
     <li class="admin hide"><a th:href="@{/admin/ansatte}">Ansatte</a></li>
-    <li class="user"><a th:href="@{/availabilityAdmin}">Tilgjengelighet</a></li>
-    <li class="admin hide"><a th:href="@{/admin/availabilityAdmin}">Tilgjengelighet</a></li>
-    <li class="user"><a th:href="@{/help}"><i class="small material-icons">help_outline</i></a></li>
-    <li class="admin hide"><a th:href="@{/help}"><i class="small material-icons">help_outline</i></a></li>
+    <li class="user"><a th:href="@{/tilgjengelighet}">Tilgjengelighet</a></li>
+    <li class="admin hide"><a th:href="@{/admin/tilgjengelighet}">Tilgjengelighet</a></li>
+    <li class="user"><a th:href="@{/hjelp}"><i class="small material-icons">help_outline</i></a></li>
+    <li class="admin hide"><a th:href="@{/admin/hjelp}"><i class="small material-icons">help_outline</i></a></li>
 </div>
 
 

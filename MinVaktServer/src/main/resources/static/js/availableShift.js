@@ -27,13 +27,22 @@ $(document).ready(function(){
         defaultView: 'listMonth',
         noEventsMessage: 'Ingen ledige vakter',
         eventClick: function(calEvent){
-            newWish(calEvent);
+            if(isAdmin()){
+                assignShift(calEvent);
+            }else {
+                newWish(calEvent);
+            }
         }
 
 
     });
 });
+function assignShift(event){
+    $.getJSON("/shifts/" + event.id + "/possible_users").then((employees) => {
 
+        console.log(employees);
+    });
+}
 function newWish(event) {
     console.log(event.start.dayOfYear());
     swal({

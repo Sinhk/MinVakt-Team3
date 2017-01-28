@@ -98,8 +98,10 @@ public class JooqRepository {
 
     public List<Shift> getAvailableShifts() {
         return create.select().from(ASSIGNED_PER_SHIFT)
+                .leftJoin(SHIFT).on(SHIFT.SHIFT_ID.eq(ASSIGNED_PER_SHIFT.SHIFT_ID))
                 .where(ASSIGNED_PER_SHIFT.NUM_ASSIGNED
                         .lt(ASSIGNED_PER_SHIFT.REQUIRED_EMPLOYEES.cast(Long.class)))
+                .and(SHIFT.FROM_TIME.greaterThan(LocalDateTime.now()))
                 .fetchInto(Shift.class);
     }
 
@@ -109,7 +111,9 @@ public class JooqRepository {
         return create
                 .select().from(mis)
                 .leftJoin(assi).on(assi.SHIFT_ID.eq(mis.SHIFT_ID))
+                .leftJoin(SHIFT).on(SHIFT.SHIFT_ID.eq(ASSIGNED_PER_SHIFT.SHIFT_ID))
                 .where(mis.CATEGORY_ID.notEqual((short) categoryId))
+                .and(SHIFT.FROM_TIME.greaterThan(LocalDateTime.now()))
                 .groupBy(assi.SHIFT_ID)
                 .having(sum(mis.MISSING).lt(assi.NUM_MISSING.cast(BigDecimal.class)))
                 .fetchInto(Shift.class);

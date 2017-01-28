@@ -23,6 +23,9 @@ $(document).ready(function () {
 });
 
 
+function isAdmin() {
+    return JSON.parse(sessionStorage.user);
+}
 
 function switchAdminView() {
     var event = new Event('viewChange');

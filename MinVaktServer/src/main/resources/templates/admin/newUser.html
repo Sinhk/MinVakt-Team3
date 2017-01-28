@@ -16,7 +16,7 @@
 
 <body>
 
-<div id="nav" th:replace="fragments/header :: header"></div>
+<div id="nav" th:replace="fragments/header :: header ('Legg til bruker')"></div>
     <!-- Page Layout here -->
 <main>
     <div class="row">
@@ -24,7 +24,6 @@
             <div class="row">
                 <form id="newUserForm" action="javascript:addUserForm()">
 
-                <h2>Legg til bruker</h2>
                     <div class="row">
                         <div class="input-field col s5">
                             <input id="first_name1" type="text" class="validate" required>
@@ -80,7 +79,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
 <script th:src="@{/js/managers/common.js}"></script>
-<script th:src="@{/js/managers/userManager.js"></script>
+<script th:src="@{/js/managers/userManager.js}"></script>
 <script th:src="@{/js/managers/requestChangeManager.js}"></script>
 <script th:src="@{/js/newUser.js}"></script>
 

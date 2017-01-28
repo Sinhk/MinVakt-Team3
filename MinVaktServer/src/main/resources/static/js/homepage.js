@@ -4,7 +4,7 @@ $(document).ready(function () {
 
     $('#calendar').fullCalendar({
 
-        locale: "no",
+        locale: "nb",
         selectable: true,
         header: {
             left: 'prev, today',
@@ -35,7 +35,7 @@ $(document).ready(function () {
          },*/
 
         eventMouseover: function (calEvent, jsEvent) {
-                    var tooltip = '<div class="tooltipevent" style="width:180px;height:70px;background:#e3f2fd;border-style:solid;border-color:#212121;border-width:1px;position:absolute;z-index:10001;">' + ' ' + ' Tidspunkt: ' +calEvent.start.format("HH:mm")+"-"+calEvent.end.format("HH:mm")+ '<br> Avdeling: ' + calEvent.avdeling + '<br>'+ 'Ansvar: ' + ((calEvent.isResponsible != undefined) ? (calEvent.isResponsible) : ("Ingen")) + '</div>';
+                    var tooltip = '<div class="tooltipevent" style="width:180px;height:70px;background:#e3f2fd;border-style:solid;border-color:#212121;border-width:1px;position:absolute;z-index:10001;">' + ' ' + ' Tidspunkt: ' +calEvent.start.format("HH:mm")+"-"+calEvent.end.format("HH:mm")+ '<br> Avdeling: ' + calEvent.avdeling + '<br>'+ 'Ansvar: ' +calEvent.responsible + '</div>';
                     var $tool = $(tooltip).appendTo('body');
                     $(this).mouseover(function (e) {
                         $(this).css('z-index', 10000);
@@ -56,26 +56,14 @@ $(document).ready(function () {
             location.href = "#shiftDetailed";
             openDetails(event);
         },
-        /*eventMouseout: function(calEvent,jsEvent) {
-         $("#tooltip").remove();
-         }
-
-         var eventId = event.id;
-
-         var eventDB = getEventViaID(eventId);
-
-         console.log(eventDB);
-
-         }*/
+        viewRender: function( ){
+            renderStuff();
+        }
     });
-    switchAdminViewHomePage();
-    document.addEventListener('viewChange', switchAdminViewHomePage);
-
-
-
+    document.addEventListener('viewChange', renderStuff);
 });
 
-function switchAdminViewHomePage() {
+function renderStuff() {
     let admin = JSON.parse(sessionStorage.admin);
 
     let calendar = $('#calendar');
@@ -92,15 +80,12 @@ function switchAdminViewHomePage() {
         );
     }else{
         getScheduledShiftsForCurrentUser(function (shifts) {
-            for (let i = 0; i<shifts.length; i++){
-                const shift = shifts[i];
 
-                //console.log(shift);
+                let eventsPr = shifts.map(toFullCalendarEventPromise);
+                Promise.all(eventsPr).then((events) => {
+                    calendar.fullCalendar('addEventSource', events);
+                });
 
-                toFullCalendarEvent(shift, function (fullCalendarEvent) {
-                    calendar.fullCalendar('renderEvent', fullCalendarEvent, /*sticky*/true);
-                })
-            }
             /*  getShiftsWithRequestChange(function (ch) {
 
              var shifts = shifts1.concat(ch);

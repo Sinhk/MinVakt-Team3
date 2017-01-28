@@ -15,9 +15,7 @@ import java.util.List;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ShiftDetailed extends Shift implements Serializable{
-    private Employee responsible;
     private List<AssignedEmployee> employees = new ArrayList<>();
-
     public ShiftDetailed() {
     }
 
@@ -35,13 +33,5 @@ public class ShiftDetailed extends Shift implements Serializable{
 
     public void setEmployees(List<AssignedEmployee> employees) {
         this.employees = employees;
-    }
-
-    public Employee getResponsible() {
-        return responsible;
-    }
-
-    public void setResponsible(Employee responsible) {
-        this.responsible = responsible;
     }
 }
