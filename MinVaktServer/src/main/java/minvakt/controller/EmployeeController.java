@@ -327,7 +327,6 @@ public class EmployeeController {
     public boolean sendNewPassword(@PathVariable(value = "email") String email) {
         Employee employee = employeeRepo.findByEmail(email);
         if (employee == null) {
-            System.out.println("No user with email: " + email);
             return false;
         } else {
             String password = createPassword();

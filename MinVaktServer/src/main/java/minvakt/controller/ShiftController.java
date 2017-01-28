@@ -188,8 +188,6 @@ public class ShiftController {
     @Transactional
     public void addUserToShift(@PathVariable int shift_id, @RequestParam int user_id, @RequestParam(defaultValue = "true") boolean available, @RequestParam(defaultValue = "false") boolean responsible) { // shift id and user id
 
-        System.out.println(shift_id + " . " + user_id);
-
         ShiftAssignment assignment = new ShiftAssignment();
         assignment.setEmployeeId(user_id);
         assignment.setShiftId(shift_id);
@@ -346,9 +344,6 @@ public class ShiftController {
     @Transactional
     @PutMapping(value = "/{shift_id}/users/{user_id}")
     public void changeShiftFromUserToUser(@PathVariable int shift_id, @PathVariable int user_id, @RequestBody int toUser_id) {
-
-        System.out.println("Changing shift: " + shift_id + " from " + user_id + " to " + toUser_id);
-
         Optional<ShiftAssignment> assignment = shiftAssignmentRepo.findByShiftIdAndEmployeeId(shift_id, user_id);
         assignment.ifPresent(a -> {
 
