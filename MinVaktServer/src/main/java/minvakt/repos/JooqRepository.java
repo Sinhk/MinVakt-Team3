@@ -5,11 +5,12 @@ import minvakt.datamodel.ShiftDetailed;
 import minvakt.datamodel.tables.AssignedPerShift;
 import minvakt.datamodel.tables.EmployeeTimeWorkedWeek;
 import minvakt.datamodel.tables.ShiftAssignment;
+import minvakt.datamodel.tables.pojos.Department;
 import minvakt.datamodel.tables.pojos.Employee;
 import minvakt.datamodel.tables.pojos.MissingPerShiftCategory;
 import minvakt.datamodel.tables.pojos.Shift;
 import org.jooq.DSLContext;
-import org.jooq.Record10;
+import org.jooq.Record11;
 import org.jooq.Record2;
 import org.jooq.Result;
 import org.slf4j.Logger;
@@ -41,23 +42,33 @@ public class JooqRepository {
         this.create = dslContext;
     }
 
+    private static LocalDateTime getEndOfDay(LocalDateTime date) {
+        return date.with(LocalTime.MAX);
+    }
+
+    private static LocalDateTime getStartOfDay(LocalDateTime date) {
+        return date.with(LocalTime.MIN);
+    }
+
     public List<ShiftDetailed> getShiftDetailed() {
         List<ShiftDetailed> shifts = new ArrayList<>();
-        Map<Integer, Result<Record10<Integer, LocalDateTime, LocalDateTime, Integer, Short, Short, Boolean, Integer, String, String>>> resultMap = this.create
-                .select(SHIFT.SHIFT_ID, SHIFT.TO_TIME, SHIFT.FROM_TIME, SHIFT.RESPONSIBLE_EMPLOYEE_ID, SHIFT.DEPARTMENT_ID, SHIFT.REQUIRED_EMPLOYEES, SHIFT_ASSIGNMENT.ABSENT,
-                        EMPLOYEE.EMPLOYEE_ID, EMPLOYEE.FIRST_NAME, EMPLOYEE.LAST_NAME)
-                .from(SHIFT).naturalJoin(SHIFT_ASSIGNMENT).naturalJoin(EMPLOYEE)
-                .fetchGroups(SHIFT.SHIFT_ID);
+
+        Map<Integer, Result<Record11<Integer, LocalDateTime, LocalDateTime, Integer, Short, Short, Boolean, Integer, String, String, String>>> resultMap =
+                create.select(SHIFT.SHIFT_ID, SHIFT.TO_TIME, SHIFT.FROM_TIME, SHIFT.RESPONSIBLE_EMPLOYEE_ID, SHIFT.DEPARTMENT_ID, SHIFT.REQUIRED_EMPLOYEES, SHIFT_ASSIGNMENT.ABSENT,
+                        EMPLOYEE.EMPLOYEE_ID, EMPLOYEE.FIRST_NAME, EMPLOYEE.LAST_NAME, DEPARTMENT.DEPARTMENT_NAME)
+                        .from(SHIFT).naturalJoin(SHIFT_ASSIGNMENT).naturalJoin(EMPLOYEE).naturalJoin(DEPARTMENT)
+                        .fetchGroups(SHIFT.SHIFT_ID);
 
         resultMap.values().forEach(records -> shifts.add(mapShiftDetailed(records)));
 
         return shifts;
     }
 
-    private ShiftDetailed mapShiftDetailed(Result<Record10<Integer, LocalDateTime, LocalDateTime, Integer, Short, Short, Boolean, Integer, String, String>> records) {
-        if(records.isEmpty()) return new ShiftDetailed();
-        Record10<Integer, LocalDateTime, LocalDateTime, Integer, Short, Short, Boolean, Integer, String, String> aRecord = records.get(0);
-        ShiftDetailed shiftDetailed = new ShiftDetailed(aRecord.value1(), aRecord.value4(), aRecord.value2(), aRecord.value3(), aRecord.value5(), aRecord.value6());
+    private ShiftDetailed mapShiftDetailed(Result<Record11<Integer, LocalDateTime, LocalDateTime, Integer, Short, Short, Boolean, Integer, String, String, String>> records) {
+        if (records.isEmpty()) return new ShiftDetailed();
+        Record11<Integer, LocalDateTime, LocalDateTime, Integer, Short, Short, Boolean, Integer, String, String, String> aRecord = records.get(0);
+        ShiftDetailed shiftDetailed = new ShiftDetailed(aRecord.value1(), aRecord.value4(), aRecord.value3(), aRecord.value2(), aRecord.value5(), aRecord.value6());
+        shiftDetailed.setDepartment(new Department(aRecord.value5(), aRecord.value11()));
         records.forEach(record -> {
             AssignedEmployee employee = new AssignedEmployee();
             employee.setEmployeeId(record.value8());
@@ -72,24 +83,24 @@ public class JooqRepository {
     }
 
     public ShiftDetailed getShiftDetailed(int shift_id) {
-        Result<Record10<Integer, LocalDateTime, LocalDateTime, Integer, Short, Short, Boolean, Integer, String, String>> result = this.create
-                .select(SHIFT.SHIFT_ID, SHIFT.TO_TIME, SHIFT.FROM_TIME, SHIFT.RESPONSIBLE_EMPLOYEE_ID, SHIFT.DEPARTMENT_ID, SHIFT.REQUIRED_EMPLOYEES, SHIFT_ASSIGNMENT.ABSENT,
-                        EMPLOYEE.EMPLOYEE_ID, EMPLOYEE.FIRST_NAME, EMPLOYEE.LAST_NAME)
-                .from(SHIFT).naturalJoin(SHIFT_ASSIGNMENT).naturalJoin(EMPLOYEE)
-                .where(SHIFT.SHIFT_ID.eq(shift_id))
-                .fetch();
+        Result<Record11<Integer, LocalDateTime, LocalDateTime, Integer, Short, Short, Boolean, Integer, String, String, String>> result =
+                this.create.select(SHIFT.SHIFT_ID, SHIFT.TO_TIME, SHIFT.FROM_TIME, SHIFT.RESPONSIBLE_EMPLOYEE_ID, SHIFT.DEPARTMENT_ID, SHIFT.REQUIRED_EMPLOYEES, SHIFT_ASSIGNMENT.ABSENT,
+                        EMPLOYEE.EMPLOYEE_ID, EMPLOYEE.FIRST_NAME, EMPLOYEE.LAST_NAME, DEPARTMENT.DEPARTMENT_NAME)
+                        .from(SHIFT).naturalJoin(SHIFT_ASSIGNMENT).naturalJoin(EMPLOYEE).naturalJoin(DEPARTMENT)
+                        .where(SHIFT.SHIFT_ID.eq(shift_id))
+                        .fetch();
 
         return mapShiftDetailed(result);
     }
 
     public Iterable<?> getShiftDetailed(LocalDate from, LocalDate to) {
         List<ShiftDetailed> shifts = new ArrayList<>();
-        Map<Integer, Result<Record10<Integer, LocalDateTime, LocalDateTime, Integer, Short, Short, Boolean, Integer, String, String>>> resultMap = this.create
-                .select(SHIFT.SHIFT_ID, SHIFT.TO_TIME, SHIFT.FROM_TIME, SHIFT.RESPONSIBLE_EMPLOYEE_ID, SHIFT.DEPARTMENT_ID, SHIFT.REQUIRED_EMPLOYEES, SHIFT_ASSIGNMENT.ABSENT,
-                        EMPLOYEE.EMPLOYEE_ID, EMPLOYEE.FIRST_NAME, EMPLOYEE.LAST_NAME)
-                .from(SHIFT).naturalJoin(SHIFT_ASSIGNMENT).naturalJoin(EMPLOYEE)
-                .where(SHIFT.FROM_TIME.between(from.atStartOfDay(),to.atStartOfDay()))
-                .fetchGroups(SHIFT.SHIFT_ID);
+        Map<Integer, Result<Record11<Integer, LocalDateTime, LocalDateTime, Integer, Short, Short, Boolean, Integer, String, String, String>>> resultMap =
+                create.select(SHIFT.SHIFT_ID, SHIFT.TO_TIME, SHIFT.FROM_TIME, SHIFT.RESPONSIBLE_EMPLOYEE_ID, SHIFT.DEPARTMENT_ID, SHIFT.REQUIRED_EMPLOYEES, SHIFT_ASSIGNMENT.ABSENT,
+                        EMPLOYEE.EMPLOYEE_ID, EMPLOYEE.FIRST_NAME, EMPLOYEE.LAST_NAME, DEPARTMENT.DEPARTMENT_NAME)
+                        .from(SHIFT).naturalJoin(SHIFT_ASSIGNMENT).naturalJoin(EMPLOYEE).naturalJoin(DEPARTMENT)
+                        .where(SHIFT.FROM_TIME.between(from.atStartOfDay(), to.atStartOfDay()))
+                        .fetchGroups(SHIFT.SHIFT_ID);
 
         resultMap.values().forEach(records -> shifts.add(mapShiftDetailed(records)));
 
@@ -144,14 +155,6 @@ public class JooqRepository {
                 .fetchInto(Employee.class);
     }
 
-    private static LocalDateTime getEndOfDay(LocalDateTime date) {
-        return date.with(LocalTime.MAX);
-    }
-
-    private static LocalDateTime getStartOfDay(LocalDateTime date) {
-        return date.with(LocalTime.MIN);
-    }
-
     public Duration getHoursWorked(int employee_id, int week, int year) {
         EmployeeTimeWorkedWeek et = EMPLOYEE_TIME_WORKED_WEEK.as("et");
         String time = create.select(et.TIME_WORKED)
@@ -178,17 +181,17 @@ public class JooqRepository {
                 .groupBy(et.EMPLOYEE_ID)
                 .fetch();
         record2s.forEach(record -> {
-                    String time = record.value2();
-                    Duration duration;
-                    if (time == null) {
-                        duration = Duration.ZERO;
-                    } else {
-                        String[] split = time.split(":");
-                        duration = Duration.ofHours(Long.parseLong(split[0])).plusMinutes(Long.parseLong(split[1]));
-                    }
-                    Integer employee = record.value1();
-                    hourMap.put(employee, duration);
-                });
+            String time = record.value2();
+            Duration duration;
+            if (time == null) {
+                duration = Duration.ZERO;
+            } else {
+                String[] split = time.split(":");
+                duration = Duration.ofHours(Long.parseLong(split[0])).plusMinutes(Long.parseLong(split[1]));
+            }
+            Integer employee = record.value1();
+            hourMap.put(employee, duration);
+        });
 
         return hourMap;
     }

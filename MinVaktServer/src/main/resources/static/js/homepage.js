@@ -46,10 +46,10 @@ $(document).ready(function () {
                         $tool.css('left', e.pageX + 20);
                     });
                 },
-                eventMouseout: function (calEvent, jsEvent) {
-                    $(this).css('z-index', 8);
-                    $('.tooltipevent').remove();
-                },
+        eventMouseout: function (calEvent, jsEvent) {
+                $(this).css('z-index', 8);
+                $('.tooltipevent').remove();
+        },
 
 
         eventClick: function (event, jsEvent) {

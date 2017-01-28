@@ -38,6 +38,7 @@ public class Shift implements Serializable {
     private LocalDateTime fromTime;
     private LocalDateTime toTime;
     private Short         departmentId;
+    private Department    department;
     private Short         requiredEmployees;
     private List<MissingPerShiftCategory> missing;
 
@@ -132,6 +133,16 @@ public class Shift implements Serializable {
 
     public void setResponsible(Employee responsible) {
         this.responsible = responsible;
+    }
+
+    @ManyToOne
+    @JoinColumn(insertable=false, updatable=false, name = "department_id")
+    public Department getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
     }
 
     @Override
