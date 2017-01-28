@@ -1,8 +1,5 @@
 DROP TABLE IF EXISTS shift_overtime;
 DROP TABLE IF EXISTS shift_assignment;
--- DROP TABLE IF EXISTS shift_department;
-DROP TABLE IF EXISTS department_required_employees_per_category;
-DROP TABLE IF EXISTS department_required_per_shift;
 DROP TABLE IF EXISTS change_request;
 DROP TABLE IF EXISTS shift;
 DROP TABLE IF EXISTS employee;
@@ -52,13 +49,7 @@ CREATE TABLE IF NOT EXISTS shift_assignment (
   CONSTRAINT shift_assignment_employee_id_fk FOREIGN KEY (employee_id) REFERENCES employee (employee_id),
   CONSTRAINT shift_assignment_shift_id_fk FOREIGN KEY (shift_id) REFERENCES shift (shift_id) ON DELETE CASCADE,
   CONSTRAINT unique_shift_employee UNIQUE (shift_id,employee_id)
-  #   CONSTRAINT shift_assignment_status_id_fk FOREIGN KEY (status_id) REFERENCES shift_status (status_id)
 );
-
-/*CREATE TABLE IF NOT EXISTS shift_status (
-  status_id                  INT            AUTO_INCREMENT PRIMARY KEY,
-
-);*/
 
 CREATE TABLE IF NOT EXISTS shift_overtime (
   id                  INT           AUTO_INCREMENT PRIMARY KEY,
@@ -82,34 +73,6 @@ CREATE TABLE IF NOT EXISTS department (
   department_name VARCHAR(30)     NOT NULL
 
 );
-/*
-CREATE TABLE IF NOT EXISTS shift_department (
-  shift_id      INT NOT NULL,
-  department_id INT NOT NULL,
-  CONSTRAINT shift_department_pk PRIMARY KEY (shift_id, department_id),
-  CONSTRAINT shift_department_shift_fk FOREIGN KEY (shift_id) REFERENCES shift (shift_id),
-  CONSTRAINT shift_department_department_fk FOREIGN KEY (department_id) REFERENCES department (department_id)
-);
-*/
-
-/*CREATE TABLE IF NOT EXISTS department_required_employees_per_category (
-  id                  INT           AUTO_INCREMENT PRIMARY KEY,
-  department_id   SMALLINT       NOT NULL,
-  category_id     SMALLINT       NOT NULL,
-  amount          SMALLINT     NOT NULL,
-  CONSTRAINT department_required_employees_department_id_fk FOREIGN KEY (department_id) REFERENCES department (department_id),
-  CONSTRAINT department_required_employees_category_id_fk FOREIGN KEY (category_id) REFERENCES employee_category (category_id)
-);*/
-
-/*CREATE TABLE IF NOT EXISTS department_required_per_shift (
-  id                  INT           AUTO_INCREMENT PRIMARY KEY,
-  department_id   SMALLINT       NOT NULL,
-  shift_id        INT           NOT NULL,
-  amount          SMALLINT     NOT NULL,
-  CONSTRAINT department_required_per_shift_department_id_fk FOREIGN KEY (department_id) REFERENCES department (department_id),
-  CONSTRAINT department_required_per_shift_shift_id_fk FOREIGN KEY (shift_id) REFERENCES shift (shift_id),
-  CONSTRAINT department_shift_unique UNIQUE (department_id,shift_id)
-);*/
 
 ALTER TABLE shift
   ADD CONSTRAINT shift_department_id_fk FOREIGN KEY (department_id) REFERENCES department (department_id);
@@ -153,13 +116,6 @@ INSERT INTO department (department_name) VALUES ('etg1');
 INSERT INTO department (department_name) VALUES ('etg2');
 INSERT INTO department (department_name) VALUES ('etg3');
 
-/*INSERT INTO shift (responsible_employee_id, from_time, to_time, department_id) VALUES (4, '2017-01-17 07:30', '2017-01-17 15:30',1);
-INSERT INTO shift (responsible_employee_id, from_time, to_time, department_id) VALUES (5, '2017-01-17 15:00', '2017-01-17 22:30',1);
-INSERT INTO shift (responsible_employee_id, from_time, to_time, department_id) VALUES (6, '2017-01-17 22:00', '2017-01-18 08:00',1);
-INSERT INTO shift (responsible_employee_id, from_time, to_time, department_id) VALUES (5, '2017-01-18 07:30', '2017-01-18 15:30',1);
-INSERT INTO shift (responsible_employee_id, from_time, to_time, department_id) VALUES (4, '2017-01-18 15:00', '2017-01-18 22:30',1);
-INSERT INTO shift (responsible_employee_id, from_time, to_time, department_id) VALUES (6, '2017-01-18 22:00', '2017-01-19 08:00',1);*/
-
 INSERT INTO shift (from_time,to_time,department_id)
   select TIMESTAMP (a.Date,b.from_time) as from_time, if(GREATEST(to_time,from_time) = from_time,TIMESTAMP (DATE_ADD(a.Date,INTERVAL 1 DAY),b.to_time),TIMESTAMP (a.Date,b.to_time)) as to_time,2 as department
   from (
@@ -180,22 +136,12 @@ INSERT INTO shift (from_time,to_time,department_id)
             ('22:00') AS from_time,
             ('06:00') AS to_time) b
   where a.Date between '2017-01-01' and '2017-02-24';
-#where a.Date between MAKEDATE(year(now()),1) and LAST_DAY(DATE_ADD(NOW(), INTERVAL 12-MONTH(NOW()) MONTH));
 
 
 INSERT INTO shift_assignment (shift_id, employee_id) VALUES (1, 2);
 INSERT INTO shift_assignment (shift_id, employee_id) VALUES (1, 3);
 INSERT INTO shift_assignment (shift_id, employee_id) VALUES (2, 4);
 INSERT INTO shift_assignment (shift_id, employee_id) VALUES (2, 5);
-
-/*
-INSERT INTO shift_department (shift_id, department_id) VALUES (1, 1);
-INSERT INTO shift_department (shift_id, department_id) VALUES (2, 1);
-INSERT INTO shift_department (shift_id, department_id) VALUES (3, 2);
-INSERT INTO shift_department (shift_id, department_id) VALUES (4, 2);
-INSERT INTO shift_department (shift_id, department_id) VALUES (5, 3);
-INSERT INTO shift_department (shift_id, department_id) VALUES (6, 3);
-*/
 
 INSERT INTO shift_overtime (shift_assignment_id, minutes) VALUES (2, 60);
 INSERT INTO shift_overtime (shift_assignment_id, minutes) VALUES (4, 75);
@@ -206,8 +152,8 @@ INSERT INTO department_required_employees_per_category (department_id, category_
 INSERT INTO department_required_employees_per_category (department_id, category_id, amount) VALUES (2, 2, 3);
 INSERT INTO department_required_employees_per_category (department_id, category_id, amount) VALUES (3, 2, 3);
 
-#INSERT INTO department_required_per_shift (department_id, shift_id, amount) SELECT department.department_id, shift.shift_id,10 FROM shift JOIN department
 
+-- Views
 
 CREATE OR REPLACE VIEW assigned_per_shift AS
   SELECT
@@ -249,5 +195,4 @@ CREATE OR REPLACE VIEW employee_time_worked_week as
   FROM employee
     LEFT JOIN shift_assignment ON employee.employee_id = shift_assignment.employee_id
     LEFT JOIN shift ON shift_assignment.shift_id = shift.shift_id
-  #WHERE WEEK(from_time,3) = WEEK(NOW(),3) OR from_time is NULL
   GROUP BY employee.employee_id, year_field,WEEK(from_time,3);
