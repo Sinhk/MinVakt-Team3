@@ -197,9 +197,15 @@ function requestChange(event) {
                 let to = event.end.format("HH:mm");
 
                 requestChangeForShift(event.id, currentUser.employeeId, newUser.employeeId, function () {
+                    swal ({
+                        title: "Forespørsel sendt",
+                        text: "Vaktbytte for vakt " +date+ " " + from + " - " + to + ". Fra " + currentUser.firstName + " " + currentUser.lastName + " til " + newUser.firstName + " " + newUser.lastName,
+                        type: "success",
+                        confirmButtonColor: "#0d47a1"
+                    })
 
-                    swal("Forespørsel sendt", "Vaktbytte for vakt " +date+ " " + from + " -> " + to +
-                        ". Fra "+ currentUser.firstName +" " + currentUser.lastName + " til " + newUser.firstName + " " + newUser.lastName, "success");
+                   /* swal("Forespørsel sendt", "Vaktbytte for vakt " +date+ " " + from + " -> " + to +
+                        ". Fra "+ currentUser.firstName +" " + currentUser.lastName + " til " + newUser.firstName + " " + newUser.lastName, "success");*/
 
                     $('#shiftDetail').modal('close');
                 })
@@ -232,7 +238,12 @@ function registerAbsence(shiftId) {
             getCurrentUser(function (user) {
                 changeUserAssignment(user.employeeId, shiftId, false, false, false, true, inputValue, function (data) {
                     console.log(data);
-                    swal("Fravær meldt", "Kommentar: " + inputValue, "success");
+                    swal ({
+                        title: "Fravær meldt",
+                        text: "Kommentar: " + inputValue,
+                        type: "success",
+                        confirmButtonColor: "#0d47a1"
+                    })
                     $('#calendar').fullCalendar('removeEvents', shiftId);
                     $('#shiftDetail').modal('close');
                 });

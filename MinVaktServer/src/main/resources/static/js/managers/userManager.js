@@ -64,7 +64,8 @@ function removeButton(id) {
             type: "success",
             closeOnConfirm: true,
             animation: "slide-from-top",
-            confirmButtonText: "Ok"
+            confirmButtonText: "OK",
+            confirmButtonColor: "#0d47a1"
         });
      });
     }
