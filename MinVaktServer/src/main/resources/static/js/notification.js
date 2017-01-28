@@ -42,6 +42,8 @@ function acceptChange(id) {
             title: "Vakten ble byttet",
             type: "success",
             showCancelButton: true,
+            cancelButtonColor: "#9e9e9e",
+            cancelButtonText: "AVBRYT",
             confirmButtonColor: "#0d47a1",
             confirmButtonText: "OK",
         });
