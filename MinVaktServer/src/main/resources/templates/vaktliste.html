@@ -22,11 +22,11 @@
 <div id="nav" th:replace="fragments/header :: header('Vaktliste')"></div>
 <main>
 
-    <div class="first_row row"><br>
-        <a th:href="@{/admin/vaktliste/ny}" class="admin hide waves-effect waves-light btn blue darken-4" id="new">Ny vaktliste</a>
-        <a th:href="@{/admin/maanedsrapport}" class="admin hide waves-effect waves-light btn blue darken-4" id="btn">Månedlig rapport</a>
-        <br><div class="col s3"><i class="material-icons light cyan-text" id="circle">brightness_1</i><p id="text1">Ansvarsvakt <b>A</b></p></div>
-        <div class="col s3"><i class="material-icons light blue-text" id="circle2">brightness_1</i><p id="text2">Satt opp på vakt <b>V</b></p></div><br>
+    <div class="row"><br>
+        <a th:href="@{/admin/vaktliste/ny}" class="admin hide waves-effect waves-light btn blue darken-4 right">Ny vaktliste</a>
+        <a th:href="@{/admin/maanedsrapport}" class="admin hide waves-effect waves-light btn blue darken-4 right" >Månedlig rapport</a>
+        <div class="col s6 m3 "><p><i class="material-icons light cyan-text">brightness_1</i>Ansvarsvakt <b>A</b></p></div>
+        <div class="col s6 m3"><p><i class="material-icons light blue-text">brightness_1</i>Satt opp på vakt <b>V</b></p></div><br>
     </div>
 
 <!-- calendar -->
