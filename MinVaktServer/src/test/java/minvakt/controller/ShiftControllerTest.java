@@ -259,11 +259,6 @@ public class ShiftControllerTest {
     }
 
     @Test
-    public void getAllShiftsForCurrentUser() throws Exception {
-        // Fancy Spring Security stuff, untestable??
-    }
-
-    @Test
     public void getShiftAssignmentsForShift() throws Exception {
         // Stub
         when(shiftAssignmentRepo.findByShiftId(shift1.getShiftId())).thenReturn(Arrays.asList(shiftAssign1));
@@ -274,23 +269,6 @@ public class ShiftControllerTest {
         // Verify
         verify(shiftAssignmentRepo, atLeastOnce()).findByShiftId(shift1.getShiftId());
     }
-
-    /*  Method removed???
-    @Test
-    public void getEmployeesOnShift() throws Exception {
-        // Stub
-        when(shiftAssignmentRepo.findAll()).thenReturn(Arrays.asList(shiftAssign1));
-
-        // Get number
-        int test = shiftController.getEmployeesOnShift(shiftAssign1.getShiftId());
-
-        // Assert
-        assertEquals(1, test);
-
-        // Verify
-        verify(shiftAssignmentRepo).findAll();
-    }
-    */
 
     @Test
     public void setUserIsResponsibleForShift() throws Exception {

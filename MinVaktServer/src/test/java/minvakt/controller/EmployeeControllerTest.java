@@ -1,6 +1,8 @@
 package minvakt.controller;
 
 
+import minvakt.controller.data.CalenderResource;
+import minvakt.controller.data.TwoStringsData;
 import minvakt.datamodel.ShiftDetailed;
 import minvakt.datamodel.tables.pojos.*;
 
@@ -15,7 +17,12 @@ import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -94,18 +101,6 @@ public class EmployeeControllerTest {
         empCat = new EmployeeCategory((short)1,"Administrasjon",true,(short)2,true);
     }
 
-    @After
-    public void tearDown() throws Exception {
-
-    }
-
-    @Test
-    public void getCurrentUser() throws Exception {
-    //    HttpServletRequest request = mock(HttpServletRequest.class);
-      //  java.security.Principal principal = mock(java.security.Principal.class);
-
-    }
-
     @Test
     public void getUsers() throws Exception {
         // Stubbing methods
@@ -123,9 +118,18 @@ public class EmployeeControllerTest {
         verify(employeeRepo, atLeastOnce()).findAll();
     }
 
-    @Test //todo sindre fix
+    @Test
     public void getAsResource() throws Exception {
+        // Stub
+        when(employeeRepo.findAll()).thenReturn(Arrays.asList(emp1, emp2));
 
+        // Get list
+        List<CalenderResource> list = employeeController.getAsResource();
+
+        // Assert
+        assertNotNull(list);
+        // Verify
+        verify(employeeRepo, atLeastOnce()).findAll();
     }
 
     @Test
@@ -212,10 +216,34 @@ public class EmployeeControllerTest {
     }
 
 
-    @Test //TODO sindre fix
+    @Test
     public void changePasswordForUser() throws Exception {
-        // stubbing method
+        // Setup string things
+        TwoStringsData strings1 = new TwoStringsData(), strings2 = new TwoStringsData(), strings3 = new TwoStringsData();
 
+        strings1.setString1("123");
+        strings1.setString2("1234");
+
+        strings2.setString1("Ost");
+        strings2.setString2("Potet");
+
+        strings3.setString1("Melk");
+        strings3.setString2("Eple");
+
+        // Stub
+        doThrow(new AccessDeniedException("ok")).when(userDetailsManager).changePassword(strings2.getString1(), strings2.getString2());
+        doThrow(new BadCredentialsException("ok")).when(userDetailsManager).changePassword(strings3.getString1(), strings3.getString2());
+
+
+        // Setup ResponseEntities
+        ResponseEntity response1 = ResponseEntity.ok().build();
+        ResponseEntity response2 = ResponseEntity.status(403).build();
+        ResponseEntity response3 = ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).body("Wrong password");
+
+        // Run method and assert
+        assertEquals(response1, employeeController.changePasswordForUser(strings1));
+        assertEquals(response2, employeeController.changePasswordForUser(strings2));
+        assertEquals(response3, employeeController.changePasswordForUser(strings3));
     }
 
     @Test
@@ -326,11 +354,14 @@ public class EmployeeControllerTest {
         verify(shiftRepo, atLeastOnce()).findAssignedByShiftEmployeeId(emp1.getEmployeeId());
     }
 
-    @Test //TODO sindre fix
+    @Test
     public void sendNewPassword() throws  Exception{
+        // Stub
+        when(employeeRepo.findByEmail(emp1.getEmail())).thenReturn(emp1);
+        when(employeeRepo.findByEmail(emp2.getEmail())).thenReturn(null);
 
+        // Run method and assert
+        assert(employeeController.sendNewPassword(emp1.getEmail()));
+        assertEquals(false, employeeController.sendNewPassword(emp2.getEmail()));
     }
-
-
-
 }

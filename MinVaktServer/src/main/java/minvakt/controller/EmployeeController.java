@@ -89,6 +89,7 @@ public class EmployeeController {
      */
     @GetMapping("/current")
     public Employee getCurrentUser() {
+
         UserDetails details = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Employee user = employeeRepo.findByEmail(details.getUsername());
 
