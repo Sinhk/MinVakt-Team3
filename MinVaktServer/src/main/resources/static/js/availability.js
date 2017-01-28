@@ -8,7 +8,7 @@ $(document).ready(function () { // document ready
         var title = $.trim($(this).text());
         const theTitle  = title;
 
-        title = title.replace("F: ","");
+        title = title.replace("U: ","");
 
         $(this).data('event', {
             title: theTitle, // use the element's text as the event title
@@ -334,7 +334,7 @@ $("#save").click(function () {
                 }
             }
         }
-        location.reload();
+        //location.reload();
     })
 });
 

@@ -3,10 +3,7 @@ package minvakt.util; /**
  */
 import minvakt.datamodel.tables.pojos.Employee;
 
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
+import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.List;
@@ -32,12 +29,10 @@ public class SendMailTLS {
     }
 
     private void sendMail(Message message) {
-        /*
         try {
             Transport.send(message);
         } catch (MessagingException ignored) {
         }
-        */
     }
 
     private void buildMessage(Message m, String email, String subj, String text) {
