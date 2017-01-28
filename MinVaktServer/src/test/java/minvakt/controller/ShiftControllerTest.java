@@ -388,7 +388,9 @@ public class ShiftControllerTest {
 
         // Stub
         when(shiftAssignmentRepo.findByShiftIdAndEmployeeId(shift1.getShiftId(), emp1.getEmployeeId())).thenReturn(Optional.of(shiftAssign1));
+        when(shiftAssignmentRepo.findByShiftIdAndEmployeeId(shift2.getShiftId(), emp1.getEmployeeId())).thenReturn(Optional.empty());
         when(shiftRepo.findOne(shift1.getShiftId())).thenReturn(shift1);
+        when(shiftRepo.findOne(shift2.getShiftId())).thenReturn(shift2);
         when(shiftRepo.findOne(testShift.getShiftId())).thenReturn(testShift);
         when(shiftRepo.save(shift1)).thenReturn(shift1);
         when(shiftAssignmentRepo.save(shiftAssign1)).thenReturn(shiftAssign1);
@@ -401,7 +403,7 @@ public class ShiftControllerTest {
         shiftController.changeUserAssignment(shift1.getShiftId(),emp1.getEmployeeId(), null, false, null, false, null);
         shiftController.changeUserAssignment(testShift.getShiftId(), emp1.getEmployeeId(), true, true, true, false, "");
         shiftController.changeUserAssignment(testShift.getShiftId(), emp1.getEmployeeId(), null, false, null, null, null);
-
+        shiftController.changeUserAssignment(shift2.getShiftId(), emp1.getEmployeeId(), null, true, null, null, null);
 
         // Verify
         verify(shiftAssignmentRepo, atLeastOnce()).findByShiftIdAndEmployeeId(shift1.getShiftId(), emp1.getEmployeeId());
